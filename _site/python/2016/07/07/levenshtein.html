@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>AlphaGo vs. Lee Sedol: Levenshtein Distance</title>
+  <meta name="description" content="a novice's journey into data science
+" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="canonical" href="http://localhost:4000/python/2016/07/07/levenshtein.html">
+
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!--  <link rel="stylesheet" href=""> -->
+  <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+<a href="http://localhost:4000" class="logo-readium"><span class="logo" style="background-image: url(/assets/images/df_logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="article-image">
+          <div class="post-image-image" style="background-image: url(/assets/alphago/header.jpg)">
+            Article Image
+          </div>
+          <div class="post-meta">
+            <h1 class="post-title">AlphaGo vs. Lee Sedol: Levenshtein Distance</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Junsik Whang</h4>
+              on
+              <time datetime="2016-07-07 09:00">07 Jul 2016</time>
+              <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
+            </div>
+            <div style="text-align:center">
+              <a href="#topofpage" class="topofpage"><i class="fa fa-angle-down"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <section class="post-content">
+          <div class="post-reading">
+            <span class="post-reading-time"></span> read
+          </div>
+          <a name="topofpage"></a>
+          <h1>AlphaGo vs. Lee Sedol: time spent pattern comparison</h1>
+
+<p>In my latest blogposts on AlphaGo vs. Lee Sedol, I uploaded some graphs that
+clearly showed how Lee Sedol and AlphaGo used their time differently in the
+Google DeepMind Challenge. Recently, I have come across some really interesting
+articles and lecture videos on distance measures including LevenShtein distance,
+and thought it would be interesting to see the patterns between human and
+machine! (Even though we already know that AlphaGo is a man-made machine). </p>
+
+<h3>Thinking Time Remaining</h3>
+
+<p><img src="/assets/alphago/total_remaining_edited.png" alt="Man vs. Machine!"></p>
+
+<h1>Data Preprocessing</h1>
+
+<p>The following custom function &#39;preprocessing&#39; 1) reads the raw csv file, 2)
+calculates time spent between each turn index. It&#39;s basically the same code (yet
+more concise) from my previous ipython notebook uploaded <a href="https://github.com/junkwhinger/AlphaGo_raw">here</a>. </p>
+
+<p><strong>In [115]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#loading libraries</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span></code></pre></figure>
+
+<p><strong>In [117]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#custom function to calculte timespent in seconds</span>
+<span class="k">def</span> <span class="nf">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">*</span> <span class="mi">3600</span> <span class="o">+</span> <span class="n">minute</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="n">second</span>
+    <span class="k">return</span> <span class="n">ts</span></code></pre></figure>
+
+<p><strong>In [119]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#custom function to read and preprocess raw data files</span>
+<span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s1">&#39;turn_index&#39;</span><span class="p">)</span>
+    <span class="n">df_alpha</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">AlphaGo</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">df_lee</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Lee_Sedol</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    
+    
+    <span class="n">df_alpha</span><span class="p">[</span><span class="s1">&#39;AlphaGo_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_alpha</span><span class="o">.</span><span class="n">AlphaGo</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">df_lee</span><span class="p">[</span><span class="s1">&#39;Lee_Sedol_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lee</span><span class="o">.</span><span class="n">Lee_Sedol</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+    <span class="n">df_lee</span><span class="p">[</span><span class="s1">&#39;Lee_Sedol_lag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lee</span><span class="o">.</span><span class="n">Lee_Sedol_ts</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">df_alpha</span><span class="p">[</span><span class="s1">&#39;AlphaGo_lag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_alpha</span><span class="o">.</span><span class="n">AlphaGo_ts</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">df_lee</span><span class="p">[</span><span class="s1">&#39;Lee_Sedol_tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lee</span><span class="o">.</span><span class="n">Lee_Sedol_lag</span> <span class="o">-</span> <span class="n">df_lee</span><span class="o">.</span><span class="n">Lee_Sedol_ts</span>
+    <span class="n">df_alpha</span><span class="p">[</span><span class="s1">&#39;AlphaGo_tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_alpha</span><span class="o">.</span><span class="n">AlphaGo_lag</span> <span class="o">-</span> <span class="n">df_alpha</span><span class="o">.</span><span class="n">AlphaGo_ts</span>
+    
+    <span class="n">df_lee_result</span> <span class="o">=</span> <span class="n">df_lee</span><span class="p">[[</span><span class="s1">&#39;turn_index&#39;</span><span class="p">,</span><span class="s1">&#39;Lee_Sedol_tt&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">df_alpha_result</span> <span class="o">=</span> <span class="n">df_alpha</span><span class="p">[[</span><span class="s1">&#39;turn_index&#39;</span><span class="p">,</span><span class="s1">&#39;AlphaGo_tt&#39;</span><span class="p">]][</span><span class="mi">1</span><span class="p">:]</span>
+    
+    <span class="n">df_lee_ott</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Lee_Sedol_ott</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">df_lee_ott</span><span class="p">[</span><span class="s1">&#39;Lee_Sedol_tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_lee_ott</span><span class="o">.</span><span class="n">Lee_Sedol_ott</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">df_lee_ott_result</span> <span class="o">=</span> <span class="n">df_lee_ott</span><span class="p">[[</span><span class="s1">&#39;turn_index&#39;</span><span class="p">,</span> <span class="s1">&#39;Lee_Sedol_tt&#39;</span><span class="p">]]</span>
+    
+    <span class="n">df_alpha_ott</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">AlphaGo_ott</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="n">df_alpha_ott</span><span class="p">[</span><span class="s1">&#39;AlphaGo_tt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_alpha_ott</span><span class="o">.</span><span class="n">AlphaGo_ott</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">df_alpha_ott_result</span> <span class="o">=</span> <span class="n">df_alpha_ott</span><span class="p">[[</span><span class="s1">&#39;turn_index&#39;</span><span class="p">,</span> <span class="s1">&#39;AlphaGo_tt&#39;</span><span class="p">]]</span>
+    
+    <span class="n">df_alpha_final</span> <span class="o">=</span> <span class="n">df_alpha_result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_alpha_ott_result</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">df_lee_final</span> <span class="o">=</span> <span class="n">df_lee_result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_lee_ott_result</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="n">result_df</span> <span class="o">=</span> <span class="n">df_alpha_final</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_lee_final</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;turn_index&#39;</span><span class="p">)</span>
+    <span class="n">result_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">result_df</span><span class="o">.</span><span class="n">turn_index</span>
+    <span class="n">result_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;turn_index&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result_df</span></code></pre></figure>
+
+<p><strong>In [120]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#file paths</span>
+<span class="n">file1</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/first_game.csv&#39;</span>
+<span class="n">file2</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/second_game.csv&#39;</span>
+<span class="n">file3</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/third_game.csv&#39;</span>
+<span class="n">file4</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/fourth_game.csv&#39;</span>
+<span class="n">file5</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/fifth_game.csv&#39;</span></code></pre></figure>
+
+<p><strong>In [121]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#preprocessing in one go!</span>
+<span class="n">g1</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+<span class="n">g2</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
+<span class="n">g3</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file3</span><span class="p">)</span>
+<span class="n">g4</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file4</span><span class="p">)</span>
+<span class="n">g5</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file5</span><span class="p">)</span></code></pre></figure>
+
+<h1>Stringify(?) the thinking time</h1>
+
+<p>To make it easier for my laptop to guess how different AlphaGo is in Game 1 from
+Game 2, I&#39;m going to transform the float data to strings according to their time
+length like the following custom function. </p>
+
+<p><strong>In [122]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">string_classifier</span><span class="p">(</span><span class="n">time_spent</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">time_spent</span> <span class="o">&lt;=</span> <span class="mf">10.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;A&#39;</span>
+    <span class="k">elif</span> <span class="n">time_spent</span> <span class="o">&lt;=</span> <span class="mf">40.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;B&#39;</span>
+    <span class="k">elif</span> <span class="n">time_spent</span> <span class="o">&lt;=</span> <span class="mf">120.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;C&#39;</span>
+    <span class="k">elif</span> <span class="n">time_spent</span> <span class="o">&lt;=</span> <span class="mf">300.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;D&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;E&#39;</span></code></pre></figure>
+
+<p>It really depends on how you want to design your stringified thinking time. I
+designed it to cluster hasty moves, normal moves and moves with prolonged
+thoughts. Pandas &#39;map&#39; function makes it super easy to apply this to every value
+in the DataFrames! </p>
+
+<p><strong>In [125]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">g1_A</span> <span class="o">=</span> <span class="n">g1</span><span class="o">.</span><span class="n">AlphaGo_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g2_A</span> <span class="o">=</span> <span class="n">g2</span><span class="o">.</span><span class="n">AlphaGo_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g3_A</span> <span class="o">=</span> <span class="n">g3</span><span class="o">.</span><span class="n">AlphaGo_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g4_A</span> <span class="o">=</span> <span class="n">g4</span><span class="o">.</span><span class="n">AlphaGo_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g5_A</span> <span class="o">=</span> <span class="n">g5</span><span class="o">.</span><span class="n">AlphaGo_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span></code></pre></figure>
+
+<p><strong>In [126]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">g1_L</span> <span class="o">=</span> <span class="n">g1</span><span class="o">.</span><span class="n">Lee_Sedol_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g2_L</span> <span class="o">=</span> <span class="n">g2</span><span class="o">.</span><span class="n">Lee_Sedol_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g3_L</span> <span class="o">=</span> <span class="n">g3</span><span class="o">.</span><span class="n">Lee_Sedol_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g4_L</span> <span class="o">=</span> <span class="n">g4</span><span class="o">.</span><span class="n">Lee_Sedol_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span>
+<span class="n">g5_L</span> <span class="o">=</span> <span class="n">g5</span><span class="o">.</span><span class="n">Lee_Sedol_tt</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">string_classifier</span><span class="p">)</span></code></pre></figure>
+
+<h1>Levenshtein Distance</h1>
+
+<p>Alright, now that the data is good to go, let&#39;s move on to the distance measure.
+Levenshtein Distance measure is one of the distance algorithms we can use to
+tell how different two given strings are. Let&#39;s say you are given &#39;Dorian&#39; and
+&#39;Durians&#39;. Dorian is my pet cat, and Durians is the plural form of my least
+favourite fruit. Anyway, LevenShtein Distance measure gets higher as you delete,
+insert or replace to make one to be exactly the same as the other. So in our
+example, we need to change o-&gt;u (1 point), delete s at the end (1 point), so
+their Levenshtein distance is 2. </p>
+
+<p>Levenshtein distance algorithm from <a href="https://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance">wikibooks</a></p>
+
+<p><strong>In [156]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">levenshtein</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+
+    <span class="c1"># So now we have len(source) &gt;= len(target).</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+    <span class="c1"># We call tuple() to force strings to be used as sequences</span>
+    <span class="c1"># (&#39;c&#39;, &#39;a&#39;, &#39;t&#39;, &#39;s&#39;) - numpy uses them as values by default.</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
+
+    <span class="c1"># We use a dynamic programming algorithm, but with the</span>
+    <span class="c1"># added optimization that we only need the last two rows</span>
+    <span class="c1"># of the matrix.</span>
+    <span class="n">previous_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">:</span>
+        <span class="c1"># Insertion (target grows longer than source):</span>
+        <span class="n">current_row</span> <span class="o">=</span> <span class="n">previous_row</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Substitution or matching:</span>
+        <span class="c1"># Target and source items are aligned, and either</span>
+        <span class="c1"># are different (cost of 1), or are the same (cost of 0).</span>
+        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
+                <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">previous_row</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">target</span> <span class="o">!=</span> <span class="n">s</span><span class="p">))</span>
+
+        <span class="c1"># Deletion (target grows shorter than source):</span>
+        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
+                <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+                <span class="n">current_row</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">previous_row</span> <span class="o">=</span> <span class="n">current_row</span>
+
+    <span class="k">return</span> <span class="n">previous_row</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></code></pre></figure>
+
+<p><strong>In [157]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">first_word</span> <span class="o">=</span> <span class="s1">&#39;Dorian&#39;</span>
+<span class="n">second_word</span> <span class="o">=</span> <span class="s1">&#39;Durians&#39;</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">second_word</span><span class="p">)</span>
+<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;Levenshtein distance between {} and {} is {}.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">second_word</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span></code></pre></figure>
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>Levenshtein distance between Dorian and Durians is 2.
+</code></pre></div>
+<h1>Levenshtein Distance on AlphaGo and Lee Sedol</h1>
+
+<p>Okay! We already know from the my previous visualisations that AlphaGo time
+spending habit was significantly different from Lee Sedol. So it&#39;s not code
+worthy to calculate the distance between the two. What about themselves?
+AlphaGo&#39;s thinking time didn&#39;t vary much but how about Lee Sedol? In the second
+game he took a highly defensive position, whereas in the third round he started
+off with offensive position. Did his time spending habit change as Google
+DeepMind Challenge proceeded? (It&#39;s interesting that the same logic is widely
+used in bot-detection practices in gaming industry and fraud detection
+algorithms in finance trades.) </p>
+
+<p>I&#39;ve made the following custom function to 1) prepare 5 time logs of AlphaGo and
+Lee Sedol, 2) calcaulate Levenshtein distance between their games 3) and present
+pretty heatmaps side by side. The third parameter &#39;length&#39; means the threshold
+to slice the time log in order to make more comparisons. It&#39;s a wide-spread
+practice to slice time frames in order to make the difference in distance more
+dramatic. The longer the logs are, the more likely they become heterogeneous. </p>
+
+<p><strong>In [246]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">levheatmap</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">blist</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="n">al</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">bl</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span>
+        
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alist</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+            <span class="n">al</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blist</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span>
+            <span class="n">bl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">al</span> <span class="o">=</span> <span class="n">alist</span>
+        <span class="n">bl</span> <span class="o">=</span> <span class="n">blist</span>
+            
+    <span class="n">array_A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">al</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">al</span><span class="p">)])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">al</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">al</span><span class="p">)):</span>
+            <span class="n">array_A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">al</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">al</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            
+    <span class="n">array_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">bl</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">bl</span><span class="p">)])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bl</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bl</span><span class="p">)):</span>
+            <span class="n">array_B</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">bl</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">bl</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            
+    <span class="n">maxval</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">array_A</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">array_B</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+            
+    <span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">ax1_title</span> <span class="o">=</span> <span class="s1">&#39;AlphaGo: leven distance / string length: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">ax2_title</span> <span class="o">=</span> <span class="s1">&#39;Lee Sedol: leven distance / string length: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Game 1&#39;</span><span class="p">,</span><span class="s1">&#39;Game 2&#39;</span><span class="p">,</span><span class="s1">&#39;Game 3&#39;</span><span class="p">,</span><span class="s1">&#39;Game 4&#39;</span><span class="p">,</span><span class="s1">&#39;Game 5&#39;</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Game 1&#39;</span><span class="p">,</span><span class="s1">&#39;Game 2&#39;</span><span class="p">,</span><span class="s1">&#39;Game 3&#39;</span><span class="p">,</span><span class="s1">&#39;Game 4&#39;</span><span class="p">,</span><span class="s1">&#39;Game 5&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+    
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_B</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Game 1&#39;</span><span class="p">,</span><span class="s1">&#39;Game 2&#39;</span><span class="p">,</span><span class="s1">&#39;Game 3&#39;</span><span class="p">,</span><span class="s1">&#39;Game 4&#39;</span><span class="p">,</span><span class="s1">&#39;Game 5&#39;</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Game 1&#39;</span><span class="p">,</span><span class="s1">&#39;Game 2&#39;</span><span class="p">,</span><span class="s1">&#39;Game 3&#39;</span><span class="p">,</span><span class="s1">&#39;Game 4&#39;</span><span class="p">,</span><span class="s1">&#39;Game 5&#39;</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ax1_title</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ax2_title</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
+       
+    <span class="n">ax1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">tick_top</span><span class="p">()</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><strong>In [247]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">list_A</span> <span class="o">=</span> <span class="p">[</span><span class="n">g1_A</span><span class="p">,</span> <span class="n">g2_A</span><span class="p">,</span> <span class="n">g3_A</span><span class="p">,</span> <span class="n">g4_A</span><span class="p">,</span> <span class="n">g5_A</span><span class="p">]</span>
+<span class="n">list_L</span> <span class="o">=</span> <span class="p">[</span><span class="n">g1_L</span><span class="p">,</span> <span class="n">g2_L</span><span class="p">,</span> <span class="n">g3_L</span><span class="p">,</span> <span class="n">g4_L</span><span class="p">,</span> <span class="n">g5_L</span><span class="p">]</span></code></pre></figure>
+
+<h1>Heatmaps!</h1>
+
+<p>It turns out (as expected) that Lee Sedol&#39;s games were much more diverse than
+AlphaGo&#39;s games. The homogeneity of AlphaGo moves is not surprising, but its
+Game 5 was quite different from all the other. Lee Sedol&#39;s Levenshtein distances
+are all at least higher than 55. Like AlphaGo, the odd one out in his games was
+game number 5. </p>
+
+<p><strong>In [251]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#Here we go. Full string comparison. The bluer the cell is, the higher the distance is.</span>
+<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/distance_analysis_files/distance_analysis_26_0.png" alt="string length: full"> </p>
+
+<p>Well, to my surprise, AlphaGo&#39;s LevenShtein distance was a little bit higher
+than I expected. If so, how can we detect if it&#39;s AlphaGo playing with a
+disguised identity on an online Go match? To bring justice, we need to slice the
+time log. Let&#39;s focus on the very first 10 strings. </p>
+
+<p><strong>In [256]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#Let&#39;s focus on the very first 10 strings. Lee Sedol&#39;s style still varies, while AlphaGo keeps its style.</span>
+<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/distance_analysis_files/distance_analysis_28_0.png" alt="string length: 10"> </p>
+
+<p><strong>In [253]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#string length 30. </span>
+<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/distance_analysis_files/distance_analysis_29_0.png" alt="string length: 30"> </p>
+
+<p><strong>In [254]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#string length 60.</span>
+<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/distance_analysis_files/distance_analysis_30_0.png" alt="string length: 60"> </p>
+
+<p><strong>In [255]:</strong></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#string length 90.</span>
+<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/distance_analysis_files/distance_analysis_31_0.png" alt="string length: 90"> </p>
+
+<p>Now we got it. Just by looking at the first 10 time logs, we can successfully
+tell AlphaGo from Lee Sedol! There are more distance measures like hamming
+distance, Jaro–Winkler distance and so on! I&#39;ll cover more of these in my future
+blogposts. </p>
+
+<p><strong>In [None]:</strong></p>
+
+        </section>
+        <footer class="post-footer">
+          <section class="share">
+            
+              
+                <a class="icon-twitter" href="http://twitter.com/share?text=AlphaGo+vs.+Lee+Sedol%3A+Levenshtein+Distance&amp;url=http://localhost:4000/python/2016/07/07/levenshtein"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=255');return false;">
+                <i class="fa fa-twitter"></i><span class="hidden">twitter</span>
+                </a>
+              
+            
+              
+            
+          </section>
+        </footer>
+        <div class="bottom-teaser cf">
+          <div class="isLeft">
+            <h5 class="index-headline featured"><span>Written by</span></h5>
+            <section class="author">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4>Junsik Whang</h4>
+              <p class="bio"></p>
+              <hr>
+              <p class="published">Published <time datetime="2016-07-07 09:00">07 Jul 2016</time></p>
+            </section>
+          </div>
+          
+          <div class="isRight">
+            <h5 class="index-headline featured"><span>Supported by</span></h5>
+            <footer class="site-footer">
+              <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
+              <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
+              <div class="inner">
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </article>
+    </main>
+    <div class="bottom-closer">
+      <div class="background-closer-image"  style="background-image: url(/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg)">
+        Image
+      </div>
+      <div class="inner">
+        <h1 class="blog-title">jsideas</h1>
+        <h2 class="blog-description">a novice's journey into data science
+</h2>
+        <a href="/" class="btn">Back to Overview</a>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/assets/js/index.js"></script>
+<script type="text/javascript" src="/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,36 @@
+div#chart {
+  font: 10px sans-serif;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.legend_line {
+  stroke-width: 5px;
+}
+
+.hover-line { 
+  fill: black;
+  stroke: black;
+  stroke-width: .5px;
+  left: 10px;
+  shape-rendering: crispEdges;
+}
+
+.tooltip { 
+  opacity: 1;
+  font: 10px sans-serif;
+}

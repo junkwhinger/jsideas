@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>[UPDATED]PDF Extractor in python</title>
+  <meta name="description" content="a novice's journey into data science
+" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="canonical" href="http://localhost:4000/python/2015/05/23/pdf_extractor_updated.html">
+
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!--  <link rel="stylesheet" href=""> -->
+  <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+<a href="http://localhost:4000" class="logo-readium"><span class="logo" style="background-image: url(/assets/images/df_logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">[UPDATED]PDF Extractor in python</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Jun</h4>
+              on
+              <time datetime="2015-05-23T19:30:00+09:00">23 May 2015</time>
+              <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        
+        <section class="post-content">
+          <div class="post-reading">
+            <span class="post-reading-time"></span> read
+          </div>
+          <a name="topofpage"></a>
+          <h2 class="section-heading">[Updated]PDf Extractor in python</h2>
+
+<p><a href="http://jsideas.net/python/2015/05/16/pdf_extractor/">PDF extractor I designed the other day</a> worked find, but had some performance issues. Instead of extracting sentences in order of appearance, the code iterated over the key words like ‘Thus, ‘, ‘Therefore, ‘ and appended the results. As a result, I got a bunch of ‘Secondly, ‘ before ‘Thirdly ‘. Plus, it failed to print some long sentences that were written between two pages. To address this issue, I redesigned the code with the following steps.</p>
+
+<ol>
+    <li>read the pdf file</li>
+    <li>split the file into paragraphs using spaces</li>
+    <li>remove things like page numbers, words from figures</li>
+    <li>if the paragraph starts with a lowercase letter, paste it with the previous paragraph</li>
+    <li>using the keyword set, extract their index number in the whole text</li>
+    <li>sort the index list in ascending order</li>
+    <li>iterate through the index list and extract characters until the loop hits the period mark</li>
+    <li>put them in a list and upload the list on my Evernote account</li>
+</ol>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">evernote.edam.userstore.constants</span> <span class="kn">as</span> <span class="nn">UserStoreConstants</span>
+<span class="kn">import</span> <span class="nn">evernote.edam.type.ttypes</span> <span class="kn">as</span> <span class="nn">Types</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">xml.dom.minidom</span>
+<span class="kn">from</span> <span class="nn">evernote.api.client</span> <span class="kn">import</span> <span class="n">EvernoteClient</span>
+
+<span class="c1"># invalid unicode chars</span>
+<span class="n">RE_XML_ILLEGAL</span> <span class="o">=</span> <span class="sa">u</span><span class="s1">&#39;([</span><span class="se">\u0000</span><span class="s1">-</span><span class="se">\u0008\u000b</span><span class="s1">-</span><span class="se">\u000c\u000e</span><span class="s1">-</span><span class="se">\u001f\ufffe</span><span class="s1">-</span><span class="se">\uffff</span><span class="s1">])&#39;</span> <span class="o">+</span> \
+                 <span class="sa">u</span><span class="s1">&#39;|&#39;</span> <span class="o">+</span> \
+                 <span class="sa">u</span><span class="s1">&#39;([</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">][^</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">])|([^</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">][</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">])|([</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">]$)|(^[</span><span class="si">%s</span><span class="s1">-</span><span class="si">%s</span><span class="s1">])&#39;</span> <span class="o">%</span> \
+                  <span class="p">(</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xd800</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdbff</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdc00</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdfff</span><span class="p">),</span>
+                   <span class="nb">unichr</span><span class="p">(</span><span class="mh">0xd800</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdbff</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdc00</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdfff</span><span class="p">),</span>
+                   <span class="nb">unichr</span><span class="p">(</span><span class="mh">0xd800</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdbff</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdc00</span><span class="p">),</span><span class="nb">unichr</span><span class="p">(</span><span class="mh">0xdfff</span><span class="p">))</span>
+
+
+<span class="c1"># load the file to parse</span>
+<span class="n">file_to_extract</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">raw_input</span><span class="p">(</span><span class="s2">&quot;Which file? &quot;</span><span class="p">))</span>
+
+
+<span class="c1"># command to execute pdf2txt.py</span>
+<span class="n">command</span> <span class="o">=</span> <span class="s2">&quot;pdf2txt.py -O summary -o summary/&quot;</span><span class="o">+</span><span class="n">file_to_extract</span><span class="o">+</span><span class="s2">&quot;.text  -t text &quot;</span><span class="o">+</span><span class="n">file_to_extract</span><span class="o">+</span><span class="s2">&quot;.pdf&quot;</span>
+
+<span class="c1"># execute the command to retrieve the text from the pdf file</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+<span class="c1"># read the text file</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;summary/&#39;</span> <span class="o">+</span> <span class="n">file_to_extract</span> <span class="o">+</span> <span class="s2">&quot;.text&quot;</span>
+
+<span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="c1"># keywords to extract important sentences</span>
+<span class="n">key_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Thus, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Hence, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Therefore, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;In conclusion &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;To summarize, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Yet, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;First, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Secondly, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Thirdly, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Lastly, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;However, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;As a result, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Furthermore, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Moreover, &#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;In sum&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;Finally, &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;As a result &#39;</span><span class="p">,</span>
+            <span class="s1">&#39;So,&#39;</span><span class="p">]</span>
+
+<span class="c1">#spliting paragraphs</span>
+<span class="n">paragraph_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\s{2,}&#39;</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+
+<span class="c1">#cleaning each paragraph</span>
+<span class="n">paragraph_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="n">paragraph_text</span><span class="p">:</span>
+    <span class="n">adjusted_paragraph</span> <span class="o">=</span> <span class="n">paragraph</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">adjusted_paragraph</span> <span class="o">=</span> <span class="n">adjusted_paragraph</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">adjusted_paragraph</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">RE_XML_ILLEGAL</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">adjusted_paragraph</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">adjusted_paragraph</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span> <span class="c1">#removing page numbers</span>
+        <span class="n">dot_found</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">adjusted_paragraph</span>
+        <span class="n">semicolon_found</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span> <span class="ow">in</span> <span class="n">adjusted_paragraph</span>
+        <span class="n">colon_found</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span> <span class="ow">in</span> <span class="n">adjusted_paragraph</span>
+        <span class="n">exclam_found</span> <span class="o">=</span> <span class="s2">&quot;!&quot;</span> <span class="ow">in</span> <span class="n">adjusted_paragraph</span>
+        <span class="n">char_found</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">char</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">adjusted_paragraph</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">dot_found</span> <span class="ow">or</span> <span class="n">semicolon_found</span> <span class="ow">or</span> <span class="n">colon_found</span> <span class="ow">or</span> <span class="n">exclam_found</span><span class="p">)</span> <span class="ow">and</span> <span class="n">char_found</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">paragraph_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adjusted_paragraph</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">paragraph</span> <span class="ow">in</span> <span class="n">paragraph_list</span><span class="p">:</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">paragraph</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">upper</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">paragraph</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">last_appended_paragraph</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">adj_paragraph</span> <span class="o">=</span> <span class="n">last_appended_paragraph</span> <span class="o">+</span> <span class="n">paragraph</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adj_paragraph</span><span class="p">)</span>
+
+<span class="n">result_string</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1">#retrieve index of key words in the text and sort them in ascending order</span>
+<span class="n">extraction_index_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">key_set</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">result_string</span><span class="p">):</span>
+        <span class="n">extraction_index_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">())</span>
+<span class="n">extraction_index_list_sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">extraction_index_list</span><span class="p">)</span>
+
+<span class="c1">#extract the sentences</span>
+<span class="n">extraction_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">extraction_index_list_sorted</span><span class="p">:</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">result_string</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+        <span class="n">char</span> <span class="o">=</span> <span class="n">result_string</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span>
+        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">RE_XML_ILLEGAL</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">extraction_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s1">&#39;there are </span><span class="si">%i</span><span class="s1"> sentences extracted.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">extraction_list</span><span class="p">)</span>
+
+<span class="c1"># top 5 most frequent word list to use as tags</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">result_string</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+    <span class="n">d</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">del_key_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;you&#39;</span><span class="p">,</span> <span class="s1">&#39;your&#39;</span><span class="p">,</span> <span class="s1">&#39;We&#39;</span><span class="p">,</span> <span class="s1">&#39;we&#39;</span><span class="p">,</span> <span class="s1">&#39;You&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;The&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;Of&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;On&#39;</span><span class="p">,</span> <span class="s1">&#39;In&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;To&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;That&#39;</span><span class="p">,</span> <span class="s1">&#39;Those&#39;</span><span class="p">,</span> <span class="s1">&#39;those&#39;</span><span class="p">,</span> <span class="s1">&#39;by&#39;</span><span class="p">,</span> <span class="s1">&#39;until&#39;</span><span class="p">,</span> <span class="s1">&#39;has&#39;</span><span class="p">,</span> <span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;at&#39;</span><span class="p">,</span> <span class="s1">&#39;This&#39;</span><span class="p">,</span> 
+                <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;under&#39;</span><span class="p">,</span> <span class="s1">&#39;own&#39;</span><span class="p">,</span> <span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="s1">&#39;As&#39;</span><span class="p">,</span> <span class="s1">&#39;have&#39;</span><span class="p">,</span> <span class="s1">&#39;between&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;with&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;its&#39;</span><span class="p">,</span> <span class="s1">&#39;over&#39;</span><span class="p">,</span> <span class="s1">&#39;also&#39;</span><span class="p">,</span> <span class="s1">&#39;more&#39;</span><span class="p">,</span><span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="s1">&#39;their&#39;</span><span class="p">,</span> <span class="s1">&#39;Their&#39;</span> <span class="p">]</span>
+
+<span class="c1"># remove common keywords from the dictionary</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">del_key_list</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+<span class="c1"># sort dictionary items from the most to the least frequent words</span>
+<span class="n">sorted_d</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># create a tag list of top 5 most frequent keywords</span>
+<span class="n">tag_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">tag_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sorted_d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># access evernote and create a note</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">extraction_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+    <span class="n">auth_token</span> <span class="o">=</span> <span class="s2">&quot;S=s101:U=aa4acd:E=154aa4bebfd:C=14d529abc30:P=1cd:A=en-devtoken:V=2:H=974dd38b2d7e3e0b9bac7432b2658cd5&quot;</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">EvernoteClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">user_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user_store</span><span class="p">()</span>
+
+    <span class="n">version_ok</span> <span class="o">=</span> <span class="n">user_store</span><span class="o">.</span><span class="n">checkVersion</span><span class="p">(</span>
+        <span class="s2">&quot;Evernote EDAMTest (Python)&quot;</span><span class="p">,</span>
+        <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MAJOR</span><span class="p">,</span>
+        <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MINOR</span>
+    <span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;Is my Evernote API version up to date? &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">version_ok</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">version_ok</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">note_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_note_store</span><span class="p">()</span>
+
+    <span class="c1"># List all of the notebooks in the user&#39;s account</span>
+    <span class="n">notebook_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">notebooks</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">listNotebooks</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s2">&quot;Found &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">notebooks</span><span class="p">),</span> <span class="s2">&quot; notebooks:&quot;</span>
+    <span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
+        <span class="n">notebook_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">notebook</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># Create a summary folder if it doesn&#39;t exist</span>
+    <span class="k">if</span> <span class="s2">&quot;PDF_Summary&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">notebook_list</span><span class="p">:</span>
+        <span class="n">notebook</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Notebook</span><span class="p">()</span>
+        <span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;PDF_Summary&quot;</span>
+        <span class="n">notebook</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNotebook</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
+
+    <span class="c1"># Fetch &#39;PDF_Summary&#39;s guid&#39;</span>
+    <span class="n">notebook_guid</span> <span class="o">=</span> <span class="s1">&#39;dummy&#39;</span>
+    <span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;PDF_Summary&quot;</span><span class="p">:</span>
+            <span class="n">notebook_guid</span> <span class="o">=</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
+            <span class="k">print</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
+
+    <span class="c1"># create a new note</span>
+    <span class="n">note</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Note</span><span class="p">()</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">notebookGuid</span> <span class="o">=</span> <span class="n">notebook_guid</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Summary from &quot;</span> <span class="o">+</span> <span class="n">file_to_extract</span>
+
+    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;!DOCTYPE en-note SYSTEM &#39;</span> \
+        <span class="s1">&#39;&quot;http://xml.evernote.com/pub/enml2.dtd&quot;&gt;&#39;</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;en-note&gt;&lt;ul&gt;&#39;</span>
+    <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">extraction_list</span><span class="p">:</span>
+        <span class="n">pasted_sentence</span> <span class="o">=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="o">+</span><span class="n">sentence</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+        <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="n">pasted_sentence</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&lt;/en-note&gt;&#39;</span>
+    <span class="n">note</span><span class="o">.</span><span class="n">tagNames</span> <span class="o">=</span> <span class="n">tag_list</span>
+
+    <span class="n">created_note</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNote</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="s2">&quot;Successfully created a new note with GUID: &quot;</span><span class="p">,</span> <span class="n">created_note</span><span class="o">.</span><span class="n">guid</span></code></pre></figure>
+
+        </section>
+        <footer class="post-footer">
+          <section class="share">
+            
+              
+                <a class="icon-twitter" href="http://twitter.com/share?text=%5BUPDATED%5DPDF+Extractor+in+python&amp;url=http://localhost:4000/python/2015/05/23/pdf_extractor_updated"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=255');return false;">
+                <i class="fa fa-twitter"></i><span class="hidden">twitter</span>
+                </a>
+              
+            
+              
+            
+          </section>
+        </footer>
+        <div class="bottom-teaser cf">
+          <div class="isLeft">
+            <h5 class="index-headline featured"><span>Written by</span></h5>
+            <section class="author">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4>Junsik Whang</h4>
+              <p class="bio"></p>
+              <hr>
+              <p class="published">Published <time datetime="2015-05-23 19:30">23 May 2015</time></p>
+            </section>
+          </div>
+          
+          <div class="isRight">
+            <h5 class="index-headline featured"><span>Supported by</span></h5>
+            <footer class="site-footer">
+              <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
+              <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
+              <div class="inner">
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </article>
+    </main>
+    <div class="bottom-closer">
+      <div class="background-closer-image"  style="background-image: url(/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg)">
+        Image
+      </div>
+      <div class="inner">
+        <h1 class="blog-title">jsideas</h1>
+        <h2 class="blog-description">a novice's journey into data science
+</h2>
+        <a href="/" class="btn">Back to Overview</a>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/assets/js/index.js"></script>
+<script type="text/javascript" src="/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

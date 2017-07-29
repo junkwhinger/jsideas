@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>How to recover data from disconnected ppt charts</title>
+  <meta name="description" content="a novice's journey into data science
+" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="canonical" href="http://localhost:4000/r/2015/05/02/ppt_chart_recovery.html">
+
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!--  <link rel="stylesheet" href=""> -->
+  <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+<a href="http://localhost:4000" class="logo-readium"><span class="logo" style="background-image: url(/assets/images/df_logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">How to recover data from disconnected ppt charts</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Jun</h4>
+              on
+              <time datetime="2015-05-02T08:50:00+09:00">02 May 2015</time>
+              <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        
+        <section class="post-content">
+          <div class="post-reading">
+            <span class="post-reading-time"></span> read
+          </div>
+          <a name="topofpage"></a>
+          <h2 class="section-heading">How to recover data from disconnected ppt charts</h2>
+
+<p>For those who handle lots of powerpoint files at work, few things are more annoying than ppt charts that have lost links with their original data set. Luckily you can still figure out the original data by hovering over the points, but what would you do with a chart that has hundreds, if not thousands of data points?</p>
+
+<p>A few days ago I was in that situation where I had a disconnected grouped bar chart. It had 4 series times 7 categories, so 28 data points. This was enough to irritate me, and I found <a href="http://blog.magicbeanlab.com/data-viz/retrieve-data-from-powerpoint-charts-when-linked-file-not-available/">this link</a>.</p> 
+
+<p>This guy’s blog explains the solution well, but I thought I could do something with R. So here’s what I’ve come up with. If you have R installed in your mac, you can easily do it.</p>
+
+<p>1. let’s get the ingredients ready.</p>
+
+<p><img src="/assets/ppt_recovery/pic1.png" alt="pic1">
+<p>Here I have a ppt file with 4 different types of charts; a line chart, a pie chart, a bar chart and a group bar chart.</p></p>
+
+<p>2. save the ppt file, and change it file type from pptx to zip.</p>
+
+<p><img src="/assets/ppt_recovery/pic2.png" alt="pic2">
+<p>It sounds pretty weird, but your computer will allow that to happen.</p></p>
+
+<p>3. unzip the newly modified zip file.</p>
+
+<p><img src="/assets/ppt_recovery/pic3.png" alt="pic3">
+<p>In the folder, you’ll see a bunch of folders and files.. and among them, you’ll find [charts] folder inside [ppt] folder. That’s where our charts are. 4 xml files there!</p></p>
+
+<p>4. put them in a folder with ppt_chart_recovery_f.R (again, you can download it from <a href="https://github.com/junkwhinger/ppt_chart_recovery">here</a>). Make sure you have no other xml files in the folder, as my R script is designed to parse all the xml files it can find in its folder. Like this.</p>
+
+<p><img src="/assets/ppt_recovery/pic4.png" alt="pic4"></p>
+
+<p>5. open terminal and go to the test folder. as my [test] folder is in the [desktop] folder, I just need to type “cd desktop/test"</p>
+
+<p>6. run the r code to get the result. type “r” to activate r, and type “source(“ppt_chart_recovery_f.R”). Within a few seconds, the job is done.</p>
+
+<p><img src="/assets/ppt_recovery/pic5.png" alt="pic5">
+<p>It shows some messages that go “Namespace prefix c…” but you can ignore it.</p></p>
+
+<p>7. check out the results.</p>
+
+<p><img src="/assets/ppt_recovery/pic6.png" alt="pic6">
+<p>Voila! four new csv files! click and hit space to check out what they look like.</p>
+<img src="/assets/ppt_recovery/pic7.png" alt="pic7">
+<p>Job done!</p></p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;XML&quot;</span><span class="p">)</span>
+
+<span class="c1">#loading files</span>
+current_files <span class="o">&lt;-</span> <span class="kp">dir</span><span class="p">()</span>
+file_vec <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">()</span>
+<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>current_files<span class="p">))</span> <span class="p">{</span>
+  file <span class="o">&lt;-</span> current_files<span class="p">[</span>i<span class="p">]</span>
+  <span class="kr">if</span> <span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&quot;.xml&quot;</span><span class="p">,</span> <span class="kp">file</span><span class="p">))</span> <span class="p">{</span>
+    <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span>file <span class="o">%in%</span> file_vec<span class="p">))</span> <span class="p">{</span>
+      file_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>file_vec<span class="p">,</span> <span class="kp">file</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+ser_list <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">()</span>
+<span class="kr">for</span> <span class="p">(</span>file <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>file_vec<span class="p">))</span> <span class="p">{</span>
+  doc <span class="o">&lt;-</span> xmlTreeParse<span class="p">(</span>file_vec<span class="p">[</span><span class="kp">file</span><span class="p">])</span>
+  root <span class="o">&lt;-</span> xmlRoot<span class="p">(</span>doc<span class="p">)</span>
+  <span class="c1">#chart type</span>
+  chart_type <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span>doc<span class="o">$</span>doc<span class="o">$</span>children<span class="o">$</span>chartSpace<span class="p">[</span><span class="s">&quot;chart&quot;</span><span class="p">]</span><span class="o">$</span>chart<span class="p">[</span><span class="s">&quot;plotArea&quot;</span><span class="p">]</span><span class="o">$</span>plotArea<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+  
+  <span class="c1">#fetching series</span>
+  ser <span class="o">=</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v&quot;</span><span class="p">)</span>
+  
+  ser_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
+  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>ser<span class="p">))</span> <span class="p">{</span>
+    ser_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span>ser<span class="p">[[</span>i<span class="p">]])</span>
+    ser_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> ser_item<span class="p">)</span>
+    ser_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> ser_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+    ser_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>ser_vec<span class="p">,</span> ser_item<span class="p">)</span>
+    
+  <span class="p">}</span>
+  
+  <span class="c1">#fetching categories</span>
+  cat0 <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat&quot;</span><span class="p">)</span>
+  cat_val <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span>cat0<span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
+  <span class="kr">if</span> <span class="p">(</span>cat_val <span class="o">==</span> <span class="s">&quot;c:strRef&quot;</span><span class="p">)</span> <span class="p">{</span>
+    cat <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat/c:strRef/c:strCache/c:pt/c:v&quot;</span><span class="p">)</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span>
+    cat <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat/c:numRef/c:numCache/c:pt/c:v&quot;</span><span class="p">)</span> 
+  <span class="p">}</span>
+  
+  
+  
+  cat_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
+  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span><span class="kp">cat</span><span class="p">))</span> <span class="p">{</span>
+    cat_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span><span class="kp">cat</span><span class="p">[[</span>i<span class="p">]])</span>
+    cat_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> cat_item<span class="p">)</span>
+    cat_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> cat_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span>cat_item <span class="o">%in%</span> cat_vec<span class="p">))</span> <span class="p">{</span>
+      cat_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>cat_vec<span class="p">,</span> cat_item<span class="p">)</span>
+    <span class="p">}</span> 
+  <span class="p">}</span>
+  
+  <span class="c1">#fetching values</span>
+  value <span class="o">=</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:ser/c:val/c:numRef/c:numCache/c:pt/c:v&quot;</span><span class="p">)</span>
+  
+  val_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
+  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>value<span class="p">))</span> <span class="p">{</span>
+    value_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span>value<span class="p">[[</span>i<span class="p">]])</span>
+    value_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> value_item<span class="p">)</span>
+    value_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> value_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+    value_item <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>value_item<span class="p">)</span>
+    val_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>val_vec<span class="p">,</span> value_item<span class="p">)</span>
+  <span class="p">}</span>
+  
+  <span class="c1">#creating matrix</span>
+  final <span class="o">&lt;-</span> <span class="kt">matrix</span><span class="p">(</span>val_vec<span class="p">,</span>nrow<span class="o">=</span><span class="kp">length</span><span class="p">(</span>cat_vec<span class="p">),</span>ncol<span class="o">=</span><span class="kp">length</span><span class="p">(</span>ser_vec<span class="p">))</span>
+  
+  <span class="kp">rownames</span><span class="p">(</span>final<span class="p">)</span> <span class="o">&lt;-</span> cat_vec
+  <span class="kp">colnames</span><span class="p">(</span>final<span class="p">)</span> <span class="o">&lt;-</span> ser_vec
+  
+  <span class="c1">#export as a csv file</span>
+  filename <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="s">&quot;done_&quot;</span><span class="p">,</span> <span class="s">&quot;chart&quot;</span><span class="p">,</span> <span class="kp">file</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+  filename <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span>filename<span class="p">,</span> <span class="s">&quot;.csv&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+  write.csv<span class="p">(</span>final<span class="p">,</span> filename<span class="p">)</span>
+  
+<span class="p">}</span></code></pre></figure>
+
+        </section>
+        <footer class="post-footer">
+          <section class="share">
+            
+              
+                <a class="icon-twitter" href="http://twitter.com/share?text=How+to+recover+data+from+disconnected+ppt+charts&amp;url=http://localhost:4000/r/2015/05/02/ppt_chart_recovery"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=255');return false;">
+                <i class="fa fa-twitter"></i><span class="hidden">twitter</span>
+                </a>
+              
+            
+              
+            
+          </section>
+        </footer>
+        <div class="bottom-teaser cf">
+          <div class="isLeft">
+            <h5 class="index-headline featured"><span>Written by</span></h5>
+            <section class="author">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4>Junsik Whang</h4>
+              <p class="bio"></p>
+              <hr>
+              <p class="published">Published <time datetime="2015-05-02 08:50">02 May 2015</time></p>
+            </section>
+          </div>
+          
+          <div class="isRight">
+            <h5 class="index-headline featured"><span>Supported by</span></h5>
+            <footer class="site-footer">
+              <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
+              <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
+              <div class="inner">
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </article>
+    </main>
+    <div class="bottom-closer">
+      <div class="background-closer-image"  style="background-image: url(/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg)">
+        Image
+      </div>
+      <div class="inner">
+        <h1 class="blog-title">jsideas</h1>
+        <h2 class="blog-description">a novice's journey into data science
+</h2>
+        <a href="/" class="btn">Back to Overview</a>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/assets/js/index.js"></script>
+<script type="text/javascript" src="/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- (1) force latest IE rendering engine: bit.ly/1c8EiC9 -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>A Simple Line Chart with d3.js</title>
+  <meta name="description" content="a novice's journey into data science
+" />
+
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="canonical" href="http://localhost:4000/d3.js/2015/01/04/line-chart-test.html">
+
+  <link rel="shortcut icon" href="/assets/images/favicon.ico">
+<!--  <link rel="stylesheet" href=""> -->
+  <link rel="stylesheet" href="http://brick.a.ssl.fastly.net/Linux+Libertine:400,400i,700,700i/Open+Sans:400,400i,700,700i">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="/css/print.css" />
+</head>
+
+  <body itemscope itemtype="http://schema.org/Article">
+    <!-- header start -->
+
+<a href="http://localhost:4000" class="logo-readium"><span class="logo" style="background-image: url(/assets/images/df_logo.jpg)"></span></a>
+
+<!-- header end -->
+
+    <main class="content" role="main">
+      <article class="post">
+        
+        <div class="noarticleimage">
+          <div class="post-meta">
+            <h1 class="post-title">A Simple Line Chart with d3.js</h1>
+            <div class="cf post-meta-text">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">Jun</h4>
+              on
+              <time datetime="2015-01-04T02:54:00+09:00">04 Jan 2015</time>
+              <!-- , tagged on <span class="post-tag-">, <a href="/tag/"></a></span> -->
+            </div>
+          </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        
+        <section class="post-content">
+          <div class="post-reading">
+            <span class="post-reading-time"></span> read
+          </div>
+          <a name="topofpage"></a>
+          <h2 class="section-heading">A line chart using d3.js</h2>
+
+<div id="chart"></div>
+
+<p><link href="/d3_css/line_chart.css" rel='stylesheet'>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script type="text/javascript"></p>
+
+<p>var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;</p>
+
+<p>var parseDate = d3.time.format(&quot;%d-%b-%y&quot;).parse;</p>
+
+<p>var x = d3.time.scale()
+    .range([0, width]);</p>
+
+<p>var y = d3.scale.linear()
+    .range([height, 0]);</p>
+
+<p>var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient(&quot;bottom&quot;);</p>
+
+<p>var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient(&quot;left&quot;);</p>
+
+<p>var line = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });</p>
+
+<p>var svg = d3.select(&quot;div#chart&quot;).append(&quot;svg&quot;)
+    .attr(&quot;width&quot;, width + margin.left + margin.right)
+    .attr(&quot;height&quot;, height + margin.top + margin.bottom)
+  .append(&quot;g&quot;)
+    .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);</p>
+
+<p>d3.tsv(&quot;/d3_data/data.tsv&quot;, function(error, data) {
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+    d.close = +d.close;
+  });</p>
+
+<p>x.domain(d3.extent(data, function(d) { return d.date; }));
+  y.domain(d3.extent(data, function(d) { return d.close; }));</p>
+
+<p>svg.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;x axis&quot;)
+      .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
+      .call(xAxis);</p>
+
+<p>svg.append(&quot;g&quot;)
+      .attr(&quot;class&quot;, &quot;y axis&quot;)
+      .call(yAxis)
+    .append(&quot;text&quot;)
+      .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)
+      .attr(&quot;y&quot;, 6)
+      .attr(&quot;dy&quot;, &quot;.71em&quot;)
+      .style(&quot;text-anchor&quot;, &quot;end&quot;)
+      .text(&quot;Price ($)&quot;);</p>
+
+<p>svg.append(&quot;path&quot;)
+      .datum(data)
+      .attr(&quot;class&quot;, &quot;line&quot;)
+      .attr(&quot;d&quot;, line);
+});
+</script></p>
+
+<p>This is a simple line chart drawn with d3.js. It is a javascript framework that has many powerful features for data visualisation. You can check more about on <a href="http://d3js.org/">d3.js official website</a> or find some useful tutorials on <a href="https://www.dashingd3js.com/">Dashingd3.com</a>.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="p">{</span><span class="nx">top</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">right</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">bottom</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="nx">left</span><span class="o">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="nx">width</span> <span class="o">=</span> <span class="mi">960</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span>
+    <span class="nx">height</span> <span class="o">=</span> <span class="mi">500</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">parseDate</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s2">&quot;%d-%b-%y&quot;</span><span class="p">).</span><span class="nx">parse</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">time</span><span class="p">.</span><span class="nx">scale</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nx">width</span><span class="p">]);</span>
+
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="nx">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">]);</span>
+
+<span class="kd">var</span> <span class="nx">xAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;bottom&quot;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">yAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">line</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">);</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">y</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">y</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">close</span><span class="p">);</span> <span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">&quot;div#chart&quot;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;width&quot;</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;height&quot;</span><span class="p">,</span> <span class="nx">height</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;translate(&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">);</span>
+
+<span class="nx">d3</span><span class="p">.</span><span class="nx">tsv</span><span class="p">(</span><span class="s2">&quot;/d3_data/data.tsv&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">data</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">d</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">parseDate</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">);</span>
+    <span class="nx">d</span><span class="p">.</span><span class="nx">close</span> <span class="o">=</span> <span class="o">+</span><span class="nx">d</span><span class="p">.</span><span class="nx">close</span><span class="p">;</span>
+  <span class="p">});</span>
+
+  <span class="nx">x</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">extent</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">date</span><span class="p">;</span> <span class="p">}));</span>
+  <span class="nx">y</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">extent</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">close</span><span class="p">;</span> <span class="p">}));</span>
+
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;x axis&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;translate(0,&quot;</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">xAxis</span><span class="p">);</span>
+
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;y axis&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;transform&quot;</span><span class="p">,</span> <span class="s2">&quot;rotate(-90)&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;dy&quot;</span><span class="p">,</span> <span class="s2">&quot;.71em&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">&quot;text-anchor&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">&quot;Price ($)&quot;</span><span class="p">);</span>
+
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">datum</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;d&quot;</span><span class="p">,</span> <span class="nx">line</span><span class="p">);</span>
+<span class="p">});</span></code></pre></figure>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+        </section>
+        <footer class="post-footer">
+          <section class="share">
+            
+              
+                <a class="icon-twitter" href="http://twitter.com/share?text=A+Simple+Line+Chart+with+d3.js&amp;url=http://localhost:4000/d3.js/2015/01/04/line-chart-test"
+                  onclick="window.open(this.href, 'twitter-share', 'width=550,height=255');return false;">
+                <i class="fa fa-twitter"></i><span class="hidden">twitter</span>
+                </a>
+              
+            
+              
+            
+          </section>
+        </footer>
+        <div class="bottom-teaser cf">
+          <div class="isLeft">
+            <h5 class="index-headline featured"><span>Written by</span></h5>
+            <section class="author">
+              <div class="author-image" style="background-image: url(/assets/images/author.jpg)">Blog Logo</div>
+              <h4>Junsik Whang</h4>
+              <p class="bio"></p>
+              <hr>
+              <p class="published">Published <time datetime="2015-01-04 02:54">04 Jan 2015</time></p>
+            </section>
+          </div>
+          
+          <div class="isRight">
+            <h5 class="index-headline featured"><span>Supported by</span></h5>
+            <footer class="site-footer">
+              <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
+              <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
+              <div class="inner">
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </article>
+    </main>
+    <div class="bottom-closer">
+      <div class="background-closer-image"  style="background-image: url(/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg)">
+        Image
+      </div>
+      <div class="inner">
+        <h1 class="blog-title">jsideas</h1>
+        <h2 class="blog-description">a novice's journey into data science
+</h2>
+        <a href="/" class="btn">Back to Overview</a>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/assets/js/index.js"></script>
+<script type="text/javascript" src="/assets/js/readingTime.min.js"></script>
+<script>
+(function ($) {
+  "use strict";
+  $(document).ready(function(){
+
+    var $window = $(window),
+    $image = $('.post-image-image, .teaserimage-image');
+    
+      $window.on('scroll', function() {
+        var top = $window.scrollTop();
+
+        if (top < 0 || top > 1500) { return; }
+        $image
+          .css('transform', 'translate3d(0px, '+top/3+'px, 0px)')
+          .css('opacity', 1-Math.max(top/700, 0));
+      });
+      $window.trigger('scroll');
+
+      var height = $('.article-image').height();
+      $('.post-content').css('padding-top', height + 'px');
+
+      $('a[href*=#]:not([href=#])').click(function() {
+        if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+         && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+          if (target.length) {
+            $('html,body').animate({ scrollTop: target.offset().top }, 500);
+            return false;
+          }
+        }
+      });
+
+  });
+}(jQuery));
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+</html>
