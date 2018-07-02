@@ -59,7 +59,6 @@
           </div>
           <a name="topofpage"></a>
           <h2 class="section-heading">지상파 사극 드라마 시청률 비교</h2>
-
 <p> View Rates of Korean History dramas </p>
 
 <div id="chart"></div>
@@ -70,73 +69,74 @@
 
 <p>Img source: <a href="https://rv.wkcdn.net/http://rigvedawiki.net/r1/pds/jngdjn.jpg">Google</a></p> 
 
-<p><link href="/d3_css/view_rates.css" rel='stylesheet'>
+<link href="/d3_css/view_rates.css" rel="stylesheet" />
 <script src="http://d3js.org/d3.v3.js"></script>
-<script type="text/javascript"></p>
+<script type="text/javascript">
 
-<p>//setting the canvas
+//setting the canvas
 var margin = {top: 20, right: 120, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;</p>
+    height = 500 - margin.top - margin.bottom;
 
-<p>//setting the ranges
+//setting the ranges
 var x = d3.scale.linear()
-    .range([0, width]);</p>
+    .range([0, width]);
 
-<p>var y = d3.scale.linear()
-    .range([height, 0]);</p>
+var y = d3.scale.linear()
+    .range([height, 0]);
 
-<p>//coloring lines
-var color = d3.scale.category20();</p>
+//coloring lines
+var color = d3.scale.category20();
 
-<p>//changing view rate&#39;s format to %
-var formatPercent = d3.format(&quot;.0%&quot;);</p>
+//changing view rate's format to %
+var formatPercent = d3.format(".0%");
 
-<p>//defining the axes
+//defining the axes
 var xAxis = d3.svg.axis()
     .scale(x)
-    .orient(&quot;bottom&quot;);</p>
+    .orient("bottom");
 
-<p>var yAxis = d3.svg.axis()
+var yAxis = d3.svg.axis()
     .scale(y)
-    .orient(&quot;left&quot;)
-    .tickFormat(formatPercent);</p>
+    .orient("left")
+    .tickFormat(formatPercent);
 
-<p>//defining the lines
+
+//defining the lines
 var line = d3.svg.line()
-    .interpolate(&quot;basis&quot;) // this makes the lines smoother!
+    .interpolate("basis") // this makes the lines smoother!
     .x(function(d) { return x(d.episode); })
-    .y(function(d) { return y(d.view<em>rate); })
-    .defined(function(d) { return d.view</em>rate; }); // this makes the lines end where they have no data.</p>
+    .y(function(d) { return y(d.view_rate); })
+    .defined(function(d) { return d.view_rate; }); // this makes the lines end where they have no data.
 
-<p>//creating svg
-var svg = d3.select(&quot;div#chart&quot;).append(&quot;svg&quot;)
-    .attr(&quot;width&quot;, width + margin.left + margin.right)
-    .attr(&quot;height&quot;, height + margin.top + margin.bottom)
-  .append(&quot;g&quot;)
-    .attr(&quot;transform&quot;, &quot;translate(&quot; + margin.left + &quot;,&quot; + margin.top + &quot;)&quot;);</p>
+//creating svg
+var svg = d3.select("div#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-<p>//maxY is for resetting the y axis using legends
-var maxY;</p>
+//maxY is for resetting the y axis using legends
+var maxY;
 
-<p>//function for x grid
-function make<em>x</em>axis() {
+//function for x grid
+function make_x_axis() {
   return d3.svg.axis()
     .scale(x)
-    .orient(&quot;bottom&quot;)
+    .orient("bottom")
     .ticks(20)
-}</p>
+}
 
-<p>//getting the data
-d3.tsv(&quot;/d3<em>data/view</em>rates.tsv&quot;, function(error, data) {
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== &quot;episode&quot;; }));</p>
+//getting the data
+d3.tsv("/d3_data/view_rates.tsv", function(error, data) {
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "episode"; }));
 
-<p>//changing the format from text to number
+//changing the format from text to number
   data.forEach(function(d){
     d.episode = +d.episode;
-  }) </p>
+  }) 
 
-<p>//organising the drama data from csv
+//organising the drama data from csv
   var dramas = color.domain().map(function(name) {
     return {
       name: name,
@@ -144,105 +144,108 @@ d3.tsv(&quot;/d3<em>data/view</em>rates.tsv&quot;, function(error, data) {
         return {episode: d.episode, view_rate: +d[name]};
       }),
       // making 정도전 and 기황후 visible when the page is loaded
-      visible: ((name === &quot;정도전&quot;) | (name === &quot;기황후&quot;) ? true : false)
+      visible: ((name === "정도전") | (name === "기황후") ? true : false)
     };
-  });</p>
+  });
 
-<p>//adding domains of x and y axis
-  x.domain(d3.extent(data, function(d) { return d.episode; }));</p>
+//adding domains of x and y axis
+  x.domain(d3.extent(data, function(d) { return d.episode; }));
 
-<p>y.domain([
-    d3.min(dramas, function(c) { return d3.min(c.values, function(v) { return v.view<em>rate; }); }),
-    d3.max(dramas, function(c) { return d3.max(c.values, function(v) { return v.view</em>rate; }); })
-  ]);</p>
+  y.domain([
+    d3.min(dramas, function(c) { return d3.min(c.values, function(v) { return v.view_rate; }); }),
+    d3.max(dramas, function(c) { return d3.max(c.values, function(v) { return v.view_rate; }); })
+  ]);
 
-<p>//adding the x Axis
-  svg.append(&quot;g&quot;)
-      .attr(&quot;class&quot;, &quot;x axis&quot;)
-      .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
-      .call(xAxis);</p>
+//adding the x Axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
 
-<p>//adding the y Axis
-  svg.append(&quot;g&quot;)
-      .attr(&quot;class&quot;, &quot;y axis&quot;)
+//adding the y Axis
+  svg.append("g")
+      .attr("class", "y axis")
       .call(yAxis)
-    .append(&quot;text&quot;)
-      .attr(&quot;transform&quot;, &quot;rotate(-90)&quot;)
-      .attr(&quot;y&quot;, 6)
-      .attr(&quot;dy&quot;, &quot;.71em&quot;)
-      .style(&quot;text-anchor&quot;, &quot;end&quot;)
-      .text(&quot;시청률&quot;);</p>
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("시청률");
 
-<p>//adding the paths
-  var drama = svg.selectAll(&quot;.drama&quot;)
+//adding the paths
+  var drama = svg.selectAll(".drama")
       .data(dramas)
-    .enter().append(&quot;g&quot;)
-      .attr(&quot;class&quot;, &quot;drama&quot;);</p>
+    .enter().append("g")
+      .attr("class", "drama");
 
-<p>drama.append(&quot;path&quot;)
-      .attr(&quot;class&quot;, &quot;line&quot;)
-      .style(&quot;pointer-events&quot;, &quot;none&quot;)
-      .attr(&quot;id&quot;, function(d) {
-        return &quot;line-&quot; + d.name.replace(&quot; &quot;, &quot;&quot;).replace(&quot;/&quot;, &quot;&quot;);
+  drama.append("path")
+      .attr("class", "line")
+      .style("pointer-events", "none")
+      .attr("id", function(d) {
+        return "line-" + d.name.replace(" ", "").replace("/", "");
       })
-      .attr(&quot;d&quot;, function(d) { 
+      .attr("d", function(d) { 
         return d.visible ? line(d.values) : null; })
-      .style(&quot;stroke&quot;, function(d) { return color(d.name); });</p>
+      .style("stroke", function(d) { return color(d.name); });
 
-<p>//drawing grid lines
-  svg.append(&quot;g&quot;)
-    .attr(&quot;class&quot;, &quot;grid&quot;)
-    .attr(&quot;transform&quot;, &quot;translate(0,&quot; + height + &quot;)&quot;)
-    .call(make<em>x</em>axis()
+  //drawing grid lines
+  svg.append("g")
+    .attr("class", "grid")
+    .attr("transform", "translate(0," + height + ")")
+    .call(make_x_axis()
       .tickSize(-height, 0, 0)
-      .tickFormat(&quot;&quot;)
-      )</p>
+      .tickFormat("")
+      )
 
-<p>//drawing legend
+  //drawing legend
   var legendSpace = 450 / dramas.length;
-  drama.append(&quot;rect&quot;)
-    .attr(&quot;width&quot;, 10)
-    .attr(&quot;height&quot;, 10)
-    .attr(&quot;id&quot;, function(d) {
-        return &quot;legend-&quot; + d.name.replace(&quot; &quot;, &quot;&quot;).replace(&quot;/&quot;, &quot;&quot;);
+  drama.append("rect")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("id", function(d) {
+        return "legend-" + d.name.replace(" ", "").replace("/", "");
       })
-    .attr(&quot;x&quot;, width + (margin.right/3) -15)
-    .attr(&quot;y&quot;, function(d,i) { return (legendSpace) + i*(legendSpace) - 8;})
-    .attr(&quot;fill&quot;, function(d) {
-      return d.visible ? color(d.name) : &quot;#F1F1F2&quot;;
+    .attr("x", width + (margin.right/3) -15)
+    .attr("y", function(d,i) { return (legendSpace) + i*(legendSpace) - 8;})
+    .attr("fill", function(d) {
+      return d.visible ? color(d.name) : "#F1F1F2";
     })
-    .attr(&quot;class&quot;, &quot;legend-box&quot;)</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>.on(&quot;click&quot;, function(d){
-  d.visible = !d.visible;
+    .attr("class", "legend-box")
 
-  maxY = findMaxY(dramas);
-  y.domain([0,maxY]);
-  svg.select(&quot;.y.axis&quot;)
-    .transition()
-    .call(yAxis);
+    .on("click", function(d){
+      d.visible = !d.visible;
 
-  drama.select(&quot;path&quot;)
-    .transition()
-    .attr(&quot;d&quot;, function(d) {
-      return d.visible ? line(d.values) : null;
+      maxY = findMaxY(dramas);
+      y.domain([0,maxY]);
+      svg.select(".y.axis")
+        .transition()
+        .call(yAxis);
+
+      drama.select("path")
+        .transition()
+        .attr("d", function(d) {
+          return d.visible ? line(d.values) : null;
+        })
+
+      drama.select("rect")
+        .transition()
+        .attr("fill", function(d){
+          return d.visible ? color(d.name) : "#F1F1F2";
+        })
     })
 
-  drama.select(&quot;rect&quot;)
-    .transition()
-    .attr(&quot;fill&quot;, function(d){
-      return d.visible ? color(d.name) : &quot;#F1F1F2&quot;;
-    })
-})
-</code></pre></div>
-<p>//adding legend texts
-  drama.append(&quot;text&quot;)
-    .attr(&quot;x&quot;, width + (margin.right/3))
-    .attr(&quot;y&quot;, function(d,i){ return (legendSpace) + i*(legendSpace);})
-    .text(function(d) {return d.name;});</p>
+//adding legend texts
+  drama.append("text")
+    .attr("x", width + (margin.right/3))
+    .attr("y", function(d,i){ return (legendSpace) + i*(legendSpace);})
+    .text(function(d) {return d.name;});
 
-<p>});</p>
 
-<p>//adding a function to reset y axis
+
+});
+
+//adding a function to reset y axis
 function findMaxY(data) {
   var maxYValues = data.map(function(d) {
     if (d.visible){
@@ -251,9 +254,11 @@ function findMaxY(data) {
     }
   });
   return d3.max(maxYValues);
-}</p>
+}
 
-<p></script></p>
+</script>
+
+
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span></span><span class="c1">//setting the canvas</span>
 <span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="p">{</span><span class="nx">top</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span> <span class="nx">right</span><span class="o">:</span> <span class="mi">120</span><span class="p">,</span> <span class="nx">bottom</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="nx">left</span><span class="o">:</span> <span class="mi">50</span><span class="p">},</span>
@@ -438,6 +443,9 @@ function findMaxY(data) {
   <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">maxYValues</span><span class="p">);</span>
 <span class="p">}</span></code></pre></figure>
 
+
+</p>
+
         </section>
         <footer class="post-footer">
           <section class="share">
@@ -471,7 +479,7 @@ function findMaxY(data) {
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

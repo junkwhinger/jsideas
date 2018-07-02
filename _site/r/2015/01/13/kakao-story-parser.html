@@ -63,22 +63,21 @@
 <p> This blog post is a follow up of my previous post about crawling data from Kakao Story. As I mentioned previously, I extracted data from html sources from Kakao Story, not using its API. By using R's XML and CSS libraries, I made this simple R script by which you can extract published time, content, likes, comments, shares and urls. </p>
 
 <h2 class="section-heading">How to use</h2>
-
 <p> 1. Set the right R environment. Go and download R on your PC or MAC, and install XML and CSS libraries. <br />
-    > install.packages("XML")<br />
-    > install.packages("CSS")</p>
+	&gt; install.packages("XML")<br />
+	&gt; install.packages("CSS")</p>
 
 <p> 2. Ready the data. Go to Kakao Story and find the account you want to crawl. Scroll down until you reach the extent you want to crawl. Right click the screen and select "inspect element"(on Chrome). For a demonstation, I chose SK Telecom's offical Kakao Story account. </p>
 
-<p><img src="/assets/kakao_skt.png" alt="SKT official account">
-<span class="caption text-muted">SKT&#39;s offical Kakao Story account</span></p>
+<p><img src="/assets/kakao_skt.png" alt="SKT official account" />
+<span class="caption text-muted">SKT’s offical Kakao Story account</span></p>
 
-<p><img src="/assets/kakao_element.png" alt="SKT official account">
+<p><img src="/assets/kakao_element.png" alt="SKT official account" />
 <span class="caption text-muted">Scroll down until you get to the right time period.</span></p>
 
-<p> I scrolled down to the first of November, 2014, and hit "inspect element". You'll see loads of "<div class="section _activity"...>"s. That is a container for each post. Go up until you find a div with a class called "_listContainer". Right click and copy the div, and paste it on an empty text editor. Save it as an html file. This is what you'll get. </p>
+<p> I scrolled down to the first of November, 2014, and hit "inspect element". You'll see loads of "&lt;div class="section _activity"...&gt;"s. That is a container for each post. Go up until you find a div with a class called "_listContainer". Right click and copy the div, and paste it on an empty text editor. Save it as an html file. This is what you'll get. </p>
 
-<p><img src="/assets/kakao_html.png" alt="SKT official account">
+<p><img src="/assets/kakao_html.png" alt="SKT official account" />
 <span class="caption text-muted">Scroll down until you get to the right time period.</span></p>
 
 <p> 3. Download the R script file(KSParser.R). You can download it from my <a href="https://github.com/junkwhinger/kakaoStoryParser">github</a> page. </p>
@@ -86,17 +85,17 @@
 <p> 4. Place the script file in the same directory as the html file. </p>
 
 <p> 5. Open R or RStudio, and run the script. <br />
-    > source("KSParser.R")</p>
+	&gt; source("KSParser.R")</p>
 
-<p><img src="/assets/kakao_rstudio.png" alt="SKT official account">
+<p><img src="/assets/kakao_rstudio.png" alt="SKT official account" />
 <span class="caption text-muted">KSParser.R on RStudio</span></p>
 
 <p>type in the name of the file, which in my case, 'skt' from skt.html.</p>
 
 <p> 6. In about a few seconds, a new file will be created with a prefix "done_". Open the file on Excel and see if everything's okay</p>
 
-<p><img src="/assets/kakao_result.png" alt="SKT official account">
-<span class="caption text-muted">Voila! It&#39;s done and dusted.</span></p>
+<p><img src="/assets/kakao_result.png" alt="SKT official account" />
+<span class="caption text-muted">Voila! It’s done and dusted.</span></p>
 
 <p> Extraction completed! 130 post and their attributes are all completely donwloaded. </p>
 
@@ -136,6 +135,7 @@ xlsx_file <span class="o">&lt;-</span> <span class="kp">paste</span><span class=
 
 write.xlsx<span class="p">(</span>final<span class="p">,</span> xlsx_file<span class="p">)</span></code></pre></figure>
 
+
         </section>
         <footer class="post-footer">
           <section class="share">
@@ -169,7 +169,7 @@ write.xlsx<span class="p">(</span>final<span class="p">,</span> xlsx_file<span c
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

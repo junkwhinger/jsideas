@@ -61,15 +61,14 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2>필리버스터 참여의원 및 발언시간 정리</h2>
-
+          <h2 id="필리버스터-참여의원-및-발언시간-정리">필리버스터 참여의원 및 발언시간 정리</h2>
 <p>출처: <a href="https://namu.wiki/w/2016%EB%85%84%20%ED%85%8C%EB%9F%AC%EB%B0%A9%EC%A7%80%EB%B2%95%20%EB%B0%98%EB%8C%80%20%ED%95%84%EB%A6%AC%EB%B2%84%EC%8A%A4%ED%84%B0/%EC%A7%84%ED%96%89%EC%83%81%ED%99%A9%20%EB%B0%8F%20%EC%B0%B8%EC%97%AC%EC%9D%98%EC%9B%90">나무위키</a></p>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
-<p><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"></p>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
 
 <style>
 
@@ -288,9 +287,7 @@
     <button type="button" class="btn btn-default btn-sm btn-lg" id="speech">발언순서</button>
     <button type="button" class="btn btn-default btn-sm btn-lg" id="duration">연설시간</button>
 </div>
-
 <div class="chart"></div>
-
 <script type="text/javascript">
   d3.csv("/assets/filibuster/filibuster.csv", function(d) {
       var hour = +d.duration.split("h")[0];
@@ -300,7 +297,7 @@
     },draw);
 </script>
 
-<p><br></p>
+<p><br /></p>
 
         </section>
         <footer class="post-footer">
@@ -335,7 +332,7 @@
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

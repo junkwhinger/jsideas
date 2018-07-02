@@ -59,7 +59,6 @@
           </div>
           <a name="topofpage"></a>
           <h2 class="section-heading">PDf Extractor in python</h2>
-
 <p>Reading a backlog of articles in English could be mind-boggling at times. Instead of spending a lengthy amount of hours, I came up with a brilliant idea, which is to extract the most important-looking sentences from academic gobbledygook.</p>
 
 <p>The idea behind the code below is simple. In well-written academic papers, authors tend to put “Thus, “, “Therefore, “, “In sum, “ to summarise their arguments. “Yet, “, “However, “ are the common phrases to introduce counter-intuitive or contradicting facts and opinions. This code is designed to find the sentences that begin with these keywords. (I decided not to include keywords in lowercase for now as the result gets messier due to the uncontrollable variation of English language.)</p>
@@ -67,39 +66,34 @@
 <p>After extracting the list of important sentences and removing invalid unicode characters in them, this code accesses my Evernote account, open the designated notebook, creates a note with the following information:</p>
 
 <ul>
-    <li>note title: “Summary from” + file name</li>
-    <li>note content: an unordered list of important sentences</li>
-    <li>note tag: the top 5 most frequently used words excluding “a, the, in, and, etc"</li>
+	<li>note title: “Summary from” + file name</li>
+	<li>note content: an unordered list of important sentences</li>
+	<li>note tag: the top 5 most frequently used words excluding “a, the, in, and, etc"</li>
 </ul>
 
 <p>The code I wrote below contains a code that runs <a href="http://www.pdf2txt.com/">“pdf2txt.py”</a>. (I couldn’t get my head around parsing lines of PDF files yet, so this could be a lazy yet highly amateurish approach.) The code below WON't work unless you have pdf2txt.py installed on your machine.</p>
 
 <p>Here’s a simple example using pdf_extractor.py.</p>
 
-<p>1) place a pdf file in the same folder as pdf_extractor.py.</br>
+<p>1) place a pdf file in the same folder as pdf_extractor.py.&lt;/br&gt;
 The sample pdf file I used for this blogpost is “Impact_of_the_social_sciences.pdf” which was available on the internet (hope this is not a case of copyright infringement). </p>
 
 <p>2) get your own Evernote developer token and put it in the code.</p>
-
 <p>Follow the <a href="https://dev.evernote.com/doc/start/python.php">instructions provided by Evernote</a>.</p>
 
 <p>3) run the python code and provide the name of the pdf file without “.pdf”.</p>
-
 <p>Like this.</p>
+<p><img src="/assets/pdf_extractor/pic1.png" alt="pic1" /></p>
 
-<p><img src="/assets/pdf_extractor/pic1.png" alt="pic1"></p>
-
-<p>4) done. check your folder in Evernote.</br>
+<p>4) done. check your folder in Evernote.&lt;/br&gt;
 Voila! Does this make sense to you? It can’t be perfect but I think it’s a good skimming of the article. </p>
-
-<p><img src="/assets/pdf_extractor/pic2.png" alt="pic2"></p>
+<p><img src="/assets/pdf_extractor/pic2.png" alt="pic2" /></p>
 
 <p>Here are the thankful blogposts and websites that helped me a lot.</p>
-
 <ul>
-    <li><a href="https://maxharp3r.wordpress.com/2008/05/15/pythons-minidom-xml-and-illegal-unicode-characters/">removing invalid unicode chars</a></li>
-    <li><a href="http://www.uk.sagepub.com/upm-data/59598_Bastow__Impact_of_the_social_sciences.pdf">sample pdf file</a></li>
-    <li><a href="http://www.pdf2txt.com/">pdf2txt.com</a></li>
+	<li><a href="https://maxharp3r.wordpress.com/2008/05/15/pythons-minidom-xml-and-illegal-unicode-characters/">removing invalid unicode chars</a></li>
+	<li><a href="http://www.uk.sagepub.com/upm-data/59598_Bastow__Impact_of_the_social_sciences.pdf">sample pdf file</a></li>
+	<li><a href="http://www.pdf2txt.com/">pdf2txt.com</a></li>
 </ul>
 
 <p>Thanks for reading!</p>
@@ -139,41 +133,41 @@ Voila! Does this make sense to you? It can’t be perfect but I think it’s a g
 
 <span class="c1"># keywords to extract important sentences</span>
 <span class="n">key_set</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Thus, &#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Hence, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Therefore, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;In conclusion &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;To summarize, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Yet, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;First, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Secondly, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Thirdly, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Lastly, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;However, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;As a result, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Furthermore, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Moreover, &#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;In sum&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;Finally, &#39;</span><span class="p">,</span>
-    <span class="s1">&#39;As a result &#39;</span><span class="p">,</span>
-    <span class="s1">&#39;So,&#39;</span><span class="p">]</span>
+	<span class="s1">&#39;Hence, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Therefore, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;In conclusion &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;To summarize, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Yet, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;First, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Secondly, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Thirdly, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Lastly, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;However, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;As a result, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Furthermore, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Moreover, &#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;In sum&#39;</span><span class="p">,</span> 
+	<span class="s1">&#39;Finally, &#39;</span><span class="p">,</span>
+	<span class="s1">&#39;As a result &#39;</span><span class="p">,</span>
+	<span class="s1">&#39;So,&#39;</span><span class="p">]</span>
 
 <span class="c1"># extract sentences and clean them</span>
 <span class="n">sentence_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">key_set</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="n">sentence</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">while</span> <span class="n">t</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
-            <span class="n">char</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span>
-            <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
-            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">RE_XML_ILLEGAL</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-        <span class="n">sentence_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+		<span class="n">sentence</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+		<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+		<span class="k">while</span> <span class="n">t</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span>
+			<span class="n">char</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="o">+</span> <span class="n">counter</span><span class="p">]</span>
+			<span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+			<span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
+		<span class="n">text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;- &#39;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+		<span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">RE_XML_ILLEGAL</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+		<span class="n">sentence_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="s1">&#39;there are </span><span class="si">%i</span><span class="s1"> sentences extracted.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence_list</span><span class="p">)</span>
 
@@ -181,14 +175,14 @@ Voila! Does this make sense to you? It can’t be perfect but I think it’s a g
 <span class="n">d</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
-    <span class="n">d</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+	<span class="n">d</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
 <span class="n">del_key_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;you&#39;</span><span class="p">,</span> <span class="s1">&#39;your&#39;</span><span class="p">,</span> <span class="s1">&#39;We&#39;</span><span class="p">,</span> <span class="s1">&#39;we&#39;</span><span class="p">,</span> <span class="s1">&#39;You&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;The&#39;</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">,</span> <span class="s1">&#39;Of&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;in&#39;</span><span class="p">,</span> <span class="s1">&#39;on&#39;</span><span class="p">,</span> <span class="s1">&#39;On&#39;</span><span class="p">,</span> <span class="s1">&#39;In&#39;</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">,</span> <span class="s1">&#39;To&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;That&#39;</span><span class="p">,</span> <span class="s1">&#39;Those&#39;</span><span class="p">,</span> <span class="s1">&#39;those&#39;</span><span class="p">,</span> <span class="s1">&#39;by&#39;</span><span class="p">,</span> <span class="s1">&#39;until&#39;</span><span class="p">,</span> <span class="s1">&#39;has&#39;</span><span class="p">,</span> <span class="s1">&#39;from&#39;</span><span class="p">,</span> <span class="s1">&#39;it&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;at&#39;</span><span class="p">,</span> <span class="s1">&#39;This&#39;</span><span class="p">,</span> <span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="s1">&#39;under&#39;</span><span class="p">,</span> <span class="s1">&#39;own&#39;</span><span class="p">,</span> <span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="s1">&#39;As&#39;</span><span class="p">,</span> <span class="s1">&#39;have&#39;</span><span class="p">,</span> <span class="s1">&#39;between&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;with&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;its&#39;</span><span class="p">,</span> <span class="s1">&#39;over&#39;</span><span class="p">,</span> <span class="s1">&#39;also&#39;</span><span class="p">,</span> <span class="s1">&#39;more&#39;</span><span class="p">,</span><span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="s1">&#39;their&#39;</span><span class="p">,</span> <span class="s1">&#39;Their&#39;</span> <span class="p">]</span>
 
 <span class="c1"># remove common keywords from the dictionary</span>
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">del_key_list</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-        <span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+	<span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+		<span class="k">del</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 <span class="c1"># sort dictionary items from the most to the least frequent words</span>
 <span class="n">sorted_d</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -196,67 +190,67 @@ Voila! Does this make sense to you? It can’t be perfect but I think it’s a g
 <span class="c1"># create a tag list of top 5 most frequent keywords</span>
 <span class="n">tag_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">):</span>
-    <span class="n">tag_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sorted_d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+	<span class="n">tag_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sorted_d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 
 <span class="c1"># access evernote and create a note</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
-    <span class="n">auth_token</span> <span class="o">=</span> <span class="s2">&quot;Enter_your_auth_token_here&quot;</span>
+	<span class="n">auth_token</span> <span class="o">=</span> <span class="s2">&quot;Enter_your_auth_token_here&quot;</span>
 
-    <span class="n">client</span> <span class="o">=</span> <span class="n">EvernoteClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+	<span class="n">client</span> <span class="o">=</span> <span class="n">EvernoteClient</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">auth_token</span><span class="p">,</span> <span class="n">sandbox</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-    <span class="n">user_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user_store</span><span class="p">()</span>
+	<span class="n">user_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_user_store</span><span class="p">()</span>
 
-    <span class="n">version_ok</span> <span class="o">=</span> <span class="n">user_store</span><span class="o">.</span><span class="n">checkVersion</span><span class="p">(</span>
-        <span class="s2">&quot;Evernote EDAMTest (Python)&quot;</span><span class="p">,</span>
-        <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MAJOR</span><span class="p">,</span>
-        <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MINOR</span>
-    <span class="p">)</span>
-    <span class="k">print</span> <span class="s2">&quot;Is my Evernote API version up to date? &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">version_ok</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">version_ok</span><span class="p">:</span>
-        <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+	<span class="n">version_ok</span> <span class="o">=</span> <span class="n">user_store</span><span class="o">.</span><span class="n">checkVersion</span><span class="p">(</span>
+	    <span class="s2">&quot;Evernote EDAMTest (Python)&quot;</span><span class="p">,</span>
+	    <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MAJOR</span><span class="p">,</span>
+	    <span class="n">UserStoreConstants</span><span class="o">.</span><span class="n">EDAM_VERSION_MINOR</span>
+	<span class="p">)</span>
+	<span class="k">print</span> <span class="s2">&quot;Is my Evernote API version up to date? &quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">version_ok</span><span class="p">)</span>
+	<span class="k">print</span> <span class="s2">&quot;&quot;</span>
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">version_ok</span><span class="p">:</span>
+	    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">note_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_note_store</span><span class="p">()</span>
+	<span class="n">note_store</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_note_store</span><span class="p">()</span>
 
-    <span class="c1"># List all of the notebooks in the user&#39;s account</span>
-    <span class="n">notebook_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">notebooks</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">listNotebooks</span><span class="p">()</span>
-    <span class="k">print</span> <span class="s2">&quot;Found &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">notebooks</span><span class="p">),</span> <span class="s2">&quot; notebooks:&quot;</span>
-    <span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
-        <span class="n">notebook_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">notebook</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+	<span class="c1"># List all of the notebooks in the user&#39;s account</span>
+	<span class="n">notebook_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+	<span class="n">notebooks</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">listNotebooks</span><span class="p">()</span>
+	<span class="k">print</span> <span class="s2">&quot;Found &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">notebooks</span><span class="p">),</span> <span class="s2">&quot; notebooks:&quot;</span>
+	<span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
+	    <span class="n">notebook_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">notebook</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="c1"># Create a summary folder if it doesn&#39;t exist</span>
-    <span class="k">if</span> <span class="s2">&quot;PDF_Summary&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">notebook_list</span><span class="p">:</span>
-        <span class="n">notebook</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Notebook</span><span class="p">()</span>
-        <span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;PDF_Summary&quot;</span>
-        <span class="n">notebook</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNotebook</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
+	<span class="c1"># Create a summary folder if it doesn&#39;t exist</span>
+	<span class="k">if</span> <span class="s2">&quot;PDF_Summary&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">notebook_list</span><span class="p">:</span>
+		<span class="n">notebook</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Notebook</span><span class="p">()</span>
+		<span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;PDF_Summary&quot;</span>
+		<span class="n">notebook</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNotebook</span><span class="p">(</span><span class="n">notebook</span><span class="p">)</span>
 
-    <span class="c1"># Fetch &#39;PDF_Summary&#39;s guid&#39;</span>
-    <span class="n">notebook_guid</span> <span class="o">=</span> <span class="s1">&#39;dummy&#39;</span>
-    <span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;PDF_Summary&quot;</span><span class="p">:</span>
-            <span class="n">notebook_guid</span> <span class="o">=</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
-            <span class="k">print</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
+	<span class="c1"># Fetch &#39;PDF_Summary&#39;s guid&#39;</span>
+	<span class="n">notebook_guid</span> <span class="o">=</span> <span class="s1">&#39;dummy&#39;</span>
+	<span class="k">for</span> <span class="n">notebook</span> <span class="ow">in</span> <span class="n">notebooks</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">notebook</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;PDF_Summary&quot;</span><span class="p">:</span>
+			<span class="n">notebook_guid</span> <span class="o">=</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
+			<span class="k">print</span> <span class="n">notebook</span><span class="o">.</span><span class="n">guid</span>
 
-    <span class="c1"># create a new note</span>
-    <span class="n">note</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Note</span><span class="p">()</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">notebookGuid</span> <span class="o">=</span> <span class="n">notebook_guid</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Summary from &quot;</span> <span class="o">+</span> <span class="n">file_to_extract</span>
+	<span class="c1"># create a new note</span>
+	<span class="n">note</span> <span class="o">=</span> <span class="n">Types</span><span class="o">.</span><span class="n">Note</span><span class="p">()</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">notebookGuid</span> <span class="o">=</span> <span class="n">notebook_guid</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Summary from &quot;</span> <span class="o">+</span> <span class="n">file_to_extract</span>
 
-    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;!DOCTYPE en-note SYSTEM &#39;</span> \
-        <span class="s1">&#39;&quot;http://xml.evernote.com/pub/enml2.dtd&quot;&gt;&#39;</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;en-note&gt;&lt;ul&gt;&#39;</span>
-    <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentence_list</span><span class="p">:</span>
-        <span class="n">pasted_sentence</span> <span class="o">=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="o">+</span><span class="n">sentence</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
-        <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="n">pasted_sentence</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&lt;/en-note&gt;&#39;</span>
-    <span class="n">note</span><span class="o">.</span><span class="n">tagNames</span> <span class="o">=</span> <span class="n">tag_list</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#39;</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;!DOCTYPE en-note SYSTEM &#39;</span> \
+	    <span class="s1">&#39;&quot;http://xml.evernote.com/pub/enml2.dtd&quot;&gt;&#39;</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;en-note&gt;&lt;ul&gt;&#39;</span>
+	<span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentence_list</span><span class="p">:</span>
+	    <span class="n">pasted_sentence</span> <span class="o">=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span><span class="o">+</span><span class="n">sentence</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span>
+	    <span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="n">pasted_sentence</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&lt;/en-note&gt;&#39;</span>
+	<span class="n">note</span><span class="o">.</span><span class="n">tagNames</span> <span class="o">=</span> <span class="n">tag_list</span>
 
-    <span class="n">created_note</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNote</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+	<span class="n">created_note</span> <span class="o">=</span> <span class="n">note_store</span><span class="o">.</span><span class="n">createNote</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
 
-    <span class="k">print</span> <span class="s2">&quot;Successfully created a new note with GUID: &quot;</span><span class="p">,</span> <span class="n">created_note</span><span class="o">.</span><span class="n">guid</span></code></pre></figure>
+	<span class="k">print</span> <span class="s2">&quot;Successfully created a new note with GUID: &quot;</span><span class="p">,</span> <span class="n">created_note</span><span class="o">.</span><span class="n">guid</span></code></pre></figure>
 
         </section>
         <footer class="post-footer">
@@ -291,7 +285,7 @@ Voila! Does this make sense to you? It can’t be perfect but I think it’s a g
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

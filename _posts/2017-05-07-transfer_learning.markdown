@@ -5,7 +5,6 @@ date:       2017-05-07 00:00:00
 author:     "Jun"
 categories: "Python"
 image: /assets/cand_faces/header.png
-tags: featured
 ---
 
 ## Transfer learning: 대선주자 얼굴 분류기

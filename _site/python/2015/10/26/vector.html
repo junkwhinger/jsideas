@@ -63,73 +63,75 @@
           <a name="topofpage"></a>
           <p>(이미지 출처: <a href="http://theqoo.net/square/99488872">theqoo</a>)</p>
 
-<h2>[python-numpy] 인물사진에서 턱 각도 구하기</h2></h2>
+<p>##[python-numpy] 인물사진에서 턱 각도 구하기&lt;/h2&gt;
+요새 패캠의 <a href="http://www.fastcampus.co.kr/data_camp_recom_py/">머신러닝을 이용한 추천엔진제작 CAMP</a>를 듣고 있습니다. 첫 2주동안 유사도 관련 이론 학습 및 실습을 진행하면서 인물 얼굴간 유사도를 구해봤습니다. 실습에서는 얼굴 길이, 너비, 코 크기 등을 변수로 활용했는데, <code>턱 각도</code>를 구할 수 있다면 하나의 유의미한 변수로 쓸 수 있지 않을까 싶었습니다. 갸름한 턱, 사각턱, 오각형턱 등 턱의 종류도 다양하니까요. 문제를 단순화해서 2차원 평면 상에 3가지 점(2개의 선)이 주어졌을 때 이들이 만드는 교차각을 구해봤습니다.</p>
 
-<p>요새 패캠의 <a href="http://www.fastcampus.co.kr/data_camp_recom_py/">머신러닝을 이용한 추천엔진제작 CAMP</a>를 듣고 있습니다. 첫 2주동안 유사도 관련 이론 학습 및 실습을 진행하면서 인물 얼굴간 유사도를 구해봤습니다. 실습에서는 얼굴 길이, 너비, 코 크기 등을 변수로 활용했는데, <code>턱 각도</code>를 구할 수 있다면 하나의 유의미한 변수로 쓸 수 있지 않을까 싶었습니다. 갸름한 턱, 사각턱, 오각형턱 등 턱의 종류도 다양하니까요. 문제를 단순화해서 2차원 평면 상에 3가지 점(2개의 선)이 주어졌을 때 이들이 만드는 교차각을 구해봤습니다.</p>
-
-<h2>3개 점이 만드는 교차각 구하기</h2>
-
-<p>단순화한 문제는 정말 단순해보였지만, 실제로 그것을 일반화한 공식을 쉽게 떠올리지 못했습니다. 3개의 점이 깔끔하게 x축, y축 위에 있지 않고 중구난방으로 퍼져있다면 어떻게 모든 경우에 대응할 수 있을까. 파이썬으로 구현하는 방식도 쉽게 떠오르지 않아 결국 관련된 기본 수학을 다시 찾아보기로 했습니다 ㅠㅠ. 요새 머신러닝 관련 글이나 수업을 들으면서 <code>벡터</code>라는 단어를 정말 많이 들어보는데, 이것 역시 정확한 정의를 알 수 없어 같이 찾아봤습니다. </p>
+<p>##3개 점이 만드는 교차각 구하기
+단순화한 문제는 정말 단순해보였지만, 실제로 그것을 일반화한 공식을 쉽게 떠올리지 못했습니다. 3개의 점이 깔끔하게 x축, y축 위에 있지 않고 중구난방으로 퍼져있다면 어떻게 모든 경우에 대응할 수 있을까. 파이썬으로 구현하는 방식도 쉽게 떠오르지 않아 결국 관련된 기본 수학을 다시 찾아보기로 했습니다 ㅠㅠ. 요새 머신러닝 관련 글이나 수업을 들으면서 <code>벡터</code>라는 단어를 정말 많이 들어보는데, 이것 역시 정확한 정의를 알 수 없어 같이 찾아봤습니다.</p>
 
 <p><code>벡터</code>에도 여러 정의가 있고 물리학적, 수학적 정의가 조금씩 달랐습니다. 초보적인 수준에서 이해의 편의를 위해 <code>사이즈와 방향을 동시에 가지는 값</code>으로 <code>벡터</code>를 정의하고, <code>스칼라</code>는 사이즈(magnitude)만을 가진 값으로 알고 당장은 넘어가기로 합니다. <a href="https://www.mathsisfun.com/algebra/vectors.html">여기</a>서 개략적인 개념을 찾아볼 수 있었습니다.</p>
 
 <p>3개 점이 만드는 교차각을 구하는 방식은 아래와 같이 요약할 수 있습니다.</p>
 
 <ol>
-<li>3개 점을 기반으로 한 2개 선을 만들고, 각각의 기울기를 구합니다.</li>
-<li>|기울기1 - 기울기2| / (1 + 기울기1 * 기울기2)를 구하고 x라 명명합니다.</li>
-<li>x의 arctan을 구합니다. </li>
+  <li>3개 점을 기반으로 한 2개 선을 만들고, 각각의 기울기를 구합니다.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>기울기1 - 기울기2</td>
+          <td>/ (1 + 기울기1 * 기울기2)를 구하고 x라 명명합니다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>x의 arctan을 구합니다.</li>
 </ol>
 
-<h2>재료 준비 - 인물 사진</h2>
+<p>##재료 준비 - 인물 사진
+이번 튜토리얼에서 사용할 인물 사진을 구해봅니다. 요새 자주보는 개그맨 정성호님의 성대모사 영상 중 하나를 구해봤습니다. 턱의 각도는 시선에 따라 달라질 수 있으므로 되도록 정면샷을 준비해봅시다.</p>
 
-<p>이번 튜토리얼에서 사용할 인물 사진을 구해봅니다. 요새 자주보는 개그맨 정성호님의 성대모사 영상 중 하나를 구해봤습니다. 턱의 각도는 시선에 따라 달라질 수 있으므로 되도록 정면샷을 준비해봅시다.</p>
+<p><img src="/assets/chin_angle/img1.jpg" alt="재료 - 조철왕 코스프레를 하는 정성호님 / 출처: SNL KOREA" /></p>
 
-<p><img src="/assets/chin_angle/img1.jpg" alt="재료 - 조철왕 코스프레를 하는 정성호님 / 출처: SNL KOREA"></p>
+<p>이 이미지를 웹에서 사용하기 위해 <code>imgur</code>같은 서비스에 올려 direct link를 땁니다. ‘http://i.imgur.com/zaX7Sbr.jpg’</p>
 
-<p>이 이미지를 웹에서 사용하기 위해 <code>imgur</code>같은 서비스에 올려 direct link를 땁니다. &#39;http://i.imgur.com/zaX7Sbr.jpg&#39;</p>
+<p>##face++에서 인물 랜드마크를 JSON 파일로 저장하기
+<a href="http://www.faceplusplus.com/">face++</a>는 인물 사진에서 주요 키포인트를 뽑아주는 아주 유용한 사이트입니다. <code>Demo</code> &gt; <code>Face Landmark</code> 메뉴로 이동합니다.</p>
 
-<h2>face++에서 인물 랜드마크를 JSON 파일로 저장하기</h2>
-
-<p><a href="http://www.faceplusplus.com/">face++</a>는 인물 사진에서 주요 키포인트를 뽑아주는 아주 유용한 사이트입니다. <code>Demo</code> &gt; <code>Face Landmark</code> 메뉴로 이동합니다.</p>
-
-<p><img src="/assets/chin_angle/img2.png" alt="face++ 화면"></p>
+<p><img src="/assets/chin_angle/img2.png" alt="face++ 화면" /></p>
 
 <p>아까 땄던 direct link를 url입력창에 넣고 랜드마크를 뽑아봅니다.</p>
 
-<p><img src="/assets/chin_angle/img3.png" alt="face++ 정성호님 랜드마크"></p>
+<p><img src="/assets/chin_angle/img3.png" alt="face++ 정성호님 랜드마크" /></p>
 
 <p>눈 양쪽 끝에서 시작해서 턱선을 따라 라인이 잡힙니다. 그리고 눈썹, 눈, 코, 입에도 주요 키포인트가 잡혔습니다. 우측 <code>RESPONSE JSON</code>에 보면 2차원 벡터값으로 주요 키포인트가 정량화되서 출력됩니다. <code>{</code>부터 끝까지 드래그해서 텍스트에디터에 <code>JSON</code>(jsh.json)파일로 저장합니다. 이제 자료 준비가 끝났습니다.</p>
 
-<h2>ipython notebook 개발환경 세팅</h2>
-
-<p>먼저 개발환경을 구축합니다. 예전에는 그냥 터미널에서 파이썬을 돌렸는데, ipython notebook을 사용하면 훨씬 더 편하고 간결하게 파이썬을 사용할 수 있습니다.</p>
+<p>##ipython notebook 개발환경 세팅
+먼저 개발환경을 구축합니다. 예전에는 그냥 터미널에서 파이썬을 돌렸는데, ipython notebook을 사용하면 훨씬 더 편하고 간결하게 파이썬을 사용할 수 있습니다.</p>
 
 <p>맥에서의 설치는 아래와 같이 하면 됩니다.</p>
 
-<h3>1. 인스톨러 파일 다운받기</h3>
+<p>###1. 인스톨러 파일 다운받기</p>
 
 <p><a href="https://www.continuum.io/downloads">Anaconda</a>사이트에서 원하는 버전의 파이썬 설치를 위한 파일을 다운받습니다. 이번 튜토리얼부터는 파이썬 3.4를 사용했습니다. 인스톨러 파일을 다운받고 바로 밑에 표시된 <code>OS X Anaconda Installation</code>를 따라가면 설치가 완료됩니다.
-<br></p>
-
-<h3>2. 필요한 라이브러리 설치하기</h3>
+<br />
+###2. 필요한 라이브러리 설치하기</p>
 
 <p>아나콘다를 통해 파이썬을 설치하면 과학계산을 위한 기본적인 라이브러리가 다 설치된다고 하지만 아닌 경우 아래와 같은 명령어를 터미널에서 돌리면 됩니다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span> <span class="c1">#numpy 라이브러리 설치</span>
 <span class="n">conda</span> <span class="n">install</span> <span class="n">pandas</span> <span class="c1">#pandas 라이브러리 설치</span></code></pre></figure>
 
-<p><br></p>
+<p><br />
+###3. ipython 실행하고 콘솔 열기</p>
 
-<h3>3. ipython 실행하고 콘솔 열기</h3>
+<p>터미널에서 <code>ipython notebook</code> 명령어를 입력하면, 웹브라우져에 로컬환경의 ipython notebook이 실행됩니다. 우측 상단의 <code>New</code>를 누르고 <code>Python 3</code>을 눌러 콘솔 창을 활성화시킵니다.</p>
 
-<p>터미널에서 <code>ipython notebook</code> 명령어를 입력하면, 웹브라우져에 로컬환경의 ipython notebook이 실행됩니다. 우측 상단의 <code>New</code>를 누르고 <code>Python 3</code>을 눌러 콘솔 창을 활성화시킵니다. </p>
+<p><img src="/assets/chin_angle/img4.png" alt="ipython notebook 실행화면" /></p>
 
-<p><img src="/assets/chin_angle/img4.png" alt="ipython notebook 실행화면"></p>
+<p>##데이터프레임 잡기</p>
 
-<h2>데이터프레임 잡기</h2>
-
-<h3>1. 필요한 라이브러리 불러오기</h3>
+<p>###1. 필요한 라이브러리 불러오기</p>
 
 <p>일단 JSON 파일을 읽어오기 위한 json, 그리고 분석을 위해 numpy, pandas를 import합니다.</p>
 
@@ -138,75 +140,74 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span> <span class="c1">#pandas 불러오기</span>
 <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span> <span class="c1">#pandas 세부 모듈을 더 쉽게 불러오기</span></code></pre></figure>
 
-<p><br></p>
+<p><br /></p>
 
-<h3>2. json 파일 불러오기</h3>
+<p>###2. json 파일 불러오기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;jsh.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_file</span><span class="p">:</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span></code></pre></figure>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span></code></pre></figure>
 
-<p><br></p>
+<p><br /></p>
 
-<h3>3. DataFrame으로 저장하기<br></h3>
-
+<p>###3. DataFrame으로 저장하기<br /></p>
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">landmark_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;landmark&#39;</span><span class="p">]</span> <span class="c1">#json파일에서 랜드마크 데이터가 있는 곳을 찾아 내려갑니다.</span>
 <span class="n">ldf</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">landmark_data</span><span class="p">)</span> <span class="c1">#pandas의 DataFrame 형태로 dict를 불러와서 ldf로 저장합니다.</span>
 <span class="n">ldf_T</span> <span class="o">=</span> <span class="n">ldf</span><span class="o">.</span><span class="n">T</span> <span class="c1">#ldf는 columns가 랜드마크로 되어있으므로, 이를 index로 돌리기 위해 trasnpose를 합니다.</span>
 <span class="n">ldf_T</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1">#뽑은 데이터의 상위 5개 row를 확인합니다.</span></code></pre></figure>
 
-<p><img src="/assets/chin_angle/img5.png" alt="ldf_T 상위 5개 row"></p>
+<p><img src="/assets/chin_angle/img5.png" alt="ldf_T 상위 5개 row" /></p>
 
-<h2>턱 각도 계산하기</h2>
+<p>##턱 각도 계산하기</p>
 
-<h3>1. angle 함수 정의하기</h3>
+<p>###1. angle 함수 정의하기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">topPoint</span><span class="p">,</span> <span class="n">midPoint</span><span class="p">,</span> <span class="n">botPoint</span><span class="p">):</span>
-    <span class="n">topLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기1 구하기</span>
-    <span class="n">botLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기2 구하기</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">topLineSlope</span> <span class="o">-</span> <span class="n">botLineSlope</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">topLineSlope</span> <span class="o">*</span> <span class="n">botLineSlope</span><span class="p">)</span> <span class="c1">#x 구하기</span>
-    <span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">#x의 arctan값 구하기 / 구하면 radian값이 나옵니다.</span>
-    <span class="n">angle_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="c1">#radian값을 degree값으로 바꿔줍니다.</span>
-    <span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span> <span class="c1">#교차각이 2개 나오므로, 90도보다 작은 각이 나오면 180도에서 이를 뺀 각을 교차각 최종값으로 정의합니다.</span>
-        <span class="n">angle_result</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">angle_deg</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">angle_result</span> <span class="o">=</span> <span class="n">angle_deg</span>
-    <span class="k">return</span> <span class="n">angle_result</span> <span class="c1">#함수의 리턴값을 정의합니다.</span></code></pre></figure>
+	<span class="n">topLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기1 구하기</span>
+	<span class="n">botLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기2 구하기</span>
+	<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">topLineSlope</span> <span class="o">-</span> <span class="n">botLineSlope</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">topLineSlope</span> <span class="o">*</span> <span class="n">botLineSlope</span><span class="p">)</span> <span class="c1">#x 구하기</span>
+	<span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">#x의 arctan값 구하기 / 구하면 radian값이 나옵니다.</span>
+	<span class="n">angle_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="c1">#radian값을 degree값으로 바꿔줍니다.</span>
+	<span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span> <span class="c1">#교차각이 2개 나오므로, 90도보다 작은 각이 나오면 180도에서 이를 뺀 각을 교차각 최종값으로 정의합니다.</span>
+		<span class="n">angle_result</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">angle_deg</span>
+	<span class="k">else</span><span class="p">:</span>
+		<span class="n">angle_result</span> <span class="o">=</span> <span class="n">angle_deg</span>
+	<span class="k">return</span> <span class="n">angle_result</span> <span class="c1">#함수의 리턴값을 정의합니다.</span></code></pre></figure>
 
-<p><br></p>
+<p><br /></p>
 
-<h3>2. 양측 턱의 평균값 함수의 정의하기</h3>
+<p>###2. 양측 턱의 평균값 함수의 정의하기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">avg__angle</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="c1">#6개의 점을 잡아줍니다. </span>
-    <span class="c1">#left1은 왼편 눈 근처 턱 끝, left9은 턱 중심점 왼편의 턱 끝입니다.</span>
-    <span class="c1">#여기서는 편의를 위해 1, 5, 9점을 잡았지만,</span>
-    <span class="c1">#얼마든지 값을 변경하여 원하는 각도를 잴 수 있습니다.</span>
-    <span class="n">l_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left1&#39;</span><span class="p">]</span>
-    <span class="n">l_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left5&#39;</span><span class="p">]</span>
-    <span class="n">l_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left9&#39;</span><span class="p">]</span>
-    <span class="n">r_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right1&#39;</span><span class="p">]</span>
-    <span class="n">r_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right5&#39;</span><span class="p">]</span>
-    <span class="n">r_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right9&#39;</span><span class="p">]</span>
-    <span class="c1">#위에서 정의한 함수를 불러옵니다.</span>
-    <span class="n">l_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">l_pt1</span><span class="p">,</span> <span class="n">l_pt2</span><span class="p">,</span> <span class="n">l_pt3</span><span class="p">)</span>
-    <span class="n">r_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">r_pt1</span><span class="p">,</span> <span class="n">r_pt2</span><span class="p">,</span> <span class="n">r_pt3</span><span class="p">)</span>
-    <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;왼쪽 턱 각도: </span><span class="si">%f</span><span class="s2"> | 오른쪽 턱 각도: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">l_angle</span><span class="p">,</span> <span class="n">r_angle</span><span class="p">))</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_angle</span> <span class="o">+</span> <span class="n">r_angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="k">return</span> <span class="n">result</span>
-    </code></pre></figure>
+	<span class="c1">#6개의 점을 잡아줍니다. </span>
+	<span class="c1">#left1은 왼편 눈 근처 턱 끝, left9은 턱 중심점 왼편의 턱 끝입니다.</span>
+	<span class="c1">#여기서는 편의를 위해 1, 5, 9점을 잡았지만,</span>
+	<span class="c1">#얼마든지 값을 변경하여 원하는 각도를 잴 수 있습니다.</span>
+	<span class="n">l_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left1&#39;</span><span class="p">]</span>
+	<span class="n">l_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left5&#39;</span><span class="p">]</span>
+	<span class="n">l_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_left9&#39;</span><span class="p">]</span>
+	<span class="n">r_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right1&#39;</span><span class="p">]</span>
+	<span class="n">r_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right5&#39;</span><span class="p">]</span>
+	<span class="n">r_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s1">&#39;contour_right9&#39;</span><span class="p">]</span>
+	<span class="c1">#위에서 정의한 함수를 불러옵니다.</span>
+	<span class="n">l_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">l_pt1</span><span class="p">,</span> <span class="n">l_pt2</span><span class="p">,</span> <span class="n">l_pt3</span><span class="p">)</span>
+	<span class="n">r_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">r_pt1</span><span class="p">,</span> <span class="n">r_pt2</span><span class="p">,</span> <span class="n">r_pt3</span><span class="p">)</span>
+	<span class="k">print</span> <span class="p">(</span><span class="s2">&quot;왼쪽 턱 각도: </span><span class="si">%f</span><span class="s2"> | 오른쪽 턱 각도: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">l_angle</span><span class="p">,</span> <span class="n">r_angle</span><span class="p">))</span>
+	<span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_angle</span> <span class="o">+</span> <span class="n">r_angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+	<span class="k">return</span> <span class="n">result</span>
+	</code></pre></figure>
 
-<p><br></p>
+<p><br /></p>
 
-<h3>3. 함수 실행하기</h3>
+<p>###3. 함수 실행하기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">avg_angle</span><span class="p">(</span><span class="n">ldf_T</span><span class="p">)</span></code></pre></figure>
 
-<p><img src="/assets/chin_angle/img6.png" alt="턱 각도 최종 아웃풋">
+<p><img src="/assets/chin_angle/img6.png" alt="턱 각도 최종 아웃풋" />
 조철왕 코스프레를 한 정성호의 턱 각도는 평균 152도로 나왔네요. 원래 사진과 비교해보면 각도가 달라질까요? 다음에 더 자세히 얼굴간 유사도를 비교해보겠습니다.</p>
 
-<h2>완료!</h2>
+<p>##완료!
+전체 코드 및 샘플에 사용한 json 파일은 <a href="https://github.com/junkwhinger/chin_angle/blob/master/chin_angle_github.ipynb">여기 링크</a>에서 확인할 수 있습니다.</p>
 
-<p>전체 코드 및 샘플에 사용한 json 파일은 <a href="https://github.com/junkwhinger/chin_angle/blob/master/chin_angle_github.ipynb">여기 링크</a>에서 확인할 수 있습니다.</p>
 
         </section>
         <footer class="post-footer">
@@ -241,7 +242,7 @@
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

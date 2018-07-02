@@ -61,43 +61,38 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2>들어가며</h2>
+          <h2 id="들어가며">들어가며</h2>
+<p><br />
+그동안 써온 블로그글 중 계속 꾸준히 방문자 수가 이어지는 글은 <a href="http://jsideas.net/python/2015/08/11/histogram_tutorial_part2.html">파이썬 초보 - pandas와 matplotlib을 활용한 간단 분석 part 2</a>입니다. 심지어 이 글은 구글에 ‘pandas 히스토그램’으로 검색을 하면 검색 상위에 올라올 정도입니다.. 아마 pandas와 히스토그램을 글에서 많이 언급했기 때문이 아닌가 싶습니다.</p>
 
-<p><br>
-그동안 써온 블로그글 중 계속 꾸준히 방문자 수가 이어지는 글은 <a href="http://jsideas.net/python/2015/08/11/histogram_tutorial_part2.html">파이썬 초보 - pandas와 matplotlib을 활용한 간단 분석 part 2</a>입니다. 심지어 이 글은 구글에 &#39;pandas 히스토그램&#39;으로 검색을 하면 검색 상위에 올라올 정도입니다.. 아마 pandas와 히스토그램을 글에서 많이 언급했기 때문이 아닌가 싶습니다.</p>
+<p>최근에는 d3.js 쪽 업데이트를 자주 해왔었는데, 이번에는 <a href="http://jsideas.net/python/2016/03/16/Google_DeepMind.html">이세돌 vs. 알파고 분석</a>을 하는데 아주 요긴하게 사용했던 matplotlib과 pandas를 또 간단히 다뤄보도록 하겠습니다.</p>
 
-<p>최근에는 d3.js 쪽 업데이트를 자주 해왔었는데, 이번에는 <a href="http://jsideas.net/python/2016/03/16/Google_DeepMind.html">이세돌 vs. 알파고 분석</a>을 하는데 아주 요긴하게 사용했던 matplotlib과 pandas를 또 간단히 다뤄보도록 하겠습니다. </p>
+<hr />
 
-<p><hr></p>
-
-<h2>데이터셋</h2>
-
-<p><br>
+<h2 id="데이터셋">데이터셋</h2>
+<p><br />
 분석에서 사용할 데이터셋은 제가 직접 수기로 받아적은 알파고 vs. 이세돌 데이터입니다. 로데이터는 <a href="https://github.com/junkwhinger/AlphaGo_raw">GitHub</a>에서 바로 받아가실 수 있습니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>분석 방향</h2>
-
-<p><br>
-인간과 기계는 어떻게 다르게 생각할 것인가? 그리고 그 차이는 어떤 결과를 만들어낼 것인가? 이번 이세돌 9단과 알파고의 대결을 지켜보며 가장 관심있게 바라본 부분이었습니다. 연산이 아닌 직관의 영역이기에 인간이 우세할 것이다라는 기존의 낙관론은 2국이 끝나있을 때 &#39;인간이 단 한판이라도 이길 수 있을까&#39;하는 비관론으로 변해있었습니다.</p>
+<h2 id="분석-방향">분석 방향</h2>
+<p><br />
+인간과 기계는 어떻게 다르게 생각할 것인가? 그리고 그 차이는 어떤 결과를 만들어낼 것인가? 이번 이세돌 9단과 알파고의 대결을 지켜보며 가장 관심있게 바라본 부분이었습니다. 연산이 아닌 직관의 영역이기에 인간이 우세할 것이다라는 기존의 낙관론은 2국이 끝나있을 때 ‘인간이 단 한판이라도 이길 수 있을까’하는 비관론으로 변해있었습니다.</p>
 
 <p>첫 대국에서 이세돌 9단의 떨리는 손을 바라보며 표정도, 분위기도 읽을 수 없는 기계를 상대로 게임을 한다는 것이 얼마나 무서울까-싶었습니다. 장고를 거듭하는 이 9단과 달리, 알파고는 거의 일정한 시간 내에 착수를 마쳤습니다. 이 둘의 착수시간 패턴을 시각화할 수 있다면, 인간다움과 기계다움을 대조해서 표현할 수 있지 않을까- 싶었습니다. 그런 생각에서 간단히 손으로 데이터를 모으기 시작했지요.</p>
 
-<p>게임 당 이세돌 9단과 알파고는 각각 2시간을 가지고 시작합니다. 상대방이 착수할 때마다 시간 카운트 다운이 시작되며, 착수하면 시간이 멈춥니다. 2시간이 모두 소진되면 초읽기가 시작됩니다. 이 9단과 알파고 중 처음 2시간을 먼저 사용한 쪽은 어디일까요. 그리고 각 대국 당 소진되는 속도는 어떻게 다를까요? 이번 글에서는 착수시간으로 시각화했던 차트 중에서 &#39;Remaining Time&#39;을 ipython notebook을 사용해서 순서대로 뽑아보겠습니다.</p>
+<p>게임 당 이세돌 9단과 알파고는 각각 2시간을 가지고 시작합니다. 상대방이 착수할 때마다 시간 카운트 다운이 시작되며, 착수하면 시간이 멈춥니다. 2시간이 모두 소진되면 초읽기가 시작됩니다. 이 9단과 알파고 중 처음 2시간을 먼저 사용한 쪽은 어디일까요. 그리고 각 대국 당 소진되는 속도는 어떻게 다를까요? 이번 글에서는 착수시간으로 시각화했던 차트 중에서 ‘Remaining Time’을 ipython notebook을 사용해서 순서대로 뽑아보겠습니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>환경 구축</h2>
-
-<p><br>
+<h2 id="환경-구축">환경 구축</h2>
+<p><br />
 본 분석을 ipython notebook을 사용해 진행하며, python 3.5를 사용했습니다. 보다 편리한 분석 환경 구축을 위해 virtualenv 사용을 권해드립니다. 또한 라이브러리는 pandas와 matplotlib을 사용했습니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>라이브러리 불러오기</h2>
-
-<p><br></p>
+<h2 id="라이브러리-불러오기">라이브러리 불러오기</h2>
+<p><br /></p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span> <span class="c1">#1</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span> <span class="c1">#2</span>
@@ -106,17 +101,16 @@
 <span class="kn">import</span> <span class="nn">warnings</span> <span class="c1">#5</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span> <span class="c1">#5</span></code></pre></figure>
 
-<p>1)가장 주요하게 사용할 pandas 패키지를 불러옵니다.<br>
-2)시각화에 사용할 matplotlib 패키지를 불러옵니다.<br>
-3)x축 레이블 간격에 사용할 numpy 패키지를 불러옵니다. 조금 과하긴 하지만 편하니 불러옵니다.<br>
-4)ipython notebook에서 만드는 차트를 별도의 창이 아닌, notebook내에서 보기 위한 설정입니다.<br>
-5)간혹 ipython이 실행은 시켜주나 depreciation이 예정된 기능에 대해 경고창을 띄웁니다. 빨간색이 보기 싫거나 한번에 모든 명령을 돌리고 싶은 경우, 경고를 꺼두면 편합니다.<br></p>
+<p>1)가장 주요하게 사용할 pandas 패키지를 불러옵니다.<br />
+2)시각화에 사용할 matplotlib 패키지를 불러옵니다.<br />
+3)x축 레이블 간격에 사용할 numpy 패키지를 불러옵니다. 조금 과하긴 하지만 편하니 불러옵니다.<br />
+4)ipython notebook에서 만드는 차트를 별도의 창이 아닌, notebook내에서 보기 위한 설정입니다.<br />
+5)간혹 ipython이 실행은 시켜주나 depreciation이 예정된 기능에 대해 경고창을 띄웁니다. 빨간색이 보기 싫거나 한번에 모든 명령을 돌리고 싶은 경우, 경고를 꺼두면 편합니다.<br /></p>
 
-<p><hr></p>
+<hr />
 
-<h2>데이터 경로 정하기</h2>
-
-<p><br></p>
+<h2 id="데이터-경로-정하기">데이터 경로 정하기</h2>
+<p><br /></p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">game1</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/first_game.csv&#39;</span>
 <span class="n">game2</span> <span class="o">=</span> <span class="s1">&#39;/users/jun/python/alphago/second_game.csv&#39;</span>
@@ -126,9 +120,9 @@
 
 <p>바로 명령어를 사용해서 파일을 읽어들이기보다는 경로를 미리 지정해줍니다. 특히 다수의 파일을 사용하는 경우, 경로를 따로 정해주면 좋습니다. 후에 파일명이 변하게 되어도 찾기가 편합니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>데이터 전처리</h2>
+<h2 id="데이터-전처리">데이터 전처리</h2>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -167,7 +161,7 @@
 
 <p>데이터셋을 살펴보시면 아시겠지만, 초읽기에 들어간 후에는 Lee_Sedol과 AlphaGo 행은 공란으로 기록되어있습니다. 공란은 당연히 시간 변환이 되지 않습니다. 초읽기전의 2시간 데이터만 다루기로 했으므로, 공란 제외를 위해서 <code>.dropna()</code> 함수를 사용합니다. 그리고 len()을 덮어씌워 초읽기 전까지의 착수지점(index)를 확보하고, 이를 통해 초읽기 전까지 데이터를 자릅니다.</p>
 
-<p><code>ts_df</code>에 초읽기 전까지 데이터를 집어넣은 후, 앞서 정의한 time<em>func 함수를 사용합니다. `.apply(lambda x: time</em>func(x))`를 사용하여 손쉽게 ts를 구합니다. 마지막으로 둘다 초읽기에 들어간 상황, 즉 ts가 0이 된 행을 제외한 result_df를 반환합니다.</p>
+<p><code>ts_df</code>에 초읽기 전까지 데이터를 집어넣은 후, 앞서 정의한 time_func 함수를 사용합니다. <code>.apply(lambda x: time_func(x))</code>를 사용하여 손쉽게 ts를 구합니다. 마지막으로 둘다 초읽기에 들어간 상황, 즉 ts가 0이 된 행을 제외한 result_df를 반환합니다.</p>
 
 <p>여러 스크립트를 몰아넣었지만, def 이후를 따로 떼어다 파일경로를 넣고 실행하면 각 단계별 아웃풋을 확인할 수 있습니다.</p>
 
@@ -181,9 +175,9 @@
 
 <p>잘 처리되었는지 확인해볼까요?
 <code>game1_ts.tail(10)</code>으로 데이터프레임의 맨 끝 10줄을 봅시다. 
-<img src="/assets/alphago/game1_ts.png" alt="game1_ts"></p>
+<img src="/assets/alphago/game1_ts.png" alt="game1_ts" /></p>
 
-<p>초가 아닌 분 단위로 ts가 잘 정리되어 들어왔습니다. 마지막으로 모든 게임을 하나의 df에 묶기 전에 각 게임의 착수 순번을 기록해두어야 합니다. 현재 착수 순번은 index에 기록되어있습니다. <code>.reset_index</code>함수를 사용하면 index를 개별 컬럼으로 손쉽게 빼낼 수 있습니다. </p>
+<p>초가 아닌 분 단위로 ts가 잘 정리되어 들어왔습니다. 마지막으로 모든 게임을 하나의 df에 묶기 전에 각 게임의 착수 순번을 기록해두어야 합니다. 현재 착수 순번은 index에 기록되어있습니다. <code>.reset_index</code>함수를 사용하면 index를 개별 컬럼으로 손쉽게 빼낼 수 있습니다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">game1_ts</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">game2_ts</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -193,15 +187,15 @@
 
 <p>어디 잘 적용되었는지 테스트해볼까요?</p>
 
-<p>pandas의 특출난 장점 중 하나는 df 뒤에 <code>.plot()</code>만 붙여서 바로 차트를 그릴 수 있다는 점입니다. 아주 쓸만하죠. x축을 index로 지정하여 라인플롯을 그려봅시다. </p>
+<p>pandas의 특출난 장점 중 하나는 df 뒤에 <code>.plot()</code>만 붙여서 바로 차트를 그릴 수 있다는 점입니다. 아주 쓸만하죠. x축을 index로 지정하여 라인플롯을 그려봅시다.</p>
 
-<p><img src="/assets/alphago/game4_ts_plot.png" alt="game4_ts_plot"></p>
+<p><img src="/assets/alphago/game4_ts_plot.png" alt="game4_ts_plot" /></p>
 
-<p><hr></p>
+<hr />
 
-<h2>전체 남은 시간 차트 그리기 (준비)</h2>
+<h2 id="전체-남은-시간-차트-그리기-준비">전체 남은 시간 차트 그리기 (준비)</h2>
 
-<p>자, 이제 5개 대국 데이터를 모두 합쳐서 이세돌 9단과 알파고가 2시간을 어떻게 사용했는지 그려봅시다. </p>
+<p>자, 이제 5개 대국 데이터를 모두 합쳐서 이세돌 9단과 알파고가 2시간을 어떻게 사용했는지 그려봅시다.</p>
 
 <p>먼저, 각 대국을 구분할 수 있도록 컬럼명을 바꿔줍니다. 선수 이름 앞에 게임명을 붙여줍니다.</p>
 
@@ -211,7 +205,7 @@
 <span class="n">game4_ts</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;[G4]Lee_Sedol&#39;</span><span class="p">,</span> <span class="s1">&#39;[G4]AlphaGo&#39;</span><span class="p">]</span>
 <span class="n">game5_ts</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="s1">&#39;[G5]Lee_Sedol&#39;</span><span class="p">,</span> <span class="s1">&#39;[G5]AlphaGo&#39;</span><span class="p">]</span></code></pre></figure>
 
-<p>다음은 df 합치기입니다. 모든 df를 이어붙이는 작업인데, append를 사용해서 행 붙이기를 합니다. </p>
+<p>다음은 df 합치기입니다. 모든 df를 이어붙이는 작업인데, append를 사용해서 행 붙이기를 합니다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">g_df</span> <span class="o">=</span> <span class="n">game1_ts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">game2_ts</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">game3_ts</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">game4_ts</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">game5_ts</span><span class="p">)</span></code></pre></figure>
 
@@ -221,11 +215,10 @@
 <p>마지막으로 x축을 최대 착수 순번에 맞추기 위해서 5국 전체를 통틀어 가장 긴 착수 순번을 뽑습니다. 
 <code>max_length = max(g_df.index)</code></p>
 
-<p><hr></p>
+<hr />
 
-<h2>이제 진짜로 그리기</h2>
-
-<p><br>
+<h2 id="이제-진짜로-그리기">이제 진짜로 그리기</h2>
+<p><br />
 이제 다왔습니다. 그려봅시다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">g_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#f6e8c3&#39;</span><span class="p">,</span><span class="s1">&#39;#c7eae5&#39;</span><span class="p">,</span><span class="s1">&#39;#dfc27d&#39;</span><span class="p">,</span><span class="s1">&#39;#80cdc1&#39;</span><span class="p">,</span><span class="s1">&#39;#bf812d&#39;</span><span class="p">,</span><span class="s1">&#39;#35978f&#39;</span><span class="p">,</span><span class="s1">&#39;#8c510a&#39;</span><span class="p">,</span><span class="s1">&#39;#01665e&#39;</span><span class="p">,</span><span class="s1">&#39;#543005&#39;</span><span class="p">,</span><span class="s1">&#39;#003c30&#39;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
@@ -249,7 +242,7 @@
 
 <p>빠밤!</p>
 
-<p><img src="/assets/alphago/total_remaining.png" alt="total_remaining_plot"></p>
+<p><img src="/assets/alphago/total_remaining.png" alt="total_remaining_plot" /></p>
 
         </section>
         <footer class="post-footer">
@@ -284,7 +277,7 @@
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

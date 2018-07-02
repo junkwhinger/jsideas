@@ -5,7 +5,6 @@ date:       2017-04-12 00:00:00
 author:     "Jun"
 categories: "Python"
 image: /assets/kakaotalk_rnn/header.jpg
-tags: featured
 ---
 
 ## 2017년 대선: 여론조사 편향성 시비에 대한 짧은 분석

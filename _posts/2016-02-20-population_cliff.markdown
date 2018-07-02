@@ -4,7 +4,6 @@ title:  "대한민국 인구구조 변화"
 date:   2016-01-20 00:34:25
 categories: d3
 image: /assets/population_cliff/header.png
-tags: featured
 ---
 
 ## 피라미드형에서 종형으로 이동하는 대한민국 인구구조

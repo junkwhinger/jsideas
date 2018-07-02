@@ -1,10 +1,13 @@
 # Build settings
-markdown: redcarpet
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
 highlighter: pygments
 gems:
   - jemoji
   - jekyll-paginate
   - jekyll-giphy
+  - kramdown
 
 # Site settings
 title: "jsideas"

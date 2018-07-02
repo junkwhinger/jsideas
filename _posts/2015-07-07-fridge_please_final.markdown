@@ -4,7 +4,6 @@ title:      "냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각
 date:       2015-07-07 14:30:00
 author:     "Jun"
 categories: "python"
-tags: featured
 image: /assets/fp_header.jpg
 ---
 

@@ -61,25 +61,25 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2>들어가며</h2>
+          <h2 id="들어가며">들어가며</h2>
 
 <p>올초부터 Udacity에서 Deep Learning 과정을 듣고 있다. 이래저래 벌려놓은 일이 많아 신청할까 망설였었는데, 돌아보니 잘한 듯 하다. 예전에 아무것도 모른 채 강필성 교수님이 하셨던 패캠 머신러닝 수업을 들었던 것처럼, 딥러닝에 대해 세세히 이해하지는 못하더라도, 대략적인 개념을 파악하고 새로운 아이디어를 얻는 것만으로도 즐거운 자극이 되었다.</p>
 
 <p>아직 코스가 진행중이긴 한데, Recurrent Neural Network라는 재밌는 도구를 배우게 되어 간단히 작은 프로젝트를 기록으로 남겨둔다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Recurrent Neural Network</h2>
+<h2 id="recurrent-neural-network">Recurrent Neural Network</h2>
 
 <p>RNN은 Recurrent Neural Network의 약자로, 딥러닝의 한 방법론이다. 기본적인 형태의 DNN과 CNN이 고정된 크기의 입력/출력값을 가지는데 반해, 시퀀스를 처리할 수 있는 RNN은 그럴 필요가 없다. 그래서 길이가 다양한 텍스트나 비디오 데이터를 처리하는데 자주 쓰인다.</p>
 
 <p>RNN에 대한 보다 자세한 설명은 <a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/">안드레 카파시 블로그</a>에서 확인할 수 있다.</p>
 
-<p>RNN으로 할 수 있는 재밌는 것 중 하나는 텍스트를 학습해서 그 패턴에 기반해 새로운 텍스트를 생성하는 것이다. <a href="https://github.com/udacity/deep-learning/tree/master/intro-to-rnns">Udacity 튜토리얼</a>에서는 톨스토이의 &#39;안나 카레리나&#39; 소설을 사용해서 새 텍스트를 만들었다. 이 튜토리얼에서 사용한 tensorflow 라이브러리와 로직을 사용해서 카카오톡 대화를 생성해본다.</p>
+<p>RNN으로 할 수 있는 재밌는 것 중 하나는 텍스트를 학습해서 그 패턴에 기반해 새로운 텍스트를 생성하는 것이다. <a href="https://github.com/udacity/deep-learning/tree/master/intro-to-rnns">Udacity 튜토리얼</a>에서는 톨스토이의 ‘안나 카레리나’ 소설을 사용해서 새 텍스트를 만들었다. 이 튜토리얼에서 사용한 tensorflow 라이브러리와 로직을 사용해서 카카오톡 대화를 생성해본다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Data Preprocessing</h2>
+<h2 id="data-preprocessing">Data Preprocessing</h2>
 
 <p>카카오톡 데이터는 대화방에서 텍스트 대화만을 내려받아 얻는다. 압축을 풀면 txt 파일이 여러개 나오는데, 다음과 같이 처리한다. 본 테스트를 위해 대학친구 8명이 있는 카카오톡 대화방 2016.10 ~ 2017.03 데이터를 내려받았다.</p>
 
@@ -121,7 +121,7 @@
 <span class="c1">## 리스트를 평평하게 만든다.</span>
 <span class="n">sentence_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">sentence</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">sentence_lists</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span></code></pre></figure>
 
-<p>이렇게만 처리해도 대화 데이터를 얻을 수 있으나, 소설과 달리 메신저에서는 엔터를 더 자주 친다. 따라서 화자가 연속된 경우, 잘려진 문장은 하나의 문장으로 처리한다. </p>
+<p>이렇게만 처리해도 대화 데이터를 얻을 수 있으나, 소설과 달리 메신저에서는 엔터를 더 자주 친다. 따라서 화자가 연속된 경우, 잘려진 문장은 하나의 문장으로 처리한다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sentence_list</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;counter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -150,11 +150,11 @@
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;das_data_parsed.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">final_text</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></code></pre></figure>
 
-<p><hr></p>
+<hr />
 
-<h2>카카오톡 대화 생성기</h2>
+<h2 id="카카오톡-대화-생성기">카카오톡 대화 생성기</h2>
 
-<h3>1. 데이터 준비</h3>
+<h3 id="1-데이터-준비">1. 데이터 준비</h3>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
@@ -189,11 +189,11 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">&quot;글자 가짓수: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">num_of_all_chars</span><span class="p">)</span>
 <span class="c1">## 글자 가짓수: 1862</span></code></pre></figure>
 
-<h3>2. 학습 &amp; 검증 batch 준비</h3>
+<h3 id="2-학습--검증-batch-준비">2. 학습 &amp; 검증 batch 준비</h3>
 
-<p>데이터셋을 준비했다면, 다음은 학습할 트레이닝 데이터셋과 학습 결과를 측정할 검증 데이터셋을 분리해야 한다. 그리고, 긴 텍스트를 다 집어넣는 것이 아니라, 적절한 크기로 잘라 배치(batch)로 만들어 모델에 넣어주어야 한다. </p>
+<p>데이터셋을 준비했다면, 다음은 학습할 트레이닝 데이터셋과 학습 결과를 측정할 검증 데이터셋을 분리해야 한다. 그리고, 긴 텍스트를 다 집어넣는 것이 아니라, 적절한 크기로 잘라 배치(batch)로 만들어 모델에 넣어주어야 한다.</p>
 
-<p>데이터를 자르는 <code>split_data</code>, 배치를 생성하는 <code>get_batch</code> 함수를 만든다. 여기서 만든 함수는 뒤에 모델을 학습시킬 때 tensorflow Session 안에서 실행된다. </p>
+<p>데이터를 자르는 <code>split_data</code>, 배치를 생성하는 <code>get_batch</code> 함수를 만든다. 여기서 만든 함수는 뒤에 모델을 학습시킬 때 tensorflow Session 안에서 실행된다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">split_frac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -249,7 +249,7 @@
     <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_batches</span><span class="p">):</span>
         <span class="k">yield</span> <span class="p">[</span><span class="n">x</span><span class="p">[:,</span> <span class="n">b</span><span class="o">*</span><span class="n">num_steps</span><span class="p">:</span> <span class="p">(</span><span class="n">b</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">num_steps</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span></code></pre></figure>
 
-<h3>3. RNN 모델 만들기</h3>
+<h3 id="3-rnn-모델-만들기">3. RNN 모델 만들기</h3>
 
 <p>sklearn으로 jupyter notebook에서 해보는 간단한 머신러닝과는 달리, tensorflow를 쓸 때는 먼저 모델을 정의하고, 그 다음 실제 오퍼레이션이 이루어진다. 함수를 실행하면 바로 결과가 나오지 않기 때문에 개인적으로는 쉽게 받아들일 수 있는 부분은 아니었다.</p>
 
@@ -341,9 +341,9 @@
     
     <span class="k">return</span> <span class="n">graph</span></code></pre></figure>
 
-<p>코드가 길지만 기본적으로 여기서 사용한 RNN 구조는 간단하다. 여기서 사용한 RNN은 character-wise RNN으로, 문자열이 있을 때, 바로 다음 &#39;문자&#39;가 무엇이 올지 예측한다. 즉, &#39;나는 학교에 간다&#39;는 입력이 주어지면, 그에 대응되는 출력은 &#39;는 학교에 간다 &#39;가 된다. 이렇게 하면 형태소 처리나 TF-IDF 같은 NLP에서 해줘야 하는 많은 어려운 문제들을 우회할 수 있다. 단, 그 수많은 패턴 학습을 위해서는 충분히 많은 데이터와 파라미터 튜닝이 필요한 것 같다.</p>
+<p>코드가 길지만 기본적으로 여기서 사용한 RNN 구조는 간단하다. 여기서 사용한 RNN은 character-wise RNN으로, 문자열이 있을 때, 바로 다음 ‘문자’가 무엇이 올지 예측한다. 즉, ‘나는 학교에 간다’는 입력이 주어지면, 그에 대응되는 출력은 ‘는 학교에 간다 ‘가 된다. 이렇게 하면 형태소 처리나 TF-IDF 같은 NLP에서 해줘야 하는 많은 어려운 문제들을 우회할 수 있다. 단, 그 수많은 패턴 학습을 위해서는 충분히 많은 데이터와 파라미터 튜닝이 필요한 것 같다.</p>
 
-<p>모델에 들어가는 파라미터를 정의해준다. </p>
+<p>모델에 들어가는 파라미터를 정의해준다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">100</span>
@@ -352,15 +352,15 @@
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
 <span class="n">keep_prob</span> <span class="o">=</span> <span class="mf">0.5</span></code></pre></figure>
 
-<p>딥러닝이 상당히 많은 문제를 해결해주기는 하지만, 파라미터를 여전히 사람이 컨트롤 해줘야 하는 부분이다. training과 validation loss 를 지켜보면서 overfitting인지 underfitting인지 판단하고, 그에 따라 데이터 양을 늘릴지 줄일지, dropout prob을 조정할지, 레이어를 추가할지 등의 결정을 내려야 한다. </p>
+<p>딥러닝이 상당히 많은 문제를 해결해주기는 하지만, 파라미터를 여전히 사람이 컨트롤 해줘야 하는 부분이다. training과 validation loss 를 지켜보면서 overfitting인지 underfitting인지 판단하고, 그에 따라 데이터 양을 늘릴지 줄일지, dropout prob을 조정할지, 레이어를 추가할지 등의 결정을 내려야 한다.</p>
 
-<p>카카오톡 데이터를 처리해보면서 레이어를 3개를 만들어보기도, LSTM 셀 수, learning_rate 등 여러개를 조정해봤는데, 위의 세팅이 가장 적절한 학습 결과를 출력했었다. 특히 레이어 3개를 넣는 순간 오버피팅이 심하게 일어나면서, 전혀 이해할 수 없는 괴텍스트가 생성되기도 했다. 딥러닝에서 무조건 딥하게 간다고 문제가 해결되지 않는다. </p>
+<p>카카오톡 데이터를 처리해보면서 레이어를 3개를 만들어보기도, LSTM 셀 수, learning_rate 등 여러개를 조정해봤는데, 위의 세팅이 가장 적절한 학습 결과를 출력했었다. 특히 레이어 3개를 넣는 순간 오버피팅이 심하게 일어나면서, 전혀 이해할 수 없는 괴텍스트가 생성되기도 했다. 딥러닝에서 무조건 딥하게 간다고 문제가 해결되지 않는다.</p>
 
-<p><img src="/assets/kakaotalk_rnn/layer3.png" alt="LSTM 레이어를 3개를 쌓은 경우"></p>
+<p><img src="/assets/kakaotalk_rnn/layer3.png" alt="LSTM 레이어를 3개를 쌓은 경우" /></p>
 
-<p><hr></p>
+<hr />
 
-<h3>4. 학습</h3>
+<h3 id="4-학습">4. 학습</h3>
 
 <p>실제 데이터를 모델에 넣어 학습시킨다.</p>
 
@@ -435,13 +435,13 @@
 <span class="c1">## Epoch 4/20 Iteration 100/660 Traning loss: 5.1010 7.1860 sec/batch</span>
 <span class="c1">## Validation loss: 4.94154 체크포인트 저장!</span></code></pre></figure>
 
-<p>모델이 깊어지고, num<em>step(시퀀스의 길이)가 커질수록 학습이 오래 걸린다. num</em>step을 200으로 올려본 결과, Iteration당 배치 학습에 걸린 시간이 7초에서 15초로 2배 증가하였다. 전체 트레이닝 데이터셋(약 4MB)을 학습시키면 현재 맥북프로 Mid 2015 머신으로 2시간 정도가 소요되었다. </p>
+<p>모델이 깊어지고, num_step(시퀀스의 길이)가 커질수록 학습이 오래 걸린다. num_step을 200으로 올려본 결과, Iteration당 배치 학습에 걸린 시간이 7초에서 15초로 2배 증가하였다. 전체 트레이닝 데이터셋(약 4MB)을 학습시키면 현재 맥북프로 Mid 2015 머신으로 2시간 정도가 소요되었다.</p>
 
-<p><hr></p>
+<hr />
 
-<h3>5. 결과 확인하기</h3>
+<h3 id="5-결과-확인하기">5. 결과 확인하기</h3>
 
-<p>모델이 학습되고 나면, 체크포인트에 저장한 모델을 불러와서 새로운 텍스트를 생성할 수 있다. </p>
+<p>모델이 학습되고 나면, 체크포인트에 저장한 모델을 불러와서 새로운 텍스트를 생성할 수 있다.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">pick_top_n</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
@@ -491,25 +491,25 @@
 
 <p>위에서 학습시킨 결과는 총 660번 Iteration을 돌렸는데, 매 100번마다 모델을 저장하게 해두었다. 다른 머신러닝 알고리즘이 그러하듯, RNN 역시 이터레이션이 반복될수록 모델을 최적화한다. 100번, 400번, 660번 돌린 결과를 보자.</p>
 
-<p><img src="/assets/kakaotalk_rnn/various_results.png" alt="100번, 400번, 660번 학습 결과"></p>
+<p><img src="/assets/kakaotalk_rnn/various_results.png" alt="100번, 400번, 660번 학습 결과" /></p>
 
-<p>학습이 진행됨에 따라 문장의 형태는 좀 더 말이 되는 방향으로 진화해가고 있다. 하지만 바로 다음 문자를 기계적으로 예측하는 것이므로, 특정 주제에 대해 이야기하거나, 주고받는 식으로 대화가 진행되지는 않는다. 그래도 이 결과는 ㅋㅋㅋ를 제외하지 않은 학습결과보다는 더 괜찮아 보인다. </p>
+<p>학습이 진행됨에 따라 문장의 형태는 좀 더 말이 되는 방향으로 진화해가고 있다. 하지만 바로 다음 문자를 기계적으로 예측하는 것이므로, 특정 주제에 대해 이야기하거나, 주고받는 식으로 대화가 진행되지는 않는다. 그래도 이 결과는 ㅋㅋㅋ를 제외하지 않은 학습결과보다는 더 괜찮아 보인다.</p>
 
-<p><img src="/assets/kakaotalk_rnn/with_kkk.png" alt="&#39;ㅋㅋㅋ&#39;를 포함했을 때 학습 결과"></p>
+<p><img src="/assets/kakaotalk_rnn/with_kkk.png" alt="'ㅋㅋㅋ'를 포함했을 때 학습 결과" /></p>
 
 <p>다음은 몇가지 키워드로 생성한 텍스트들.</p>
 
-<p><img src="/assets/kakaotalk_rnn/samples.png" alt="몇가지 샘플 텍스트"></p>
+<p><img src="/assets/kakaotalk_rnn/samples.png" alt="몇가지 샘플 텍스트" /></p>
 
-<p>위 모델에는 화자 구분 없이 모든 대화 시퀀스를 넣어보았다. 화자별로 텍스트를 나눠 학습해보면, &#39;황준식&#39;이라는 개인의 대화 패턴으로 텍스트를 생성할 수 있을 것이고, 다른 친구로 학습한 모델과 서로 대화하는 프로그램을 짜볼 수 있지 않을까 싶었는데, 문제가 몇개 있었다.</p>
+<p>위 모델에는 화자 구분 없이 모든 대화 시퀀스를 넣어보았다. 화자별로 텍스트를 나눠 학습해보면, ‘황준식’이라는 개인의 대화 패턴으로 텍스트를 생성할 수 있을 것이고, 다른 친구로 학습한 모델과 서로 대화하는 프로그램을 짜볼 수 있지 않을까 싶었는데, 문제가 몇개 있었다.</p>
 
-<p>먼저 전체 데이터셋 자체가 크지 않은 상황에서, 특정 개인의 말수가 더욱 줄어들어 학습이 원하는 만큼 잘 되지 않았다. 그러다보니 문장이 짧고 분절된 메신저 대화의 특성상 시퀀스 길이나 배치 크기 등의 파라미터 조정이 더 어려워졌다. 데이터셋이 더 많이 쌓이고, 고도화된 RNN 모델을 만들 수준이 되면 다시 시도해봐야겠다. </p>
+<p>먼저 전체 데이터셋 자체가 크지 않은 상황에서, 특정 개인의 말수가 더욱 줄어들어 학습이 원하는 만큼 잘 되지 않았다. 그러다보니 문장이 짧고 분절된 메신저 대화의 특성상 시퀀스 길이나 배치 크기 등의 파라미터 조정이 더 어려워졌다. 데이터셋이 더 많이 쌓이고, 고도화된 RNN 모델을 만들 수준이 되면 다시 시도해봐야겠다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>앞으로 더 해볼 수 있는 것들</h2>
+<h2 id="앞으로-더-해볼-수-있는-것들">앞으로 더 해볼 수 있는 것들</h2>
 
-<p>여기서 테스트해본 모델은 가장 기본적인 형태의 RNN으로, 대화를 흉내낼 뿐, 의미있는 대화를 만든다고 보기는 어렵다. &#39;주제&#39;를 입력받아 그에 연관된 텍스트를 생성하는 RNN 모델을 만들어보면 재밌을 것 같다. 또 RNN에 넣기 전에 문자나 단어를 embedding하거나, CNN을 넣어 처리하는 방법 등 여러 다른 variation을 테스트해보면 어떨까 싶다. </p>
+<p>여기서 테스트해본 모델은 가장 기본적인 형태의 RNN으로, 대화를 흉내낼 뿐, 의미있는 대화를 만든다고 보기는 어렵다. ‘주제’를 입력받아 그에 연관된 텍스트를 생성하는 RNN 모델을 만들어보면 재밌을 것 같다. 또 RNN에 넣기 전에 문자나 단어를 embedding하거나, CNN을 넣어 처리하는 방법 등 여러 다른 variation을 테스트해보면 어떨까 싶다.</p>
 
         </section>
         <footer class="post-footer">
@@ -544,7 +544,7 @@
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

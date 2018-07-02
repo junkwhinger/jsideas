@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+  
   <head>
   <meta charset="utf-8">
   <!-- (1) Optimize for mobile versions: http://goo.gl/EOpFl -->
@@ -29,7 +29,13 @@
 </head>
 
 
+
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
   <body>
+
+
 
     <!-- header start -->
 
@@ -79,224 +85,19 @@
 <main class="content" role="main">
 
     
-    <h5 class="index-headline featured"><span>Featured</span></h5>
-
-    <div class="container featured">
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/05/07/transfer_learning.html" itemprop="url">Transfer learning: 대선주자 얼굴 분류기</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>Transfer learning: 대선주자 얼굴 분류기 CNN(Convolutional Neural Network)은 이미지 처리에 가장 널리 사용되는 알고리즘이다. 숫자 손글씨 데이터셋인 MNIST는 28x28 픽셀로 되어 있다. 이를 일반적인 DNN(Deep Neural Network)로 처리하려면, 먼저 이미지 하나를 784(28x28)개의 소수점 숫자로 된 벡터로 변환한 다음, 이를 뉴럴넷에 집어넣어 학습시켜 분류를 한다. 꽤 괜찮은 성능이 나오기는 하지만, CNN만큼은...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="07 May 2017">07 May 2017</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/04/12/op_poll.html" itemprop="url">편향된 여론조사? 간단히 살펴보자</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>2017년 대선: 여론조사 편향성 시비에 대한 짧은 분석 아침에 &#39;김어준의 뉴스공장&#39;을 들으며 출근을 하는데, 요새 공장장이 주로 불만을 터뜨리는 부분은 &#39;여론조사&#39;다. 몇달전만 하더라도 더민주의 문재인 후보가 대통령이 되는 것이 기정 사실이었는데, 어느새 국민의당 안철수 후보가 무섭게 치고 올라왔다. 그에 따른 여론조사 결과 역시 문후보와 안후보 사이의 박빙의 승부로 나타나고 있다....</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="12 April 2017">12 April 2017</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/04/05/kakao_rnn.html" itemprop="url">카카오톡 대화 생성기</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>들어가며 올초부터 Udacity에서 Deep Learning 과정을 듣고 있다. 이래저래 벌려놓은 일이 많아 신청할까 망설였었는데, 돌아보니 잘한 듯 하다. 예전에 아무것도 모른 채 강필성 교수님이 하셨던 패캠 머신러닝 수업을 들었던 것처럼, 딥러닝에 대해 세세히 이해하지는 못하더라도, 대략적인 개념을 파악하고 새로운 아이디어를 얻는 것만으로도 즐거운 자극이 되었다. 아직 코스가 진행중이긴 한데, Recurrent...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="05 April 2017">05 April 2017</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/scala/2016/10/27/name_chemistry.html" itemprop="url">Scala로 만들어본 이름점</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>들어가며 요새 국운이 융성하려는지 우리 전통문화가 집중조명을 받고 있습니다. 그중에 소위 &#39;이름점&#39;이라는 궁합점이 예능 뿐만 아니라 정치 뉴스에서도 비중있게 다루어져 인기인데요, 최근 공부해보고 있는 Scala로 간단히 코드를 짜서 만들어봤습니다. Scala 이번에는 Scala를 사용해서 이름점 코드를 짜봅시다. Python으로는 더 익숙하게 만들 수 있겠지만, Scala는 뭔가 이름도 그렇고 간지가 나기 때문에 배워볼...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="27 October 2016">27 October 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2016/10/01/overwatch_eng.html" itemprop="url">OVERWATCH: MASTER CLASSIFIER</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>Intro Gone are the glorious days of League of Legends. Blizzard&#39;s Overwatch has been a worldwide hit since its debut back in April this year. It&#39;s has been tremendously successful over here in South Korea, to the extent that even some primary school kids sneakly played Overwatch (and got caught...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="01 October 2016">01 October 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2016/10/01/overwatch.html" itemprop="url">OVERWATCH: 천상계 분류기</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>들어가며 몇 년간 PC방 점유율 1위를 지켜오던 리그 오브 레전드(LOL)을 밀어내고 블리자드의 오버워치(OverWatch)가 많은 게이머들의 주목을 받고 있습니다. 블리자드 게임이라면 가끔 히오스나 몇 판 하던 저도 최근에는 오버워치로 갈아탔죠! 오버워치가 인기를 끌면서 overlog.gg와 같은 유저의 전적을 제공하는 통계 서비스도 등장했습니다. 특히 이 회사같은 경우에는 op.gg라는 LOL 전적 제공 서비스로도 유명합니다....</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="01 October 2016">01 October 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2016/07/07/levenshtein.html" itemprop="url">AlphaGo vs. Lee Sedol: Levenshtein Distance</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>AlphaGo vs. Lee Sedol: time spent pattern comparison In my latest blogposts on AlphaGo vs. Lee Sedol, I uploaded some graphs that clearly showed how Lee Sedol and AlphaGo used their time differently in the Google DeepMind Challenge. Recently, I have come across some really interesting articles and lecture videos...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="07 July 2016">07 July 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2016/03/16/Google_DeepMind.html" itemprop="url">Lee Sedol vs. AlphaGo: full data</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>Thinking Time - Full Match Visualisation Hit the buttons to navigate through the games. Click on the circles to further investigate thinking time details. made by junkwhinger A few more data visualisations with python Game 1 Game 2 Game 3 Game 4 Game 5 Thinking Time Distribution Thinking Time Distribution:...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="16 March 2016">16 March 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/d3/2016/02/27/population_cliff_multiple_charts.html" itemprop="url">Population Structure Change - Korea and Japan</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>Population Structure change over time - Korea and Japan
-
-data source: Statistics Korea, Statistics Japan
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="27 February 2016">27 February 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/d3/2016/01/20/population_cliff.html" itemprop="url">대한민국 인구구조 변화</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>피라미드형에서 종형으로 이동하는 대한민국 인구구조 출처: 통계청 KOSIS 총조사인구 총괄(시군구/성/5세연령별) 주요 관전 포인트: 인구구조의 시간에 따른 변화 패턴 전쟁으로 인한 데이터 유실 출산율 저하와 노령인구 증가는 언제부터 일어나는가 기타 하단 연도를 클릭해서 해당 연도의 인구구조를 불러올 수 있다. 그동안 깔끔하게 iframe으로 넘겨주던 bl.ocks.org가 이제 iframe 지원을 안한다고. mbostock님이 트래픽 땜에...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="20 January 2016">20 January 2016</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2015/11/07/chopin.html" itemprop="url">유사도 기반 군집화 및 추천 알고리즘으로 살펴본 Chopin Competition 2015</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>(이미지 출처: Chopin Competition 2015) 유사도 기반 군집화 및 추천 알고리즘으로 살펴본 Chopin Competition 2015 들어가며 얼마전 페이스북과 인터넷 커뮤니티에서 피아니스트 조성진 군의 쇼팽 콩쿠르 우승이 큰 화제가 되었습니다. 최고 권위의 피아노 대회에서 압도적인 실력으로 우승을 거머쥔 것도 이슈였지만, 특히 심사위원 중 한명이었던 필립 앙트르몽 (Philippe Entremont)과의 불편한(?) 관계도 주목을...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="07 November 2015">07 November 2015</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
-          <div class="article-item">
-            <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2015/07/07/fridge_please_final.html" itemprop="url">냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석</a></h2>
-            </header>
-            <section class="post-excerpt" itemprop="description">
-              <p>[JTBC]냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석 [주의]모바일 환경에서는 차트가 제대로 보이지 않습니다. 이미지출처: JTBC 1. 분석 배경 최근에 Fast Campus(패스트 캠퍼스)를 통해 머신러닝 강의를 들었습니다. 다중선형회귀분석부터 텍스트 마이닝까지 총 10강으로 구성된 알찬 코스로, 학부 1학년때 B0를 맞고 손대본 적 없는 통계에 관해 많은 것을 배울 수 있는 좋은...</p>
-            </section>
-            <div class="post-meta">
-              <time datetime="07 July 2015">07 July 2015</time>
-  <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
-            </div>
-          </div>
-        </article>
-      
-    </div>
-
-    <h5 class="index-headline normal"><span>Regular</span></h5>
-    
 
     <div class="cf frame">
       
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
           <div class="article-item">
             <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/04/29/tf-tips1.html" itemprop="url">TF: tips 1</a></h2>
+              <h2 class="post-title" itemprop="name"><a href="/python/2018/01/04/class_activation_map.html" itemprop="url">CAM: 대선주자 얼굴 위치 추적기</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>tf tips. 1 - tf.strided_slice [TODO] use TensorFlow to slice tensor with strides import tensorflow as tf Let&#39;s say we have the following tensor. sample = tf.constant( [[[11, 12, 13], [21, 22, 23]], [[31, 32, 33], [41, 42, 43]], [[51, 52, 53], [61, 62, 63]]]) The tensor&#39;s shape is (3,...</p>
+              <p>Previous work 작년에 올린 여러 포스팅을 통해 2017년 대통령 선거에 출마한 주요 후보 5인의 얼굴을 분류하는 CNN 모델을 만들고, 또 여러 모델간의 성능을 비교해보았다. 그 결과 [얼굴 사진을 넣어 누구인지 맞추는] 문제를 CNN을 통해 해결할 수 있다는 사실은 확인할 수 있었다. 그런데 왜 모델이 잘 동작하는지, 홍준표와 심상정은 어떻게 다르게...</p>
             </section>
             <div class="post-meta">
-              <time datetime="29 April 2017">29 April 2017</time>
+              <time datetime="04 January 2018">04 January 2018</time>
 <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
             </div>
           </div>
@@ -305,13 +106,13 @@ data source: Statistics Korea, Statistics Japan
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
           <div class="article-item">
             <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/04/12/op_poll.html" itemprop="url">편향된 여론조사? 간단히 살펴보자</a></h2>
+              <h2 class="post-title" itemprop="name"><a href="/python/2017/12/31/The-First-and-Second-Derivatives-and-Local-Minima.html" itemprop="url">The First and Second Derivatives and Local Minima</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>2017년 대선: 여론조사 편향성 시비에 대한 짧은 분석 아침에 &#39;김어준의 뉴스공장&#39;을 들으며 출근을 하는데, 요새 공장장이 주로 불만을 터뜨리는 부분은 &#39;여론조사&#39;다. 몇달전만 하더라도 더민주의 문재인 후보가 대통령이 되는 것이 기정 사실이었는데, 어느새 국민의당 안철수 후보가 무섭게 치고 올라왔다. 그에 따른 여론조사 결과 역시 문후보와 안후보 사이의 박빙의 승부로 나타나고 있다....</p>
+              <p>The First and Second Derivatives and Local Minima Whilst brushing up on linear algebra, I stumbled upon this webpage that provides a nice and short explanation on the first and second derivatives. To deepen my understanding I visualised the relationship between the first and second derivatives and local minimum /...</p>
             </section>
             <div class="post-meta">
-              <time datetime="12 April 2017">12 April 2017</time>
+              <time datetime="31 December 2017">31 December 2017</time>
 <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
             </div>
           </div>
@@ -320,13 +121,13 @@ data source: Statistics Korea, Statistics Japan
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
           <div class="article-item">
             <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/python/2017/04/05/kakao_rnn.html" itemprop="url">카카오톡 대화 생성기</a></h2>
+              <h2 class="post-title" itemprop="name"><a href="/python/2017/11/26/transfer_learning_with_keras_on_floydhub.html" itemprop="url">Transfer Learning wtih Keras on FloydHub</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>들어가며 올초부터 Udacity에서 Deep Learning 과정을 듣고 있다. 이래저래 벌려놓은 일이 많아 신청할까 망설였었는데, 돌아보니 잘한 듯 하다. 예전에 아무것도 모른 채 강필성 교수님이 하셨던 패캠 머신러닝 수업을 들었던 것처럼, 딥러닝에 대해 세세히 이해하지는 못하더라도, 대략적인 개념을 파악하고 새로운 아이디어를 얻는 것만으로도 즐거운 자극이 되었다. 아직 코스가 진행중이긴 한데, Recurrent...</p>
+              <p>Transfer Learning wtih Keras on FloydHub tf.keras 딥러닝 라이브러리로는 tensorflow가 가장 널리 사용되지만 다른 편리한 선택지도 많다. Keras는 2016년 9월 기준으로 텐서플로우에 이어 두번째로 많이 쓰이는 라이브러리이며, 빠르고 간결하게 딥러닝 모델을 구현할 수 있다는 큰 장점이 있다. 또 2017년 들어 텐서플로우 라이브러리 안에서도 keras를 사용할 수 있게 되면서 사용상 번거로움도...</p>
             </section>
             <div class="post-meta">
-              <time datetime="05 April 2017">05 April 2017</time>
+              <time datetime="26 November 2017">26 November 2017</time>
 <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
             </div>
           </div>
@@ -335,26 +136,13 @@ data source: Statistics Korea, Statistics Japan
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
           <div class="article-item">
             <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/scala/2016/11/05/scalajs_test.html" itemprop="url">Scala.js test</a></h2>
+              <h2 class="post-title" itemprop="name"><a href="/python/2017/10/09/TheStarryNight.html" itemprop="url">The Starry Night in the Distance</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>
-
-
-
-
-
-scala.js Test
-
-버튼을 누르면 div#scalaTest에 텍스트가 추가된다.
-
-
-Click me!
-
-</p>
+              <p>The Starry Night in the Distance 2015년에 발표된 논문인 ‘A Neural Algorithm of Artistic Style’는 아주 재미있는 시도를 했다. 사물 인식에 사용되던 Convolutional Neural Network를 거의 그대로 활용해서 이미지의 컨텐츠로부터 스타일을 분리해낸 것이다. 거기에 한발자국 더 나가서 서로 다른 이미지의 스타일과 컨텐츠를 섞어 명화 느낌이 나는 사진을 만들어냈다. 그 결과물이...</p>
             </section>
             <div class="post-meta">
-              <time datetime="05 November 2016">05 November 2016</time>
+              <time datetime="09 October 2017">09 October 2017</time>
 <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
             </div>
           </div>
@@ -363,13 +151,13 @@ Click me!
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting" role="article">
           <div class="article-item">
             <header class="post-header">
-              <h2 class="post-title" itemprop="name"><a href="/scala/2016/10/30/name_chemistry_refactoring.html" itemprop="url">이름점 - Scala Code 수정</a></h2>
+              <h2 class="post-title" itemprop="name"><a href="/python/2017/09/12/Inception_v3_transfer_learning.html" itemprop="url">Inception V3: Transfer Learning</a></h2>
             </header>
             <section class="post-excerpt" itemprop="description">
-              <p>Scala로 만들어 본 이름점 며칠 전 Scala를 사용해서 간단한 이름점을 만들어봤다. 일단 오류 없이 돌아가는 코드를 만들기는 했지만 다음날보니 어색한 문장과 습관이 눈에 들어왔다. 외형은 Scala로 쓰기는 했지만 var/val을 떼어놓고 보면 Python이나 R코드처럼 보인달까. 뭔가 어색한 부분이 많았다. 주변의 도움과 구글링을 통해 수정한 부분을 기록으로 남긴다. 초중종성 사전 -&gt; 함수...</p>
+              <p>Inception v3를 활용한 Transfer Learning Transfer Learning: Inception v3 요새 패스트캠퍼스에서 딥러닝 영상인식 수업을 듣고 있다. 두번째 강의에서 구글이 만든 Inception v3 모델을 사용한 Transfer Learning 코드를 살펴보았는데, 복습도 할겸 일부 코드를 들고와서 Jupyter notebook용으로 옮겨보았다. (원본 코드: 링크) Inception 구조는 2014년 구글에서 펴낸 Going deeper with convolutions, Szegedy et...</p>
             </section>
             <div class="post-meta">
-              <time datetime="30 October 2016">30 October 2016</time>
+              <time datetime="12 September 2017">12 September 2017</time>
 <!--            <span class="post-tags-set">on <span class="post-tag-">, <a href="/tag/"></a></span></span>-->
             </div>
           </div>
@@ -381,7 +169,7 @@ Click me!
       
         <a class="newer-posts" href="/page3">&larr; Older posts</a>
       
-      <span class="page-number">Page 2 of 13</span>
+      <span class="page-number">Page 2 of 15</span>
       
         
           <a class="older-posts" href="/">Newer posts &rarr;</a>
@@ -405,7 +193,7 @@ Click me!
 <footer class="site-footer">
   <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> Subscribe!</span></a>
     <div class="inner">
-         <section class="copyright">All content copyright <a href="mailto:junsik.whang@gmail.com">Junsik Whang</a> &copy; 2017 &bull; All rights reserved.</section>
+         <section class="copyright">All content copyright <a href="mailto:junsik.whang@gmail.com">Junsik Whang</a> &copy; 2018 &bull; All rights reserved.</section>
          <section class="poweredby">Made with <a href="http://jekyllrb.com"> Jekyll</a></section>
     </div>
 </footer>

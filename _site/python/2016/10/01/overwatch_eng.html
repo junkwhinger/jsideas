@@ -61,65 +61,61 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2>Intro</h2>
+          <h2 id="intro">Intro</h2>
+<p><br /></p>
 
-<p><br></p>
+<p>Gone are the glorious days of League of Legends. Blizzard’s Overwatch has been a worldwide hit since its debut back in April this year. It’s has been tremendously successful over here in South Korea, to the extent that even some primary school kids sneakly played Overwatch (and got caught by the police). Overwatch’s immense popularity has lead to the birth of 3rd party services like <a href="http://overlog.gg/">overlog.gg</a> that provide user statistics and in-depth analyses. This company is also known widely for its LOL stat service <a href="http://www.op.gg/">op.gg</a>.</p>
 
-<p>Gone are the glorious days of League of Legends. Blizzard&#39;s Overwatch has been a worldwide hit since its debut back in April this year. It&#39;s has been tremendously successful over here in South Korea, to the extent that even some primary school kids sneakly played Overwatch (and got caught by the police). Overwatch&#39;s immense popularity has lead to the birth of 3rd party services like <a href="http://overlog.gg/">overlog.gg</a> that provide user statistics and in-depth analyses. This company is also known widely for its LOL stat service <a href="http://www.op.gg/">op.gg</a>.</p>
+<p>Riot Games provides an extensive variety of data through their api, but Blizzard isn’t doing so at the moment. Instead, overlog.gg offers user logs and various stats. In this post, I’ve built and tested machine-learning models that classify Master-class users from the rest based on some data samples from overlog.gg.</p>
 
-<p>Riot Games provides an extensive variety of data through their api, but Blizzard isn&#39;t doing so at the moment. Instead, overlog.gg offers user logs and various stats. In this post, I&#39;ve built and tested machine-learning models that classify Master-class users from the rest based on some data samples from overlog.gg.  </p>
+<p><img src="/assets/overwatch/overlog_homepage_eng.png" alt="overlog.gg" /></p>
 
-<p><img src="/assets/overwatch/overlog_homepage_eng.png" alt="overlog.gg"></p>
+<hr />
 
-<p><hr></p>
-
-<h2>Dataset</h2>
-
+<h2 id="dataset">Dataset</h2>
 <p>The <a href="http://overlog.gg/leaderboards">leaderboard</a> page contains approximately 700,000 pieces of user info. To acquire a sample dataset that represents the whole userbase, I split 700,000 users into 20 subgroups based on their ranks, and cralwed 1,000 users from each subgroup (100 users x 10 pages x 20 subgroups).</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Hypothesis</h2>
+<h2 id="hypothesis">Hypothesis</h2>
+<p><br />
+In Overwatch you can play either quick play or competitive play. Competitive play, which only allows 25+ level users, classifies users with points based on their game win/defeat logs. You get Grand Master from 4,000 pts, Master from 3,500 pts and the rest we are not interested in. Let’s see what our sample dataset’s rank distribution looks like. Here I put points as <code>skillRating</code>.</p>
 
-<p><br>
-In Overwatch you can play either quick play or competitive play. Competitive play, which only allows 25+ level users, classifies users with points based on their game win/defeat logs. You get Grand Master from 4,000 pts, Master from 3,500 pts and the rest we are not interested in. Let&#39;s see what our sample dataset&#39;s rank distribution looks like. Here I put points as <code>skillRating</code>.</p>
+<p><img src="/assets/overwatch/overlog_ladder_eng.png" alt="Competitive play skillRating distribution" /></p>
 
-<p><img src="/assets/overwatch/overlog_ladder_eng.png" alt="Competitive play skillRating distribution"></p>
+<p>The skillRating distribution from the sample dataset shows that there is a chasm between the leader group and the followers. This is caused by the way I crawled the sample dataset. The second best subgroup was from page 700 to 710, and the cut-off of Master-class (skillRating 3500) was around page 65. Although it was not intended at all in the first place, this chasm led me to build and test some machine-learning algorithms to tell the very best users from the crowd, for fun! (It’s for fun so it might contain some technical glitches and procedural mistakes. TT)</p>
 
-<p>The skillRating distribution from the sample dataset shows that there is a chasm between the leader group and the followers. This is caused by the way I crawled the sample dataset. The second best subgroup was from page 700 to 710, and the cut-off of Master-class (skillRating 3500) was around page 65. Although it was not intended at all in the first place, this chasm led me to build and test some machine-learning algorithms to tell the very best users from the crowd, for fun! (It&#39;s for fun so it might contain some technical glitches and procedural mistakes. TT) </p>
+<hr />
 
-<p><hr></p>
+<h2 id="eda--preprocessing">EDA &amp; Preprocessing</h2>
+<p><br />
+Let’s see what the dataset looks like first.</p>
 
-<h2>EDA &amp; Preprocessing</h2>
-
-<p><br>
-Let&#39;s see what the dataset looks like first. </p>
-
-<p><img src="/assets/overwatch/overlog_raw.png" alt="raw data"></p>
+<p><img src="/assets/overwatch/overlog_raw.png" alt="raw data" /></p>
 
 <ul>
-<li>avgFire: Average time on fire in minutes (when you kill loads of &#39;em)</li>
-<li>kd: Kill / Death ratio</li>
-<li>level: User level</li>
-<li>mostHeroes: Top 3 most played heroes</li>
-<li>platform: Where you play (Korea, US, Europe)</li>
-<li>playtime: Total play time in hours</li>
-<li>player: Player name</li>
-<li>rank: Rank</li>
-<li>skillRating: Competitive Play Points</li>
-<li>winRatio: Win Ratio(%)</li>
+  <li>avgFire: Average time on fire in minutes (when you kill loads of ‘em)</li>
+  <li>kd: Kill / Death ratio</li>
+  <li>level: User level</li>
+  <li>mostHeroes: Top 3 most played heroes</li>
+  <li>platform: Where you play (Korea, US, Europe)</li>
+  <li>playtime: Total play time in hours</li>
+  <li>player: Player name</li>
+  <li>rank: Rank</li>
+  <li>skillRating: Competitive Play Points</li>
+  <li>winRatio: Win Ratio(%)</li>
 </ul>
 
-<p>First of all, <code>avgFire</code>, <code>kd</code> and <code>winRatio</code> are not in the right format. Python&#39;s lambda function does a wonderful job of changing data types nice and easily. <code>avgFire</code> is a string <code>min:sec</code> so I just made a new column called <code>avgFire_sec</code> in seconds.</p>
+<p>First of all, <code>avgFire</code>, <code>kd</code> and <code>winRatio</code> are not in the right format. Python’s lambda function does a wonderful job of changing data types nice and easily. <code>avgFire</code> is a string <code>min:sec</code> so I just made a new column called <code>avgFire_sec</code> in seconds.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;avgFire_sec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;avgFire&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">time_converter</span><span class="p">)</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;kd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;rank&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)))</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;winRatio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;winRatio&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span></code></pre></figure>
 
-<p>And <code>mostHeroes</code> column has lists that each contains 3 (sometimes 2) hero strings. All the Overwatch heores fall into 4 big categories (attack, defence, charge, heal), so I added these four features (e.g. <code>[&#39;McCree&#39;, &#39;Reaper&#39;, &#39;Mei&#39;]</code> =&gt; <code>attack: 2</code>, <code>defence: 1</code>)</p>
+<p>And <code>mostHeroes</code> column has lists that each contains 3 (sometimes 2) hero strings. All the Overwatch heores fall into 4 big categories (attack, defence, charge, heal), so I added these four features (e.g. <code>['McCree', 'Reaper', 'Mei']</code> =&gt; <code>attack: 2</code>, <code>defence: 1</code>)</p>
 
-<p><img src="/assets/overwatch/overlog_selection.png" alt="why Torbjörn and Widowmaker on ATTACK? // source: gamecrate.com"></p>
+<p><img src="/assets/overwatch/overlog_selection.png" alt="why Torbjörn and Widowmaker on ATTACK? // source: gamecrate.com" /></p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
     <span class="n">attack_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Genji&#39;</span><span class="p">,</span> <span class="s1">&#39;Reaper&#39;</span><span class="p">,</span> <span class="s1">&#39;McCree&#39;</span><span class="p">,</span> 
@@ -155,9 +151,9 @@ Let&#39;s see what the dataset looks like first. </p>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;heal&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mostHeroes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">heal</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;gtwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;mostHeroes&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">gtwh</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></code></pre></figure>
 
-<p>And I added gtwh (Genji, Tracer, Widowmaker, Hanjo, the most hated quartet in Overwatch (in Korea at least)). They are often picked by selfish and kill-orientated buggers, and it&#39;s my hypothesis that the more gtwh heroes you have in your top 3, the less likely that you&#39;ll be in the master&#39;s level.</p>
+<p>And I added gtwh (Genji, Tracer, Widowmaker, Hanjo, the most hated quartet in Overwatch (in Korea at least)). They are often picked by selfish and kill-orientated buggers, and it’s my hypothesis that the more gtwh heroes you have in your top 3, the less likely that you’ll be in the master’s level.</p>
 
-<p>Plus, I added individual hero columns too. </p>
+<p>Plus, I added individual hero columns too.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Genji&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;Genji&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Reaper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s1">&#39;Reaper&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
@@ -176,99 +172,91 @@ Let&#39;s see what the dataset looks like first. </p>
     
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_class&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;skillRating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">label_class</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></code></pre></figure>
 
-<p>Now we&#39;ve got the columns ready, let&#39;s have a look at some plots!</p>
+<p>Now we’ve got the columns ready, let’s have a look at some plots!</p>
 
-<p><img src="/assets/overwatch/overlog_corr1_eng.png" alt="user_class ~ kd, level, playTime"></p>
+<p><img src="/assets/overwatch/overlog_corr1_eng.png" alt="user_class ~ kd, level, playTime" /></p>
 
-<p><img src="/assets/overwatch/overlog_corr2_eng.png" alt="user_class ~ winRatio, avgFire_sec"></p>
+<p><img src="/assets/overwatch/overlog_corr2_eng.png" alt="user_class ~ winRatio, avgFire_sec" /></p>
 
 <p>Whilst <code>level</code> and <code>playTime</code> are positively skewed, <code>kd</code>, <code>winRatio</code> and <code>avgFire_sec</code> are more or less normally distributed. The target variable <code>user_class</code> is extremely imbalanced, as only one-twentith of them are top players. In the joint plots, blue dots(user_class 0) are the master-level players. Classifying them from the rest is a bit of a tricky challenge as some good yet under 3500 users tend to show stats as good as top players.</p>
 
-<p>Next, the heroes. To see which heros are favoured by which, I calculated the probabilities of heroes being chosen for the top 3 most played heores in master and non-master class user groups. </p>
+<p>Next, the heroes. To see which heros are favoured by which, I calculated the probabilities of heroes being chosen for the top 3 most played heores in master and non-master class user groups.</p>
 
-<p><img src="/assets/overwatch/overlog_hero_selection_eng.png" alt="Zarya, McCree, Genji are loved by the top players"></p>
+<p><img src="/assets/overwatch/overlog_hero_selection_eng.png" alt="Zarya, McCree, Genji are loved by the top players" /></p>
 
-<p>The x-axis is the top players&#39; probabilities of choosing heros for their top3, and y-axis the rest. The heroes below the red line are more favoured by the master players and above by the rest. From my personal experience (of skillRating 1800) Genji and McCree were the most difficult heroes to control as I was forced to move and jump constantly to keep myself alive. So was Zarya as her ultimatum requires a good level of team-spirit and understanding of game-flow. On the other hand, Lucio was a pretty easy-going hero: fast speed, simple music change and powerful touch down(Q).</p>
+<p>The x-axis is the top players’ probabilities of choosing heros for their top3, and y-axis the rest. The heroes below the red line are more favoured by the master players and above by the rest. From my personal experience (of skillRating 1800) Genji and McCree were the most difficult heroes to control as I was forced to move and jump constantly to keep myself alive. So was Zarya as her ultimatum requires a good level of team-spirit and understanding of game-flow. On the other hand, Lucio was a pretty easy-going hero: fast speed, simple music change and powerful touch down(Q).</p>
 
 <p>Would there be more drastic differences between the top and the bottom?</p>
 
-<p><img src="/assets/overwatch/overlog_hero_selection_deepsea_eng.png" alt="top vs bottom (under 2100)"></p>
+<p><img src="/assets/overwatch/overlog_hero_selection_deepsea_eng.png" alt="top vs bottom (under 2100)" /></p>
 
-<p>This plot doesn&#39;t look too different from the previous one, apart from some heroes like Junkrat. Junkrat seems to be in favour of bottom-rank users as Junkrat doesn&#39;t usually get involved with dog fights in the battle front thanks to his long-ranged weapon.</p>
+<p>This plot doesn’t look too different from the previous one, apart from some heroes like Junkrat. Junkrat seems to be in favour of bottom-rank users as Junkrat doesn’t usually get involved with dog fights in the battle front thanks to his long-ranged weapon.</p>
 
 <p>Pandas has this amazing visualisation tool <code>radviz</code> that makes nice plots like the following. As the hero type columns are integer values I added a bit of noise to make the plots clearer. (integer points overlap each other.)</p>
 
-<h3>Users that are under skillRating 2100</h3>
+<h3 id="users-that-are-under-skillrating-2100">Users that are under skillRating 2100</h3>
+<p><img src="/assets/overwatch/overlog_radviz_deepsea.png" alt="under-2100 users are rather balanced in choosing hero types" />
+<br /></p>
+<h3 id="master-class-users">Master-class users</h3>
+<p><img src="/assets/overwatch/overlog_radviz_top.png" alt="Masters are not that into defence type heroes" /></p>
 
-<p><img src="/assets/overwatch/overlog_radviz_deepsea.png" alt="under-2100 users are rather balanced in choosing hero types">
-<br></p>
+<p><img src="/assets/overwatch/overlog_bastion.png" alt="Bastion rocks in quick play // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg" /></p>
 
-<h3>Master-class users</h3>
+<p>There is much more to discover from this dataset, but it’s time to move on and get our hands dirty with some machine-learning algorithms.</p>
 
-<p><img src="/assets/overwatch/overlog_radviz_top.png" alt="Masters are not that into defence type heroes"></p>
+<hr />
 
-<p><img src="/assets/overwatch/overlog_bastion.png" alt="Bastion rocks in quick play // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg"></p>
+<h2 id="feature-engineering">Feature Engineering</h2>
+<p><br />
+In the previous part, I preprocessed the raw data and added some new columns like hero types, and ended up with 32 features. The more features you have in your model, the more likely you’ll have <code>the curse of dimensionality</code>, so it’s better to manually/programmatically select (or extract) features.</p>
 
-<p>There is much more to discover from this dataset, but it&#39;s time to move on and get our hands dirty with some machine-learning algorithms.</p>
-
-<p><hr></p>
-
-<h2>Feature Engineering</h2>
-
-<p><br>
-In the previous part, I preprocessed the raw data and added some new columns like hero types, and ended up with 32 features. The more features you have in your model, the more likely you&#39;ll have <code>the curse of dimensionality</code>, so it&#39;s better to manually/programmatically select (or extract) features.</p>
-
-<h3>Manual Feature Selection</h3>
-
+<h3 id="manual-feature-selection">Manual Feature Selection</h3>
 <p>From the exploratory Data Analysis session above, I saw a glimmer of hope of making a fairly decent classifier with the stat variable and hero categories. I added Genji as the final variable as he was often seen with the top players.</p>
 
-<h3>Automatic Feature Selection (ExtraTreeClassifier)</h3>
-
-<p>It&#39;s also possible to select features based on their importance to the model. I fed training dataset into sklearn&#39;s ExtraTreeClassifier, and filtered the top 12 features by their <code>feature_importance</code>.</p>
+<h3 id="automatic-feature-selection-extratreeclassifier">Automatic Feature Selection (ExtraTreeClassifier)</h3>
+<p>It’s also possible to select features based on their importance to the model. I fed training dataset into sklearn’s ExtraTreeClassifier, and filtered the top 12 features by their <code>feature_importance</code>.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#feature selection</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">ExtraTreesClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span></code></pre></figure>
 
-<p><img src="/assets/overwatch/overlog_feature_importance.png" alt="Feature Selection via ExtraTreeClassifier"></p>
+<p><img src="/assets/overwatch/overlog_feature_importance.png" alt="Feature Selection via ExtraTreeClassifier" /></p>
 
-<p>The ExtraTreeClassifier got rid of all the hero categories apart from <code>gtwh</code> and put McCree, Tracer, Winston, Zarya, Genji and Ana in their places. </p>
+<p>The ExtraTreeClassifier got rid of all the hero categories apart from <code>gtwh</code> and put McCree, Tracer, Winston, Zarya, Genji and Ana in their places.</p>
 
-<p>I have also tried PCA and SVD to extract some latent variables, but the result (e.g. explained variance curve) didn&#39;t look convincing for some unknown issues. PCA said the best number of features is 2 for all the individual hero variables.</p>
+<p>I have also tried PCA and SVD to extract some latent variables, but the result (e.g. explained variance curve) didn’t look convincing for some unknown issues. PCA said the best number of features is 2 for all the individual hero variables.</p>
 
-<p><img src="/assets/overwatch/overlog_pca.png" alt="Feature Extraction via PCA"></p>
+<p><img src="/assets/overwatch/overlog_pca.png" alt="Feature Extraction via PCA" /></p>
 
 <p>On the PCA plot above, top players(user_class 0) are distributed nearly the same as the rest. Disappointing.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Model Testing</h2>
-
-<p><br></p>
+<h2 id="model-testing">Model Testing</h2>
+<p><br /></p>
 
 <p>Before building models, I split the training set and test set (90/10). The training set will be used for model fitting, and the test set for final model evaluation.</p>
 
-<p>There are numerous machine-learning algorithms we can use in classification problems like this one. Here I&#39;m going to test the following 4 options which are my favourite algorithms. (I like the sound of <code>Random Forest</code>. How Green.) </p>
+<p>There are numerous machine-learning algorithms we can use in classification problems like this one. Here I’m going to test the following 4 options which are my favourite algorithms. (I like the sound of <code>Random Forest</code>. How Green.)</p>
 
 <ol>
-<li>MinMaxScaler + SelectKBest + LogisticRegression</li>
-<li>MinMaxScaler + SelectKBest + RandomForestClassifier</li>
-<li>MinMaxScaler + SelectKBest + SupportVectorClassifier</li>
-<li>MinMaxScaler + DNNClassifier</li>
+  <li>MinMaxScaler + SelectKBest + LogisticRegression</li>
+  <li>MinMaxScaler + SelectKBest + RandomForestClassifier</li>
+  <li>MinMaxScaler + SelectKBest + SupportVectorClassifier</li>
+  <li>MinMaxScaler + DNNClassifier</li>
 </ol>
 
 <ul>
-<li>MinMaxScaler: Convert each data column from 0 to 1</li>
-<li>SelectKBest: select k best features for each classifier</li>
-<li>LogisticRegression: basic yet powerful classification algorithm</li>
-<li>RandomForestClassifier: combine multiple decision trees to improve prediction</li>
-<li>SupportVectorClassifier: find the hyperplane that performs best</li>
-<li>DNNClassifier: complicated neural network using TensorFlow&#39;s DNNClassifier</li>
+  <li>MinMaxScaler: Convert each data column from 0 to 1</li>
+  <li>SelectKBest: select k best features for each classifier</li>
+  <li>LogisticRegression: basic yet powerful classification algorithm</li>
+  <li>RandomForestClassifier: combine multiple decision trees to improve prediction</li>
+  <li>SupportVectorClassifier: find the hyperplane that performs best</li>
+  <li>DNNClassifier: complicated neural network using TensorFlow’s DNNClassifier</li>
 </ul>
 
-<h3>Pipeline and GridSearchCV</h3>
-
-<p>Much of model building, fitting and testing is pretty repetitive and complicated. It gets worse as you have a lot of options to tune the hyper parameters of the algorithms by which you can greatly improve the predition power. Sklearn&#39;s PipeLine and GridSearchCV ease the pain amazingly. It&#39;s really easy to assign and control the sequential stages by putting them in a pipeline object. GridSearchCV takes parameter sets as an argument, tests them in 3 fold cross validation sets(default) and finds the model with the best performance.</p>
+<h3 id="pipeline-and-gridsearchcv">Pipeline and GridSearchCV</h3>
+<p>Much of model building, fitting and testing is pretty repetitive and complicated. It gets worse as you have a lot of options to tune the hyper parameters of the algorithms by which you can greatly improve the predition power. Sklearn’s PipeLine and GridSearchCV ease the pain amazingly. It’s really easy to assign and control the sequential stages by putting them in a pipeline object. GridSearchCV takes parameter sets as an argument, tests them in 3 fold cross validation sets(default) and finds the model with the best performance.</p>
 
 <p>So with my first option..</p>
 
@@ -305,7 +293,7 @@ In the previous part, I preprocessed the raw data and added some new columns lik
 
 <span class="n">cv_log</span> <span class="o">=</span> <span class="n">minmax_logistic</span><span class="p">(</span><span class="n">X_training</span><span class="p">[</span><span class="n">feature_list</span><span class="p">],</span> <span class="n">y_training</span><span class="p">)</span></code></pre></figure>
 
-<p>The function <code>minmax_logistic</code> returns a trained logistic regression classifier, and we can check its best parameter set via <code>.best_estimator_</code>. And it&#39;s also possible to access the coefficients of each variables.</p>
+<p>The function <code>minmax_logistic</code> returns a trained logistic regression classifier, and we can check its best parameter set via <code>.best_estimator_</code>. And it’s also possible to access the coefficients of each variables.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fil</span> <span class="o">=</span> <span class="n">cv_log</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;feature_selection&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
 <span class="n">selected_features</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">compress</span><span class="p">(</span><span class="n">feature_list</span><span class="p">,</span> <span class="n">fil</span><span class="p">))</span>
@@ -313,24 +301,24 @@ In the previous part, I preprocessed the raw data and added some new columns lik
              <span class="n">selected_features</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coefficient&#39;</span><span class="p">])</span>
 <span class="n">logistic_coeff</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;coefficient&#39;</span><span class="p">)</span></code></pre></figure>
 
-<p><img src="/assets/overwatch/overlog_logistic.png" alt="Coefficients of the logistic classifier"></p>
+<p><img src="/assets/overwatch/overlog_logistic.png" alt="Coefficients of the logistic classifier" /></p>
 
-<p>As the top player&#39;s classification label is 0, all the coffefficients are minus values. Going by the size of them, winRatio and playTime are the most influential variables. </p>
+<p>As the top player’s classification label is 0, all the coffefficients are minus values. Going by the size of them, winRatio and playTime are the most influential variables.</p>
 
 <p>Likewise I made <code>pipeline</code> and <code>gridSearchCV</code> for Random Forest and Support Vector Classifier. I passed <code>n_estimators</code> and <code>min_samples_split</code> for Random Forest, and <code>kernel</code> and <code>C</code> for SVM for hyper parameter tuning.</p>
 
-<p>Let&#39;s see what variables Random Forest picked.
-<img src="/assets/overwatch/overlog_imp.png" alt="Feature Importance of Random Forest classifier"></p>
+<p>Let’s see what variables Random Forest picked.
+<img src="/assets/overwatch/overlog_imp.png" alt="Feature Importance of Random Forest classifier" /></p>
 
 <p>Random Forest picked winRatio and playTime too. However, it selected 5 variables when logistic classifier picked 7.</p>
 
 <p>(Model 1, 2, 3 performed slightly better with programmatically selected features than with manually selected ones.)</p>
 
-<p><br></p>
+<p><br /></p>
 
-<h3>TensorFlow&#39;s DNNClassifier</h3>
+<h3 id="tensorflows-dnnclassifier">TensorFlow’s DNNClassifier</h3>
 
-<p>Google TensorFlow is the most trending machine-learning library at the minute. I&#39;d never personally tried TensorFlow or fully understood the notion of Deep Learning, but I&#39;ve given it a go. I made a deep neural network with 4 hidden layers by getting some ideas from its tutorial pages. At the minute I do not know how to combine DNNClassifier with gridSearchCV and cross-validation, so I split the training set into the training set and validation set to fit the parameters of the DNN, before putting it to the final evaluation with the test set.</p>
+<p>Google TensorFlow is the most trending machine-learning library at the minute. I’d never personally tried TensorFlow or fully understood the notion of Deep Learning, but I’ve given it a go. I made a deep neural network with 4 hidden layers by getting some ideas from its tutorial pages. At the minute I do not know how to combine DNNClassifier with gridSearchCV and cross-validation, so I split the training set into the training set and validation set to fit the parameters of the DNN, before putting it to the final evaluation with the test set.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
 
@@ -366,70 +354,63 @@ In the previous part, I preprocessed the raw data and added some new columns lik
     <span class="k">return</span> <span class="n">acc_list</span><span class="p">,</span> <span class="n">classifier</span>
         </code></pre></figure>
 
-<p><img src="/assets/overwatch/overlog_dnn_auc.png" alt="DNN&#39;s AUC score over steps"></p>
+<p><img src="/assets/overwatch/overlog_dnn_auc.png" alt="DNN's AUC score over steps" /></p>
 
-<p>After fitting DNN for 38,000 times, the AUC score curve flattens out. I hardcoded the code above to fit the model 38,000times and evaluated the model performance with the test dataset. </p>
+<p>After fitting DNN for 38,000 times, the AUC score curve flattens out. I hardcoded the code above to fit the model 38,000times and evaluated the model performance with the test dataset.</p>
 
-<p>It was my first time of building a neural network that has 4 hidden layers, but thanks to TensorFlow&#39;s powerful yet easy-to-use API, the coding itselt was not too hard. However, as I&#39;m no expert in deep learning I found it difficult to finetune the model by tweaking parameters like the number of hidden layers, the number of nodes in each hidden layer, step size, batch_size, dropout ratio, just to name a few. Furthermore, unlike Iris dataset that was more or less easy to train with low step size, the auc score didn&#39;t get up to .5 until a few hundred times of fitting with this overlog dataset. At the end of the day I got what I wanted, but I&#39;m still not sure fitting nn for 38,000 times was the right thing to do. (too much training? but it worked well with the unseen test dataset.)</p>
+<p>It was my first time of building a neural network that has 4 hidden layers, but thanks to TensorFlow’s powerful yet easy-to-use API, the coding itselt was not too hard. However, as I’m no expert in deep learning I found it difficult to finetune the model by tweaking parameters like the number of hidden layers, the number of nodes in each hidden layer, step size, batch_size, dropout ratio, just to name a few. Furthermore, unlike Iris dataset that was more or less easy to train with low step size, the auc score didn’t get up to .5 until a few hundred times of fitting with this overlog dataset. At the end of the day I got what I wanted, but I’m still not sure fitting nn for 38,000 times was the right thing to do. (too much training? but it worked well with the unseen test dataset.)</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Model Evaluation</h2>
+<h2 id="model-evaluation">Model Evaluation</h2>
+<p><br /></p>
 
-<p><br></p>
-
-<p>So, it&#39;s time for a show down. I&#39;m going to evaluate 4 models that I&#39;ve built above with the test dataset. To make things easier, I made the following custom model_tester function.</p>
+<p>So, it’s time for a show down. I’m going to evaluate 4 models that I’ve built above with the test dataset. To make things easier, I made the following custom model_tester function.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">model_tester</span><span class="p">(</span><span class="n">cv</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
     <span class="n">y_pred</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">report</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">[</span><span class="s1">&#39;user_class&#39;</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></code></pre></figure>
 
-<p>In this classification_report, I&#39;m going to focus on the f1-score of class 0, because A) this dataset is imbalance and B) I&#39;m particularly interested in detecting top players well.</p>
+<p>In this classification_report, I’m going to focus on the f1-score of class 0, because A) this dataset is imbalance and B) I’m particularly interested in detecting top players well.</p>
 
-<h3>LogisticRegression</h3>
+<h3 id="logisticregression">LogisticRegression</h3>
+<p><img src="/assets/overwatch/overlog_logi_result.png" alt="Logistic_Classifier_Result" />
+<br /></p>
+<h3 id="randomforestclassifier">RandomForestClassifier</h3>
+<p><img src="/assets/overwatch/overlog_rf_result.png" alt="RF_Result" />
+<br /></p>
 
-<p><img src="/assets/overwatch/overlog_logi_result.png" alt="Logistic_Classifier_Result">
-<br></p>
-
-<h3>RandomForestClassifier</h3>
-
-<p><img src="/assets/overwatch/overlog_rf_result.png" alt="RF_Result">
-<br></p>
-
-<h3>SupportVectorClassifier</h3>
-
-<p><img src="/assets/overwatch/overlog_svm_result.png" alt="SVM_Result">
-<br></p>
-
-<h3>DNNClassifier</h3>
-
-<p><img src="/assets/overwatch/overlog_dnn_result.png" alt="DNN_Result">
-<br></p>
+<h3 id="supportvectorclassifier">SupportVectorClassifier</h3>
+<p><img src="/assets/overwatch/overlog_svm_result.png" alt="SVM_Result" />
+<br /></p>
+<h3 id="dnnclassifier">DNNClassifier</h3>
+<p><img src="/assets/overwatch/overlog_dnn_result.png" alt="DNN_Result" />
+<br /></p>
 
 <p>Based on the F1-score of class 0, DNN performed best, then RF, SVM and Logistic Regression. DNN was the best performer, but I believe RF and SVM could do better. (I spent most of my time finetuning DNN :P) (DNN with 100,000 steps got test F1-score of 0.92 but the DNN with 38,000 steps was chosen for the best valdiation AUC.)</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Prediction</h2>
+<h2 id="prediction">Prediction</h2>
 
-<p>Alright. It&#39;s time for a real classification. DNN is my weapon of choice.</p>
+<p>Alright. It’s time for a real classification. DNN is my weapon of choice.</p>
 
 <p>First of all, let me test with my own Overwatch log. 0 means top players, 1 means the rest.
-<img src="/assets/overwatch/overlog_junk3.png" alt="junk3 - Competitive Play">
-<br>
-<img src="/assets/overwatch/overlog_junk3_result.png" alt="Yup, the model is well built.">
-The DNN says 1. Correct. </p>
+<img src="/assets/overwatch/overlog_junk3.png" alt="junk3 - Competitive Play" />
+<br />
+<img src="/assets/overwatch/overlog_junk3_result.png" alt="Yup, the model is well built." />
+The DNN says 1. Correct.</p>
 
 <p>What about some random good and good-ish players from the leaderboard?
-<img src="/assets/overwatch/overlog_random_test.png" alt="Random Test Result">
-The second player, who is a Master-class player, is mis-classified as a non-Master player. I guess it&#39;s due to his low winRatio, k/d and relatively short playTime. </p>
+<img src="/assets/overwatch/overlog_random_test.png" alt="Random Test Result" />
+The second player, who is a Master-class player, is mis-classified as a non-Master player. I guess it’s due to his low winRatio, k/d and relatively short playTime.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>Outro</h2>
+<h2 id="outro">Outro</h2>
 
-<p>In this post, I have crawled some user stat data from overlog.gg, preprocessed features and built some models to classify top players from the crowd. My testing result says that DNN with 4 hidden layers performed the best. This time I have played with the fully connected Deep Learning model, but some experts said it&#39;s also possible to use CNN with this dataset. For those who are interested in this overlog dataset and want to try their own classification models, I&#39;ve uploaded the training and test datasets on <a href="https://github.com/junkwhinger/overlog">github</a>. Make your own model, predict y<em>pred with X</em>test and send me(junsik.whang@gmail.com) the prediction result. Then I&#39;ll email you the performance evaluation result back :) Thank you for reading. </p>
+<p>In this post, I have crawled some user stat data from overlog.gg, preprocessed features and built some models to classify top players from the crowd. My testing result says that DNN with 4 hidden layers performed the best. This time I have played with the fully connected Deep Learning model, but some experts said it’s also possible to use CNN with this dataset. For those who are interested in this overlog dataset and want to try their own classification models, I’ve uploaded the training and test datasets on <a href="https://github.com/junkwhinger/overlog">github</a>. Make your own model, predict y_pred with X_test and send me(junsik.whang@gmail.com) the prediction result. Then I’ll email you the performance evaluation result back :) Thank you for reading.</p>
 
         </section>
         <footer class="post-footer">
@@ -464,7 +445,7 @@ The second player, who is a Master-class player, is mis-classified as a non-Mast
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

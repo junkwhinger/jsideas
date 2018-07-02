@@ -4,7 +4,6 @@ title:  "Lee Sedol vs. AlphaGo: full data"
 date:   2016-03-16 12:34:25
 categories: python
 image: /assets/alphago/header.jpg
-tags: featured
 ---
 
 ## Thinking Time - Full Match Visualisation

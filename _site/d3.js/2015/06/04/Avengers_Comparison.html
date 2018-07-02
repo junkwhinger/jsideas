@@ -63,20 +63,18 @@
 <p>Marvel's lastest film, <a href="http://www.imdb.com/title/tt2395427/">Avengers: Age of Ultron</a> reaped a huge success over here in South Korea. I myself am a huge fan of them and went to the cinema to check it out. One thing that really surprised me was the secret existance of Hawk_Eye's family. It didn't appear officiallly, but I'd always thought Black_Widow was kinda seeing Hawk_Eye (mentioning stuff of Budapest in the first film). And it turned out that Black_Widow had a thing for Hulk! This joyful revelation inspired me to make some visualisations that would show how the main characters' relationships changed in the original Avengers and its sequal.</p>
 
 <h2 class="section-heading">Methodology</h2>
-
 <p>The data collection method was exactly the same as my previous analysis on Korean version of Game of Throne (but based on real history). I wrote down the names of characters who appeared together. To narrow down the focus, I only took the following characters into account:</p>
 
 <ul>
-    <li>good characters: Quick_Silver, Scarlet Witch (when they were on Ultron's side), Loki, Ultron</li>
-    <li>real characters: Peggy and Heimdall that appeared in hallucination</li>
+	<li>good characters: Quick_Silver, Scarlet Witch (when they were on Ultron's side), Loki, Ultron</li>
+	<li>real characters: Peggy and Heimdall that appeared in hallucination</li>
 </ul>
 
 <p>For example, the data collected through the process introduced above look like this:</p>
-
 <ul>
-    <li>Hawk_Eye, Black_Widow</li>
-    <li>Black_Widow, Captain_America, Thor, Iron_Man</li>
-    <li>Iron_Man, Hulk, Captain_Amercia</li>
+	<li>Hawk_Eye, Black_Widow</li>
+	<li>Black_Widow, Captain_America, Thor, Iron_Man</li>
+	<li>Iron_Man, Hulk, Captain_Amercia</li>
 </ul>
 
 <p>Then, before putting these data into a network, I transformed scenes into all unique pairs, and gave weight to them according to the number of characters of each scene. A 2-people scene must be different from a 3-people scene. For instance, in a 2-people scene, the number of pairs will be 1, thus the weight of a pair is 1. In a 3-people scene, there will be 3 unique pairs with a weight of 1/3 each. A 4-people scene would have 6 pairs with 1/6 weight each.</p>
@@ -88,7 +86,6 @@
 <iframe width="100%" height="550" src="//jsfiddle.net/junkwhinger/d8gz64zf/28/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p>Try...</p>
-
 <ol>
   <li>Double click a node to check out a character's immediate neighbours.</li>
   <li>Mouse on a node to check out a character's detailed info.</li>
@@ -108,14 +105,14 @@
 <div class="bumper"></div>
 
 <h2>Character Intimacy Network</h2>
-
 <iframe width="100%" height="700" src="//jsfiddle.net/junkwhinger/yn8e2czt/21/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <p>To make the relationships of the main 6 guys more clear, I extracted each main character's network and visualised as above. And now it becomes more obvious that Black_Widow had a stronger link with Hulk than with Hawk_Eye in the Age of Ultron. As two network graphs are merged to create this visualisation, all node size is fixed.</p>
 
 <p>Thank you for reading!</p>
 
-<p><link href="/d3_css/avengers_comparison.css" rel="stylesheet"></p>
+<link href="/d3_css/avengers_comparison.css" rel="stylesheet" />
+
 
         </section>
         <footer class="post-footer">
@@ -150,7 +147,7 @@
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

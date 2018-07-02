@@ -66,57 +66,65 @@
 
 <div id="chart"></div>
 
-<p><link href="/d3_css/avengers_2015.css" rel="stylesheet">
+<link href="/d3_css/avengers_2015.css" rel="stylesheet" />
+
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script type="text/javascript"></p>
 
-<p>var width = 600,
-    height = 500;</p>
+<script type="text/javascript">
 
-<p>var force = d3.layout.force()
+var width = 600,
+    height = 500;
+
+var force = d3.layout.force()
     .charge(-3000)
     .linkDistance(100)
     .linkStrength(0.2)
     .size([width-50, height-50])
-    .gravity(.5);</p>
+    .gravity(.5);
 
-<p>var svg = d3.select(&quot;div#chart&quot;).append(&quot;svg&quot;)
-    .attr(&quot;width&quot;, width)
-    .attr(&quot;height&quot;, height);</p>
+var svg = d3.select("div#chart").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-<p>d3.json(&quot;/d3<em>data/avengers</em>2015.json&quot;, function(error, graph) {
+
+d3.json("/d3_data/avengers_2015.json", function(error, graph) {
   force
       .nodes(graph.nodes)
       .links(graph.links)
-      .start();</p>
+      .start();
 
-<p>var link = svg.selectAll(&quot;.link&quot;)
+
+
+  var link = svg.selectAll(".link")
       .data(graph.links)
-    .enter().append(&quot;line&quot;)
-      .attr(&quot;class&quot;, &quot;link&quot;)
-      .style(&quot;stroke-width&quot;, function(d) { return d.weight*3; });</p>
+    .enter().append("line")
+      .attr("class", "link")
+      .style("stroke-width", function(d) { return d.weight*3; });
 
-<p>var node = svg.selectAll(&quot;.node&quot;)
+  var node = svg.selectAll(".node")
       .data(graph.nodes)
-    .enter().append(&quot;g&quot;)
-      .attr(&quot;class&quot;, &quot;node&quot;)
-      .call(force.drag);</p>
+    .enter().append("g")
+      .attr("class", "node")
+      .call(force.drag);
 
-<p>node.append(&quot;circle&quot;)
-      .attr(&quot;r&quot;, function(d) {return d.dc * 3})
-      .style(&quot;fill&quot;, function(d) { return d.color; })
-      .on(&#39;dblclick&#39;, connectedNodes); //Added code</p>
+  node.append("circle")
+      .attr("r", function(d) {return d.dc * 3})
+      .style("fill", function(d) { return d.color; })
+      .on('dblclick', connectedNodes); //Added code
 
-<p>var text = svg.selectAll(&quot;.node&quot;)
-                .append(&quot;text&quot;)
-                .attr(&quot;class&quot;, &quot;node_id&quot;)
-                .attr(&quot;dx&quot;, 18)
-                .attr(&quot;dy&quot;, &quot;.35em&quot;)
-                .text(function(d){ return d.id});</p>
+  var text = svg.selectAll(".node")
+                .append("text")
+                .attr("class", "node_id")
+                .attr("dx", 18)
+                .attr("dy", ".35em")
+                .text(function(d){ return d.id});
 
-<p>node.each(collide(0.5));</p>
 
-<p>var padding = 1, // separation between circles
+
+  node.each(collide(0.5));
+
+
+  var padding = 1, // separation between circles
     radius=8;
     function collide(alpha) {
       var quadtree = d3.geom.quadtree(graph.nodes);
@@ -127,11 +135,11 @@
             ny1 = d.y - rb,
             ny2 = d.y + rb;
         quadtree.visit(function(quad, x1, y1, x2, y2) {
-          if (quad.point &amp;&amp; (quad.point !== d)) {
+          if (quad.point && (quad.point !== d)) {
             var x = d.x - quad.point.x,
                 y = d.y - quad.point.y,
                 l = Math.sqrt(x * x + y * y);
-              if (l &lt; rb) {
+              if (l < rb) {
               l = (l - rb) / l * alpha;
               d.x -= x *= l;
               d.y -= y *= l;
@@ -139,61 +147,65 @@
               quad.point.y += y;
             }
           }
-          return x1 &gt; nx2 || x2 &lt; nx1 || y1 &gt; ny2 || y2 &lt; ny1;
+          return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
         });
       };
-    }</p>
+    }
 
-<p>force.on(&quot;tick&quot;, function() {
-    link.attr(&quot;x1&quot;, function(d) { return d.source.x; })
-        .attr(&quot;y1&quot;, function(d) { return d.source.y; })
-        .attr(&quot;x2&quot;, function(d) { return d.target.x; })
-        .attr(&quot;y2&quot;, function(d) { return d.target.y; });</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>d3.selectAll(&quot;circle&quot;)
-  .attr(&quot;cx&quot;, function(d) { return d.x})
-  .attr(&quot;cy&quot;, function(d) { return d.y});
 
-d3.selectAll(&quot;text&quot;)
-  .attr(&quot;x&quot;, function(d) { return d.x})
-  .attr(&quot;y&quot;, function(d) { return d.y});
-</code></pre></div>
-<p>});</p>
+  force.on("tick", function() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
 
-<p>//Toggle stores whether the highlighting is on
+    d3.selectAll("circle")
+      .attr("cx", function(d) { return d.x})
+      .attr("cy", function(d) { return d.y});
+
+    d3.selectAll("text")
+      .attr("x", function(d) { return d.x})
+      .attr("y", function(d) { return d.y});
+
+  });
+
+  //Toggle stores whether the highlighting is on
   var toggle = 0;
   //Create an array logging what is connected to what
   var linkedByIndex = {};
-  for (i = 0; i &lt; graph.nodes.length; i++) {
-      linkedByIndex[i + &quot;,&quot; + i] = 1;
+  for (i = 0; i < graph.nodes.length; i++) {
+      linkedByIndex[i + "," + i] = 1;
   };
   graph.links.forEach(function (d) {
-      linkedByIndex[d.source.index + &quot;,&quot; + d.target.index] = 1;
+      linkedByIndex[d.source.index + "," + d.target.index] = 1;
   });
   //This function looks up whether a pair are neighbours
   function neighboring(a, b) {
-      return linkedByIndex[a.index + &quot;,&quot; + b.index];
+      return linkedByIndex[a.index + "," + b.index];
   }
   function connectedNodes() {
       if (toggle == 0) {
           //Reduce the opacity of all but the neighbouring nodes
-          d = d3.select(this).node().<strong>data</strong>;
-          node.style(&quot;opacity&quot;, function (o) {
+          d = d3.select(this).node().__data__;
+          node.style("opacity", function (o) {
               return neighboring(d, o) | neighboring(o, d) ? 1 : 0.05;
           });
-          link.style(&quot;opacity&quot;, function (o) {
+          link.style("opacity", function (o) {
               return d.index==o.source.index | d.index==o.target.index ? 1 : 0.05;
           });
           //Reduce the op
           toggle = 1;
       } else {
           //Put them back to opacity=1
-          node.style(&quot;opacity&quot;, 1);
-          link.style(&quot;opacity&quot;, 1);
+          node.style("opacity", 1);
+          link.style("opacity", 1);
           toggle = 0;
       }
-  } </p>
+  } 
 
-<p>});</p>
+});
+
+</script>
 
         </section>
         <footer class="post-footer">
@@ -228,7 +240,7 @@ d3.selectAll(&quot;text&quot;)
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

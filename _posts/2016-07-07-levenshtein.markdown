@@ -5,7 +5,6 @@ date:       2016-07-07 00:00:00
 author:     "Jun"
 categories: "Python"
 image: /assets/alphago/header.jpg
-tags: featured
 ---
 # AlphaGo vs. Lee Sedol: time spent pattern comparison 
  

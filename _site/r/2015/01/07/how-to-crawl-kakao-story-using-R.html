@@ -64,51 +64,52 @@
 
 <p>The basic idea is to download a html file and parse it with R. It's really important to have a closer look at the html tag structure and check where your data lies.</p>
 
-<p> Here's how I did.<br> 
-  1. Ready the file<br>
-Go to the page you want to crawl. And copy and save the div you want to crawl, and save it as an html file.<br>
-<br>
+<p> Here's how I did.<br /> 
+  1. Ready the file<br />
+Go to the page you want to crawl. And copy and save the div you want to crawl, and save it as an html file.<br />
+<br />
 
-2. Read in the file on RStudio.<br>
-> library("XML") // importing XML library to use "htmlParse".
-> doc <- readLines(“html_file.html")<br>
-You’ll see an Warning message like ‘incomplete final line found..” but it’s okay.<br>
-<br>
+2. Read in the file on RStudio.<br />
+&gt; library("XML") // importing XML library to use "htmlParse".
+&gt; doc &lt;- readLines(“html_file.html")<br />
+You’ll see an Warning message like ‘incomplete final line found..” but it’s okay.<br />
+<br />
 
-3. parse the doc. If in Korean, encode with UTF-8<br>
-> doc_2 <- htmlParse(doc, encoding="UTF-8")<br>
-<br>
+3. parse the doc. If in Korean, encode with UTF-8<br />
+&gt; doc_2 &lt;- htmlParse(doc, encoding="UTF-8")<br />
+<br />
 
-4. find the div class or id names that you want to crawl.<br>
-For example, likeCount is in the div class called “_likeCount”.<br>
-<br>
+4. find the div class or id names that you want to crawl.<br />
+For example, likeCount is in the div class called “_likeCount”.<br />
+<br />
 
-5. crawl using CSS library.<br>
-> install.packages(“CSS”)<br>
-> library(“CSS”)<br>
-> likeCounts <- cssApply(doc_2, “._likeCount”, cssCharacter)<br>
-You have to put a period(“.”) before the div name. If it’s a string of characters you are going to crawl then the third parameter is “cssCharacter”. Find more about this <a href="http://cran.r-project.org/web/packages/CSS/vignettes/CSS.pdf">here</a>. This CSS library is awesome to say the least.<br>
-Crawl other info by using the same method.<br>
-like.. > urls <- cssApply(doc, ".player>a", cssLink)<br>
-<br>
+5. crawl using CSS library.<br />
+&gt; install.packages(“CSS”)<br />
+&gt; library(“CSS”)<br />
+&gt; likeCounts &lt;- cssApply(doc_2, “._likeCount”, cssCharacter)<br />
+You have to put a period(“.”) before the div name. If it’s a string of characters you are going to crawl then the third parameter is “cssCharacter”. Find more about this <a href="http://cran.r-project.org/web/packages/CSS/vignettes/CSS.pdf">here</a>. This CSS library is awesome to say the least.<br />
+Crawl other info by using the same method.<br />
+like.. &gt; urls &lt;- cssApply(doc, ".player&gt;a", cssLink)<br />
+<br />
 
-6. if the data you’re crawling is missing at some points, then it’s better to use cssApplyInNodeSet to put NAs to make a complete set with other data.<br>
-<br>
+6. if the data you’re crawling is missing at some points, then it’s better to use cssApplyInNodeSet to put NAs to make a complete set with other data.<br />
+<br />
 
-7. use cbind command to make a matrix<br>
-> my_matrix <- cbind(dates, likeCounts, contents)<br>
-<br>
+7. use cbind command to make a matrix<br />
+&gt; my_matrix &lt;- cbind(dates, likeCounts, contents)<br />
+<br />
 
-8. export to Excel<br>
-To do so, download “xlsx” library and load it.<br>
-I tried “write.csv” command, but for some encoding issues occurred and Excel couldn’t load the file properly.<br>
-> install.packages(“xlsx”)<br>
-> library(“xlsx”)<br>
-> write.xlsx(my_matrix, “name_of_your_file.xlsx”)<br>
-<br>
+8. export to Excel<br />
+To do so, download “xlsx” library and load it.<br />
+I tried “write.csv” command, but for some encoding issues occurred and Excel couldn’t load the file properly.<br />
+&gt; install.packages(“xlsx”)<br />
+&gt; library(“xlsx”)<br />
+&gt; write.xlsx(my_matrix, “name_of_your_file.xlsx”)<br />
+<br />
 
-9. Go to Excel and open it!<br>
-Voila! It’s done!<br></p>
+9. Go to Excel and open it!<br />
+Voila! It’s done!<br /></p>
+
 
         </section>
         <footer class="post-footer">
@@ -143,7 +144,7 @@ Voila! It’s done!<br></p>
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

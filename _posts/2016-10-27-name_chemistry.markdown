@@ -5,7 +5,6 @@ date:       2016-10-27 00:00:00
 author:     "Jun"
 categories: "Scala"
 image: /assets/name_chemistry/header.jpg
-tags: featured
 ---
 
 ## 들어가며

@@ -61,103 +61,96 @@
             <span class="post-reading-time"></span> read
           </div>
           <a name="topofpage"></a>
-          <h2>들어가며</h2>
+          <h2 id="들어가며">들어가며</h2>
+<p><br /></p>
 
-<p><br></p>
+<p>요새 국운이 융성하려는지 우리 전통문화가 집중조명을 받고 있습니다. 그중에 소위 ‘이름점’이라는 궁합점이 예능 뿐만 아니라 정치 뉴스에서도 비중있게 다루어져 인기인데요, 최근 공부해보고 있는 Scala로 간단히 코드를 짜서 만들어봤습니다.</p>
 
-<p>요새 국운이 융성하려는지 우리 전통문화가 집중조명을 받고 있습니다. 그중에 소위 &#39;이름점&#39;이라는 궁합점이 예능 뿐만 아니라 정치 뉴스에서도 비중있게 다루어져 인기인데요, 최근 공부해보고 있는 Scala로 간단히 코드를 짜서 만들어봤습니다.</p>
+<hr />
 
-<p><hr></p>
-
-<h2>Scala</h2>
-
-<p><br></p>
+<h2 id="scala">Scala</h2>
+<p><br /></p>
 
 <p>이번에는 Scala를 사용해서 이름점 코드를 짜봅시다. Python으로는 더 익숙하게 만들 수 있겠지만, Scala는 뭔가 이름도 그렇고 간지가 나기 때문에 배워볼 만한 가치가 있습니다. 조금 익숙해지면 Spark를 사용하는데도 좋다는 것은 보너스입니다. <a href="https://datasciencevademecum.wordpress.com/2016/01/28/6-points-to-compare-python-and-scala-for-data-science-using-apache-spark/">여기에서</a> 데이터분야에서의 Scala와 Python 장단점을 더 자세히 확인할 수 있습니다.</p>
 
 <p>조금 Scala를 만져본 감상은 이렇습니다.</p>
 
 <ul>
-<li>알아두고 익숙해지면 Spark를 사용하는데 매우 편리하다</li>
-<li>생소한 함수형 언어라 그런지 Python으로 프로그래밍을 시작한 사람에게 진입장벽이 꽤 높은 것 같다.</li>
-<li>val / var을 지정하거나 변수의 타입을 꼼꼼하게 설정하고 파악하지 않으면 에러때문에 고생한다.</li>
-<li>class와 object가 마구 등장하고 Trait 같은 어려운 개념들이 있다.</li>
-<li>SBT나 MVN 이런 환경 설정이 Python에 비해 복잡한 것 같다.</li>
-<li>이해하기 어렵지만 어떤 면에서는 직관적으로 데이터를 처리하기에 용이한 것 같다.</li>
+  <li>알아두고 익숙해지면 Spark를 사용하는데 매우 편리하다</li>
+  <li>생소한 함수형 언어라 그런지 Python으로 프로그래밍을 시작한 사람에게 진입장벽이 꽤 높은 것 같다.</li>
+  <li>val / var을 지정하거나 변수의 타입을 꼼꼼하게 설정하고 파악하지 않으면 에러때문에 고생한다.</li>
+  <li>class와 object가 마구 등장하고 Trait 같은 어려운 개념들이 있다.</li>
+  <li>SBT나 MVN 이런 환경 설정이 Python에 비해 복잡한 것 같다.</li>
+  <li>이해하기 어렵지만 어떤 면에서는 직관적으로 데이터를 처리하기에 용이한 것 같다.</li>
 </ul>
 
-<p><hr></p>
+<hr />
 
-<h2>Scala 환경 만들기</h2>
+<h2 id="scala-환경-만들기">Scala 환경 만들기</h2>
 
 <p>Terminal에서 바로 실행할 수 있는 Python과는 달리 Scala는 설치해야 될 것이 좀 많습니다. 맥과 윈도우에서 모두 사용할 수 있는 <a href="https://www.jetbrains.com/idea/">IntelliJ</a>를 사용하면 상대적으로 더 편리하게 작업 환경을 만들 수 있습니다. IntelliJ를 설치하고, Scala &amp; SBT plugin을 설치하면 됩니다.</p>
 
-<p><img src="/assets/name_chemistry/intellij.png" alt="IntelliJ"></p>
+<p><img src="/assets/name_chemistry/intellij.png" alt="IntelliJ" /></p>
 
 <p>여기서 새로 프로젝트를 만든 후 다음과 같이 SBT를 선택합니다.</p>
 
-<p><img src="/assets/name_chemistry/intellij2.png" alt="Scala - SBT"></p>
+<p><img src="/assets/name_chemistry/intellij2.png" alt="Scala - SBT" /></p>
 
 <p>만약 SBT가 보이지 않으면 plugin에서 SBT를 찾아 설치해야 합니다.</p>
 
-<p><a href="http://www.scala-sbt.org/index.html">SBT</a>는 Scala나 Java 등의 프로젝트를 쉽게 빌드해주는 툴입니다. </p>
+<p><a href="http://www.scala-sbt.org/index.html">SBT</a>는 Scala나 Java 등의 프로젝트를 쉽게 빌드해주는 툴입니다.</p>
 
-<p><img src="/assets/name_chemistry/intellij3.png" alt="Project Creation">
+<p><img src="/assets/name_chemistry/intellij3.png" alt="Project Creation" />
 여기에 프로젝트 이름을 넣으면 Project Location에 해당 프로젝트 폴더가 생깁니다.</p>
 
-<p><img src="/assets/name_chemistry/intellij4.png" alt="Project Folder">
-폴더에 들어가보면 .idea, project, src, target 폴더가 있고, build.sbt, name_chemistry.imi 파일이 생깁니다. (빌드가 진행되는 과정에서는 일부 파일만 보이게 됩니다.) 여기서 일단 신경쓸 부분은 src와 build.sbt입니다. </p>
+<p><img src="/assets/name_chemistry/intellij4.png" alt="Project Folder" />
+폴더에 들어가보면 .idea, project, src, target 폴더가 있고, build.sbt, name_chemistry.imi 파일이 생깁니다. (빌드가 진행되는 과정에서는 일부 파일만 보이게 됩니다.) 여기서 일단 신경쓸 부분은 src와 build.sbt입니다.</p>
 
-<h3>src</h3>
-
+<h3 id="src">src</h3>
 <p>src &gt; main &gt; scala안에 Scala object 파일을 만듭니다. 새로 생성하는 파일 옵션에 없는 경우에는 Scala class 옵션을 선택하고, 새로 생성되는 노트 화면에 Class를 Object로 바꾸면 됩니다.</p>
 
-<p><img src="/assets/name_chemistry/scala_object.png" alt="Scala Object 만들기"></p>
+<p><img src="/assets/name_chemistry/scala_object.png" alt="Scala Object 만들기" /></p>
 
-<h3>build.sbt</h3>
+<h3 id="buildsbt">build.sbt</h3>
+<p>여기에는 외부 라이브러리를 등록할 수 있습니다. 이름점을 계산하기 위해서는 한글 문자를 초성 / 중성 / 종성으로 분리해야 하므로, <a href="https://mvnrepository.com/artifact/com.twitter.penguin/korean-text/4.1.4">mvnrepository</a>에서 링크를 찾아 등록해주면 됩니다.</p>
 
-<p>여기에는 외부 라이브러리를 등록할 수 있습니다. 이름점을 계산하기 위해서는 한글 문자를 초성 / 중성 / 종성으로 분리해야 하므로, <a href="https://mvnrepository.com/artifact/com.twitter.penguin/korean-text/4.1.4">mvnrepository</a>에서 링크를 찾아 등록해주면 됩니다. </p>
+<p><img src="/assets/name_chemistry/twitter_sbt.png" alt="mvnrepository" /></p>
 
-<p><img src="/assets/name_chemistry/twitter_sbt.png" alt="mvnrepository"></p>
-
-<p><img src="/assets/name_chemistry/build_sbt.png" alt="build.sbt"></p>
+<p><img src="/assets/name_chemistry/build_sbt.png" alt="build.sbt" /></p>
 
 <p>build.sbt 안에 libraryDependencies에 해당 주소 스트링을 추가하고, 프로젝트를 리프레시하면 프로젝트 내에서 추가한 라이브러리를 사용할 수 있게 됩니다.</p>
 
 <p>이후에는 아까 처음에 만들었던 Scala Object 화면 안에다가 Scala로 코드를 쓰기만 하면 됩니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>이름점 알고리즘</h2>
-
-<p><br></p>
+<h2 id="이름점-알고리즘">이름점 알고리즘</h2>
+<p><br /></p>
 
 <p>이름점은 2명의 이름의 획수를 조합하여 이들간의 궁합(케미)를 측정합니다. 이름점 알고리즘은 다음과 같은 방식으로 구성됩니다.</p>
 
 <ol>
-<li>각각 3글자로 구성된 A와 B의 이름을 준비한다.</li>
-<li>A의 이름은 A1/A2/A3, B는 B1/B2/B3로 구성된다고 할때</li>
-<li>A1 / B1 / A2 / B2 / A3 / B3 순으로 글자를 배치한다.</li>
-<li>그리고 각 글자의 획수를 계산한다. (여기서는 지역마다 획수 계산 방식에 약간 차이가 있기는 하나, 여기서는 직선이나 원을 1획으로 정한다.)</li>
-<li>맨 왼쪽부터 순차적으로 이동하면서 서로 이웃한 획수를 더하고 1의 자리를 기록하고, 맨끝까지 계산한 경우 다음 행으로 이동하여 동일한 연산을 수행한다.</li>
-<li>행에서 남은 숫자의 갯수가 2개일때까지 5의 연산을 수행한다.</li>
-<li>마지막에 남은 숫자가 2개라면 첫번째 숫자를 10의 자리에, 두번째 숫자를 1의 자리에 넣어 최종 궁합을 계산한다. </li>
-<li>이름궁합은 0에서 99 사이에 위치하며, 높으면 높을수록 두 인물간의 궁합이 좋다.</li>
+  <li>각각 3글자로 구성된 A와 B의 이름을 준비한다.</li>
+  <li>A의 이름은 A1/A2/A3, B는 B1/B2/B3로 구성된다고 할때</li>
+  <li>A1 / B1 / A2 / B2 / A3 / B3 순으로 글자를 배치한다.</li>
+  <li>그리고 각 글자의 획수를 계산한다. (여기서는 지역마다 획수 계산 방식에 약간 차이가 있기는 하나, 여기서는 직선이나 원을 1획으로 정한다.)</li>
+  <li>맨 왼쪽부터 순차적으로 이동하면서 서로 이웃한 획수를 더하고 1의 자리를 기록하고, 맨끝까지 계산한 경우 다음 행으로 이동하여 동일한 연산을 수행한다.</li>
+  <li>행에서 남은 숫자의 갯수가 2개일때까지 5의 연산을 수행한다.</li>
+  <li>마지막에 남은 숫자가 2개라면 첫번째 숫자를 10의 자리에, 두번째 숫자를 1의 자리에 넣어 최종 궁합을 계산한다.</li>
+  <li>이름궁합은 0에서 99 사이에 위치하며, 높으면 높을수록 두 인물간의 궁합이 좋다.</li>
 </ol>
 
 <p>뉴스에서 비중있게 다뤄진 사례를 활용하면 아래와 같이 이름궁합을 계산할 수 있습니다.</p>
 
-<p><img src="/assets/name_chemistry/sung_lee.jpg" alt="궁합 90! 엄청 높네요"></p>
+<p><img src="/assets/name_chemistry/sung_lee.jpg" alt="궁합 90! 엄청 높네요" /></p>
 
-<p><hr></p>
+<hr />
 
-<h2>Scala Code</h2>
+<h2 id="scala-code">Scala Code</h2>
+<p><br /></p>
 
-<p><br></p>
-
-<h3>한글 초성/중성/종성 획수 계산을 위한 Map 만들기</h3>
-
-<p><br>
+<h3 id="한글-초성중성종성-획수-계산을-위한-map-만들기">한글 초성/중성/종성 획수 계산을 위한 Map 만들기</h3>
+<p><br />
 Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼저 stroke_dict라는 Map을 만드는데 그안에는 Character와 Int가 들어갈거라고 정의를 해줍니다. 여기서 var을 쓰는 이유는 이후에 자음과 모음의 획수를 넣어주기 위해 변형이 가능한 Map을 만들기 때문입니다. 변경하지 않는 상수는 val로 지정합니다.</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="k">var</span> <span class="n">stroke_dict</span><span class="k">:</span><span class="kt">Map</span><span class="o">[</span><span class="kt">Char</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">()</span>
@@ -169,8 +162,7 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 
 <p>이런식으로 ㅏㅑㅓㅕ같은 모음까지 획수를 페어링해서 넣어줍니다. Map을 만들었으니 이제 이름을 각 문자로 자르고, 문자를 초중종성으로 해체한 다음, 획수를 계산하고, 순서를 재배열해서 획수를 더하는 일련의 과정을 반복하면 궁합을 계산할 수 있게 되는 겁니다.</p>
 
-<h3>획수 계산기</h3>
-
+<h3 id="획수-계산기">획수 계산기</h3>
 <p>글자가 넘어왔을때 글자를 해체해서 획수를 계산하는 함수를 만들어 봅니다.</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="c1">// stroke_counter는 Char를 받아서 Int를 뱉는다</span>
@@ -206,9 +198,9 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
     <span class="k">return</span> <span class="n">total_stroke</span>
 <span class="o">}</span></code></pre></figure>
 
-<p>여기서 .map이라는 함수가 사용되었는데, pandas의 .map(lambda x: foo(x))와 비슷하게 리스트 내의 값을 돌면서 {}안에서 지정한 함수를 수행합니다. </p>
+<p>여기서 .map이라는 함수가 사용되었는데, pandas의 .map(lambda x: foo(x))와 비슷하게 리스트 내의 값을 돌면서 {}안에서 지정한 함수를 수행합니다.</p>
 
-<h3>궁합 계산기</h3>
+<h3 id="궁합-계산기">궁합 계산기</h3>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="c1">// Int로 구성된 두개의 리스트를 인자로 받아 Unit 값을 리턴합니다.</span>
 <span class="c1">// 여기서는 최종값을 출력만 하기에 별도로 출력 타입을 지정하지 않았습니다. </span>
@@ -256,8 +248,7 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 
 <span class="o">}</span></code></pre></figure>
 
-<h3>실행</h3>
-
+<h3 id="실행">실행</h3>
 <p>이 모든 코드는 name_chemistry라는 Object 안에 들어있습니다. 그 아래 부분에 다음과 같은 코드를 넣고 테스트해봅시다.</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="c1">// 테스트</span>
@@ -271,21 +262,20 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 <span class="c1">// 획수를 사용하여 궁합 출력</span>
 <span class="n">chemistry_calculator</span><span class="o">(</span><span class="n">a_res</span><span class="o">,</span> <span class="n">b_res</span><span class="o">)</span></code></pre></figure>
 
-<p><img src="/assets/name_chemistry/sung_lee_result.png" alt="테스트 성공"></p>
+<p><img src="/assets/name_chemistry/sung_lee_result.png" alt="테스트 성공" /></p>
 
 <p>뉴스에서 나왔다시피 스칼라 코드를 빌드해서 실행한 결과 90이 나왔습니다! ㅎㅎ
 이제 잘 되었으니 다른 인물들에 대해서도 테스트해봅니다 :)</p>
 
-<p><hr></p>
+<hr />
 
-<h2>궁합 테스트</h2>
+<h2 id="궁합-테스트">궁합 테스트</h2>
 
 <p>요새 각 분야에 핫한 인물들에 대해서 이름점 궁합을 확인해봅시다.</p>
 
-<h3>스포츠</h3>
-
+<h3 id="스포츠">스포츠</h3>
 <p>요새는 잠시 주춤하지만 얼마전까지만 해도 우리형의 아성을 넘본 우리흥.
-<img src="/assets/name_chemistry/ronaldo.jpg" alt="우리흥 - 우리형">
+<img src="/assets/name_chemistry/ronaldo.jpg" alt="우리흥 - 우리형" />
 (출처: 중앙일보)</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="k">val</span> <span class="n">a_name</span> <span class="k">=</span> <span class="s">&quot;손흥민&quot;</span><span class="o">.</span><span class="n">toList</span>
@@ -296,12 +286,11 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 
 <span class="n">chemistry_calculator</span><span class="o">(</span><span class="n">a_res</span><span class="o">,</span> <span class="n">b_res</span><span class="o">)</span></code></pre></figure>
 
-<p>결과는 92!! 역시 이름점은 과학입니다...</p>
+<p>결과는 92!! 역시 이름점은 과학입니다…</p>
 
-<h3>연예</h3>
-
+<h3 id="연예">연예</h3>
 <p>방금 본 썰전의 유시민, 전원책 변호사의 케미는 어떨까요?
-<img src="/assets/name_chemistry/sull.jpg" alt="유시민 - 전원책">
+<img src="/assets/name_chemistry/sull.jpg" alt="유시민 - 전원책" />
 (출처: kmib.co.kr)</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="k">val</span> <span class="n">a_name</span> <span class="k">=</span> <span class="s">&quot;전원책&quot;</span><span class="o">.</span><span class="n">toList</span>
@@ -314,11 +303,10 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 
 <p>결과는 63입니다. 이름을 바꿔서도 넣어봐도 58로 궁합 점수가 우리흥형 커플에 비해 떨어집니다. 아무래도 서로 대립을 하는 구조다보니 궁합이 좀 떨어지지 않나 마 그렇게 생각합니다.</p>
 
-<h3>정치</h3>
+<h3 id="정치">정치</h3>
+<p>마지막으로 요새 가장 핫한 분야, 정치에서 핫한 2명의 인물을 뽑아보겠습니다. 랜덤으로 신문기사를 뽑았더니 박근혜 현직 대통령과 그 지인 최순실님이 눈에 띄네요.</p>
 
-<p>마지막으로 요새 가장 핫한 분야, 정치에서 핫한 2명의 인물을 뽑아보겠습니다. 랜덤으로 신문기사를 뽑았더니 박근혜 현직 대통령과 그 지인 최순실님이 눈에 띄네요. </p>
-
-<p><img src="/assets/name_chemistry/park_choi.jpg" alt="박근혜 - 최순실">
+<p><img src="/assets/name_chemistry/park_choi.jpg" alt="박근혜 - 최순실" />
 (출처: 뉴스타파)</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span></span><span class="k">val</span> <span class="n">a_name</span> <span class="k">=</span> <span class="s">&quot;박근혜&quot;</span><span class="o">.</span><span class="n">toList</span>
@@ -329,13 +317,13 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
 
 <span class="n">chemistry_calculator</span><span class="o">(</span><span class="n">a_res</span><span class="o">,</span> <span class="n">b_res</span><span class="o">)</span></code></pre></figure>
 
-<p>대망의 결과는!! 79가 나왔습니다. 아무래도 우리흥형 커플처럼 서로 빙의는 하지는 않지만 그렇다고 썰전 커플처럼 서로 대립하지는 않기때문에 적절한 수준에서 궁합이 나온 것 같네요. 대략 친구사이다..정도로 해석을 하면 적절할 것 같습니다. </p>
+<p>대망의 결과는!! 79가 나왔습니다. 아무래도 우리흥형 커플처럼 서로 빙의는 하지는 않지만 그렇다고 썰전 커플처럼 서로 대립하지는 않기때문에 적절한 수준에서 궁합이 나온 것 같네요. 대략 친구사이다..정도로 해석을 하면 적절할 것 같습니다.</p>
 
-<p><hr></p>
+<hr />
 
-<h2>마치며</h2>
+<h2 id="마치며">마치며</h2>
 
-<p>이번에는 Scala-SBT 환경에서 이름 궁합점 코드를 작성하고 요새 핫한 인물들간의 궁합을 살펴봤습니다. 좀 더 Scala 공부를 열심히 해서 Jar파일도 말아보고 Spark에서 이리저리 돌려봐야겠습니다! </p>
+<p>이번에는 Scala-SBT 환경에서 이름 궁합점 코드를 작성하고 요새 핫한 인물들간의 궁합을 살펴봤습니다. 좀 더 Scala 공부를 열심히 해서 Jar파일도 말아보고 Spark에서 이리저리 돌려봐야겠습니다!</p>
 
 <p><a href="http://jsideas.net/scala/2016/10/30/name_chemistry_refactoring.html">이름점 - Scala Code 수정</a></p>
 
@@ -372,7 +360,7 @@ Scala에는 Python의 Dictionary와 유사한 Map의 개념이 있습니다. 먼
               <section class="poweredby">Proudly published with <a href="http://jekyllrb.com"> Jekyll</a></section>
               <a class="subscribe" href="/feed.xml"> <span class="tooltip"> <i class="fa fa-rss"></i> You should subscribe to my feed.</span></a>
               <div class="inner">
-                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2017<br>All rights reserved.</section>
+                <section class="copyright">All content copyright <a href="/">Junsik Whang</a> &copy; 2018<br>All rights reserved.</section>
               </div>
             </footer>
           </div>

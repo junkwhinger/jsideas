@@ -4,7 +4,6 @@ title:  "Population Structure Change - Korea and Japan"
 date:   2016-02-27 00:34:25
 categories: d3
 image: /assets/population_cliff/header.png
-tags: featured
 ---
 
 ## Population Structure change over time - Korea and Japan

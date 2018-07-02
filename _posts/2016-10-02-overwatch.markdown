@@ -5,7 +5,6 @@ date:       2016-10-01 00:00:00
 author:     "Jun"
 categories: "Python"
 image: /assets/overwatch/overwatch_header.jpg
-tags: featured
 ---
 
 ## 들어가며

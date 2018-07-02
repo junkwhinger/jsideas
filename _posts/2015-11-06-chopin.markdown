@@ -4,7 +4,6 @@ title:  "유사도 기반 군집화 및 추천 알고리즘으로 살펴본 Chop
 date:   2015-11-06 23:34:25
 categories: python
 image: /assets/chopin/header.jpg
-tags: featured
 ---
 
 (이미지 출처: <a href="http://chopincompetition2015.com/news/0c57bc68-a199-4909-8506-30faa06de5a6">Chopin Competition 2015</a>)
