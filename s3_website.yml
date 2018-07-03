@@ -1,5 +1,5 @@
-s3_id: AKIAI6CF3SGJOJ4LDAOQ
-s3_secret: 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
+s3_id: AKIAI6CF3SGJOJ4LDAOQ #test
+s3_secret: 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 #test
 s3_bucket: jsideas.net
 cloudfront_distribution_id: EB2EMB5DIWWQM
 
