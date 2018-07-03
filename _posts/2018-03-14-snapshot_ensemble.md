@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Snapshot Ensemble with SGDR"
-date:       2018-03-15 00:00:00
+date:       2018-03-14 00:00:00
 author:     "Jun"
 categories: "Python"
 image: /assets/cityFinder/worldmap.jpg
@@ -10,11 +10,11 @@ image: /assets/cityFinder/worldmap.jpg
 
 ## Simple Voting Ensemble
 
-At the end of my previous post on `Which Continent Does PyoungChang Belong To?` I made a simple-voting-based ensemble function. 
+At the end of my previous post on <a href="http://jsideas.net/python/2018/02/19/cityFinder.html">`Which Continent Does PyoungChang Belong To?`</a> I made a simple-voting-based ensemble function. 
 
 Given city name, the ensemble model loads five models and aggregates their inference results, and chooses the most voted continent as its final prediction. This ensemble model's f1-score was 0.571 which was 0.005 higher than the single model's 0.566. 
 
-![simple-voting-based ensemble model](images/simple_voting.png)
+![simple-voting-based ensemble model](/assets/snapshot/simple_voting.png)
 
 Taking advantage of the collaborative power is simple to build and easy to use, but it forced me to set up and train multiple models. Complicated models with large dataset usually take longer than you'd train MNIST or CIFAR10 classifiers. And you'd surely want to find more efficient options when using paid GPUs like FloydHub.
 
@@ -38,17 +38,17 @@ How and why they work can be surmised as follows.
 
 3) If $M$ number of local minima produce $M$ different results, we can surely make an ensemble model based on them. Then, what we'd have to do is to train a single model and deliberately guide it to converge to local minima along its optimization path.
 
-![finding local_minima](images/local_minima.png)
+![finding local_minima](/assets/snapshot/local_minima.png)
 (image source: SNAPSHOT ENSEMBLES: TRAIN 1, GET M FOR FREE)
 
 4) How to guide it to the local minima? By annealing learning rate. Set it low to converge to a basin, and set it high to escape it. Here we use the cosine annealing technique suggested by 'SGDR'.
 
-![Annealing learning rate with warm restarts](images/sgdr.png)
+![Annealing learning rate with warm restarts](/assets/snapshot/sgdr.png)
 (image source: SGDR: Stochastic Gradient Descent with Warm Restarts)
 
 5) At each SGDR reset, save the model checkpoint. The ensemble model averages individual model's last softmax output and produces the final label.
 
-![Snapshot Ensemble](images/snapshot_ensemble.png)
+![Snapshot Ensemble](/assets/snapshot/snapshot_ensemble.png)
 
 
 <br>
@@ -226,7 +226,7 @@ simulate_lrs(10, 1, 100)
 
 
 
-![png](Snapshot%2BEnsemble%2Bwith%2BSGDR_files/Snapshot%2BEnsemble%2Bwith%2BSGDR_7_1.png)
+![png](/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_7_1.png)
 
 
 ### $T_{max} = 10, T_{mult} = 2$ for 100 epochs
@@ -242,7 +242,7 @@ simulate_lrs(10, 2, 100)
 
 
 
-![png](Snapshot%2BEnsemble%2Bwith%2BSGDR_files/Snapshot%2BEnsemble%2Bwith%2BSGDR_9_1.png)
+![png](/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_9_1.png)
 
 
 ### $T_{max} = 1, T_{mult} = 2$ for 100 epochs
@@ -261,7 +261,7 @@ simulate_lrs(1, 2, 100)
 
 
 
-![png](Snapshot%2BEnsemble%2Bwith%2BSGDR_files/Snapshot%2BEnsemble%2Bwith%2BSGDR_11_1.png)
+![png](/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_11_1.png)
 
 
 ## Performance Test
@@ -300,7 +300,7 @@ I tried several versions of SGDR with different $T_max$, $T_{mult}$, epochs. I l
 
 I ran sgdr for 120 epochs and got 12 snapshots. Here are their test f1-scores.
 
-![test f1-score of snapshots](images/test_f1score.png)
+![test f1-score of snapshots](/assets/snapshot/test_f1score.png)
 
 It seems that the model found good local minima since the third snapshots. The training f1-score were similar to the validation and test metric indicating that the model was robust to the problem of overfitting (training and validation  log in the full code below).
 
@@ -346,8 +346,7 @@ Two heads are better than one. And it gets even better when you don't even need 
 1) <a href='https://arxiv.org/pdf/1704.00109.pdf'>SNAPSHOT ENSEMBLES: TRAIN 1, GET M FOR FREE</a>  
 2) <a href='https://arxiv.org/pdf/1608.03983.pdf'>SGDR: Stochastic Gradient Descent with Warm Restarts</a>
 
-## Full Training Code 
-<a href="https://github.com/junkwhinger/snapshot_ensemble">GITHUB</a>
+## Full Training Code
 
 
 ```python
@@ -506,7 +505,7 @@ import torch.nn.functional as F
 
 
 ```python
-out_dir = os.path.abspath(os.path.join(os.path.curdir, "sgdr_7"))
+out_dir = os.path.abspath(os.path.join(os.path.curdir, "sgdr_final"))
     
 if not os.path.exists(out_dir):
     os.makedirs(out_dir)
@@ -1122,7 +1121,7 @@ plt.show()
 
 
 
-![png](Snapshot%2BEnsemble%2Bwith%2BSGDR_files/Snapshot%2BEnsemble%2Bwith%2BSGDR_44_1.png)
+![png](/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_44_1.png)
 
 
 
