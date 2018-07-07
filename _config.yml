@@ -2,7 +2,7 @@
 markdown: kramdown
 kramdown:
   math_engine: mathjax
-highlighter: pygments
+highlighter: rouge
 gems:
   - jemoji
   - jekyll-paginate
