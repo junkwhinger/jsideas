@@ -427,5 +427,5 @@ Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 
 
 
 ## Reference
-<a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>
+<a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>  
 <a href="https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding">An open-source implementation of the paper 'A Structured Self-Attentive Sentence Embedding' published by IBM and MILA.</a>
