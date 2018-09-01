@@ -87,15 +87,15 @@
 
 <p><strong>In [1]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span></code></pre></figure>
 
 <p><strong>In [2]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">raw_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;kim_record.csv&quot;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">raw_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"kim_record.csv"</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [3]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">raw_df</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">raw_df</span></code></pre></figure>
 
 <div>
 <table border="1" class="dataframe">
@@ -179,23 +179,23 @@
 
 <p><strong>In [4]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
 
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></code></pre></figure>
+<span class="n">sns</span><span class="o">.</span><span class="nb">set</span><span class="p">()</span></code></pre></figure>
 
-<pre><code>Populating the interactive namespace from numpy and matplotlib
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Populating the interactive namespace from numpy and matplotlib
+</code></pre></div></div>
 
 <p><strong>In [5]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_df</span> <span class="o">=</span> <span class="n">raw_df</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_df</span> <span class="o">=</span> <span class="n">raw_df</span></code></pre></figure>
 
 <p><strong>In [6]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_df</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_df</span></code></pre></figure>
 
 <div>
 <table border="1" class="dataframe">
@@ -277,16 +277,16 @@
 
 <p><strong>In [7]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="err">연도</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="err">연도</span></code></pre></figure>
 
 <p><strong>In [8]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;연도&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s">'연도'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [9]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span><span class="n">family</span><span class="o">=</span><span class="s1">&#39;AppleGothic&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s">'font'</span><span class="p">,</span><span class="n">family</span><span class="o">=</span><span class="s">'AppleGothic'</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">'bar'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'coolwarm'</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/2016-04-19-kim_hyun_soo_record_files/2016-04-19-kim_hyun_soo_record_15_0.png" alt="김현수 데이터 비교" /></p>
@@ -295,25 +295,25 @@
 
 <p><strong>In [10]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">re_kim_df</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="n">T</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">re_kim_df</span> <span class="o">=</span> <span class="n">kim_df</span><span class="o">.</span><span class="n">T</span></code></pre></figure>
 
 <p><strong>In [11]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">return_max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">return_max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [12]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">re_kim_df</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">re_kim_df</span><span class="p">[</span><span class="s">'max'</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [13]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">re_kim_df</span><span class="p">[</span><span class="s1">&#39;2014_norm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="mi">2014</span><span class="p">]</span> <span class="o">/</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span>
-<span class="n">re_kim_df</span><span class="p">[</span><span class="s1">&#39;2015_norm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="mi">2015</span><span class="p">]</span> <span class="o">/</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">re_kim_df</span><span class="p">[</span><span class="s">'2014_norm'</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="mi">2014</span><span class="p">]</span> <span class="o">/</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="s">'max'</span><span class="p">]</span>
+<span class="n">re_kim_df</span><span class="p">[</span><span class="s">'2015_norm'</span><span class="p">]</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="mi">2015</span><span class="p">]</span> <span class="o">/</span> <span class="n">re_kim_df</span><span class="p">[</span><span class="s">'max'</span><span class="p">]</span></code></pre></figure>
 
 <p><strong>In [14]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[[</span><span class="s1">&#39;2014_norm&#39;</span><span class="p">,</span><span class="s1">&#39;2015_norm&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">ax</span> <span class="o">=</span> <span class="n">re_kim_df</span><span class="p">[[</span><span class="s">'2014_norm'</span><span class="p">,</span><span class="s">'2015_norm'</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">'bar'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'coolwarm'</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend_</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
@@ -327,7 +327,7 @@
 
 <p><strong>In [15]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_hit_df</span> <span class="o">=</span> <span class="n">kim_df</span><span class="p">[[</span><span class="s1">&#39;안타&#39;</span><span class="p">,</span><span class="s1">&#39;2루타&#39;</span><span class="p">,</span><span class="s1">&#39;3루타&#39;</span><span class="p">,</span><span class="s1">&#39;홈런&#39;</span><span class="p">]]</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_hit_df</span> <span class="o">=</span> <span class="n">kim_df</span><span class="p">[[</span><span class="s">'안타'</span><span class="p">,</span><span class="s">'2루타'</span><span class="p">,</span><span class="s">'3루타'</span><span class="p">,</span><span class="s">'홈런'</span><span class="p">]]</span>
 <span class="n">kim_hit_df</span></code></pre></figure>
 
 <div>
@@ -371,17 +371,17 @@
 
 <p><strong>In [16]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">hit_one</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="n">hit_one_series</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="err">안타</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;2루타&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;3루타&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="err">홈런</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">hit_one</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="n">hit_one_series</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="err">안타</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s">'2루타'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s">'3루타'</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="o">.</span><span class="err">홈런</span>
     <span class="k">return</span> <span class="n">hit_one_series</span></code></pre></figure>
 
 <p><strong>In [17]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_hit_df</span><span class="p">[</span><span class="s1">&#39;1루타&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">hit_one</span><span class="p">(</span><span class="n">kim_hit_df</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_hit_df</span><span class="p">[</span><span class="s">'1루타'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hit_one</span><span class="p">(</span><span class="n">kim_hit_df</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [18]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_hit_df</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_hit_df</span></code></pre></figure>
 
 <div>
 <table border="1" class="dataframe">
@@ -428,12 +428,12 @@
 
 <p><strong>In [19]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">normalise</span><span class="p">(</span><span class="n">a_series</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">normalise</span><span class="p">(</span><span class="n">a_series</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">a_series</span> <span class="o">/</span> <span class="n">kim_hit_df</span><span class="o">.</span><span class="err">안타</span></code></pre></figure>
 
 <p><strong>In [20]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_hit_df_norm</span> <span class="o">=</span> <span class="n">kim_hit_df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">normalise</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_hit_df_norm</span> <span class="o">=</span> <span class="n">kim_hit_df</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="n">normalise</span><span class="p">)</span>
 <span class="n">kim_hit_df_norm</span></code></pre></figure>
 
 <div>
@@ -479,12 +479,12 @@
 
 <p><strong>In [21]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># 안타는 당연히 1이 되므로 날려주고, 3루타도 둘다 0이므로 날린다.</span>
-<span class="n">kim_hit_df_norm</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;안타&#39;</span><span class="p">,</span> <span class="s1">&#39;3루타&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># 안타는 당연히 1이 되므로 날려주고, 3루타도 둘다 0이므로 날린다.</span>
+<span class="n">kim_hit_df_norm</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'안타'</span><span class="p">,</span> <span class="s">'3루타'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
 
 <p><strong>In [22]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">kim_hit_df_norm</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">kim_hit_df_norm</span></code></pre></figure>
 
 <div>
 <table border="1" class="dataframe">
@@ -541,11 +541,11 @@
 
 <p><strong>In [23]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">scipy</span><span class="o">,</span> <span class="nn">scipy.stats</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">scipy</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span></code></pre></figure>
 
 <p><strong>In [24]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">chisquare</span><span class="p">(</span><span class="n">observed_values</span><span class="p">,</span><span class="n">expected_values</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">chisquare</span><span class="p">(</span><span class="n">observed_values</span><span class="p">,</span><span class="n">expected_values</span><span class="p">):</span>
     <span class="n">test_statistic</span><span class="o">=</span><span class="mi">0</span>
     <span class="k">for</span> <span class="n">observed</span><span class="p">,</span> <span class="n">expected</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">observed_values</span><span class="p">,</span> <span class="n">expected_values</span><span class="p">):</span>
         <span class="n">test_statistic</span><span class="o">+=</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">observed</span><span class="p">)</span><span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">expected</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
@@ -553,15 +553,15 @@
 
 <p><strong>In [25]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kim_hit_df_norm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">obs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kim_hit_df_norm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">exp</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">kim_hit_df_norm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
 
 <p><strong>In [26]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">chisquare</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">chisquare</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">exp</span><span class="p">)</span></code></pre></figure>
 
-<pre><code>Power_divergenceResult(statistic=0.021174474151259448, pvalue=0.98946861045470613)
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Power_divergenceResult(statistic=0.021174474151259448, pvalue=0.98946861045470613)
+</code></pre></div></div>
 
 <ul>
   <li>degree of freedom = 2</li>

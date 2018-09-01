@@ -104,11 +104,11 @@
 
 <p><br /></p>
 
-<p>마트에서 고객이 물품을 구매한 샘플 데이터셋이다. 날짜와, 고객명, 구매물품으로 되어있다. 장바구니 분석을 하기 위해서 각각의 고객이 구매한 제품의 리스트를 얻고 싶다. 이 상황에서 유용하게 쓸 수 있는 함수가 <code>collect_list</code>다. 말그대로 아이템을 가져다가 리스트로 전환해주는데, 비슷한 <code>collect_set</code>은 중복을 제외한 셋을 반환한다. 중복 허용 여부에 따라 맞는 함수를 사용하면 된다. 분석요건에 따라서 다음과 같은 쿼리를 구성할 수 있다.</p>
+<p>마트에서 고객이 물품을 구매한 샘플 데이터셋이다. 날짜와, 고객명, 구매물품으로 되어있다. 장바구니 분석을 하기 위해서 각각의 고객이 구매한 제품의 리스트를 얻고 싶다. 이 상황에서 유용하게 쓸 수 있는 함수가 <code class="highlighter-rouge">collect_list</code>다. 말그대로 아이템을 가져다가 리스트로 전환해주는데, 비슷한 <code class="highlighter-rouge">collect_set</code>은 중복을 제외한 셋을 반환한다. 중복 허용 여부에 따라 맞는 함수를 사용하면 된다. 분석요건에 따라서 다음과 같은 쿼리를 구성할 수 있다.</p>
 
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span></span><span class="k">SELECT</span> <span class="nb">date</span><span class="p">,</span> <span class="n">customer</span><span class="p">,</span> <span class="n">COLLECT_LIST</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">AS</span> <span class="n">item_list</span>
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">date</span><span class="p">,</span> <span class="n">customer</span><span class="p">,</span> <span class="n">COLLECT_LIST</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">AS</span> <span class="n">item_list</span>
 <span class="k">FROM</span> <span class="n">sample_dataset</span>
-<span class="k">GROUP</span> <span class="k">BY</span> <span class="nb">date</span><span class="p">,</span> <span class="n">customer</span></code></pre></figure>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">date</span><span class="p">,</span> <span class="n">customer</span></code></pre></figure>
 
 <p>이를 통해 각 날짜별로 각 고객이 구매한 아이템 목록을 얻을 수 있다.</p>
 
@@ -145,7 +145,7 @@
 <hr />
 
 <p>##2. datediff
-날짜간 일수 차이를 되돌려주는 함수가 <code>datediff</code>다. MySQL나 HiveQL에서 공통적으로 사용되는 녀석인데 약간의 차이가 또 있다. 예를 들어 다음과 같은 테이블이 있다고 하자.</p>
+날짜간 일수 차이를 되돌려주는 함수가 <code class="highlighter-rouge">datediff</code>다. MySQL나 HiveQL에서 공통적으로 사용되는 녀석인데 약간의 차이가 또 있다. 예를 들어 다음과 같은 테이블이 있다고 하자.</p>
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
@@ -171,20 +171,20 @@
 
 <p><br /></p>
 
-<p>다시 마트에 존이라는 사람이 언제 입장하고 퇴장했는지를 기록한 테이블이다. 첫번째 행은 입장시간을 두번째 행을 퇴장시간이라고 한다. MySQL에서는 <code>datediff</code>와 비슷하게 시간차를 계산해주는 <code>timediff</code> 함수로 이를 손쉽게 처리할 수 있다. 그러나 HiveQL은 이 기능을 지원하지 않는 듯 하다.. (있으면 알려주세요..)</p>
+<p>다시 마트에 존이라는 사람이 언제 입장하고 퇴장했는지를 기록한 테이블이다. 첫번째 행은 입장시간을 두번째 행을 퇴장시간이라고 한다. MySQL에서는 <code class="highlighter-rouge">datediff</code>와 비슷하게 시간차를 계산해주는 <code class="highlighter-rouge">timediff</code> 함수로 이를 손쉽게 처리할 수 있다. 그러나 HiveQL은 이 기능을 지원하지 않는 듯 하다.. (있으면 알려주세요..)</p>
 
-<p>대신 이를 우회해서 처리할 수 있는 방법이 있다. 바로 스트링으로 된 시간을 <code>unix_timestamp</code>로 변환해서 차이를 계산하는 방식이다. 다음과 같이 계산하면 된다.</p>
+<p>대신 이를 우회해서 처리할 수 있는 방법이 있다. 바로 스트링으로 된 시간을 <code class="highlighter-rouge">unix_timestamp</code>로 변환해서 차이를 계산하는 방식이다. 다음과 같이 계산하면 된다.</p>
 
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span></span><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">UNIX_TIMESTAMP</span><span class="p">(</span><span class="nb">date</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">UNIX_TIMESTAMP</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
 <span class="k">FROM</span> <span class="n">sample_dataset</span></code></pre></figure>
 
-<p>이렇게 실행하면 144894…같은 긴 숫자가 나온다. 이 숫자는 단위가 <code>초</code>이므로 뒤의 시간에서 앞의 시간을 빼주면 된다. 단 HiveQL에서 빼는 연산을 수행하기 위해서는 <code>lead</code>나 <code>lag</code>를 사용하여 같은 row상에 데이터가 존재하도록 변형을 해줘야 한다.</p>
+<p>이렇게 실행하면 144894…같은 긴 숫자가 나온다. 이 숫자는 단위가 <code class="highlighter-rouge">초</code>이므로 뒤의 시간에서 앞의 시간을 빼주면 된다. 단 HiveQL에서 빼는 연산을 수행하기 위해서는 <code class="highlighter-rouge">lead</code>나 <code class="highlighter-rouge">lag</code>를 사용하여 같은 row상에 데이터가 존재하도록 변형을 해줘야 한다.</p>
 
 <hr />
 
 <p>##3. Lead, Lag</p>
 
-<p>바로 앞에서 date를 unix_timestamp로 전환하는데 성공했다. 그럼 이 두가지 시간의 차를 어떻게 HiveQL에서 구할 수 있을까. <code>lead</code>와 <code>lag</code>를 써야 한다. <code>lead</code>는 간단히 말해서 앞으로 땡겨오는 것이고 <code>lag</code>는 뒤로 한칸씩 미는 방식이다. 다음과 같은 조금 더 복잡한 예시를 보자.</p>
+<p>바로 앞에서 date를 unix_timestamp로 전환하는데 성공했다. 그럼 이 두가지 시간의 차를 어떻게 HiveQL에서 구할 수 있을까. <code class="highlighter-rouge">lead</code>와 <code class="highlighter-rouge">lag</code>를 써야 한다. <code class="highlighter-rouge">lead</code>는 간단히 말해서 앞으로 땡겨오는 것이고 <code class="highlighter-rouge">lag</code>는 뒤로 한칸씩 미는 방식이다. 다음과 같은 조금 더 복잡한 예시를 보자.</p>
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;}
@@ -223,12 +223,12 @@
 
 <p><br /></p>
 
-<p><code>unix_timestamp</code>를 간소화시킨 형태의 컬럼과 고객이 2명이 있다고 하자. 대형 백화점에서 마트안에서 food와 grocery와 clothes 섹션에 입장한 시간이 각 행의 정보라고 하자. 그러면 John이라는 고객이 food라는 공간에 머문 시간은 입장 시간인 100에서 grocery에 입장한 시간이 101의 차이, 즉 1초가 된다. (물론 일반적으론 1초만 머물진 않겠지만 예시이므로.) 이 때 HiveQL에서 연산을 해주려면 같은 행에 시작시간과 끝시간이 존재해야 한다. 그 다음에 있는 레코드에서 정보를 가져와 하나씩 올리는 것이므로, <code>lead</code>를 사용하기로 한다. 그런데 단순히 올리는 것이 아니라 고객에 따라 분류를 해줘야 한다. 만약 고객으로 group by를 하지 않고 <code>lead</code>를 쓴다면, mark의 시작시간이 john의 clothes 시간의 종료시간이 되어버린다.</p>
+<p><code class="highlighter-rouge">unix_timestamp</code>를 간소화시킨 형태의 컬럼과 고객이 2명이 있다고 하자. 대형 백화점에서 마트안에서 food와 grocery와 clothes 섹션에 입장한 시간이 각 행의 정보라고 하자. 그러면 John이라는 고객이 food라는 공간에 머문 시간은 입장 시간인 100에서 grocery에 입장한 시간이 101의 차이, 즉 1초가 된다. (물론 일반적으론 1초만 머물진 않겠지만 예시이므로.) 이 때 HiveQL에서 연산을 해주려면 같은 행에 시작시간과 끝시간이 존재해야 한다. 그 다음에 있는 레코드에서 정보를 가져와 하나씩 올리는 것이므로, <code class="highlighter-rouge">lead</code>를 사용하기로 한다. 그런데 단순히 올리는 것이 아니라 고객에 따라 분류를 해줘야 한다. 만약 고객으로 group by를 하지 않고 <code class="highlighter-rouge">lead</code>를 쓴다면, mark의 시작시간이 john의 clothes 시간의 종료시간이 되어버린다.</p>
 
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span></span><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">LEAD</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="k">BY</span> <span class="n">customer</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">unix_timestamp</span><span class="p">)</span> <span class="k">AS</span> <span class="n">next_unix_timestamp</span>
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">LEAD</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="k">BY</span> <span class="n">customer</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">unix_timestamp</span><span class="p">)</span> <span class="k">AS</span> <span class="n">next_unix_timestamp</span>
 <span class="k">FROM</span> <span class="n">sample_dataset</span></code></pre></figure>
 
-<p><code>PARTITION BY</code>는 <code>LEAD</code>가 적용될 파티션을 정의한다. 그리고 리드를 하기 전에 <code>unix_timestamp</code>로 정렬을 해준다. 그리고 이름을 <code>next_unix_timestamp</code>로 정해준다.
+<p><code class="highlighter-rouge">PARTITION BY</code>는 <code class="highlighter-rouge">LEAD</code>가 적용될 파티션을 정의한다. 그리고 리드를 하기 전에 <code class="highlighter-rouge">unix_timestamp</code>로 정렬을 해준다. 그리고 이름을 <code class="highlighter-rouge">next_unix_timestamp</code>로 정해준다.
 그러면 다음과 같은 테이블이 생성된다.</p>
 
 <style type="text/css">
@@ -273,7 +273,7 @@
 
 <p><br /></p>
 
-<p>앞서 설명했던 바와 같이 하나씩 올라와서 <code>next_unix_timestamp</code>로 저장되었다. 3번째와 4번째 열에는 null값이 주어지는데, 단순히 <code>lead</code>로 끌어올 값이 없기 때문이다. 이제 바로 sql에서 쉽게 <code>next_unix_timestamp</code>에서 <code>unix_timestamp</code>를 빼주면 된다. <code>lag</code>는 <code>lead</code>의 반대로 적용된다.</p>
+<p>앞서 설명했던 바와 같이 하나씩 올라와서 <code class="highlighter-rouge">next_unix_timestamp</code>로 저장되었다. 3번째와 4번째 열에는 null값이 주어지는데, 단순히 <code class="highlighter-rouge">lead</code>로 끌어올 값이 없기 때문이다. 이제 바로 sql에서 쉽게 <code class="highlighter-rouge">next_unix_timestamp</code>에서 <code class="highlighter-rouge">unix_timestamp</code>를 빼주면 된다. <code class="highlighter-rouge">lag</code>는 <code class="highlighter-rouge">lead</code>의 반대로 적용된다.</p>
 
 
         </section>

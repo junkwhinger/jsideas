@@ -63,138 +63,138 @@
           <a name="topofpage"></a>
           <h2 id="tf-tips-3---cnn-개념-정리">tf tips. 3 - CNN 개념 정리</h2>
 
-<p><code>Convolutional Neural Network</code> (CNN)은 이미지 분류, 오브젝트 인식 등에서 굉장히 인기있는 알고리즘이다. 일반적인 Deep Neural Network에 비해 이미지 처리에 있어 CNN이 더 좋은 성능을 낸다고 알려져 있는데 그 비법은 인풋 데이터의 처리에 있다. DNN에서 인풋 레이어의 모든 값이 그 다음 레이어의 모든 뉴런에 연결된다면, CNN에서는 <code>filter</code>를 사용해서 서로 인접한 인풋 값이나 뉴런을 그 다음 레이어의 뉴런에 전달한다. 그리고 DNN에서 <code>weight</code>가 서로 다른 값을 가지고 있다면, CNN에서 하나의 필터는 같은 <code>weight</code>를 사용함으로써 위치에 관계없이 특정한 패턴을 탐지할 수 있다. 이러한 구조적인 장점에 힘입어, CNN은 자동으로 유의미한 피쳐를 탐지해낸다.</p>
+<p><code class="highlighter-rouge">Convolutional Neural Network</code> (CNN)은 이미지 분류, 오브젝트 인식 등에서 굉장히 인기있는 알고리즘이다. 일반적인 Deep Neural Network에 비해 이미지 처리에 있어 CNN이 더 좋은 성능을 낸다고 알려져 있는데 그 비법은 인풋 데이터의 처리에 있다. DNN에서 인풋 레이어의 모든 값이 그 다음 레이어의 모든 뉴런에 연결된다면, CNN에서는 <code class="highlighter-rouge">filter</code>를 사용해서 서로 인접한 인풋 값이나 뉴런을 그 다음 레이어의 뉴런에 전달한다. 그리고 DNN에서 <code class="highlighter-rouge">weight</code>가 서로 다른 값을 가지고 있다면, CNN에서 하나의 필터는 같은 <code class="highlighter-rouge">weight</code>를 사용함으로써 위치에 관계없이 특정한 패턴을 탐지할 수 있다. 이러한 구조적인 장점에 힘입어, CNN은 자동으로 유의미한 피쳐를 탐지해낸다.</p>
 
-<p>가장 기본적인 형태의 CNN은 <code>convolution layer</code>와 <code>pooling layer</code>로 저차원에서 고차원의 피쳐를 추출한 후 이를 기반으로 분류를 수행하기 위해 <code>fully connected layer</code>를 거친다. MNIST 데이터셋을 CNN에 넣고 돌려보자.</p>
+<p>가장 기본적인 형태의 CNN은 <code class="highlighter-rouge">convolution layer</code>와 <code class="highlighter-rouge">pooling layer</code>로 저차원에서 고차원의 피쳐를 추출한 후 이를 기반으로 분류를 수행하기 위해 <code class="highlighter-rouge">fully connected layer</code>를 거친다. MNIST 데이터셋을 CNN에 넣고 돌려보자.</p>
 
-<pre><code class="language-python">import matplotlib.pyplot as plt
-from collections import namedtuple
-import pandas as pd
-%matplotlib inline
-from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="kn">from</span> <span class="nn">tensorflow.examples.tutorials.mnist</span> <span class="kn">import</span> <span class="n">input_data</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="s">"MNIST_data/"</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>Extracting MNIST_data/train-images-idx3-ubyte.gz
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Extracting MNIST_data/train-images-idx3-ubyte.gz
 Extracting MNIST_data/train-labels-idx1-ubyte.gz
 Extracting MNIST_data/t10k-images-idx3-ubyte.gz
 Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">def build_cnn(learning_rate):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">build_cnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">):</span>
     
-    ## define input
-    x = tf.placeholder(tf.float32, shape=[None, 784])
-    y_ = tf.placeholder(tf.float32, shape=[None, 10])
+    <span class="c">## define input</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
-    ## weight and bias variables
-    def weight_variable(shape):
-        initial = tf.truncated_normal(shape, stddev=0.1)
-        return tf.Variable(initial)
+    <span class="c">## weight and bias variables</span>
+    <span class="k">def</span> <span class="nf">weight_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">stddev</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 
-    def bias_variable(shape):
-        initial = tf.constant(0.1, shape=shape)
-        return tf.Variable(initial)
+    <span class="k">def</span> <span class="nf">bias_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
     
-    ## define conv and max_pool
-    def conv2d(x, W):
-        return tf.nn.conv2d(x, W, strides=[1,1,1,1], padding='SAME')
+    <span class="c">## define conv and max_pool</span>
+    <span class="k">def</span> <span class="nf">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s">'SAME'</span><span class="p">)</span>
 
-    def max_pool_2x2(x):
-        return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+    <span class="k">def</span> <span class="nf">max_pool_2x2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s">'SAME'</span><span class="p">)</span>
 
-    ## define operation
-    ### conv1: depth 32
-    W_conv1 = weight_variable([5, 5, 1, 32])
-    b_conv1 = bias_variable([32])
+    <span class="c">## define operation</span>
+    <span class="c">### conv1: depth 32</span>
+    <span class="n">W_conv1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">])</span>
+    <span class="n">b_conv1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">32</span><span class="p">])</span>
 
-    x_image = tf.reshape(x, [-1, 28, 28, 1])
-    conv1 = conv2d(x_image, W_conv1) + b_conv1
-    h_conv1 = tf.nn.relu(conv1)
-    h_pool1 = max_pool_2x2(h_conv1)
-    layer1 = h_pool1
+    <span class="n">x_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="n">conv1</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="n">x_image</span><span class="p">,</span> <span class="n">W_conv1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_conv1</span>
+    <span class="n">h_conv1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv1</span><span class="p">)</span>
+    <span class="n">h_pool1</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv1</span><span class="p">)</span>
+    <span class="n">layer1</span> <span class="o">=</span> <span class="n">h_pool1</span>
     
-    ### conv1: depth 64
-    W_conv2 = weight_variable([5, 5, 32, 64])
-    b_conv2 = bias_variable([64])
+    <span class="c">### conv1: depth 64</span>
+    <span class="n">W_conv2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">])</span>
+    <span class="n">b_conv2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">64</span><span class="p">])</span>
 
-    conv2 = conv2d(layer1, W_conv2) + b_conv2
-    h_conv2 = tf.nn.relu(conv2)
-    h_pool2 = max_pool_2x2(h_conv2)
-    layer2 = h_pool2
+    <span class="n">conv2</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="n">layer1</span><span class="p">,</span> <span class="n">W_conv2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_conv2</span>
+    <span class="n">h_conv2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">conv2</span><span class="p">)</span>
+    <span class="n">h_pool2</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv2</span><span class="p">)</span>
+    <span class="n">layer2</span> <span class="o">=</span> <span class="n">h_pool2</span>
     
-    ### fc1: 1024
-    W_fc1 = weight_variable([7*7*64, 1024])
-    b_fc1 = bias_variable([1024])
-    layer2_matrix = tf.reshape(layer2, [-1, 7*7*64])
-    matmul_fc1 = tf.matmul(layer2_matrix, W_fc1) + b_fc1
-    h_fc1 = tf.nn.relu(matmul_fc1)
-    layer3 = h_fc1
+    <span class="c">### fc1: 1024</span>
+    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+    <span class="n">b_fc1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">])</span>
+    <span class="n">layer2_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">layer2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">])</span>
+    <span class="n">matmul_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer2_matrix</span><span class="p">,</span> <span class="n">W_fc1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc1</span>
+    <span class="n">h_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">matmul_fc1</span><span class="p">)</span>
+    <span class="n">layer3</span> <span class="o">=</span> <span class="n">h_fc1</span>
 
-    ### dropout on fc1
-    keep_prob = tf.placeholder(tf.float32)
-    layer3_drop = tf.nn.dropout(layer3, keep_prob)
+    <span class="c">### dropout on fc1</span>
+    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">layer3_drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">layer3</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
 
-    ### fc2: 10
-    W_fc2 = weight_variable([1024, 10])
-    b_fc2 = bias_variable([10])
-    matmul_fc2 = tf.matmul(layer3_drop, W_fc2) + b_fc2
-    y_conv = tf.nn.softmax(matmul_fc2)
-    layer4 = y_conv
+    <span class="c">### fc2: 10</span>
+    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">b_fc2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+    <span class="n">matmul_fc2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer3_drop</span><span class="p">,</span> <span class="n">W_fc2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc2</span>
+    <span class="n">y_conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">matmul_fc2</span><span class="p">)</span>
+    <span class="n">layer4</span> <span class="o">=</span> <span class="n">y_conv</span>
     
-    ### cross_entropy and train_step
-    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=layer4)
-    cost = tf.reduce_mean(cross_entropy)
-    train_step = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy)
+    <span class="c">### cross_entropy and train_step</span>
+    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
+    <span class="n">train_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     
-    ### prediction and accruacy
-    correct_prediction = tf.equal(tf.argmax(layer4, 1), tf.argmax(y_, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    <span class="c">### prediction and accruacy</span>
+    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
     
-    ### graph nodes
-    export_nodes = ['x', 'y_', 'keep_prob', 'cost', 'correct_prediction', 'accuracy', 'train_step']
-    Graph = namedtuple('Graph', export_nodes)
-    local_dict = locals()
-    graph = Graph(*[local_dict[each] for each in export_nodes])
+    <span class="c">### graph nodes</span>
+    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
+    <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'Graph'</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
+    <span class="n">local_dict</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">local_dict</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">export_nodes</span><span class="p">])</span>
     
-    return graph
-</code></pre>
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">## hyperparams
-batch_size = 100
-epochs = 2000
-learning_rate = 1e-4
-keep_prob = 0.5
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## hyperparams</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-4</span>
+<span class="n">keep_prob</span> <span class="o">=</span> <span class="mf">0.5</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">## run operation
-model = build_cnn(learning_rate)
-cnn_train_cost = []
-cnn_val_acc = []
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## run operation</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+<span class="n">cnn_train_cost</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">cnn_val_acc</span> <span class="o">=</span> <span class="p">[]</span>
 
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
     
-    for e in range(epochs):
-        batch = mnist.train.next_batch(batch_size)
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         
-        if (e % 100 == 0) | (e == epochs-1):
-            train_acc = sess.run(model.accuracy, feed_dict={
-                model.x: batch[0], model.y_: batch[1], model.keep_prob: 1.0
-            })
-            print("step %d, training_accuracy %g" %(e, train_acc))
+        <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="n">epochs</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">train_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"step </span><span class="si">%</span><span class="s">d, training_accuracy </span><span class="si">%</span><span class="s">g"</span> <span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">train_acc</span><span class="p">))</span>
             
-            val_acc = sess.run(model.accuracy, feed_dict={
-                model.x: mnist.test.images, model.y_: mnist.test.labels, model.keep_prob: 1.0
-            })
-            print("test_accuracy %g" % val_acc)
-            cnn_val_acc.append({'e': e, 'val_acc': val_acc})
-        _, t_cost = sess.run([model.train_step, model.cost], feed_dict={model.x: batch[0], model.y_: batch[1], model.keep_prob: keep_prob})
-        cnn_train_cost.append({'e': e, 'cost': t_cost})
+            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"test_accuracy </span><span class="si">%</span><span class="s">g"</span> <span class="o">%</span> <span class="n">val_acc</span><span class="p">)</span>
+            <span class="n">cnn_val_acc</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">'e'</span><span class="p">:</span> <span class="n">e</span><span class="p">,</span> <span class="s">'val_acc'</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">})</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">t_cost</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">train_step</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">cost</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="n">keep_prob</span><span class="p">})</span>
+        <span class="n">cnn_train_cost</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">'e'</span><span class="p">:</span> <span class="n">e</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">:</span> <span class="n">t_cost</span><span class="p">})</span>
     
-</code></pre>
+</code></pre></div></div>
 
-<pre><code>step 0, training_accuracy 0.13
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>step 0, training_accuracy 0.13
 test_accuracy 0.1251
 step 100, training_accuracy 0.77
 test_accuracy 0.7613
@@ -236,98 +236,98 @@ step 1900, training_accuracy 0.97
 test_accuracy 0.9758
 step 1999, training_accuracy 0.98
 test_accuracy 0.9771
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">cnn_train_df = pd.DataFrame.from_dict(cnn_train_cost)
-cnn_train_df.set_index('e', inplace=True)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cnn_train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">cnn_train_cost</span><span class="p">)</span>
+<span class="n">cnn_train_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'e'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-cnn_val_df = pd.DataFrame.from_dict(cnn_val_acc)
-cnn_val_df.set_index('e', inplace=True)
+<span class="n">cnn_val_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">cnn_val_acc</span><span class="p">)</span>
+<span class="n">cnn_val_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'e'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-plt.plot(cnn_train_df, label="train_cost")
-plt.plot(cnn_val_df, label="val_acc")
-plt.legend()
-plt.show()
-</code></pre>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cnn_train_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"train_cost"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cnn_val_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"val_acc"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p><img src="/assets/CNN_tutorial_files/CNN_tutorial_7_0.png" alt="png" /></p>
 
 <h2 id="비교를-위해-간단한-dnn을-만든다">비교를 위해 간단한 DNN을 만든다</h2>
 
-<p>CNN의 <code>convolution layer</code> 뒤에 붙은 <code>fully connected layer</code>를 따로 떼어 DNN으로 만들어 같은 하이퍼파라미터로 학습시킨다.</p>
+<p>CNN의 <code class="highlighter-rouge">convolution layer</code> 뒤에 붙은 <code class="highlighter-rouge">fully connected layer</code>를 따로 떼어 DNN으로 만들어 같은 하이퍼파라미터로 학습시킨다.</p>
 
-<pre><code class="language-python">def build_dnn(learning_rate):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">build_dnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">):</span>
     
-    ## define input
-    x = tf.placeholder(tf.float32, shape=[None, 784])
-    y_ = tf.placeholder(tf.float32, shape=[None, 10])
+    <span class="c">## define input</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
     
-    ### fc1: 1024
-    W_fc1 = weight_variable([784, 1024])
-    b_fc1 = bias_variable([1024])
-    layer2_matrix = tf.reshape(x, [-1, 784])
-    matmul_fc1 = tf.matmul(layer2_matrix, W_fc1) + b_fc1
-    h_fc1 = tf.nn.relu(matmul_fc1)
-    layer3 = h_fc1
+    <span class="c">### fc1: 1024</span>
+    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+    <span class="n">b_fc1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">])</span>
+    <span class="n">layer2_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="n">matmul_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer2_matrix</span><span class="p">,</span> <span class="n">W_fc1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc1</span>
+    <span class="n">h_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">matmul_fc1</span><span class="p">)</span>
+    <span class="n">layer3</span> <span class="o">=</span> <span class="n">h_fc1</span>
 
-    ### dropout on fc1
-    keep_prob = tf.placeholder(tf.float32)
-    layer3_drop = tf.nn.dropout(layer3, keep_prob)
+    <span class="c">### dropout on fc1</span>
+    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">layer3_drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">layer3</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
 
-    ### fc2: 10
-    W_fc2 = weight_variable([1024, 10])
-    b_fc2 = bias_variable([10])
-    matmul_fc2 = tf.matmul(layer3_drop, W_fc2) + b_fc2
-    y_conv = tf.nn.softmax(matmul_fc2)
-    layer4 = y_conv
+    <span class="c">### fc2: 10</span>
+    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="n">b_fc2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
+    <span class="n">matmul_fc2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer3_drop</span><span class="p">,</span> <span class="n">W_fc2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc2</span>
+    <span class="n">y_conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">matmul_fc2</span><span class="p">)</span>
+    <span class="n">layer4</span> <span class="o">=</span> <span class="n">y_conv</span>
     
-    ### cross_entropy and train_step
-    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=layer4)
-    cost = tf.reduce_mean(cross_entropy)
-    train_step = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy)
+    <span class="c">### cross_entropy and train_step</span>
+    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
+    <span class="n">train_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     
-    ### prediction and accruacy
-    correct_prediction = tf.equal(tf.argmax(layer4, 1), tf.argmax(y_, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    <span class="c">### prediction and accruacy</span>
+    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
     
-    ### graph nodes
-    export_nodes = ['x', 'y_', 'keep_prob', 'cost', 'correct_prediction', 'accuracy', 'train_step']
-    Graph = namedtuple('Graph', export_nodes)
-    local_dict = locals()
-    graph = Graph(*[local_dict[each] for each in export_nodes])
+    <span class="c">### graph nodes</span>
+    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
+    <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'Graph'</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
+    <span class="n">local_dict</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">local_dict</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">export_nodes</span><span class="p">])</span>
     
-    return graph
-</code></pre>
+    <span class="k">return</span> <span class="n">graph</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">## run operation
-model = build_dnn(learning_rate)
-dnn_train_cost = []
-dnn_val_acc = []
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## run operation</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_dnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+<span class="n">dnn_train_cost</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dnn_val_acc</span> <span class="o">=</span> <span class="p">[]</span>
 
-with tf.Session() as sess:
-    sess.run(tf.global_variables_initializer())
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">())</span>
     
-    for e in range(epochs):
-        batch = mnist.train.next_batch(batch_size)
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">next_batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
         
-        if (e % 100 == 0) | (e == epochs-1):
-            train_acc = sess.run(model.accuracy, feed_dict={
-                model.x: batch[0], model.y_: batch[1], model.keep_prob: 1.0
-            })
-            print("step %d, training_accuracy %g" %(e, train_acc))
+        <span class="k">if</span> <span class="p">(</span><span class="n">e</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">e</span> <span class="o">==</span> <span class="n">epochs</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">train_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"step </span><span class="si">%</span><span class="s">d, training_accuracy </span><span class="si">%</span><span class="s">g"</span> <span class="o">%</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">train_acc</span><span class="p">))</span>
             
-            val_acc = sess.run(model.accuracy, feed_dict={
-                model.x: mnist.test.images, model.y_: mnist.test.labels, model.keep_prob: 1.0
-            })
-            print("test_accuracy %g" % val_acc)
-            dnn_val_acc.append({'e': e, 'val_acc': val_acc})
-        _, t_cost = sess.run([model.train_step, model.cost], feed_dict={model.x: batch[0], model.y_: batch[1], model.keep_prob: keep_prob})
-        dnn_train_cost.append({'e': e, 'cost': t_cost})
+            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">images</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="mf">1.0</span>
+            <span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"test_accuracy </span><span class="si">%</span><span class="s">g"</span> <span class="o">%</span> <span class="n">val_acc</span><span class="p">)</span>
+            <span class="n">dnn_val_acc</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">'e'</span><span class="p">:</span> <span class="n">e</span><span class="p">,</span> <span class="s">'val_acc'</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">})</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">t_cost</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">train_step</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">cost</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">model</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">y_</span><span class="p">:</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">keep_prob</span><span class="p">:</span> <span class="n">keep_prob</span><span class="p">})</span>
+        <span class="n">dnn_train_cost</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">'e'</span><span class="p">:</span> <span class="n">e</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">:</span> <span class="n">t_cost</span><span class="p">})</span>
     
-</code></pre>
+</code></pre></div></div>
 
-<pre><code>step 0, training_accuracy 0.11
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>step 0, training_accuracy 0.11
 test_accuracy 0.1089
 step 100, training_accuracy 0.59
 test_accuracy 0.6115
@@ -369,41 +369,41 @@ step 1900, training_accuracy 0.91
 test_accuracy 0.9379
 step 1999, training_accuracy 0.95
 test_accuracy 0.9388
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">dnn_train_df = pd.DataFrame.from_dict(dnn_train_cost)
-dnn_train_df.set_index('e', inplace=True)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dnn_train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dnn_train_cost</span><span class="p">)</span>
+<span class="n">dnn_train_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'e'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-dnn_val_df = pd.DataFrame.from_dict(dnn_val_acc)
-dnn_val_df.set_index('e', inplace=True)
+<span class="n">dnn_val_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dnn_val_acc</span><span class="p">)</span>
+<span class="n">dnn_val_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'e'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-plt.plot(dnn_train_df, label="train_cost")
-plt.plot(dnn_val_df, label="val_acc")
-plt.legend()
-plt.show()
-</code></pre>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dnn_train_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"train_cost"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dnn_val_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"val_acc"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p><img src="/assets/CNN_tutorial_files/CNN_tutorial_11_0.png" alt="png" /></p>
 
-<p>CNN 만큼은 아니지만 DNN도 꽤 괜찮은 성능을 보였다. 모델간 성능 비교를 위해 <code>train_cost</code>와 <code>val_acc</code>를 플롯화해보자.</p>
+<p>CNN 만큼은 아니지만 DNN도 꽤 괜찮은 성능을 보였다. 모델간 성능 비교를 위해 <code class="highlighter-rouge">train_cost</code>와 <code class="highlighter-rouge">val_acc</code>를 플롯화해보자.</p>
 
-<pre><code class="language-python">plt.plot(cnn_train_df, label="cnn_train_cost", alpha=0.5)
-plt.plot(dnn_train_df, label="dnn_train_cost", alpha=0.5)
-plt.legend()
-plt.show()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cnn_train_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"cnn_train_cost"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dnn_train_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"dnn_train_cost"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p><img src="/assets/CNN_tutorial_files/CNN_tutorial_13_0.png" alt="png" /></p>
 
-<pre><code class="language-python">plt.plot(cnn_val_df, label="cnn_val_acc", alpha=0.5)
-plt.plot(dnn_val_df, label="dnn_val_acc", alpha=0.5)
-plt.legend()
-plt.show()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cnn_val_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"cnn_val_acc"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dnn_val_df</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">"dnn_val_acc"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p><img src="/assets/CNN_tutorial_files/CNN_tutorial_14_0.png" alt="png" /></p>
 
-<p>CNN이 DNN에 비해 <code>train_cost</code>가 더 빨리 떨어지며, <code>validation accuracy</code> 역시 빠르게 상승하는 것을 볼 수 있다. 또한 학습을 시킴에 따라 <code>validation_accuracy</code>가 두 모델 다 수렴했으나, CNN의 수렴점이 DNN의 그것에 비해 소폭 높음을 확인할 수 있다.</p>
+<p>CNN이 DNN에 비해 <code class="highlighter-rouge">train_cost</code>가 더 빨리 떨어지며, <code class="highlighter-rouge">validation accuracy</code> 역시 빠르게 상승하는 것을 볼 수 있다. 또한 학습을 시킴에 따라 <code class="highlighter-rouge">validation_accuracy</code>가 두 모델 다 수렴했으나, CNN의 수렴점이 DNN의 그것에 비해 소폭 높음을 확인할 수 있다.</p>
 
 
         </section>

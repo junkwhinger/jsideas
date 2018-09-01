@@ -76,7 +76,7 @@
 
 <p>그림에서 뽑아낸 스타일로 명화의 시대를 분류할 수 있다면, 범위를 좁혀서 반 고흐의 ‘The Starry Night’ 스타일이 언제 시작되었는지도 알 수 있지 않을까 하는 생각이 들었다. 거기다 반 고흐의 그림에만 연산을 돌려도 되니 돈들여서 EC2 띄울 필요도 없을 것 같고..(그럴 것 같았으나 결국 추석 내내 컴퓨터를 돌렸다 ㅠㅠ)</p>
 
-<p>결과를 보기 전에 스타일을 뽑는데 쓰는 <code>Gram Matrix</code>라는 방법을 짚고 넘어가자.</p>
+<p>결과를 보기 전에 스타일을 뽑는데 쓰는 <code class="highlighter-rouge">Gram Matrix</code>라는 방법을 짚고 넘어가자.</p>
 
 <p><br /></p>
 
@@ -97,7 +97,7 @@
 
 <p>Gram Matrix는 파이썬으로 이렇게 구현한다.</p>
 
-<pre><code>def gram_matrix(tensor):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def gram_matrix(tensor):
     shape = tensor.get_shape()
     
     num_channels = int(shape[3])
@@ -106,7 +106,7 @@
     gram = tf.matmul(tf.transpose(matrix), matrix)
     
     return gram
-</code></pre>
+</code></pre></div></div>
 
 <hr />
 
@@ -143,24 +143,24 @@
 
 <p>분석에 사용한 Neural Style Transfer 코드는 Siraj Raval의<a href="'https://www.youtube.com/watch?v=YoBEGQD3LCc'">How to Do Style Transfer with Tensorflow (LIVE)</a>에서 참조했다. Siraj는 pretrained CNN으로 VGG16을 사용했다. 나는 그 위에 아래와 같이 ‘calc_grams’와 ‘calc_style_distance’ 두 함수를 구현하여 작품 간의 스타일 거리를 측정해보았다.</p>
 
-<pre><code>def calc_grams(path_img):
-    ## returns gram layers of a given image path
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">def</span> <span class="n">calc_grams</span><span class="p">(</span><span class="n">path_img</span><span class="p">):</span>
+    <span class="p">##</span> <span class="n">returns</span> <span class="n">gram</span> <span class="n">layers</span> <span class="k">of</span> <span class="n">a</span> <span class="n">given</span> <span class="n">image</span> <span class="n">path</span>
     
-    img = load_image(path_img, max_size=300)
+    <span class="n">img</span> <span class="p">=</span> <span class="n">load_image</span><span class="p">(</span><span class="n">path_img</span><span class="p">,</span> <span class="n">max_size</span><span class="p">=</span><span class="m">300</span><span class="p">)</span>
     
-    model = vgg16.VGG16()
+    <span class="k">model</span> <span class="p">=</span> <span class="n">vgg16</span><span class="p">.</span><span class="n">VGG16</span><span class="p">()</span>
   
-    with tf.Session(graph=model.graph) as sess:
-        feed_dict = model.create_feed_dict(image=img)
+    <span class="k">with</span> <span class="n">tf</span><span class="p">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="p">=</span><span class="k">model</span><span class="p">.</span><span class="n">graph</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+        <span class="n">feed_dict</span> <span class="p">=</span> <span class="k">model</span><span class="p">.</span><span class="n">create_feed_dict</span><span class="p">(</span><span class="n">image</span><span class="p">=</span><span class="n">img</span><span class="p">)</span>
 
-        layers = model.get_layer_tensors(list(range(3)))
-        gram_layers = [gram_matrix(layer) for layer in layers]
+        <span class="n">layers</span> <span class="p">=</span> <span class="k">model</span><span class="p">.</span><span class="n">get_layer_tensors</span><span class="p">(</span><span class="k">list</span><span class="p">(</span><span class="k">range</span><span class="p">(</span><span class="m">3</span><span class="p">)))</span>
+        <span class="n">gram_layers</span> <span class="p">=</span> <span class="p">[</span><span class="n">gram_matrix</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span> <span class="n">for</span> <span class="n">layer</span> <span class="k">in</span> <span class="n">layers</span><span class="p">]</span>
 
-        gram_layers = [l.eval(feed_dict) for l in gram_layers]
-    return gram_layers
-</code></pre>
+        <span class="n">gram_layers</span> <span class="p">=</span> <span class="p">[</span><span class="n">l</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="n">feed_dict</span><span class="p">)</span> <span class="n">for</span> <span class="n">l</span> <span class="k">in</span> <span class="n">gram_layers</span><span class="p">]</span>
+    <span class="n">return</span> <span class="n">gram_layers</span>
+</code></pre></div></div>
 
-<pre><code>def calc_style_distance(path_a, path_b):
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def calc_style_distance(path_a, path_b):
     ## returns style loss between two images
     
     grams_a = calc_grams(path_a)
@@ -172,7 +172,7 @@
         losses.append(loss)
         
     return np.mean(losses)
-</code></pre>
+</code></pre></div></div>
 
 <p>위 코드를 보면 Gram Matrix를 계산하는 Layer를 처음 3개로만 한정지었다. 처음에는 첫 5개를 사용했었는데, 앞서 분류에 스타일을 사용한 논문을 읽고 3개가 더 성능이 좋았다길래 3개로 바꾸었다. 결과적으로는 내 분석 결과의 대세에 영향을 크게 주지는 않았다. 레이어를 고차원까지 다 넣으면 크게 2개의 문제가 있는 듯 하다. 본 논문에도 나왔지만, 보통 스타일이라고 할 수 있는 붓터치 스타일이나 직선/곡선의 사용은 저차원에 나타나고, 그러한 선이 결합된 형체인 컨텐츠는 고차원에 나타난다. 물론 그램 매트릭스는 액티베이션간의 상관관계이므로 컨텐츠와는 다르나, 어쨌든 고차원으로 가면 갈수록 컨텐츠가 묻어나오는 것은 피할 수 없는 듯 하다.</p>
 

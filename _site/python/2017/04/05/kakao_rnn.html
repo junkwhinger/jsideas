@@ -83,71 +83,71 @@
 
 <p>카카오톡 데이터는 대화방에서 텍스트 대화만을 내려받아 얻는다. 압축을 풀면 txt 파일이 여러개 나오는데, 다음과 같이 처리한다. 본 테스트를 위해 대학친구 8명이 있는 카카오톡 대화방 2016.10 ~ 2017.03 데이터를 내려받았다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 
-<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;./data/*.txt&quot;</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">"./data/*.txt"</span><span class="p">)</span>
 
-<span class="c1">## 영문으로만 된 문장은 제외한다</span>
+<span class="c">## 영문으로만 된 문장은 제외한다</span>
 <span class="k">def</span> <span class="nf">isEnglish</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">UnicodeEncodeError</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'ascii'</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">UnicodeEncodeError</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">False</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">True</span>
 
-<span class="c1">## 파일을 열어</span>
-<span class="c1">## 대화명 : 대화를 파싱하고</span>
-<span class="c1">## 순수 영문 문장이나,</span>
-<span class="c1">## &#39;ㅋㅋㅋㅋ&#39;인 문장은 걸러낸다</span>
+<span class="c">## 파일을 열어</span>
+<span class="c">## 대화명 : 대화를 파싱하고</span>
+<span class="c">## 순수 영문 문장이나,</span>
+<span class="c">## 'ㅋㅋㅋㅋ'인 문장은 걸러낸다</span>
 <span class="k">def</span> <span class="nf">read_das_file</span><span class="p">(</span><span class="n">a_file</span><span class="p">):</span>
     <span class="n">sentence_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">a_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">a_file</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot; : &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="s2">&quot;M, &quot;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
-            <span class="n">person</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; : &quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;M, &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; : &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s">" : "</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="s">"M, "</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
+            <span class="n">person</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">" : "</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"M, "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">" : "</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">isEnglish</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="s2">&quot;ㅋ&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">}:</span>
-                    <span class="n">a_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;person&#39;</span><span class="p">:</span><span class="n">person</span><span class="p">,</span> <span class="s1">&#39;line&#39;</span><span class="p">:</span><span class="n">line</span><span class="p">}</span>
+                <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="p">{</span><span class="s">"ㅋ"</span><span class="p">,</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">}:</span>
+                    <span class="n">a_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">'person'</span><span class="p">:</span><span class="n">person</span><span class="p">,</span> <span class="s">'line'</span><span class="p">:</span><span class="n">line</span><span class="p">}</span>
 
                     <span class="n">sentence_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a_dict</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sentence_list</span>
 
 <span class="n">sentence_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">read_das_file</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span> <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
 
-<span class="c1">## 리스트를 평평하게 만든다.</span>
+<span class="c">## 리스트를 평평하게 만든다.</span>
 <span class="n">sentence_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">sentence</span> <span class="k">for</span> <span class="n">sublist</span> <span class="ow">in</span> <span class="n">sentence_lists</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sublist</span><span class="p">]</span></code></pre></figure>
 
 <p>이렇게만 처리해도 대화 데이터를 얻을 수 있으나, 소설과 달리 메신저에서는 엔터를 더 자주 친다. 따라서 화자가 연속된 경우, 잘려진 문장은 하나의 문장으로 처리한다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sentence_list</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;counter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sentence_list</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'counter'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="c1">## 현재 화자와 다음 화자가 다른 경우, counter를 증가시킨다.</span>
+<span class="c">## 현재 화자와 다음 화자가 다른 경우, counter를 증가시킨다.</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
-    <span class="n">current_person</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
-    <span class="n">next_person</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;person&#39;</span><span class="p">]</span>
+    <span class="n">current_person</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">'person'</span><span class="p">]</span>
+    <span class="n">next_person</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s">'person'</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">current_person</span> <span class="o">!=</span> <span class="n">next_person</span><span class="p">:</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;counter&#39;</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s">'counter'</span><span class="p">,</span> <span class="n">counter</span><span class="p">)</span>
 
-<span class="c1">## 화자와 counter를 더해 message_idx를 만든다.</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;message_idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">person</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="c">## 화자와 counter를 더해 message_idx를 만든다.</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'message_idx'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">person</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s">"-"</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
-<span class="c1">## counter와 message_idx로 그룹바이하여 문장을 리스트로 묶는다.</span>
-<span class="n">parsed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;counter&#39;</span><span class="p">,</span> <span class="s1">&#39;message_idx&#39;</span><span class="p">])[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+<span class="c">## counter와 message_idx로 그룹바이하여 문장을 리스트로 묶는다.</span>
+<span class="n">parsed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">'counter'</span><span class="p">,</span> <span class="s">'message_idx'</span><span class="p">])[</span><span class="s">'line'</span><span class="p">]</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
 
-<span class="c1">## 묶은 라인을 하나의 스트링으로 합치고 줄바꿈을 마지막에 붙인다.</span>
-<span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;line2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c">## 묶은 라인을 하나의 스트링으로 합치고 줄바꿈을 마지막에 붙인다.</span>
+<span class="n">parsed</span><span class="p">[</span><span class="s">'line2'</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed</span><span class="p">[</span><span class="s">'line'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
 
-<span class="c1">## 문장을 pickle로 저장한다.</span>
-<span class="n">final_text</span> <span class="o">=</span> <span class="n">parsed</span><span class="p">[</span><span class="s1">&#39;line2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;das_data_parsed.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="c">## 문장을 pickle로 저장한다.</span>
+<span class="n">final_text</span> <span class="o">=</span> <span class="n">parsed</span><span class="p">[</span><span class="s">'line2'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"das_data_parsed.pickle"</span><span class="p">,</span> <span class="s">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">final_text</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></code></pre></figure>
 
 <hr />
@@ -156,93 +156,93 @@
 
 <h3 id="1-데이터-준비">1. 데이터 준비</h3>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">time</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="kn">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;das_data_parsed.pickle&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span>
-<span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">"das_data_parsed.pickle"</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">))</span>
+<span class="n">text</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 <span class="n">text</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
-<span class="c1">## 사진이 왜케 많냐 저게 다 기본 8년전 7년전 이렇다\n나랑 자주놀앗구먼ㅋㅋ\n싸이월드 사진첩 다운로드 받는중인데 이쁜게 많네\n일시: 5/3(화) 2시 304호  휴. 비도 오</span>
+<span class="c">## 사진이 왜케 많냐 저게 다 기본 8년전 7년전 이렇다\n나랑 자주놀앗구먼ㅋㅋ\n싸이월드 사진첩 다운로드 받는중인데 이쁜게 많네\n일시: 5/3(화) 2시 304호  휴. 비도 오</span>
 
 
-<span class="c1">## 모든 문자셋을 만든다.</span>
+<span class="c">## 모든 문자셋을 만든다.</span>
 <span class="n">vocab</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-<span class="c1">## 문자셋의 문자에 고유한 숫자를 매긴다. </span>
+<span class="c">## 문자셋의 문자에 고유한 숫자를 매긴다. </span>
 <span class="n">vocab_to_int</span> <span class="o">=</span> <span class="p">{</span><span class="n">c</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">)}</span>
 
-<span class="c1">## 그 반대로 숫자에 문자를 대응시킨다. </span>
-<span class="c1">## 이렇게 함으로써 신경망을 학습시키고, </span>
-<span class="c1">## 신경망에서 생성한 숫자 시퀀스를 다시 문자열로 변환할 수 있다.</span>
+<span class="c">## 그 반대로 숫자에 문자를 대응시킨다. </span>
+<span class="c">## 이렇게 함으로써 신경망을 학습시키고, </span>
+<span class="c">## 신경망에서 생성한 숫자 시퀀스를 다시 문자열로 변환할 수 있다.</span>
 <span class="n">int_to_vocab</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span>
 <span class="n">chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">vocab_to_int</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">text</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
 <span class="n">chars</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
-<span class="c1">## array([841,  509, 1077,  455, ... 1408,  785,  150, 341], dtype=int32)</span>
-<span class="c1">## 이렇게 문자가 숫자로 변환된다.</span>
+<span class="c">## array([841,  509, 1077,  455, ... 1408,  785,  150, 341], dtype=int32)</span>
+<span class="c">## 이렇게 문자가 숫자로 변환된다.</span>
 
-<span class="n">num_of_all_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;글자 가짓수: </span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">num_of_all_chars</span><span class="p">)</span>
-<span class="c1">## 글자 가짓수: 1862</span></code></pre></figure>
+<span class="n">num_of_all_chars</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"글자 가짓수: </span><span class="si">%</span><span class="s">d"</span> <span class="o">%</span><span class="n">num_of_all_chars</span><span class="p">)</span>
+<span class="c">## 글자 가짓수: 1862</span></code></pre></figure>
 
 <h3 id="2-학습--검증-batch-준비">2. 학습 &amp; 검증 batch 준비</h3>
 
 <p>데이터셋을 준비했다면, 다음은 학습할 트레이닝 데이터셋과 학습 결과를 측정할 검증 데이터셋을 분리해야 한다. 그리고, 긴 텍스트를 다 집어넣는 것이 아니라, 적절한 크기로 잘라 배치(batch)로 만들어 모델에 넣어주어야 한다.</p>
 
-<p>데이터를 자르는 <code>split_data</code>, 배치를 생성하는 <code>get_batch</code> 함수를 만든다. 여기서 만든 함수는 뒤에 모델을 학습시킬 때 tensorflow Session 안에서 실행된다.</p>
+<p>데이터를 자르는 <code class="highlighter-rouge">split_data</code>, 배치를 생성하는 <code class="highlighter-rouge">get_batch</code> 함수를 만든다. 여기서 만든 함수는 뒤에 모델을 학습시킬 때 tensorflow Session 안에서 실행된다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">split_frac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    문자 데이터를 학습 &amp; 검증 데이터로 분리</span>
-<span class="sd">    </span>
-<span class="sd">    파라미터</span>
-<span class="sd">    ------</span>
-<span class="sd">    chars: 문자열 배열</span>
-<span class="sd">    batch_size: 각 배치 크기</span>
-<span class="sd">    num_steps: 입력 데이터에 넣을 시퀀스 스텝 수</span>
-<span class="sd">    split_frac: 트레이닝셋에 넣을 데이터 비율</span>
-<span class="sd">    </span>
-<span class="sd">    returns train_x, train_y, val_x, val_y</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">split_data</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="n">split_frac</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+    <span class="s">"""
+    문자 데이터를 학습 &amp; 검증 데이터로 분리
+    
+    파라미터
+    ------
+    chars: 문자열 배열
+    batch_size: 각 배치 크기
+    num_steps: 입력 데이터에 넣을 시퀀스 스텝 수
+    split_frac: 트레이닝셋에 넣을 데이터 비율
+    
+    returns train_x, train_y, val_x, val_y
+    """</span>
     
     <span class="n">slice_size</span> <span class="o">=</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">num_steps</span>
     <span class="n">n_batches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">/</span> <span class="n">slice_size</span><span class="p">)</span>
     
-    <span class="c1"># 배치로 나누고 난 후 남은 잔챙이는 버리자</span>
-    <span class="c1"># y는 x에 1을 더한다. 왜냐하면 캐릭터 단위로 하나씩 미는 RNN이므로.</span>
+    <span class="c"># 배치로 나누고 난 후 남은 잔챙이는 버리자</span>
+    <span class="c"># y는 x에 1을 더한다. 왜냐하면 캐릭터 단위로 하나씩 미는 RNN이므로.</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">chars</span><span class="p">[:</span> <span class="n">n_batches</span> <span class="o">*</span> <span class="n">slice_size</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">chars</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span> <span class="n">n_batches</span> <span class="o">*</span> <span class="n">slice_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
     
-    <span class="c1"># 배치 크기에 따라 데이터를 자르고, 2차원 매트릭스로 쌓는다.</span>
+    <span class="c"># 배치 크기에 따라 데이터를 자르고, 2차원 매트릭스로 쌓는다.</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">))</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">))</span>
     
-    <span class="c1"># 이제 x와 y는 batch_size x n_batches*num_steps로 된 2차원 배열임</span>
+    <span class="c"># 이제 x와 y는 batch_size x n_batches*num_steps로 된 2차원 배열임</span>
     
-    <span class="c1"># 이를 학습과 검증 셋으로 나눈다.</span>
+    <span class="c"># 이를 학습과 검증 셋으로 나눈다.</span>
     <span class="n">split_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_batches</span> <span class="o">*</span> <span class="n">split_frac</span><span class="p">)</span>
     <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="p">:</span><span class="n">split_idx</span><span class="o">*</span><span class="n">num_steps</span><span class="p">],</span> <span class="n">y</span><span class="p">[:,</span> <span class="p">:</span><span class="n">split_idx</span><span class="o">*</span><span class="n">num_steps</span><span class="p">]</span>
     <span class="n">val_x</span><span class="p">,</span> <span class="n">val_y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">split_idx</span><span class="o">*</span><span class="n">num_steps</span><span class="p">:],</span> <span class="n">y</span><span class="p">[:,</span> <span class="n">split_idx</span><span class="o">*</span><span class="n">num_steps</span><span class="p">:]</span>
     
     <span class="k">return</span> <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">val_x</span><span class="p">,</span> <span class="n">val_y</span>
 
-<span class="c1">## 이런식으로 자를 수 있다.</span>
-<span class="c1">## train_x, train_y, val_x, val_y = split_data(chars, 10, 50)</span>
+<span class="c">## 이런식으로 자를 수 있다.</span>
+<span class="c">## train_x, train_y, val_x, val_y = split_data(chars, 10, 50)</span>
 
-<span class="c1">## 배치를 생성하는 함수를 만든다.</span>
+<span class="c">## 배치를 생성하는 함수를 만든다.</span>
 <span class="k">def</span> <span class="nf">get_batch</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    함수가 호출될때마다 배치를 리턴한다.</span>
-<span class="sd">    </span>
-<span class="sd">    파라미터</span>
-<span class="sd">    ------</span>
-<span class="sd">    arrs: 전체 배열</span>
-<span class="sd">    num_steps: 입력 데이터에 넣을 시퀀스 스텝 수</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="s">"""
+    함수가 호출될때마다 배치를 리턴한다.
+    
+    파라미터
+    ------
+    arrs: 전체 배열
+    num_steps: 입력 데이터에 넣을 시퀀스 스텝 수
+    """</span>
     <span class="n">batch_size</span><span class="p">,</span> <span class="n">slice_size</span> <span class="o">=</span> <span class="n">arrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
     
     <span class="n">n_batches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slice_size</span> <span class="o">/</span> <span class="n">num_steps</span><span class="p">)</span>
@@ -253,89 +253,89 @@
 
 <p>sklearn으로 jupyter notebook에서 해보는 간단한 머신러닝과는 달리, tensorflow를 쓸 때는 먼저 모델을 정의하고, 그 다음 실제 오퍼레이션이 이루어진다. 함수를 실행하면 바로 결과가 나오지 않기 때문에 개인적으로는 쉽게 받아들일 수 있는 부분은 아니었다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">build_rnn</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lstm_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">build_rnn</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">num_steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">lstm_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
              <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">grad_clip</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    RNN 모델을 만든다.</span>
-<span class="sd">    </span>
-<span class="sd">    파라미터</span>
-<span class="sd">    ------</span>
-<span class="sd">    num_classes: 문자 가짓수</span>
-<span class="sd">    batch_size: 배치 크기</span>
-<span class="sd">    num_steps: 입력 데이터로 쓸 시퀀스 스텝 수</span>
-<span class="sd">    lstm_size: LSTM 셀의 유닛 수</span>
-<span class="sd">    num_layers: LSTM 레이어 갯수</span>
-<span class="sd">    learning_rate: 학습 속도 알파</span>
-<span class="sd">    grad_clip: gradient가 폭증하거나 사라지는 것을 막아주는 임계값</span>
-<span class="sd">    sampling: True인 경우, batch_size와 num_steps를 1로 지정</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="s">"""
+    RNN 모델을 만든다.
+    
+    파라미터
+    ------
+    num_classes: 문자 가짓수
+    batch_size: 배치 크기
+    num_steps: 입력 데이터로 쓸 시퀀스 스텝 수
+    lstm_size: LSTM 셀의 유닛 수
+    num_layers: LSTM 레이어 갯수
+    learning_rate: 학습 속도 알파
+    grad_clip: gradient가 폭증하거나 사라지는 것을 막아주는 임계값
+    sampling: True인 경우, batch_size와 num_steps를 1로 지정
+    """</span>
     
     <span class="k">if</span> <span class="n">sampling</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
         
-    <span class="c1"># 그래프를 초기화</span>
+    <span class="c"># 그래프를 초기화</span>
     <span class="n">tf</span><span class="o">.</span><span class="n">reset_default_graph</span><span class="p">()</span>
     
-    <span class="c1"># 입력 &amp; 타겟 변수 선언</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;inputs&#39;</span><span class="p">)</span>
-    <span class="n">targets</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;targets&#39;</span><span class="p">)</span>
+    <span class="c"># 입력 &amp; 타겟 변수 선언</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'inputs'</span><span class="p">)</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'targets'</span><span class="p">)</span>
     
-    <span class="c1"># dropout 레이어를 위한 값 설정</span>
-    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;keep_prob&#39;</span><span class="p">)</span>
+    <span class="c"># dropout 레이어를 위한 값 설정</span>
+    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'keep_prob'</span><span class="p">)</span>
     
-    <span class="c1"># 입력 및 타겟 변수를 원핫인코딩</span>
+    <span class="c"># 입력 및 타겟 변수를 원핫인코딩</span>
     <span class="n">x_one_hot</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
     <span class="n">y_one_hot</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">targets</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
     
-    <span class="c1">### RNN 레이어를 만든다</span>
-    <span class="c1"># 기본 LSTM cell을 사용함</span>
+    <span class="c">### RNN 레이어를 만든다</span>
+    <span class="c"># 기본 LSTM cell을 사용함</span>
     <span class="n">lstm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">BasicLSTMCell</span><span class="p">(</span><span class="n">lstm_size</span><span class="p">)</span>
     
-    <span class="c1"># dropout 레이어 추가</span>
+    <span class="c"># dropout 레이어 추가</span>
     <span class="n">drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">DropoutWrapper</span><span class="p">(</span><span class="n">lstm</span><span class="p">,</span> <span class="n">output_keep_prob</span><span class="o">=</span><span class="n">keep_prob</span><span class="p">)</span>
     
-    <span class="c1"># LSTM 레이어를 여러개 쌓아서 딥러닝 모델 구축</span>
+    <span class="c"># LSTM 레이어를 여러개 쌓아서 딥러닝 모델 구축</span>
     <span class="n">cell</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">MultiRNNCell</span><span class="p">([</span><span class="n">drop</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_layers</span><span class="p">)</span>
     <span class="n">initial_state</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">zero_state</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     
-    <span class="c1">### RNN 레이어에 데이터를 넣는다</span>
+    <span class="c">### RNN 레이어에 데이터를 넣는다</span>
     <span class="n">rnn_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">x_one_hot</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
     
-    <span class="c1"># RNN에 각 시퀀스를 넣고 결과를 출력</span>
+    <span class="c"># RNN에 각 시퀀스를 넣고 결과를 출력</span>
     <span class="n">outputs</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">static_rnn</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">rnn_inputs</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="n">initial_state</span><span class="p">)</span>
     <span class="n">final_state</span> <span class="o">=</span> <span class="n">state</span>
     
-    <span class="c1"># output의 형태를 바꿈</span>
+    <span class="c"># output의 형태를 바꿈</span>
     <span class="n">seq_output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">seq_output</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">])</span>
     
-    <span class="c1"># RNN 결과를 softmax 레이어에 연결</span>
-    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">):</span>
+    <span class="c"># RNN 결과를 softmax 레이어에 연결</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">variable_scope</span><span class="p">(</span><span class="s">'softmax'</span><span class="p">):</span>
         <span class="n">softmax_w</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">((</span><span class="n">lstm_size</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">),</span> <span class="n">stddev</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span>
         <span class="n">softmax_b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_classes</span><span class="p">))</span>
     
-    <span class="c1"># 행렬 계산</span>
+    <span class="c"># 행렬 계산</span>
     <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">softmax_w</span><span class="p">)</span> <span class="o">+</span> <span class="n">softmax_b</span>
     
-    <span class="c1"># 소프트맥스에 넣어 다음 문자의 확률을 계산 (총합은 1)</span>
-    <span class="n">preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
+    <span class="c"># 소프트맥스에 넣어 다음 문자의 확률을 계산 (총합은 1)</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'prediction'</span><span class="p">)</span>
     
-    <span class="c1"># target의 형태를 변형해서 logits에 맞춤</span>
+    <span class="c"># target의 형태를 변형해서 logits에 맞춤</span>
     <span class="n">y_reshaped</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y_one_hot</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">])</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">y_reshaped</span><span class="p">)</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
     
-    <span class="c1"># AdamOptimizer와 gradient clipping으로 최적화</span>
+    <span class="c"># AdamOptimizer와 gradient clipping으로 최적화</span>
     <span class="n">tvars</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">()</span>
     <span class="n">grads</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">clip_by_global_norm</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">tvars</span><span class="p">),</span> <span class="n">grad_clip</span><span class="p">)</span>
     <span class="n">train_op</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">train_op</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">tvars</span><span class="p">))</span>
     
-    <span class="c1"># 노드 출력</span>
-    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;inputs&#39;</span><span class="p">,</span> <span class="s1">&#39;targets&#39;</span><span class="p">,</span> <span class="s1">&#39;initial_state&#39;</span><span class="p">,</span> <span class="s1">&#39;final_state&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;keep_prob&#39;</span><span class="p">,</span> <span class="s1">&#39;cost&#39;</span><span class="p">,</span> <span class="s1">&#39;preds&#39;</span><span class="p">,</span> <span class="s1">&#39;optimizer&#39;</span><span class="p">]</span>
+    <span class="c"># 노드 출력</span>
+    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'inputs'</span><span class="p">,</span> <span class="s">'targets'</span><span class="p">,</span> <span class="s">'initial_state'</span><span class="p">,</span> <span class="s">'final_state'</span><span class="p">,</span>
+                   <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'preds'</span><span class="p">,</span> <span class="s">'optimizer'</span><span class="p">]</span>
     
-    <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Graph&#39;</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
+    <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'Graph'</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
     <span class="n">local_dict</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">local_dict</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">export_nodes</span><span class="p">])</span>
     
@@ -345,7 +345,7 @@
 
 <p>모델에 들어가는 파라미터를 정의해준다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">lstm_size</span> <span class="o">=</span> <span class="mi">512</span>
 <span class="n">num_layers</span> <span class="o">=</span> <span class="mi">2</span>
@@ -364,12 +364,12 @@
 
 <p>실제 데이터를 모델에 넣어 학습시킨다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">20</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">epochs</span> <span class="o">=</span> <span class="mi">20</span>
 
-<span class="c1"># N 이터레이션마다 저장</span>
+<span class="c"># N 이터레이션마다 저장</span>
 <span class="n">save_every_n</span> <span class="o">=</span> <span class="mi">100</span>
 
-<span class="c1"># 데이터 준비</span>
+<span class="c"># 데이터 준비</span>
 <span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">val_x</span><span class="p">,</span> <span class="n">val_y</span> <span class="o">=</span> <span class="n">split_data</span><span class="p">(</span><span class="n">chars</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">build_rnn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span>
@@ -387,14 +387,14 @@
     <span class="n">n_batches</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">train_x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">num_steps</span><span class="p">)</span>
     <span class="n">iterations</span> <span class="o">=</span> <span class="n">n_batches</span> <span class="o">*</span> <span class="n">epochs</span>
     
-    <span class="c1"># 에폭을 돌면서</span>
+    <span class="c"># 에폭을 돌면서</span>
     <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
         
-        <span class="c1"># 네트워크를 학습시킨다</span>
+        <span class="c"># 네트워크를 학습시킨다</span>
         <span class="n">new_state</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">initial_state</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
 
-        <span class="c1"># get_batch 함수로 train 데이터셋을 생성하여 모델에 입력한다.</span>
+        <span class="c"># get_batch 함수로 train 데이터셋을 생성하여 모델에 입력한다.</span>
         <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">get_batch</span><span class="p">([</span><span class="n">train_x</span><span class="p">,</span> <span class="n">train_y</span><span class="p">],</span> <span class="n">num_steps</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">iteration</span> <span class="o">=</span> <span class="n">e</span><span class="o">*</span><span class="n">n_batches</span> <span class="o">+</span> <span class="n">b</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -406,14 +406,14 @@
                                                <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed</span><span class="p">)</span>
             <span class="n">loss</span> <span class="o">+=</span> <span class="n">batch_loss</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Epoch {}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
-                 <span class="s1">&#39;Iteration {}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">iterations</span><span class="p">),</span>
-                 <span class="s1">&#39;Traning loss: {:.4f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">/</span><span class="n">b</span><span class="p">),</span>
-                 <span class="s1">&#39;{:.4f} sec/batch&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'Epoch {}/{}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
+                 <span class="s">'Iteration {}/{}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">iterations</span><span class="p">),</span>
+                 <span class="s">'Traning loss: {:.4f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">/</span><span class="n">b</span><span class="p">),</span>
+                 <span class="s">'{:.4f} sec/batch'</span><span class="o">.</span><span class="n">format</span><span class="p">((</span><span class="n">end</span><span class="o">-</span><span class="n">start</span><span class="p">)))</span>
             
-            <span class="c1"># n 이터레이션 마다, 혹은 마지막 이터레이션에 도달하면</span>
+            <span class="c"># n 이터레이션 마다, 혹은 마지막 이터레이션에 도달하면</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">iteration</span><span class="o">%</span><span class="n">save_every_n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">iteration</span> <span class="o">==</span> <span class="n">iterations</span><span class="p">):</span>
-                <span class="c1"># 성능을 체크한다.</span>
+                <span class="c"># 성능을 체크한다.</span>
                 <span class="n">val_loss</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="n">new_state</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">initial_state</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">get_batch</span><span class="p">([</span><span class="n">val_x</span><span class="p">,</span> <span class="n">val_y</span><span class="p">],</span> <span class="n">num_steps</span><span class="p">):</span>
@@ -424,16 +424,16 @@
                     <span class="n">batch_loss</span><span class="p">,</span> <span class="n">new_state</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">final_state</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed</span><span class="p">)</span>
                     <span class="n">val_loss</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">batch_loss</span><span class="p">)</span>
                     
-                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Validation loss:&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">val_loss</span><span class="p">),</span> <span class="s1">&#39;체크포인트 저장!&#39;</span><span class="p">)</span>
-                <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s2">&quot;checkpoints_parsed/i{}_l{}_v{:3f}.ckpt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">'Validation loss:'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">val_loss</span><span class="p">),</span> <span class="s">'체크포인트 저장!'</span><span class="p">)</span>
+                <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="s">"checkpoints_parsed/i{}_l{}_v{:3f}.ckpt"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)))</span>
 
-<span class="c1">## Epoch 1/20 Iteration 1/660 Traning loss: 7.5287 8.4289 sec/batch</span>
-<span class="c1">## Epoch 1/20 Iteration 2/660 Traning loss: 7.4979 7.2635 sec/batch</span>
-<span class="c1">## Epoch 1/20 Iteration 3/660 Traning loss: 7.3909 7.2701 sec/batch</span>
-<span class="c1">## ...</span>
-<span class="c1">## Epoch 3/20 Iteration 99/660 Traning loss: 5.0322 7.1951 sec/batch</span>
-<span class="c1">## Epoch 4/20 Iteration 100/660 Traning loss: 5.1010 7.1860 sec/batch</span>
-<span class="c1">## Validation loss: 4.94154 체크포인트 저장!</span></code></pre></figure>
+<span class="c">## Epoch 1/20 Iteration 1/660 Traning loss: 7.5287 8.4289 sec/batch</span>
+<span class="c">## Epoch 1/20 Iteration 2/660 Traning loss: 7.4979 7.2635 sec/batch</span>
+<span class="c">## Epoch 1/20 Iteration 3/660 Traning loss: 7.3909 7.2701 sec/batch</span>
+<span class="c">## ...</span>
+<span class="c">## Epoch 3/20 Iteration 99/660 Traning loss: 5.0322 7.1951 sec/batch</span>
+<span class="c">## Epoch 4/20 Iteration 100/660 Traning loss: 5.1010 7.1860 sec/batch</span>
+<span class="c">## Validation loss: 4.94154 체크포인트 저장!</span></code></pre></figure>
 
 <p>모델이 깊어지고, num_step(시퀀스의 길이)가 커질수록 학습이 오래 걸린다. num_step을 200으로 올려본 결과, Iteration당 배치 학습에 걸린 시간이 7초에서 15초로 2배 증가하였다. 전체 트레이닝 데이터셋(약 4MB)을 학습시키면 현재 맥북프로 Mid 2015 머신으로 2시간 정도가 소요되었다.</p>
 
@@ -443,15 +443,15 @@
 
 <p>모델이 학습되고 나면, 체크포인트에 저장한 모델을 불러와서 새로운 텍스트를 생성할 수 있다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">pick_top_n</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">pick_top_n</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
     <span class="n">p</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">p</span><span class="p">)[:</span><span class="o">-</span><span class="n">top_n</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">p</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">c</span>
 
-<span class="c1">## 체크포인트에 저장된 모델을 불러와서 새로운 텍스트를 생성한다. </span>
-<span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">prime</span><span class="o">=</span><span class="s2">&quot;안녕 &quot;</span><span class="p">):</span>
+<span class="c">## 체크포인트에 저장된 모델을 불러와서 새로운 텍스트를 생성한다. </span>
+<span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">prime</span><span class="o">=</span><span class="s">"안녕 "</span><span class="p">):</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">prime</span><span class="p">]</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">build_rnn</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">lstm_size</span><span class="o">=</span><span class="n">lstm_size</span><span class="p">,</span> <span class="n">sampling</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">saver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Saver</span><span class="p">()</span>
@@ -482,11 +482,11 @@
             <span class="n">c</span> <span class="o">=</span> <span class="n">pick_top_n</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">))</span>
             <span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">int_to_vocab</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
             
-        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">''</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
 
-<span class="c1">## 이런식으로 모델을 불러와서 실행한다.</span>
-<span class="n">checkpoint</span> <span class="o">=</span> <span class="s2">&quot;checkpoints_parsed/i660_l512_v3.607831.ckpt&quot;</span>
-<span class="n">samp</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="n">prime</span><span class="o">=</span><span class="s2">&quot;친구&quot;</span><span class="p">)</span>
+<span class="c">## 이런식으로 모델을 불러와서 실행한다.</span>
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="s">"checkpoints_parsed/i660_l512_v3.607831.ckpt"</span>
+<span class="n">samp</span> <span class="o">=</span> <span class="n">sample</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">lstm_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">),</span> <span class="n">prime</span><span class="o">=</span><span class="s">"친구"</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">samp</span><span class="p">)</span></code></pre></figure>
 
 <p>위에서 학습시킨 결과는 총 660번 Iteration을 돌렸는데, 매 100번마다 모델을 저장하게 해두었다. 다른 머신러닝 알고리즘이 그러하듯, RNN 역시 이터레이션이 반복될수록 모델을 최적화한다. 100번, 400번, 660번 돌린 결과를 보자.</p>

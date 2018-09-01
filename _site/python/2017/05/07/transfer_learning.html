@@ -69,7 +69,7 @@
 
 <p><img src="/assets/cand_faces/forest.jpg" alt="숲" /></p>
 
-<p>하나의 필터가 동일한 <code>weight</code>로 전체 이미지를 훑어 <code>feature map</code>을 만드는 CNN의 특성은 학습해야 할 파라미터의 수를 줄여 학습 효율이 좋긴 하지만, 좋은 분류기를 만드는데 꽤 오랜 학습 시간이 걸린다. MNIST는 <code>convolution layer</code> 2개로도 금방 결과가 나오지만, 애초에 데이터의 크기가 작고 (28x28), 컬러 채널이 1개 뿐이다. 하지만 우리가 분류하기를 원하는 현실 세계의 데이터는 그보다 크고 색깔도 다양하다.</p>
+<p>하나의 필터가 동일한 <code class="highlighter-rouge">weight</code>로 전체 이미지를 훑어 <code class="highlighter-rouge">feature map</code>을 만드는 CNN의 특성은 학습해야 할 파라미터의 수를 줄여 학습 효율이 좋긴 하지만, 좋은 분류기를 만드는데 꽤 오랜 학습 시간이 걸린다. MNIST는 <code class="highlighter-rouge">convolution layer</code> 2개로도 금방 결과가 나오지만, 애초에 데이터의 크기가 작고 (28x28), 컬러 채널이 1개 뿐이다. 하지만 우리가 분류하기를 원하는 현실 세계의 데이터는 그보다 크고 색깔도 다양하다.</p>
 
 <p><img src="/assets/cand_faces/mnist.png" alt="MNIST" /></p>
 
@@ -79,9 +79,9 @@
 
 <p><a href="http://cs231n.github.io/transfer-learning/">CS231n</a>에 더 자세히 설명되어 있는데, 요약하자면 이러하다. 실질적으로 전체 CNN을 처음부터 끝까지 학습하는 경우는 별로 없다. 왜냐하면 그만큼 큰 데이터셋을 구하기가 어렵기 때문이다. 그 대신에 이미 대규모 데이터를 대상으로 학습이 끝난 ConvNet을 가져다가 초기값으로 사용하거나 고정된 피쳐 추출기로 사용할 수 있다.</p>
 
-<p>ConvNet을 고정된 피쳐 추출기로 사용하는 경우에는 ConvNet 끝에 달린 fully-connected layer를 없애고, convolutional layer를 통해 처리되는 값만 얻으면 된다. 이를 얻어진 피쳐를 <code>CNN codes</code>라 한다. 보통 ImageNet에서 데이터를 처리할 때 <code>ReLU</code>를 사용하므로, 반드시 이 <code>codes</code>가 <code>ReLU</code>로 처리되도록 신경쓰자.</p>
+<p>ConvNet을 고정된 피쳐 추출기로 사용하는 경우에는 ConvNet 끝에 달린 fully-connected layer를 없애고, convolutional layer를 통해 처리되는 값만 얻으면 된다. 이를 얻어진 피쳐를 <code class="highlighter-rouge">CNN codes</code>라 한다. 보통 ImageNet에서 데이터를 처리할 때 <code class="highlighter-rouge">ReLU</code>를 사용하므로, 반드시 이 <code class="highlighter-rouge">codes</code>가 <code class="highlighter-rouge">ReLU</code>로 처리되도록 신경쓰자.</p>
 
-<p>ConvNet을 fine-tuning하는 경우에는 끝의 fully-connected layer를 제거할 뿐 아니라 앞선 convolutional layer를 새로운 데이터를 사용해서 다시 학습시키고, 역전파를 통해 <code>weight</code>도 업데이트해야 한다. 전체 convolutional layer를 업데이트하거나, 뒷단만 업데이트하는 것도 가능하다. (왜냐햐면 앞단의 레이어를 통해 얻어지는 것은 직선이나 곡선같은 원시적인 피쳐이므로 쓸모가 많으나, 뒷단의 고차원적 피쳐는 특정 도메인에 종속될 수 있으므로)</p>
+<p>ConvNet을 fine-tuning하는 경우에는 끝의 fully-connected layer를 제거할 뿐 아니라 앞선 convolutional layer를 새로운 데이터를 사용해서 다시 학습시키고, 역전파를 통해 <code class="highlighter-rouge">weight</code>도 업데이트해야 한다. 전체 convolutional layer를 업데이트하거나, 뒷단만 업데이트하는 것도 가능하다. (왜냐햐면 앞단의 레이어를 통해 얻어지는 것은 직선이나 곡선같은 원시적인 피쳐이므로 쓸모가 많으나, 뒷단의 고차원적 피쳐는 특정 도메인에 종속될 수 있으므로)</p>
 
 <p>그럼 언제 어떻게 transfer learning을 사용해야 할까?</p>
 
@@ -100,12 +100,12 @@
   </li>
   <li>
     <p>크고 다른 데이터셋
-=&gt; 이 경우 그냥 CNN을 처음부터 만들수도 있다. 하지만 현실적으로는 pre-trained된 모델의 <code>weight</code>로 초기값을 설정하고 학습시키는 것이 더 나은 경우가 많다. 데이터셋이 많은 경우 Convolution layer를 처음부터 끝까지 파인튜닝하는 것도 가능하다.</p>
+=&gt; 이 경우 그냥 CNN을 처음부터 만들수도 있다. 하지만 현실적으로는 pre-trained된 모델의 <code class="highlighter-rouge">weight</code>로 초기값을 설정하고 학습시키는 것이 더 나은 경우가 많다. 데이터셋이 많은 경우 Convolution layer를 처음부터 끝까지 파인튜닝하는 것도 가능하다.</p>
   </li>
 </ol>
 
 <h3 id="vgg16">VGG16</h3>
-<p>VGG16은 University of Oxford의 <a href="http://www.robots.ox.ac.uk/~vgg/research/very_deep/">Visual Geometry Group</a>에서 만든 모델로 ImageNet Challenge 2014에서 <code>localisation and classification</code> 부문 1, 2등을 수상했다고 한다. 이미지 분류 성능이 좋을 뿐만 아니라, 분류에 사용된 <code>weight</code>를 공개했기 때문에 더 의미있는 학문적 성취라 인정받고 있다.</p>
+<p>VGG16은 University of Oxford의 <a href="http://www.robots.ox.ac.uk/~vgg/research/very_deep/">Visual Geometry Group</a>에서 만든 모델로 ImageNet Challenge 2014에서 <code class="highlighter-rouge">localisation and classification</code> 부문 1, 2등을 수상했다고 한다. 이미지 분류 성능이 좋을 뿐만 아니라, 분류에 사용된 <code class="highlighter-rouge">weight</code>를 공개했기 때문에 더 의미있는 학문적 성취라 인정받고 있다.</p>
 
 <p><img src="/assets/cand_faces/vgg_performance.png" alt="VGG performance" /></p>
 
@@ -165,9 +165,9 @@
 <hr />
 
 <h3 id="how-to-get-vgg16">How to get VGG16</h3>
-<p>앞서 언급했듯, VGG16을 내려받는다는 것은 공개된 VGG16의 <code>weight</code>를 가져오는 것과 같다. 공개된 데이터 저장소에 올려진 <code>.npy</code> 파일을 아래와 같이 내려받는다. 용량이 500메가쯤 되서 시간이 좀 걸린다.</p>
+<p>앞서 언급했듯, VGG16을 내려받는다는 것은 공개된 VGG16의 <code class="highlighter-rouge">weight</code>를 가져오는 것과 같다. 공개된 데이터 저장소에 올려진 <code class="highlighter-rouge">.npy</code> 파일을 아래와 같이 내려받는다. 용량이 500메가쯤 되서 시간이 좀 걸린다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">vgg_dir</span> <span class="o">=</span> <span class="s1">&#39;vgg/&#39;</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">vgg_dir</span> <span class="o">=</span> <span class="s">'vgg/'</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">isdir</span><span class="p">(</span><span class="n">vgg_dir</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">vgg_dir</span><span class="p">)</span>
     
@@ -179,22 +179,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">block_num</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_block</span><span class="p">)</span> <span class="o">*</span> <span class="n">block_size</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_block</span> <span class="o">=</span> <span class="n">block_num</span>
         
-<span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">vgg_dir</span> <span class="o">+</span> <span class="s2">&quot;vgg16.npy&quot;</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">DLProgress</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">unit_scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">miniters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;VGG16 Params&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">isfile</span><span class="p">(</span><span class="n">vgg_dir</span> <span class="o">+</span> <span class="s">"vgg16.npy"</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">DLProgress</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s">'B'</span><span class="p">,</span> <span class="n">unit_scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">miniters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s">'VGG16 Params'</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span>
         <span class="n">urlretrieve</span><span class="p">(</span>
-            <span class="s1">&#39;https://s3.amazonaws.com/content.udacity-data.com/nd101/vgg16.npy&#39;</span><span class="p">,</span>
-            <span class="n">vgg_dir</span> <span class="o">+</span> <span class="s1">&#39;vgg16.npy&#39;</span><span class="p">,</span>
+            <span class="s">'https://s3.amazonaws.com/content.udacity-data.com/nd101/vgg16.npy'</span><span class="p">,</span>
+            <span class="n">vgg_dir</span> <span class="o">+</span> <span class="s">'vgg16.npy'</span><span class="p">,</span>
             <span class="n">pbar</span><span class="o">.</span><span class="n">hook</span>
         <span class="p">)</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;VGG16 already exists.&quot;</span><span class="p">)</span></code></pre></figure>
+    <span class="k">print</span><span class="p">(</span><span class="s">"VGG16 already exists."</span><span class="p">)</span></code></pre></figure>
 
 <hr />
 
 <h3 id="preprocess-through-vgg16">Preprocess through VGG16</h3>
 <p>정리한 이미지를 VGG16에 집어넣어, 피쳐를 뽑는다. 코드 중간에 run(vgg.relu6, …)라고 된 부분이 VGG16의 중간과정인 relu6에서 피쳐를 얻는 부분이다. 여기를 vgg.pool3로 바꾸면 [M2]에서 사용할 인풋 데이터를 얻을 수 있다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">process_images_thru_vgg</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">process_images_thru_vgg</span><span class="p">(</span><span class="n">classes</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
     <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
@@ -206,58 +206,58 @@
     <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
         <span class="n">vgg</span> <span class="o">=</span> <span class="n">vgg16</span><span class="o">.</span><span class="n">Vgg16</span><span class="p">()</span>
         <span class="n">input_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s2">&quot;content_vgg&quot;</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">"content_vgg"</span><span class="p">):</span>
             <span class="n">vgg</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">input_</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">classes</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Starting {} images&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Starting {} images"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">each</span><span class="p">))</span>
             <span class="n">class_path</span> <span class="o">=</span> <span class="n">image_dir</span> <span class="o">+</span> <span class="n">each</span>
             <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">class_path</span><span class="p">)</span>
-            <span class="n">files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;.DS_Store&#39;</span><span class="p">)</span>
+            <span class="n">files</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">'.DS_Store'</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="nb">file</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="n">file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">file</span><span class="p">)</span>
-                <span class="c1"># Add images to the current batch</span>
+                <span class="n">file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="nb">file</span><span class="p">)</span>
+                <span class="c"># Add images to the current batch</span>
                 <span class="n">img</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_image</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">class_path</span><span class="p">,</span> <span class="nb">file</span><span class="p">))</span>
                 <span class="n">batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
                 <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">each</span><span class="p">)</span>
 
-                <span class="c1"># Running the batch through the network to get the codes</span>
+                <span class="c"># Running the batch through the network to get the codes</span>
                 <span class="k">if</span> <span class="n">ii</span> <span class="o">%</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ii</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
                     <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
 
                     <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">input_</span><span class="p">:</span> <span class="n">images</span><span class="p">}</span>
-                    <span class="c1">## run vgg.relu6 to extract fixed features</span>
+                    <span class="c">## run vgg.relu6 to extract fixed features</span>
                     <span class="n">codes_batch</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">vgg</span><span class="o">.</span><span class="n">relu6</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed_dict</span><span class="p">)</span>
 
-                    <span class="c1"># Here I&#39;m building an array of the codes</span>
+                    <span class="c"># Here I'm building an array of the codes</span>
                     <span class="k">if</span> <span class="n">codes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                         <span class="n">codes</span> <span class="o">=</span> <span class="n">codes_batch</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">codes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">codes</span><span class="p">,</span> <span class="n">codes_batch</span><span class="p">))</span>
 
-                    <span class="c1"># Reset to start building the next batch</span>
+                    <span class="c"># Reset to start building the next batch</span>
                     <span class="n">batch</span> <span class="o">=</span> <span class="p">[]</span>
-                    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;{} images processed&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ii</span><span class="p">))</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">'{} images processed'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ii</span><span class="p">))</span>
 
-    <span class="c1"># write files to file</span>
+    <span class="c"># write files to file</span>
     <span class="kn">import</span> <span class="nn">csv</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;files_v2&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'files_v2'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
 
-    <span class="c1"># write codes to file</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;codes_v2&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c"># write codes to file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'codes_v2'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">codes</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-    <span class="c1"># write labels to file</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;labels_v2&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c"># write labels to file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'labels_v2'</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
         <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
         
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">ts</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
     <span class="n">time_spent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;processing images thru vgg16: {} secs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_spent</span><span class="p">))</span></code></pre></figure>
+    <span class="k">print</span><span class="p">(</span><span class="s">"processing images thru vgg16: {} secs"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_spent</span><span class="p">))</span></code></pre></figure>
 
 <p>총 1,821장의 이미지를 넣고 돌렸다. [M1]에서는 927초, [M2]에서는 704초가 걸렸다. [M1]에서는 이후에 convolution layer를 2개 더 거치고 relu까지 하다보니 시간이 더 걸리는 듯 하다. 전처리에 10~13분 정도 소요되므로, 매번 돌릴때마다 반복하지 않기 위해 파일로 중간 결과를 저장해두었다.</p>
 
@@ -279,7 +279,7 @@
 <h3 id="adding-my-own-classifier">Adding my own classifier</h3>
 <p>VGG16을 통해 이미지의 피쳐를 추출했으므로, 이제 내가 원하는대로 분류기를 만들어 끝에 붙이기만 하면 된다. fully-connected 레이어를 2개를 이어 붙이고, 첫 레이어 뒤에는 dropout을 붙여 overfitting을 방지해본다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">model_run</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">model_run</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">,</span> <span class="n">checkpoint_dir</span><span class="p">):</span>
 
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
 
@@ -301,12 +301,12 @@
                         <span class="n">keep_prob_0</span><span class="p">:</span> <span class="n">keep_prob</span><span class="p">}</span>
                 <span class="n">loss</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">cost</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">],</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed</span><span class="p">)</span>
 
-                <span class="n">training_rec</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;training_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
+                <span class="n">training_rec</span> <span class="o">=</span> <span class="p">{</span><span class="s">'epoch'</span><span class="p">:</span> <span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s">'training_loss'</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
                 <span class="n">training_loss_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">training_rec</span><span class="p">)</span>
 
-                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Epoch: {}/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
-                      <span class="s2">&quot;Iteration: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>
-                      <span class="s2">&quot;Training loss: {:.5f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
+                      <span class="s">"Iteration: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>
+                      <span class="s">"Training loss: {:.5f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
                 <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
 
                 <span class="k">if</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -315,18 +315,18 @@
                             <span class="n">keep_prob_0</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
                     <span class="n">val_acc</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">accuracy</span><span class="p">,</span> <span class="n">feed_dict</span><span class="o">=</span><span class="n">feed</span><span class="p">)</span>
 
-                    <span class="n">val_rec</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
+                    <span class="n">val_rec</span> <span class="o">=</span> <span class="p">{</span><span class="s">'epoch'</span><span class="p">:</span> <span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s">'val_acc'</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
                     <span class="n">val_acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_rec</span><span class="p">)</span>
 
-                    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Epoch: {}/{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
-                          <span class="s2">&quot;Iteration: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>
-                          <span class="s2">&quot;Validation Acc: {:.4f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val_acc</span><span class="p">))</span>
-        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_dir</span> <span class="o">+</span> <span class="s2">&quot;cand_faces_cleaned.ckpt&quot;</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">epochs</span><span class="p">),</span>
+                          <span class="s">"Iteration: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>
+                          <span class="s">"Validation Acc: {:.4f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val_acc</span><span class="p">))</span>
+        <span class="n">saver</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">checkpoint_dir</span> <span class="o">+</span> <span class="s">"cand_faces_cleaned.ckpt"</span><span class="p">)</span>
 
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
     <span class="n">ts</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
     <span class="n">time_spent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;fine-tuning vgg16 with my dataset: {} secs&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_spent</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"fine-tuning vgg16 with my dataset: {} secs"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">time_spent</span><span class="p">))</span>
     
     <span class="k">return</span> <span class="n">training_loss_list</span><span class="p">,</span> <span class="n">val_acc_list</span></code></pre></figure>
 
@@ -401,7 +401,7 @@ fine-tuning vgg16 with my dataset: 3912 secs</p>
 
 <p><img src="/assets/cand_faces/m3_res.png" alt="M3_res" /></p>
 
-<p>게다가 고작 20 epochs를 돌렸을 뿐인데 3,912초, 거의 48분이 걸렸다. M1이 300 epochs에 60초가 걸렸다는 걸 생각해보면 너무나 느린 속도다. GPU를 사용하면 더 빨라지겠으나, loss가 줄어드는 패턴을 보면 epoch을 많이 돌린다고 해서 나아질 것 같지는 않다. 사실 CS231에서 4가지 방법에 대해 소개하면서 데이터셋이 많은 경우에만 CNN <code>weight</code>을 업데이트하라고 했는데, 괜히 한 얘기가 아니다 싶다.</p>
+<p>게다가 고작 20 epochs를 돌렸을 뿐인데 3,912초, 거의 48분이 걸렸다. M1이 300 epochs에 60초가 걸렸다는 걸 생각해보면 너무나 느린 속도다. GPU를 사용하면 더 빨라지겠으나, loss가 줄어드는 패턴을 보면 epoch을 많이 돌린다고 해서 나아질 것 같지는 않다. 사실 CS231에서 4가지 방법에 대해 소개하면서 데이터셋이 많은 경우에만 CNN <code class="highlighter-rouge">weight</code>을 업데이트하라고 했는데, 괜히 한 얘기가 아니다 싶다.</p>
 
 <h4 id="m4">[M4]</h4>
 <p>마지막으로 VGGNet을 사용하지 않고 내가 간단히 만든 CNN이 출력한 결과를 보자.</p>

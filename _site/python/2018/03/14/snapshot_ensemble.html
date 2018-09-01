@@ -63,7 +63,7 @@
           <a name="topofpage"></a>
           <h2 id="simple-voting-ensemble">Simple Voting Ensemble</h2>
 
-<p>At the end of my previous post on <a href="http://jsideas.net/python/2018/02/19/cityFinder.html"><code>Which Continent Does PyoungChang Belong To?</code></a> I made a simple-voting-based ensemble function.</p>
+<p>At the end of my previous post on <a href="http://jsideas.net/python/2018/02/19/cityFinder.html"><code class="highlighter-rouge">Which Continent Does PyoungChang Belong To?</code></a> I made a simple-voting-based ensemble function.</p>
 
 <p>Given city name, the ensemble model loads five models and aggregates their inference results, and chooses the most voted continent as its final prediction. This ensemble model’s f1-score was 0.571 which was 0.005 higher than the single model’s 0.566.</p>
 
@@ -116,35 +116,35 @@ And when the $T_{cur}$ is equal to $T_i$ (reset point), then the right side gets
 
 <p>To enhance performance, the authors suggest an option to increase $T_i$ by a factor of $T_{mult}$ at every reset.</p>
 
-<p>Pytorch already has SGDR implemented in <a href="http://pytorch.org/docs/master/_modules/torch/optim/lr_scheduler.html"><code>torch.optim.lr_scheduler</code></a> as <code>CosineAnnealingLR</code>, but this version does not reset the learning rate, nor does it increase $T_{i}$ by a factor of $T_{mult}$. So I edited the code a little bit to add the restart function and snapshot save function.</p>
+<p>Pytorch already has SGDR implemented in <a href="http://pytorch.org/docs/master/_modules/torch/optim/lr_scheduler.html"><code class="highlighter-rouge">torch.optim.lr_scheduler</code></a> as <code class="highlighter-rouge">CosineAnnealingLR</code>, but this version does not reset the learning rate, nor does it increase $T_{i}$ by a factor of $T_{mult}$. So I edited the code a little bit to add the restart function and snapshot save function.</p>
 
-<pre><code class="language-python">import os
-import warnings
-warnings.filterwarnings('ignore')
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span>
 
-import pandas as pd
-import math
-import matplotlib.pyplot as plt
-%matplotlib inline
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-from torch.optim.lr_scheduler import _LRScheduler
-torch.manual_seed(1000)
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">_LRScheduler</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
 
-from torchtext import data
-</code></pre>
+<span class="kn">from</span> <span class="nn">torchtext</span> <span class="kn">import</span> <span class="n">data</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">class CosineAnnealingLR_with_Restart(_LRScheduler):
-    """Set the learning rate of each parameter group using a cosine annealing
-    schedule, where :math:`\eta_{max}` is set to the initial lr and
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">_LRScheduler</span><span class="p">):</span>
+    <span class="s">"""Set the learning rate of each parameter group using a cosine annealing
+    schedule, where :math:`</span><span class="err">\</span><span class="s">eta_{max}` is set to the initial lr and
     :math:`T_{cur}` is the number of epochs since the last restart in SGDR:
 
     .. math::
 
-        \eta_t = \eta_{min} + \frac{1}{2}(\eta_{max} - \eta_{min})(1 +
-        \cos(\frac{T_{cur}}{T_{max}}\pi))
+        </span><span class="err">\</span><span class="s">eta_t = </span><span class="err">\</span><span class="s">eta_{min} + </span><span class="se">\f</span><span class="s">rac{1}{2}(</span><span class="err">\</span><span class="s">eta_{max} - </span><span class="err">\</span><span class="s">eta_{min})(1 +
+        </span><span class="err">\</span><span class="s">cos(</span><span class="se">\f</span><span class="s">rac{T_{cur}}{T_{max}}</span><span class="err">\</span><span class="s">pi))
 
     When last_epoch=-1, sets initial lr as lr.
 
@@ -163,99 +163,99 @@ from torchtext import data
         out_dir (str): Directory to save snapshots
         take_snapshot (bool): Whether to save snapshots at every restart
 
-    .. _SGDR\: Stochastic Gradient Descent with Warm Restarts:
+    .. _SGDR</span><span class="err">\</span><span class="s">: Stochastic Gradient Descent with Warm Restarts:
         https://arxiv.org/abs/1608.03983
-    """
+    """</span>
 
-    def __init__(self, optimizer, T_max, T_mult, model, out_dir, take_snapshot, eta_min=0, last_epoch=-1):
-        self.T_max = T_max
-        self.T_mult = T_mult
-        self.Te = self.T_max
-        self.eta_min = eta_min
-        self.current_epoch = last_epoch
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">T_mult</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">,</span> <span class="n">take_snapshot</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last_epoch</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_mult</span> <span class="o">=</span> <span class="n">T_mult</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span> <span class="o">=</span> <span class="n">eta_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">last_epoch</span>
         
-        self.model = model
-        self.out_dir = out_dir
-        self.take_snapshot = take_snapshot
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">=</span> <span class="n">out_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">take_snapshot</span> <span class="o">=</span> <span class="n">take_snapshot</span>
         
-        self.lr_history = []
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_history</span> <span class="o">=</span> <span class="p">[]</span>
         
-        super(CosineAnnealingLR_with_Restart, self).__init__(optimizer, last_epoch)
+        <span class="nb">super</span><span class="p">(</span><span class="n">CosineAnnealingLR_with_Restart</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">last_epoch</span><span class="p">)</span>
 
-    def get_lr(self):
-        new_lrs = [self.eta_min + (base_lr - self.eta_min) *
-                (1 + math.cos(math.pi * self.current_epoch / self.Te)) / 2
+    <span class="k">def</span> <span class="nf">get_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">new_lrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">base_lr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span><span class="p">)</span> <span class="o">*</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
 
-                for base_lr in self.base_lrs]
+                <span class="k">for</span> <span class="n">base_lr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_lrs</span><span class="p">]</span>
         
-        self.lr_history.append(new_lrs)
-        return new_lrs
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_lrs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_lrs</span>
     
-    def step(self, epoch=None):
-        if epoch is None:
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         
-            epoch = self.last_epoch + 1
-        self.last_epoch = epoch
-        self.current_epoch += 1
+            <span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
         
-        for param_group, lr in zip(self.optimizer.param_groups, self.get_lr()):
-            param_group['lr'] = lr
+        <span class="k">for</span> <span class="n">param_group</span><span class="p">,</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lr</span><span class="p">()):</span>
+            <span class="n">param_group</span><span class="p">[</span><span class="s">'lr'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lr</span>
         
-        ## restart
-        if self.current_epoch == self.Te:
-            print("restart at epoch {:03d}".format(self.last_epoch + 1))
+        <span class="c">## restart</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"restart at epoch {:03d}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
             
-            if self.take_snapshot:
-                torch.save({
-                    'epoch': self.T_max,
-                    'state_dict': self.model.state_dict()
-                }, self.out_dir + "/" + 'snapshot_e_{:03d}.pth.tar'.format(self.T_max))
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">take_snapshot</span><span class="p">:</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>
+                    <span class="s">'epoch'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span><span class="p">,</span>
+                    <span class="s">'state_dict'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+                <span class="p">},</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="s">'snapshot_e_{:03d}.pth.tar'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T_max</span><span class="p">))</span>
             
-            ## reset epochs since the last reset
-            self.current_epoch = 0
+            <span class="c">## reset epochs since the last reset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="mi">0</span>
             
-            ## reset the next goal
-            self.Te = int(self.Te * self.T_mult)
-            self.T_max = self.T_max + self.Te
+            <span class="c">## reset the next goal</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_mult</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span>
 
-</code></pre>
+</code></pre></div></div>
 
 <p>To see how the scheduler controls the learning rate, I made the following sample model and visualization function.</p>
 
-<pre><code class="language-python">class BlankModel(nn.Module):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BlankModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     
-    def __init__(self):
-        super(BlankModel, self).__init__()
-        self.fc = nn.Linear(2, 2)
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BlankModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         
-    def foward(self, x):
-        x = self.fc(x)
-        return x
-</code></pre>
+    <span class="k">def</span> <span class="nf">foward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def simulate_lrs(t_max, t_mult, epochs):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">simulate_lrs</span><span class="p">(</span><span class="n">t_max</span><span class="p">,</span> <span class="n">t_mult</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
     
-    model = BlankModel()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.1)
-    sgdr = CosineAnnealingLR_with_Restart(optimizer, T_max=t_max, T_mult=t_mult, model=model, out_dir='blank', \
-                                               take_snapshot=False, eta_min=1e-3)
+    <span class="n">model</span> <span class="o">=</span> <span class="n">BlankModel</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">sgdr</span> <span class="o">=</span> <span class="n">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="n">t_max</span><span class="p">,</span> <span class="n">T_mult</span><span class="o">=</span><span class="n">t_mult</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s">'blank'</span><span class="p">,</span> \
+                                               <span class="n">take_snapshot</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
     
-    for i in range(epochs):
-        sgdr.step()
-        lr = optimizer.param_groups[0]['lr']
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">sgdr</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">'lr'</span><span class="p">]</span>
 
-    fig, ax = plt.subplots(figsize=(20, 4))
-    ax.plot([x[0] for x in sgdr.lr_history])
-    ax.set_yscale("log")
-    plt.show()
-</code></pre>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sgdr</span><span class="o">.</span><span class="n">lr_history</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">"log"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <h3 id="t_max--10-t_mult--1-for-100-epochs">$T_{max} = 10, T_{mult} = 1$ for 100 epochs</h3>
 
-<pre><code class="language-python">simulate_lrs(10, 1, 100)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>restart at epoch 010
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 010
 restart at epoch 020
 restart at epoch 030
 restart at epoch 040
@@ -265,34 +265,34 @@ restart at epoch 070
 restart at epoch 080
 restart at epoch 090
 restart at epoch 100
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_7_1.png" alt="png" /></p>
 
 <h3 id="t_max--10-t_mult--2-for-100-epochs">$T_{max} = 10, T_{mult} = 2$ for 100 epochs</h3>
 
-<pre><code class="language-python">simulate_lrs(10, 2, 100)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>restart at epoch 010
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 010
 restart at epoch 030
 restart at epoch 070
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_9_1.png" alt="png" /></p>
 
 <h3 id="t_max--1-t_mult--2-for-100-epochs">$T_{max} = 1, T_{mult} = 2$ for 100 epochs</h3>
 
-<pre><code class="language-python">simulate_lrs(1, 2, 100)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>restart at epoch 001
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 001
 restart at epoch 003
 restart at epoch 007
 restart at epoch 015
 restart at epoch 031
 restart at epoch 063
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_11_1.png" alt="png" /></p>
 
@@ -337,7 +337,7 @@ restart at epoch 063
 
 <p>It seems that the model found good local minima since the third snapshots. The training f1-score were similar to the validation and test metric indicating that the model was robust to the problem of overfitting (training and validation  log in the full code below).</p>
 
-<p>To yield an ensembled prediction I simply averaged softmax outputs of the chosen snapshots(<code>models[2:]</code>) and transformed it to the final label.</p>
+<p>To yield an ensembled prediction I simply averaged softmax outputs of the chosen snapshots(<code class="highlighter-rouge">models[2:]</code>) and transformed it to the final label.</p>
 
 <p>As a result…</p>
 
@@ -382,272 +382,272 @@ restart at epoch 063
 
 <h2 id="full-training-code">Full Training Code</h2>
 
-<pre><code class="language-python">## City name tokenizer
-## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']
-def tokenizer(text):
-    return list(text)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## City name tokenizer</span>
+<span class="c">## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']</span>
+<span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
-tokenizer("Seoul")
-</code></pre>
+<span class="n">tokenizer</span><span class="p">(</span><span class="s">"Seoul"</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>['S', 'e', 'o', 'u', 'l']
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['S', 'e', 'o', 'u', 'l']
+</code></pre></div></div>
 
-<pre><code class="language-python">CITY = data.Field(sequential=True, pad_first=True, tokenize=tokenizer)
-CONTINENT = data.Field(sequential=False, use_vocab=True)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CITY</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">pad_first</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+<span class="n">CONTINENT</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_vocab</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">train, val, test = data.TabularDataset.splits(
-    path='dataset', skip_header=True, train='_train.csv',
-    validation='_val.csv', test='_test.csv', format='csv',
-    fields=[('city_ascii', CITY), ('continent', CONTINENT)]
-)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">TabularDataset</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s">'dataset'</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="s">'_train.csv'</span><span class="p">,</span>
+    <span class="n">validation</span><span class="o">=</span><span class="s">'_val.csv'</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'_test.csv'</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[(</span><span class="s">'city_ascii'</span><span class="p">,</span> <span class="n">CITY</span><span class="p">),</span> <span class="p">(</span><span class="s">'continent'</span><span class="p">,</span> <span class="n">CONTINENT</span><span class="p">)]</span>
+<span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">CITY.build_vocab(train, val, test)
-CONTINENT.build_vocab(train, val, test)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CITY</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">CONTINENT</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">train_iter, val_iter, test_iter = data.BucketIterator.splits(
-    (train, val, test), batch_sizes=(16, 16, 16), repeat=False,
-    sort_key=lambda x: len(x.city_ascii), device=-1
-)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">BucketIterator</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span> <span class="n">batch_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">sort_key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">),</span> <span class="n">device</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">use_gpu = torch.cuda.is_available()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">use_gpu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">class LSTMModel(nn.Module):
-    def __init__(self, batch_size, vocab_size, label_size,
-                 embedding_dim, hidden_dim,
-                 nb_lstm_layers, lstm_dropout, lstm_bidirectional,
-                 fc_dropout, use_gpu):
-        super(LSTMModel, self).__init__()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LSTMModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">label_size</span><span class="p">,</span>
+                 <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span>
+                 <span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="n">lstm_dropout</span><span class="p">,</span> <span class="n">lstm_bidirectional</span><span class="p">,</span>
+                 <span class="n">fc_dropout</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
         
-        self.use_gpu = use_gpu
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span>
         
-        self.batch_size = batch_size
-        self.vocab_size = vocab_size
-        self.label_size = label_size
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_size</span> <span class="o">=</span> <span class="n">label_size</span>
         
-        self.embedding_dim = embedding_dim
-        self.hidden_dim = hidden_dim
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">embedding_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">hidden_dim</span>
         
-        self.nb_lstm_layers = nb_lstm_layers
-        self.lstm_dropout = lstm_dropout
-        self.lstm_bidirectional = lstm_bidirectional
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">nb_lstm_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">lstm_dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span> <span class="o">=</span> <span class="n">lstm_bidirectional</span>
         
-        self.embeddings = nn.Embedding(vocab_size, embedding_dim)
-        self.lstm = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim, 
-                            num_layers=self.nb_lstm_layers, 
-                            dropout=self.lstm_dropout,
-                            bidirectional=self.lstm_bidirectional)
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">,</span> 
+                            <span class="n">num_layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> 
+                            <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span><span class="p">,</span>
+                            <span class="n">bidirectional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">)</span>
         
-        if self.lstm_bidirectional:
-            self.hidden2label = nn.Linear(hidden_dim * 2, label_size)
-        else:
-            self.hidden2label = nn.Linear(hidden_dim, label_size)
-        self.hidden = self.init_hidden()
-        self.dropout = nn.Dropout(fc_dropout)
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">fc_dropout</span><span class="p">)</span>
         
         
-    def init_hidden(self):
-        if self.lstm_bidirectional:
-            if self.use_gpu:
-                return (Variable(torch.zeros(self.nb_lstm_layers * 2, self.batch_size, self.hidden_dim).cuda()),
-                        Variable(torch.zeros(self.nb_lstm_layers * 2, self.batch_size, self.hidden_dim).cuda()))
-            else:
-                return (Variable(torch.zeros(self.nb_lstm_layers * 2, self.batch_size, self.hidden_dim)),
-                        Variable(torch.zeros(self.nb_lstm_layers * 2, self.batch_size, self.hidden_dim)))
-        else:
-            if self.use_gpu:
-                return (Variable(torch.zeros(self.nb_lstm_layers, self.batch_size, self.hidden_dim).cuda()),
-                        Variable(torch.zeros(self.nb_lstm_layers, self.batch_size, self.hidden_dim).cuda()))
-            else:
-                return (Variable(torch.zeros(self.nb_lstm_layers, self.batch_size, self.hidden_dim)),
-                        Variable(torch.zeros(self.nb_lstm_layers, self.batch_size, self.hidden_dim)))
+    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
                 
     
-    def forward(self, sentence):
-        x = self.embeddings(sentence).view(len(sentence), self.batch_size, -1)
-        lstm_out, self.hidden = self.lstm(x, self.hidden)
-        y = self.hidden2label(lstm_out[-1])
-        y = self.dropout(y)
-        log_probs = F.log_softmax(y)
-        return log_probs
-</code></pre>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">lstm_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span><span class="p">(</span><span class="n">lstm_out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_probs</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def load_params(modelClass, pg, use_gpu):
-    model = modelClass(batch_size = pg['BATCH_SIZE'],
-                  vocab_size = len(CITY.vocab),
-                  label_size = len(CONTINENT.vocab) -1, ## b.c of &lt;unk&gt;
-                  embedding_dim = pg['EMBEDDING_DIM'],
-                  hidden_dim = pg['HIDDEN_DIM'],
-                  nb_lstm_layers = pg['nb_1stm_layers'],
-                  lstm_dropout = pg['lstm_dropout'],
-                  lstm_bidirectional=pg['lstm_bidirectional'],
-                  fc_dropout = pg['fc_dropout'],
-                  use_gpu = use_gpu)
-    if use_gpu:
-        return model.cuda()
-    else:
-        return model
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">modelClass</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">modelClass</span><span class="p">(</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'BATCH_SIZE'</span><span class="p">],</span>
+                  <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="p">),</span>
+                  <span class="n">label_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c">## b.c of &lt;unk&gt;</span>
+                  <span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'EMBEDDING_DIM'</span><span class="p">],</span>
+                  <span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'HIDDEN_DIM'</span><span class="p">],</span>
+                  <span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'nb_1stm_layers'</span><span class="p">],</span>
+                  <span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'lstm_dropout'</span><span class="p">],</span>
+                  <span class="n">lstm_bidirectional</span><span class="o">=</span><span class="n">pg</span><span class="p">[</span><span class="s">'lstm_bidirectional'</span><span class="p">],</span>
+                  <span class="n">fc_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'fc_dropout'</span><span class="p">],</span>
+                  <span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">pg_17 = {'BATCH_SIZE': 32,
- 'EMBEDDING_DIM': 100,
- 'HIDDEN_DIM': 100,
- 'fc_dropout': 0.5,
- 'lstm_bidirectional': True,
- 'lstm_dropout': 0.5,
- 'nb_1stm_layers': 3}
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pg_17</span> <span class="o">=</span> <span class="p">{</span><span class="s">'BATCH_SIZE'</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+ <span class="s">'EMBEDDING_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+ <span class="s">'HIDDEN_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+ <span class="s">'fc_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+ <span class="s">'lstm_bidirectional'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+ <span class="s">'lstm_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+ <span class="s">'nb_1stm_layers'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">pg_17_model = load_params(LSTMModel, pg_17, use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pg_17_model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">import numpy as np
-from torch import optim
-import torch.nn.functional as F
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">out_dir = os.path.abspath(os.path.join(os.path.curdir, "sgdr_final"))
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">"sgdr_final"</span><span class="p">))</span>
     
-if not os.path.exists(out_dir):
-    os.makedirs(out_dir)
-</code></pre>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def get_accuracy(truth, pred):
-    tr = np.array(truth)
-    pr = np.array(pred)
-    return sum(tr == pr) / len(tr)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tr</span> <span class="o">==</span> <span class="n">pr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">from sklearn.metrics import f1_score
-def get_f1(truth, pred):
-    tr = np.array(truth)
-    pr = np.array(pred)
-    return f1_score(tr, pr, average='weighted')
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span>
+<span class="k">def</span> <span class="nf">get_f1</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s">'weighted'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">from torch.optim.lr_scheduler import _LRScheduler
-import math
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">_LRScheduler</span>
+<span class="kn">import</span> <span class="nn">math</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">import time
-loss_function = nn.NLLLoss()
-optimizer = optim.SGD(pg_17_model.parameters(), lr=0.1, momentum=0.9, nesterov=True)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">pg_17_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">nesterov</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">mySGDR = CosineAnnealingLR_with_Restart(optimizer, T_max=12, T_mult=1, model=pg_17_model, out_dir=out_dir, \
-                                        take_snapshot=True, eta_min=1e-9)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mySGDR</span> <span class="o">=</span> <span class="n">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">T_mult</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> \
+                                        <span class="n">take_snapshot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def train_epoch_progress(model, train_iter, loss_function, optimizer, text_field, label_field, epoch):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label_field</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
     
-    model.train() ## train mode
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c">## train mode</span>
     
-    avg_loss = 0.0
-    truth_res = []
-    pred_res = []
-    count = 0
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         
-    for batch in train_iter:
-        if use_gpu:
-            city, continent = batch.city_ascii.cuda(), batch.continent.cuda()
-        else:
-            city, continent = batch.city_ascii, batch.continent
-        continent.data.sub_(1) ## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)
-        truth_res += list(continent.data)
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_iter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c">## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)</span>
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         
-        model.batch_size = len(continent.data)
-        model.hidden = model.init_hidden()
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
         
-        pred = model(city)
-        pred_label = pred.data.max(1)[1].cpu().numpy() ## .cpu() to get it from gpu env
-        pred_res += [x for x in pred_label]
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c">## .cpu() to get it from gpu env</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
         
-        model.zero_grad()
-        loss = loss_function(pred, continent)
-        avg_loss += loss.data[0]
-        count += 1
+        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
         
-        loss.backward()
-        optimizer.step()
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         
-    avg_loss /= len(train_iter)
-    acc = get_accuracy(truth_res, pred_res)
-    f1 = get_f1(truth_res, pred_res)
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_iter</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
     
-    print('Train: loss %.2f | acc %.1f | f1-score %.3f' % (avg_loss, acc * 100, f1))
+    <span class="k">print</span><span class="p">(</span><span class="s">'Train: loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
         
-    return avg_loss, acc, f1
-</code></pre>
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def evaluate(model, data, loss_function, name):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     
-    model.eval() ## eval mode
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c">## eval mode</span>
     
-    avg_loss = 0.0
-    truth_res = []
-    pred_res = []
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
     
-    for batch in data:
-        if use_gpu:
-            city, continent = batch.city_ascii.cuda(), batch.continent.cuda()
-        else:
-            city, continent = batch.city_ascii, batch.continent
-        continent.data.sub_(1)
-        truth_res += list(continent.data)
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         
-        model.batch_size = len(continent.data)
-        model.hidden = model.init_hidden()
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
         
-        pred = model(city)
-        pred_label = pred.data.max(1)[1].cpu().numpy()
-        pred_res += [x for x in pred_label]
-        loss = loss_function(pred, continent)
-        avg_loss += loss.data[0]
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         
-    avg_loss /= len(data)
-    acc = get_accuracy(truth_res, pred_res)
-    f1 = get_f1(truth_res, pred_res)
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
     
-    print(name + ': loss %.2f | acc %.1f | f1-score %.3f' % (avg_loss, acc * 100, f1))
-    return avg_loss, acc, f1
-</code></pre>
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">': loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">EPOCHS = 121
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">121</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">import time
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">loss_function = nn.NLLLoss()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">for epoch in range(EPOCHS):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
     
-    print("Epoch: {}".format(epoch + 1))
-    mySGDR.step()
+    <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">mySGDR</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
     
-    rec_dict = {}
-    train_loss, acc, train_f1 = train_epoch_progress(pg_17_model, 
-                                     train_iter, 
-                                     loss_function, 
-                                     optimizer,
-                                     CITY, 
-                                     CONTINENT, 
-                                     epoch)
+    <span class="n">rec_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">train_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">train_f1</span> <span class="o">=</span> <span class="n">train_epoch_progress</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> 
+                                     <span class="n">train_iter</span><span class="p">,</span> 
+                                     <span class="n">loss_function</span><span class="p">,</span> 
+                                     <span class="n">optimizer</span><span class="p">,</span>
+                                     <span class="n">CITY</span><span class="p">,</span> 
+                                     <span class="n">CONTINENT</span><span class="p">,</span> 
+                                     <span class="n">epoch</span><span class="p">)</span>
 
-    val_loss, val_acc, val_f1 = evaluate(pg_17_model, val_iter, loss_function, 'Val')
+    <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Val'</span><span class="p">)</span>
     
 
-test_loss, test_acc, test_f1 = evaluate(pg_17_model, test_iter, loss_function, 'Final Test')
+<span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
      
-</code></pre>
+</code></pre></div></div>
 
-<pre><code>Epoch: 1
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch: 1
 Train: loss 1.68 | acc 32.7 | f1-score 0.285
 Val: loss 1.46 | acc 43.1 | f1-score 0.336
 Epoch: 2
@@ -1021,19 +1021,19 @@ Epoch: 121
 Train: loss 1.10 | acc 57.8 | f1-score 0.564
 Val: loss 1.37 | acc 53.2 | f1-score 0.530
 Final Test: loss 1.45 | acc 52.7 | f1-score 0.522
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">import glob
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">out_dir = 'sgdr_final'
-checkpoints = sorted(glob.glob(out_dir + '/*.tar'))
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">out_dir</span> <span class="o">=</span> <span class="s">'sgdr_final'</span>
+<span class="n">checkpoints</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/*.tar'</span><span class="p">))</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">checkpoints
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">checkpoints</span>
+</code></pre></div></div>
 
-<pre><code>['sgdr_final/snapshot_e_012.pth.tar',
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['sgdr_final/snapshot_e_012.pth.tar',
  'sgdr_final/snapshot_e_024.pth.tar',
  'sgdr_final/snapshot_e_036.pth.tar',
  'sgdr_final/snapshot_e_048.pth.tar',
@@ -1043,38 +1043,38 @@ checkpoints = sorted(glob.glob(out_dir + '/*.tar'))
  'sgdr_final/snapshot_e_096.pth.tar',
  'sgdr_final/snapshot_e_108.pth.tar',
  'sgdr_final/snapshot_e_120.pth.tar']
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">model = load_params(LSTMModel, pg_17, use_gpu)
-ch = torch.load(checkpoints[0], map_location={'cuda:0':'cpu'})
-model.load_state_dict(ch['state_dict'])
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="n">ch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span><span class="s">'cpu'</span><span class="p">})</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def load_model(path):
-    model = load_params(LSTMModel, pg_17, use_gpu)
-    ch = torch.load(path, map_location={'cuda:0':'cpu'})
-    model.load_state_dict(ch['state_dict'])
-    return model
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span><span class="s">'cpu'</span><span class="p">})</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">models = [load_model(ch) for ch in checkpoints]
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_model</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">checkpoints</span><span class="p">]</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">f1_list = []
-for model in models:
-    test_loss, test_acc, test_f1 = evaluate(model, test_iter, loss_function, 'Final Test')
-    f1_list.append(test_f1)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f1_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
+    <span class="n">f1_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_f1</span><span class="p">)</span>
     
-fig, ax = plt.subplots()
-ax.bar(np.arange(0, len(f1_list)), f1_list)
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1_list</span><span class="p">)),</span> <span class="n">f1_list</span><span class="p">)</span>
 
-ax.set_ylim(0.5, 0.6)
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
 
-ax.set_title("Test f1-scores of 12 Snapshots")
-plt.show()
-</code></pre>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Test f1-scores of 12 Snapshots"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
-<pre><code>Final Test: loss 1.23 | acc 55.3 | f1-score 0.532
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Final Test: loss 1.23 | acc 55.3 | f1-score 0.532
 Final Test: loss 1.19 | acc 55.6 | f1-score 0.537
 Final Test: loss 1.21 | acc 57.4 | f1-score 0.562
 Final Test: loss 1.26 | acc 57.3 | f1-score 0.562
@@ -1084,125 +1084,125 @@ Final Test: loss 1.45 | acc 56.2 | f1-score 0.555
 Final Test: loss 1.52 | acc 57.1 | f1-score 0.564
 Final Test: loss 1.59 | acc 56.4 | f1-score 0.559
 Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
-</code></pre>
+</code></pre></div></div>
 
 <p><img src="/assets/snapshot/Snapshot%2BEnsemble%2Bwith%2BSGDR_44_1.png" alt="png" /></p>
 
-<pre><code class="language-python">chosen = models[2:]
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chosen</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def ensemble_evaluate(models, data, loss_function, name):
-    tot = []
-    for model in models:
-        preds = []
-        label = []
-        model.eval() ## eval mode
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_evaluate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">tot</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c">## eval mode</span>
 
-        avg_loss = 0.0
-        truth_res = []
-        pred_res = []
+        <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
 
-        for batch in data:
-            if use_gpu:
-                city, continent = batch.city_ascii.cuda(), batch.continent.cuda()
-            else:
-                city, continent = batch.city_ascii, batch.continent
-            continent.data.sub_(1)
-            truth_res += list(continent.data)
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+            <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
-            model.batch_size = len(continent.data)
-            model.hidden = model.init_hidden()
+            <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
 
-            pred = model(city)
-            preds.append(pred)
-            label.append(continent)
-        tot.append(preds)
-    return tot, label
-</code></pre>
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+            <span class="n">preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">continent</span><span class="p">)</span>
+        <span class="n">tot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tot</span><span class="p">,</span> <span class="n">label</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def ensemble_evaluate(models, data, loss_function, name):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_evaluate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 
-    avg_loss = 0.0
-    truth_res = []
-    pred_res = []
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
 
-    for batch in data:
-        batch_pred = []
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">batch_pred</span> <span class="o">=</span> <span class="p">[]</span>
         
-        for model in models:
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
             
-            model.eval()
+            <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
             
-            if use_gpu:
-                city, continent = batch.city_ascii.cuda(), batch.continent.cuda()
-            else:
-                city, continent = batch.city_ascii, batch.continent
-            continent.data.sub_(1)
+            <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+            <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             
             
-            model.batch_size = len(continent.data)
-            model.hidden = model.init_hidden()
+            <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
 
-            pred = model(city)
-            batch_pred.append(pred)
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+            <span class="n">batch_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
             
-        truth_res += list(continent.data)
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
             
-        stacked_pred = torch.stack([t.data for t in batch_pred])
-        ensemble_pred = torch.mean(stacked_pred, dim=0)
-        ensemble_label = ensemble_pred.max(1)[1].cpu().numpy()
-        pred_res += [x for x in ensemble_label]
+        <span class="n">stacked_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch_pred</span><span class="p">])</span>
+        <span class="n">ensemble_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stacked_pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ensemble_label</span> <span class="o">=</span> <span class="n">ensemble_pred</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ensemble_label</span><span class="p">]</span>
             
-        loss = loss_function(pred, continent)
-        avg_loss += loss.data[0]
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             
-    avg_loss /= len(data)
-    acc = get_accuracy(truth_res, pred_res)
-    f1 = get_f1(truth_res, pred_res)
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
     
-    return avg_loss, acc, f1
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
 
 
 
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">avg_loss, acc, f1 = ensemble_evaluate(chosen, test_iter, loss_function, "final test")
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">ensemble_evaluate</span><span class="p">(</span><span class="n">chosen</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">"final test"</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">print(avg_loss, acc, f1)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>1.560901219430177 0.59612724758 0.585357612011
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.560901219430177 0.59612724758 0.585357612011
+</code></pre></div></div>
 
-<pre><code class="language-python">def ensemble_inference(models, target, use_gpu):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
     
-    pred_res = []
-    for model in models:
-        model.eval()
-        model.batch_size = 1
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
         
-        if use_gpu:
-            targetTensor = Variable(torch.Tensor([CITY.vocab.stoi[c] for c in CITY.preprocess(target)]).cuda().type(torch.LongTensor).view(len(target), -1)).cuda()
-        else:
-            targetTensor = Variable(torch.Tensor([CITY.vocab.stoi[c] for c in CITY.preprocess(target)]).type(torch.LongTensor).view(len(target), -1))
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
         
-        model.hidden = model.init_hidden()
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
         
-        pred = model(targetTensor)
-        pred_res.append(pred)
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">targetTensor</span><span class="p">)</span>
+        <span class="n">pred_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
         
-    stacked_pred = torch.stack([t.data for t in pred_res])
-    ensemble_pred = torch.mean(stacked_pred, dim=0)
-    res_df = pd.DataFrame([(idx, pred_val) for idx, pred_val in enumerate(ensemble_pred.cpu().numpy()[0])], columns=['res_idx', 'nll'])
-    res_df['prob'] = res_df.nll.map(lambda x: round(np.exp(x), 3))
-    res_df['continent'] = res_df.res_idx.map(lambda x: CONTINENT.vocab.itos[x+1])
-    res_df = res_df.sort_values(by='prob', ascending=False)
-    return res_df
-</code></pre>
+    <span class="n">stacked_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">pred_res</span><span class="p">])</span>
+    <span class="n">ensemble_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stacked_pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ensemble_pred</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'res_idx'</span><span class="p">,</span> <span class="s">'nll'</span><span class="p">])</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'prob'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">nll</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'continent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">res_idx</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'prob'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res_df</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">ensemble_inference(models, 'Pyeongchang', use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Pyeongchang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
 <div>
 <style>
@@ -1275,8 +1275,8 @@ Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
 </table>
 </div>
 
-<pre><code class="language-python">ensemble_inference(models, 'Pyongyang', use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Pyongyang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
 <div>
 <style>
@@ -1349,8 +1349,8 @@ Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
 </table>
 </div>
 
-<pre><code class="language-python">ensemble_inference(models, 'Sheffield', use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Sheffield'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
 <div>
 <style>
@@ -1423,8 +1423,8 @@ Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
 </table>
 </div>
 
-<pre><code class="language-python">ensemble_inference(models, 'Bratford', use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Bratford'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
 <div>
 <style>
@@ -1497,8 +1497,8 @@ Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
 </table>
 </div>
 
-<pre><code class="language-python">ensemble_inference(models, 'York', use_gpu)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'York'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
 
 <div>
 <style>

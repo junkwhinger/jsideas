@@ -101,39 +101,39 @@
 
 <p> Here's my R script code </p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;XML&quot;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&quot;xlsx&quot;</span><span class="p">)</span>
-<span class="kn">library</span><span class="p">(</span><span class="s">&quot;CSS&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">library</span><span class="p">(</span><span class="s2">"XML"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"xlsx"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"CSS"</span><span class="p">)</span><span class="w">
 
-name_of_file <span class="o">&lt;-</span> <span class="kp">readline</span><span class="p">(</span><span class="s">&quot;type in the name of html file without .html: &quot;</span><span class="p">)</span>
+</span><span class="n">name_of_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readline</span><span class="p">(</span><span class="s2">"type in the name of html file without .html: "</span><span class="p">)</span><span class="w">
 
-file_name <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span>name_of_file<span class="p">,</span> <span class="s">&quot;.html&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class="n">file_name</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">name_of_file</span><span class="p">,</span><span class="w"> </span><span class="s2">".html"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
 
-k_doc <span class="o">&lt;-</span> htmlParse<span class="p">(</span>file_name<span class="p">,</span> encoding<span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">)</span>
+</span><span class="n">k_doc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">htmlParse</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span><span class="p">)</span><span class="w">
 
-k_root <span class="o">&lt;-</span> xmlRoot<span class="p">(</span>k_doc<span class="p">)</span>
+</span><span class="n">k_root</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xmlRoot</span><span class="p">(</span><span class="n">k_doc</span><span class="p">)</span><span class="w">
 
-time <span class="o">&lt;-</span> xpathSApply<span class="p">(</span>k_doc<span class="p">,</span> <span class="s">&quot;//a[@class=&#39;time _linkPost&#39;]&quot;</span><span class="p">,</span> xmlValue<span class="p">)</span>
+</span><span class="n">time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathSApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"//a[@class='time _linkPost']"</span><span class="p">,</span><span class="w"> </span><span class="n">xmlValue</span><span class="p">)</span><span class="w">
 
-content <span class="o">&lt;-</span> cssApplyInNodeSet<span class="p">(</span>k_doc<span class="p">,</span> <span class="s">&quot;.fd_cont&quot;</span><span class="p">,</span> <span class="s">&quot;.txt_wrap&quot;</span><span class="p">,</span> cssCharacter<span class="p">)</span>
+</span><span class="n">content</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cssApplyInNodeSet</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">".fd_cont"</span><span class="p">,</span><span class="w"> </span><span class="s2">".txt_wrap"</span><span class="p">,</span><span class="w"> </span><span class="n">cssCharacter</span><span class="p">)</span><span class="w">
 
-likes <span class="o">&lt;-</span>cssApply<span class="p">(</span>k_doc<span class="p">,</span> <span class="s">&quot;._likeCount&quot;</span><span class="p">,</span> cssNumeric<span class="p">)</span>
+</span><span class="n">likes</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._likeCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
 
-comments <span class="o">&lt;-</span>cssApply<span class="p">(</span>k_doc<span class="p">,</span> <span class="s">&quot;._commentCount&quot;</span><span class="p">,</span> cssNumeric<span class="p">)</span>
+</span><span class="n">comments</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._commentCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
 
-shares <span class="o">&lt;-</span>cssApply<span class="p">(</span>k_doc<span class="p">,</span> <span class="s">&quot;._shareCount&quot;</span><span class="p">,</span> cssNumeric<span class="p">)</span>
+</span><span class="n">shares</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._shareCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
 
-link <span class="o">&lt;-</span> xpathSApply<span class="p">(</span>k_root<span class="p">,</span> <span class="s">&quot;//a[@class=&#39;time _linkPost&#39;]&quot;</span><span class="p">,</span> xmlGetAttr<span class="p">,</span> <span class="s">&quot;href&quot;</span><span class="p">)</span>
+</span><span class="n">link</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathSApply</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//a[@class='time _linkPost']"</span><span class="p">,</span><span class="w"> </span><span class="n">xmlGetAttr</span><span class="p">,</span><span class="w"> </span><span class="s2">"href"</span><span class="p">)</span><span class="w">
 
-link_pasted <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="s">&quot;https://story.kakao.com&quot;</span><span class="p">,</span> link<span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class="n">link_pasted</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"https://story.kakao.com"</span><span class="p">,</span><span class="w"> </span><span class="n">link</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
 
-final <span class="o">&lt;-</span> <span class="kp">cbind</span><span class="p">(</span>time<span class="p">,</span> likes<span class="p">,</span> comments<span class="p">,</span> shares<span class="p">,</span> link_pasted<span class="p">,</span> content<span class="p">)</span>
+</span><span class="n">final</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cbind</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">likes</span><span class="p">,</span><span class="w"> </span><span class="n">comments</span><span class="p">,</span><span class="w"> </span><span class="n">shares</span><span class="p">,</span><span class="w"> </span><span class="n">link_pasted</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p">)</span><span class="w">
 
-renamed_file <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="s">&quot;done&quot;</span><span class="p">,</span> name_of_file<span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;_&quot;</span><span class="p">)</span>
+</span><span class="n">renamed_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"done"</span><span class="p">,</span><span class="w"> </span><span class="n">name_of_file</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">"_"</span><span class="p">)</span><span class="w">
 
-xlsx_file <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span>renamed_file<span class="p">,</span> <span class="s">&quot;.xlsx&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class="n">xlsx_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">renamed_file</span><span class="p">,</span><span class="w"> </span><span class="s2">".xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
 
-write.xlsx<span class="p">(</span>final<span class="p">,</span> xlsx_file<span class="p">)</span></code></pre></figure>
+</span><span class="n">write.xlsx</span><span class="p">(</span><span class="n">final</span><span class="p">,</span><span class="w"> </span><span class="n">xlsx_file</span><span class="p">)</span></code></pre></figure>
 
 
         </section>

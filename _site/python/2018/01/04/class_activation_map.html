@@ -71,7 +71,7 @@
 
 <p><img src="/assets/CAM/luckyZZang_idol.png" alt="잘 안되는 이유" /></p>
 
-<p>AlexNet 등장 이후 CNN이 대세로 굳어지면서 많은 연구자들이 ‘왜 잘 동작하는가’에 대한 질문에 답을 찾으려 노력하고 있다. 그 중에 하나가 최근에 읽은 <a href="https://arxiv.org/abs/1512.04150">Learning Deep Features for Discriminative Localization(2015)</a>이다. 기존에 많이 쓰는 pretrained network를 약간만 변형해서 놀라운 결과를 내는 <code>Class Activation Mapping</code>을 제안한다. 논문에 나온 수식과 구현방식을 대선주자 데이터셋을 사용해 간략히 정리해보았다.</p>
+<p>AlexNet 등장 이후 CNN이 대세로 굳어지면서 많은 연구자들이 ‘왜 잘 동작하는가’에 대한 질문에 답을 찾으려 노력하고 있다. 그 중에 하나가 최근에 읽은 <a href="https://arxiv.org/abs/1512.04150">Learning Deep Features for Discriminative Localization(2015)</a>이다. 기존에 많이 쓰는 pretrained network를 약간만 변형해서 놀라운 결과를 내는 <code class="highlighter-rouge">Class Activation Mapping</code>을 제안한다. 논문에 나온 수식과 구현방식을 대선주자 데이터셋을 사용해 간략히 정리해보았다.</p>
 
 <hr />
 
@@ -82,9 +82,9 @@
   <li><strong>[핵심] 바운딩 박스를 인풋으로 주지 않아도, 오브젝트 디텍션 용도로 학습된 모델을 조금만 튜닝해서 오브젝트 위치 추적이 가능하다.</strong></li>
   <li>탐지 대상인 사물의 위치 정보가 없어도 CNN은 오브젝트 디텍터로서 기능한다.</li>
   <li>그런데 분류를 위해 fully connected layer를 사용함으로써 이 기능이 사라진다.</li>
-  <li>Network In Network나 GoogLeNet에서는 파라미터 수 최소화를 위해 fully connected 대신 <code>Global Averag Pooling</code>(이하 GAP)을 썼다.</li>
+  <li>Network In Network나 GoogLeNet에서는 파라미터 수 최소화를 위해 fully connected 대신 <code class="highlighter-rouge">Global Averag Pooling</code>(이하 GAP)을 썼다.</li>
   <li>그런데 이 GAP는 파라미터 수를 줄여 오버피팅을 방지하는 기능 외에도, 오브젝트의 위치 정보를 보존하는데 사용할 수 있다.</li>
-  <li>GAP를 통해 특정 클래스에 반응하는 영역을 맵핑하는 <code>Class Activation Mapping</code>(이하 CAM)을 제안한다.</li>
+  <li>GAP를 통해 특정 클래스에 반응하는 영역을 맵핑하는 <code class="highlighter-rouge">Class Activation Mapping</code>(이하 CAM)을 제안한다.</li>
   <li>당시 제안된 다른 위치 추적 방식들에 비해 CAM은 한번에 (single forward pass) end-to-end로 학습할 수 있다.</li>
   <li>FC를 GAP로 대체해도 성능 저하가 크게 일어나지 않았으며 이를 보정하기 위한 아키텍쳐도 제안한다.</li>
   <li>Global Max Pooling은 탐지 사물을 포인트로 짚는 반면, GAP는 사물의 위치를 범위로 잡아내는 장점이 있다.</li>
@@ -99,7 +99,7 @@
 <p><img src="/assets/CAM/cnn_features.png" alt="형상을 서서히 학습하는 CNN" />
 이미지 출처: https://stats.stackexchange.com/questions/146413/why-convolutional-neural-networks-belong-to-deep-learning/146477</p>
 
-<p>이전에 만들어본 대선주자 얼굴 분류기도 마찬가지다. 어떤 이미지가 들어왔을 때 그 사진의 주인공이 문재인인지 홍준표인지 안철수인지 꽤 높은 정확도로 모델이 분류했다면, 위 그림과 마찬가지로 그 얼굴을 알아보는 <code>필터</code>를 학습했다고 생각할 수 있다. 그럼 그 필터가 활성화되는 위치를 역으로 추적한다면, 그 이미지에서 얼굴이 위치한 부분을 알아낼 수 있지 않겠느냐고 생각해볼 수 있다!</p>
+<p>이전에 만들어본 대선주자 얼굴 분류기도 마찬가지다. 어떤 이미지가 들어왔을 때 그 사진의 주인공이 문재인인지 홍준표인지 안철수인지 꽤 높은 정확도로 모델이 분류했다면, 위 그림과 마찬가지로 그 얼굴을 알아보는 <code class="highlighter-rouge">필터</code>를 학습했다고 생각할 수 있다. 그럼 그 필터가 활성화되는 위치를 역으로 추적한다면, 그 이미지에서 얼굴이 위치한 부분을 알아낼 수 있지 않겠느냐고 생각해볼 수 있다!</p>
 
 <p>하지만 일반적인 CNN 분류 모델처럼 마지막 convolutional layer의 아웃풋을 flatten해서 fully connected에 넘기는 순간, 필터가 들고있는 정보가 사라진다. 여기서 논문이 제안한 것은 flatten해서 fc를 쓰지 말고 Global Average Pooling을 쓰자는 거다.</p>
 
@@ -112,7 +112,7 @@
 
 <p><img src="/assets/CAM/GAP_GMP.png" alt="GAP, GMP" /></p>
 
-<p>위 예시에서 GAP는 각 피쳐맵에 대해 모든 값을 더하고, GMP는 모든 값 중 최대값을 골라 벡터를 만든다. 사실 평균(Average)을 취하면 1+2+1을 한 후 9로 나눠줘야 맞겠지만, 논문 상에서는 합으로 처리되어있다. 어차피 같은 레이어의 모든 피쳐맵은 x, y 갯수가 동일하므로 굳이 나눠주지 않아도 되는 것으로 이해했다. <a href="https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/keras/_impl/keras/layers/pooling.py">tf.keras 상에 구현된 코드</a>를 보면 <code>return K.mean(inputs, axis[1, 2])</code>로 평균을 구하는 것으로 구현되어있기는 하다.</p>
+<p>위 예시에서 GAP는 각 피쳐맵에 대해 모든 값을 더하고, GMP는 모든 값 중 최대값을 골라 벡터를 만든다. 사실 평균(Average)을 취하면 1+2+1을 한 후 9로 나눠줘야 맞겠지만, 논문 상에서는 합으로 처리되어있다. 어차피 같은 레이어의 모든 피쳐맵은 x, y 갯수가 동일하므로 굳이 나눠주지 않아도 되는 것으로 이해했다. <a href="https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/python/keras/_impl/keras/layers/pooling.py">tf.keras 상에 구현된 코드</a>를 보면 <code class="highlighter-rouge">return K.mean(inputs, axis[1, 2])</code>로 평균을 구하는 것으로 구현되어있기는 하다.</p>
 
 <h4 id="class-activation-map">Class Activation Map</h4>
 
@@ -172,7 +172,7 @@
 
 <p>그리고 class_weights로 선언된 횡벡터를 loop로 돌면서 해당 weight element인 w를 conv_outputs[:, :, k]에 곱해주고 이를 cam에 계속 더해주면 수식대로 구현이 된다. ([:, :, k]인 이유는 3번째 차원이 채널이기 때문이다. 채널이 0번째 인덱스인 경우 [k, :, :]이 된다.)</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_outputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_outputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">class_weights</span><span class="p">[:,</span> <span class="n">class_idx</span><span class="p">]):</span>
     <span class="n">cam</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">conv_outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span></code></pre></figure>
 
@@ -180,40 +180,40 @@
 
 <p>이미지 경로와 class_idx를 받아 CAM을 추출하는 함수를 다음과 같이 구현해보았다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">generate_cam</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">class_idx</span><span class="p">,</span> <span class="n">tl_model</span><span class="p">):</span>  
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    parameter:</span>
-<span class="sd">    ----------  </span>
-<span class="sd">    img_path(string): image path</span>
-<span class="sd">    class_idx(integer): class index for class activation map</span>
-<span class="sd">    tl_model: network to perform inference</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">generate_cam</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">class_idx</span><span class="p">,</span> <span class="n">tl_model</span><span class="p">):</span>  
+    <span class="s">"""
+    parameter:
+    ----------  
+    img_path(string): image path
+    class_idx(integer): class index for class activation map
+    tl_model: network to perform inference
 
-<span class="sd">    return:</span>
-<span class="sd">    -------</span>
-<span class="sd">    img_arr : numpy array of the given image</span>
-<span class="sd">    cam : numpy array of class activation map</span>
-<span class="sd">    predictions : numpy array of classification result</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    return:
+    -------
+    img_arr : numpy array of the given image
+    cam : numpy array of class activation map
+    predictions : numpy array of classification result
+    """</span>
 
-	<span class="c1">## read image and preprocess it</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+	<span class="c">## read image and preprocess it</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
     <span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">255.</span>
     <span class="n">img_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     
-    <span class="c1">## get prediction result and conv_output values</span>
-    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">input</span><span class="p">],</span> <span class="p">[</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
+    <span class="c">## get prediction result and conv_output values</span>
+    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nb">input</span><span class="p">],</span> <span class="p">[</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
     <span class="p">[</span><span class="n">conv_outputs</span><span class="p">,</span> <span class="n">predictions</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_output</span><span class="p">([</span><span class="n">img_array</span><span class="p">])</span>
     <span class="n">conv_outputs</span> <span class="o">=</span> <span class="n">conv_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
     <span class="n">class_weights</span> <span class="o">=</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
     
-    <span class="c1">## calculate cam</span>
+    <span class="c">## calculate cam</span>
     <span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_outputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">class_weights</span><span class="p">[:,</span> <span class="n">class_idx</span><span class="p">]):</span>
         <span class="n">cam</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">conv_outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
 
-    <span class="c1">## normalise cam and resize to fit the orginal image size</span>
-    <span class="c1">## in this case (224, 224)</span>
-    <span class="n">cam</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
+    <span class="c">## normalise cam and resize to fit the orginal image size</span>
+    <span class="c">## in this case (224, 224)</span>
+    <span class="n">cam</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
     <span class="n">cam</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
     
     <span class="k">return</span> <span class="n">img_arr</span><span class="p">,</span> <span class="n">cam</span><span class="p">,</span> <span class="n">predictions</span></code></pre></figure>
@@ -224,23 +224,23 @@
 
 <p>논문에서는 가장 큰 덩어리만을 남겼으나, 나는 모델이 어디에 반응했는지를 모두 판단하고 싶어 일단 반응한 모든 덩어리에 바운딩 박스를 씌우는 쪽으로 구현했다. skimage.measure의 regionprops를 사용하면 바운딩 박스 영역을 아주 편리하게 뽑을 수 있다. 추출한 props에 덩어리 갯수만큼의 박스가 떨어지므로, 후에 matplotlib을 사용해서 이미지 위에 박스를 for loop으로 그리는 방식으로 구현했다.</p>
 
-<pre><code class="language-python">def generate_bbox(img, cam, threshold):
-    labeled, nr_objects = ndimage.label(cam &gt; threshold)
-    props = regionprops(labeled)
-    return props
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generate_bbox</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cam</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="n">labeled</span><span class="p">,</span> <span class="n">nr_objects</span> <span class="o">=</span> <span class="n">ndimage</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">cam</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">)</span>
+    <span class="n">props</span> <span class="o">=</span> <span class="n">regionprops</span><span class="p">(</span><span class="n">labeled</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">props</span>
 
-## ...
+<span class="c">## ...</span>
 
-for b in props:
-    bbox = b.bbox
-    xs = bbox[1]
-    ys = bbox[0]
-    w = bbox[3] - bbox[1]
-    h = bbox[2] - bbox[0]
+<span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">props</span><span class="p">:</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">bbox</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-    rect = patches.Rectangle((xs, ys), w, h, linewidth=2, edgecolor='r', facecolor='none')
-    ax.add_patch(rect)
-</code></pre>
+    <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s">'none'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+</code></pre></div></div>
 
 <hr />
 
@@ -256,8 +256,8 @@ for b in props:
 
 <p>근데 어차피 16이나 19나 conv5-3까지의 구조가 동일하므로 둘다 써도 무방하다.</p>
 
-<p>VGG16의 원래 구조를 찍어보면, <code>block5_conv3</code>의 컨볼루션 레이어의 Output Shape이 14 x 14임을 확인할 수 있다. 처음에 input shape를 224, 224로 지정하지 않으면 conv5-3의 사이즈가 14 x 14로 떨어지지 않으므로 주의하자.</p>
-<pre><code>### vgg16 model architecture
+<p>VGG16의 원래 구조를 찍어보면, <code class="highlighter-rouge">block5_conv3</code>의 컨볼루션 레이어의 Output Shape이 14 x 14임을 확인할 수 있다. 처음에 input shape를 224, 224로 지정하지 않으면 conv5-3의 사이즈가 14 x 14로 떨어지지 않으므로 주의하자.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### vgg16 model architecture
     _________________________________________________________________
     Layer (type)                 Output Shape              Param #   
     =================================================================
@@ -287,7 +287,7 @@ for b in props:
     Trainable params: 119,566,341
     Non-trainable params: 14,714,688
     _________________________________________________________________
-</code></pre>
+</code></pre></div></div>
 
 <p>CAM을 얻기 위해서 논문에서는 다음과 같이 모델 아키텍쳐를 수정한다.</p>
 <ol>
@@ -303,29 +303,29 @@ for b in props:
 <ol>
   <li>pretrained된 VGG16 모델을 가져온다.<br />
 이때 include_top = False를 넣어서 fully connected를 날린다.
-    <pre><code class="language-python">base_model = vgg16.VGG16(include_top = False, input_shape=(img_width, img_height, img_channel))
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">base_model</span> <span class="o">=</span> <span class="n">vgg16</span><span class="o">.</span><span class="n">VGG16</span><span class="p">(</span><span class="n">include_top</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_channel</span><span class="p">))</span>
+</code></pre></div>    </div>
   </li>
   <li>conv5-3 이후의 레이어는 사용하지 않는다.<br />
 fc를 날려도 마지막 레이어는 conv가 아닌 pooling layer다. pooling layer도 필요가 없다. 모델의 layers 프로퍼티에 접근해서 pop을 하면 마지막 레이어가 날아간다. 그리고 output을 아래와 같이 가장 마지막 레이어(conv5-3)로 새로 지정해야 모델의 아웃풋이 수정된다.
-    <pre><code class="language-python">base_model.layers.pop()
-base_model.outputs = [base_model.layers[-1].output]
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="n">base_model</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+</code></pre></div>    </div>
   </li>
   <li>conv5-3 이후에 filter 크기가 3x3, stride 1, pad 1, channel이 1024인 컨볼루션 레이어를 더한다.<br />
-tf.keras에서 제공하는 Conv2D는 padding이 <code>valid</code>아니면 <code>same</code> 둘 중 하나다. 논문에서는 padding을 1로 주라고 되어있으므로, ZeroPadding2D를 사용해서 padding을 먼저 주고, Conv2D를 붙였다. 또 논문에서는 activation function에 대한 설명이 없는데, VGG16의 conv layer가 이를 <code>relu</code>로 사용하고 있어 이를 따르기로 했다. (activation function을 None으로 넣고 학습시켜봤는데 loss가 엄청 폭발한다.) Stride 디폴트가 (1,1)이므로 생략했다.
-    <pre><code class="language-python">last = base_model.outputs[0]
-x = ZeroPadding2D(padding=(1, 1))(last)
-x = Conv2D(filters=1024, kernel_size=(3, 3), activation='relu')(x)
-</code></pre>
+tf.keras에서 제공하는 Conv2D는 padding이 <code class="highlighter-rouge">valid</code>아니면 <code class="highlighter-rouge">same</code> 둘 중 하나다. 논문에서는 padding을 1로 주라고 되어있으므로, ZeroPadding2D를 사용해서 padding을 먼저 주고, Conv2D를 붙였다. 또 논문에서는 activation function에 대한 설명이 없는데, VGG16의 conv layer가 이를 <code class="highlighter-rouge">relu</code>로 사용하고 있어 이를 따르기로 했다. (activation function을 None으로 넣고 학습시켜봤는데 loss가 엄청 폭발한다.) Stride 디폴트가 (1,1)이므로 생략했다.
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">last</span> <span class="o">=</span> <span class="n">base_model</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ZeroPadding2D</span><span class="p">(</span><span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))(</span><span class="n">last</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>    </div>
   </li>
   <li>GAP 레이어를 더한다.
-    <pre><code class="language-python">x = GlobalAveragePooling2D()(x)
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>    </div>
   </li>
   <li>Softmax 레이어를 더한다.
-    <pre><code class="language-python">preds = Dense(nb_classes, activation='softmax')(x) ## nb_classes=5
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> <span class="c">## nb_classes=5</span>
+</code></pre></div>    </div>
   </li>
   <li>이미지넷 데이터로 fine-tuning 한다.
 이미지넷 대신에 대선주자 5인 데이터를 활용해 fine-tuning을 실시했다.</li>

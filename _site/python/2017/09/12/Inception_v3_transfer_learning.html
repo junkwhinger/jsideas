@@ -80,461 +80,461 @@
 <p>일단 필요한 필요한 라이브러리를 불러온다. tqdm과 같은 라이브러리는 원문 코드에는 사용되지 않았다.<br />
 또 원문 코드는 터미널 환경에서 유저가 하이퍼파라미터를 설정하도록 FLAGS를 사용했는데, 노트북 환경에서는 이를 제외하였다.</p>
 
-<pre><code class="language-python">from datetime import datetime
-import hashlib
-import os.path
-import random
-import re
-import struct
-import sys
-import tarfile
-from tqdm import tqdm
-import time
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
-import numpy as np
-from six.moves import urllib
-import tensorflow as tf
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">urllib</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
 
-from tensorflow.python.framework import graph_util
-from tensorflow.python.framework import tensor_shape
-from tensorflow.python.platform import gfile
-from tensorflow.python.util import compat
+<span class="kn">from</span> <span class="nn">tensorflow.python.framework</span> <span class="kn">import</span> <span class="n">graph_util</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.framework</span> <span class="kn">import</span> <span class="n">tensor_shape</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.platform</span> <span class="kn">import</span> <span class="n">gfile</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.util</span> <span class="kn">import</span> <span class="n">compat</span>
 
-import matplotlib.pyplot as plt
-%matplotlib inline
-</code></pre>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div></div>
 
 <hr />
 
 <h3 id="하이퍼파라미터-설정-일부">하이퍼파라미터 설정 (일부)</h3>
-<p>모델 경로, 보틀넥 텐서 등 일부 하이퍼파라미터를 설정한다. 이 코드에서는 보틀넥(Bottleneck)이라는 게 등장하는데, 이는 이미지가 v3를 거쳐 나온 일종의 중간결과라고 생각하면 된다. Transfer Learning에서는 Inception이나 VGG같은 이미 검증된 모델의 네트워크 파라미터를 그대로 사용하고 끝단의 classifier만 학습한다. 그러므로 (당연히) 이미지를 고정된 네트워크에 넣어 텐서로 변환하는 <code>전처리</code>과정을 매번 에폭을 돌 때마다 반복할 이유가 전혀 없다. 그래서 본 코드에서는 이를 보틀넥에 저장하는데, 그 텐서의 크기가 2048이 된다.</p>
+<p>모델 경로, 보틀넥 텐서 등 일부 하이퍼파라미터를 설정한다. 이 코드에서는 보틀넥(Bottleneck)이라는 게 등장하는데, 이는 이미지가 v3를 거쳐 나온 일종의 중간결과라고 생각하면 된다. Transfer Learning에서는 Inception이나 VGG같은 이미 검증된 모델의 네트워크 파라미터를 그대로 사용하고 끝단의 classifier만 학습한다. 그러므로 (당연히) 이미지를 고정된 네트워크에 넣어 텐서로 변환하는 <code class="highlighter-rouge">전처리</code>과정을 매번 에폭을 돌 때마다 반복할 이유가 전혀 없다. 그래서 본 코드에서는 이를 보틀넥에 저장하는데, 그 텐서의 크기가 2048이 된다.</p>
 
-<pre><code class="language-python">DATA_URL = 'http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz'
-BOTTLENECK_TENSOR_NAME = 'pool_3/_reshape:0'
-BOTTLENECK_TENSOR_SIZE = 2048
-MODEL_INPUT_WIDTH = 299
-MODEL_INPUT_HEIGHT = 299
-MODEL_INPUT_DEPTH = 3
-JPEG_DATA_TENSOR_NAME = 'DecodeJpeg/contents:0'
-RESIZED_INPUT_TENSOR_NAME = 'ResizeBilinear:0'
-MAX_NUM_IMAGES_PER_CLASS = 2 ** 27 - 1
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DATA_URL</span> <span class="o">=</span> <span class="s">'http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz'</span>
+<span class="n">BOTTLENECK_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'pool_3/_reshape:0'</span>
+<span class="n">BOTTLENECK_TENSOR_SIZE</span> <span class="o">=</span> <span class="mi">2048</span>
+<span class="n">MODEL_INPUT_WIDTH</span> <span class="o">=</span> <span class="mi">299</span>
+<span class="n">MODEL_INPUT_HEIGHT</span> <span class="o">=</span> <span class="mi">299</span>
+<span class="n">MODEL_INPUT_DEPTH</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">JPEG_DATA_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'DecodeJpeg/contents:0'</span>
+<span class="n">RESIZED_INPUT_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'ResizeBilinear:0'</span>
+<span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">27</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></div>
 
 <hr />
 
 <h3 id="데이터-전처리">데이터 전처리</h3>
 <p>이미지 전처리에 사용되는 함수가 엄청 많다. 보틀넥을 만들고 관리하고 불러오는 잡다한 함수가 서로 꼬리를 물고 얽혀있다.</p>
 <ul>
-  <li><code>def create_image_lists</code> - 이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다.</li>
-  <li><code>class TqdmUpTo</code> - 파일 다운로드할 때 예쁜 프로그레스바 띄워주는 도구</li>
-  <li><code>def maybe_download_and_extract</code> - Inception 그래프가 없다면 다운로드받는다.</li>
-  <li><code>def create_inception_graph</code> - 파일에서 텐서플로우 그래프를 읽어 리턴한다.</li>
-  <li><code>def should_distort_images</code> - 이미지 처리시에 좌우 변환 등 왜곡을 줄지 결정한다.</li>
-  <li><code>def ensure_dir_exists</code> - 디렉토리 경로가 있는지 체크하고 없으면 만든다.</li>
-  <li><code>def cache_bottlenecks</code> - 만든 보틀넥을 임시 저장한다.</li>
-  <li><code>def get_or_create_bottleneck</code> - 보틀넥을 만든다.</li>
-  <li><code>def get_bottleneck_path</code> - 만든 보틀넥 파일의 저장경로를 가져온다.</li>
-  <li><code>def create_bottleneck_file</code> - 보틀넥을 파일에 저장한다.</li>
-  <li><code>def run_bottleneck_on_image</code> - 이미지에서 보틀넥을 추출한다.</li>
+  <li><code class="highlighter-rouge">def create_image_lists</code> - 이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다.</li>
+  <li><code class="highlighter-rouge">class TqdmUpTo</code> - 파일 다운로드할 때 예쁜 프로그레스바 띄워주는 도구</li>
+  <li><code class="highlighter-rouge">def maybe_download_and_extract</code> - Inception 그래프가 없다면 다운로드받는다.</li>
+  <li><code class="highlighter-rouge">def create_inception_graph</code> - 파일에서 텐서플로우 그래프를 읽어 리턴한다.</li>
+  <li><code class="highlighter-rouge">def should_distort_images</code> - 이미지 처리시에 좌우 변환 등 왜곡을 줄지 결정한다.</li>
+  <li><code class="highlighter-rouge">def ensure_dir_exists</code> - 디렉토리 경로가 있는지 체크하고 없으면 만든다.</li>
+  <li><code class="highlighter-rouge">def cache_bottlenecks</code> - 만든 보틀넥을 임시 저장한다.</li>
+  <li><code class="highlighter-rouge">def get_or_create_bottleneck</code> - 보틀넥을 만든다.</li>
+  <li><code class="highlighter-rouge">def get_bottleneck_path</code> - 만든 보틀넥 파일의 저장경로를 가져온다.</li>
+  <li><code class="highlighter-rouge">def create_bottleneck_file</code> - 보틀넥을 파일에 저장한다.</li>
+  <li><code class="highlighter-rouge">def run_bottleneck_on_image</code> - 이미지에서 보틀넥을 추출한다.</li>
 </ul>
 
-<pre><code class="language-python">def create_image_lists(image_dir, testing_percentage, validation_percentage):
-    """이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다"""
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_image_lists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">testing_percentage</span><span class="p">,</span> <span class="n">validation_percentage</span><span class="p">):</span>
+    <span class="s">"""이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다"""</span>
     
-    ## image_dir가 존재하지 않는다면 오류 출력
-    if not gfile.Exists(image_dir):
-        print("Image directory '" + image_dir + "' not found.")
-        return None
+    <span class="c">## image_dir가 존재하지 않는다면 오류 출력</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Image directory '"</span> <span class="o">+</span> <span class="n">image_dir</span> <span class="o">+</span> <span class="s">"' not found."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
     
-    result = {}
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
     
-    ### image_dir 내 하위 디렉토리(label)를 가져온다 
-    sub_dirs = [x[0] for x in gfile.Walk(image_dir)]
+    <span class="c">### image_dir 내 하위 디렉토리(label)를 가져온다 </span>
+    <span class="n">sub_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Walk</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)]</span>
     
-    is_root_dir = True
-    for sub_dir in sub_dirs:
-        if is_root_dir:
-            is_root_dir = False
-            continue
-        extensions = ['jpg', 'jpeg', 'JPG', 'JPEG']
+    <span class="n">is_root_dir</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">for</span> <span class="n">sub_dir</span> <span class="ow">in</span> <span class="n">sub_dirs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_root_dir</span><span class="p">:</span>
+            <span class="n">is_root_dir</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">continue</span>
+        <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">'jpg'</span><span class="p">,</span> <span class="s">'jpeg'</span><span class="p">,</span> <span class="s">'JPG'</span><span class="p">,</span> <span class="s">'JPEG'</span><span class="p">]</span>
         
-        file_list = []
-        dir_name = os.path.basename(sub_dir)
-        if dir_name == image_dir:
-            continue
+        <span class="n">file_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sub_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dir_name</span> <span class="o">==</span> <span class="n">image_dir</span><span class="p">:</span>
+            <span class="k">continue</span>
             
-        print("Looking for images in '" + dir_name + "'")
-        for extension in extensions:
-            file_glob = os.path.join(image_dir, dir_name, '*.' + extension)
-            file_list.extend(gfile.Glob(file_glob))
+        <span class="k">print</span><span class="p">(</span><span class="s">"Looking for images in '"</span> <span class="o">+</span> <span class="n">dir_name</span> <span class="o">+</span> <span class="s">"'"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extensions</span><span class="p">:</span>
+            <span class="n">file_glob</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">,</span> <span class="s">'*.'</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
+            <span class="n">file_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">gfile</span><span class="o">.</span><span class="n">Glob</span><span class="p">(</span><span class="n">file_glob</span><span class="p">))</span>
         
-        ## 파일이 없거나 데이터가 작으면 예외 처리
-        if not file_list:
-            print('No files found')
-            continue
-        if len(file_list) &lt; 20:
-            print("WARNING: Folder has less than 20 images, which may cause issues.")
-        elif len(file_list) &gt; MAX_NUM_IMAGES_PER_CLASS:
-            print("WARNING: Folder {} has more than {} images. Some images will never be selected".format(dir_name, MAX_NUM_IMAGES_PER_CLASS))
-        label_name = re.sub(r'[^a-z0-9]+', ' ', dir_name.lower())
+        <span class="c">## 파일이 없거나 데이터가 작으면 예외 처리</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'No files found'</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"WARNING: Folder has less than 20 images, which may cause issues."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"WARNING: Folder {} has more than {} images. Some images will never be selected"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">))</span>
+        <span class="n">label_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'[^a-z0-9]+'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="n">dir_name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
         
-        ## 트레이닝 / 밸리데이션 / 테스트셋으로 나눈다.
-        training_images = []
-        testing_images = []
-        validation_images = []
-        for file_name in file_list:
-            base_name = os.path.basename(file_name)
+        <span class="c">## 트레이닝 / 밸리데이션 / 테스트셋으로 나눈다.</span>
+        <span class="n">training_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">testing_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">validation_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="n">base_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
             
-            hash_name = re.sub(r'_nohash_.*$', '', file_name)
-            hash_name_hashed = hashlib.sha1(compat.as_bytes(hash_name)).hexdigest()
-            percentage_hash = ((int(hash_name_hashed, 16) %
-                               (MAX_NUM_IMAGES_PER_CLASS + 1)) *
-                              (100.0 / MAX_NUM_IMAGES_PER_CLASS))
+            <span class="n">hash_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'_nohash_.*$'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="n">hash_name_hashed</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">compat</span><span class="o">.</span><span class="n">as_bytes</span><span class="p">(</span><span class="n">hash_name</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">percentage_hash</span> <span class="o">=</span> <span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">hash_name_hashed</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span>
+                              <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">))</span>
             
-            if percentage_hash &lt; validation_percentage:
-                validation_images.append(base_name)
-            elif percentage_hash &lt; (testing_percentage + validation_percentage):
-                testing_images.append(base_name)
-            else:
-                training_images.append(base_name)
+            <span class="k">if</span> <span class="n">percentage_hash</span> <span class="o">&lt;</span> <span class="n">validation_percentage</span><span class="p">:</span>
+                <span class="n">validation_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">percentage_hash</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">testing_percentage</span> <span class="o">+</span> <span class="n">validation_percentage</span><span class="p">):</span>
+                <span class="n">testing_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">training_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
         
-        result[label_name] = {
-            'dir': dir_name,
-            'training': training_images,
-            'testing': testing_images,
-            'validation': validation_images,
-        }
+        <span class="n">result</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'dir'</span><span class="p">:</span> <span class="n">dir_name</span><span class="p">,</span>
+            <span class="s">'training'</span><span class="p">:</span> <span class="n">training_images</span><span class="p">,</span>
+            <span class="s">'testing'</span><span class="p">:</span> <span class="n">testing_images</span><span class="p">,</span>
+            <span class="s">'validation'</span><span class="p">:</span> <span class="n">validation_images</span><span class="p">,</span>
+        <span class="p">}</span>
         
-    return result
-</code></pre>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">## 데이터를 다운로드받을 때 사용할 Tqdm 클래스를 정의한다.
-class TqdmUpTo(tqdm):
-    def update_to(self, b=1, bsize=1, tsize=None):
-        if tsize is not None:
-            self.total = tsize
-        self.update(b * bsize - self.n)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## 데이터를 다운로드받을 때 사용할 Tqdm 클래스를 정의한다.</span>
+<span class="k">class</span> <span class="nc">TqdmUpTo</span><span class="p">(</span><span class="n">tqdm</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tsize</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">tsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">bsize</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def maybe_download_and_extract():
-    dest_directory = model_dir
-    ensure_dir_exists(dest_directory)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">maybe_download_and_extract</span><span class="p">():</span>
+    <span class="n">dest_directory</span> <span class="o">=</span> <span class="n">model_dir</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">)</span>
     
-    filename = DATA_URL.split("/")[-1]
-    filepath = os.path.join(dest_directory, filename)
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">DATA_URL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
     
-    if not os.path.exists(filepath):
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
         
-        print("그래프 파일이 없습니다. 다운로드를 시작합니다.")
+        <span class="k">print</span><span class="p">(</span><span class="s">"그래프 파일이 없습니다. 다운로드를 시작합니다."</span><span class="p">)</span>
         
-        with TqdmUpTo(unit='B', unit_scale=True, miniters=1, desc=DATA_URL) as t:
-            urllib.request.urlretrieve(DATA_URL, filepath, reporthook=t.update_to, data=None)
+        <span class="k">with</span> <span class="n">TqdmUpTo</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s">'B'</span><span class="p">,</span> <span class="n">unit_scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">miniters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">DATA_URL</span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">DATA_URL</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">update_to</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
         
-        statinfo = os.stat(filepath)
-        print("다운로드 완료: ", filename, statinfo.st_size, 'bytes.')
-    else:
-        print("그래프 파일이 이미 존재합니다.")
-    tarfile.open(filepath, 'r:gz').extractall(dest_directory)
-</code></pre>
+        <span class="n">statinfo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"다운로드 완료: "</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">statinfo</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span> <span class="s">'bytes.'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"그래프 파일이 이미 존재합니다."</span><span class="p">)</span>
+    <span class="n">tarfile</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">'r:gz'</span><span class="p">)</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def create_inception_graph():
-    """
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_inception_graph</span><span class="p">():</span>
+    <span class="s">"""
     저장된 GraphDef 파일에서 그래프를 만들고
     Graph 오브젝트를 리턴한다.
-    """
-    with tf.Graph().as_default() as graph:
-        model_filename = os.path.join(model_dir, 'classify_image_graph_def.pb')
+    """</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span><span class="o">.</span><span class="n">as_default</span><span class="p">()</span> <span class="k">as</span> <span class="n">graph</span><span class="p">:</span>
+        <span class="n">model_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_dir</span><span class="p">,</span> <span class="s">'classify_image_graph_def.pb'</span><span class="p">)</span>
     
-        with gfile.FastGFile(model_filename, 'rb') as f:
-            graph_def = tf.GraphDef()
-            graph_def.ParseFromString(f.read())
-            bottleneck_tensor, jpeg_data_tensor, resized_input_tensor = (
-                tf.import_graph_def(graph_def, name='', return_elements=[
-                    BOTTLENECK_TENSOR_NAME, JPEG_DATA_TENSOR_NAME, RESIZED_INPUT_TENSOR_NAME]))
-    return graph, bottleneck_tensor, jpeg_data_tensor, resized_input_tensor
-</code></pre>
+        <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">model_filename</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">graph_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+            <span class="n">graph_def</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resized_input_tensor</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">import_graph_def</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">return_elements</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">BOTTLENECK_TENSOR_NAME</span><span class="p">,</span> <span class="n">JPEG_DATA_TENSOR_NAME</span><span class="p">,</span> <span class="n">RESIZED_INPUT_TENSOR_NAME</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resized_input_tensor</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def should_distort_images(flip_left_right, random_crop, random_scale, random_brightness):
-    """이미지 데이터에 변화를 줄지 결정한다."""
-    return (flip_left_right or (random_crop != 0) or (random_scale != 0) or (random_brightness != 0))
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">should_distort_images</span><span class="p">(</span><span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">):</span>
+    <span class="s">"""이미지 데이터에 변화를 줄지 결정한다."""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">flip_left_right</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_crop</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_scale</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_brightness</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def ensure_dir_exists(dir_name):
-    if not os.path.exists(dir_name):
-        os.makedirs(dir_name)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensure_dir_exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def cache_bottlenecks(sess, image_lists, image_dir, bottleneck_dir, jpeg_data_tensor, bottleneck_tensor):
-    how_many_bottlenecks = 0
-    ensure_dir_exists(bottleneck_dir)
-    for label_name, label_lists in image_lists.items():
-        for category in ['training', 'testing', 'validation']:
-            category_list = label_lists[category]
-            for index, unused_base_name in enumerate(category_list):
-                get_or_create_bottleneck(sess, image_lists, label_name, index, image_dir, category, \
-                                         bottleneck_dir, jpeg_data_tensor, bottleneck_tensor)
-                how_many_bottlenecks += 1
-                if how_many_bottlenecks % 100 == 0:
-                    print('{} bottleneck files created'.format(how_many_bottlenecks))
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cache_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">how_many_bottlenecks</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">bottleneck_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">label_lists</span> <span class="ow">in</span> <span class="n">image_lists</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'training'</span><span class="p">,</span> <span class="s">'testing'</span><span class="p">,</span> <span class="s">'validation'</span><span class="p">]:</span>
+            <span class="n">category_list</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">unused_base_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">category_list</span><span class="p">):</span>
+                <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> \
+                                         <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+                <span class="n">how_many_bottlenecks</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">how_many_bottlenecks</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">'{} bottleneck files created'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">how_many_bottlenecks</span><span class="p">))</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def get_or_create_bottleneck(sess, image_lists, label_name, index, image_dir, category, \
-                             bottleneck_dir, jpeg_data_tensor, bottleneck_tensor):
-    label_lists = image_lists[label_name]
-    sub_dir = label_lists['dir']
-    sub_dir_path = os.path.join(bottleneck_dir, sub_dir)
-    ensure_dir_exists(sub_dir_path)
-    bottleneck_path = get_bottleneck_path(image_lists, label_name, index,
-                                    bottleneck_dir, category)
-    if not os.path.exists(bottleneck_path):
-        create_bottleneck_file(bottleneck_path, image_lists, label_name, index,
-                               image_dir, category, sess, jpeg_data_tensor,
-                               bottleneck_tensor)
-    with open(bottleneck_path, 'r') as bottleneck_file:
-        bottleneck_string = bottleneck_file.read()
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> \
+                             <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">label_lists</span> <span class="o">=</span> <span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
+    <span class="n">sub_dir</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="s">'dir'</span><span class="p">]</span>
+    <span class="n">sub_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">sub_dir</span><span class="p">)</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">sub_dir_path</span><span class="p">)</span>
+    <span class="n">bottleneck_path</span> <span class="o">=</span> <span class="n">get_bottleneck_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                                    <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">):</span>
+        <span class="n">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                               <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                               <span class="n">bottleneck_tensor</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+        <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     
-    did_hit_error = False
-    try:
-        bottleneck_values = [float(x) for x in bottleneck_string.split(',')]
-    except ValueError:
-        print('Invalid float found, recreating bottleneck')
-        did_hit_error = True
-    if did_hit_error:
-        create_bottleneck_file(bottleneck_path, image_lists, label_name, index,
-                               image_dir, category, sess, jpeg_data_tensor,
-                               bottleneck_tensor)
-        with open(bottleneck_path, 'r') as bottleneck_file:
-            bottleneck_string = bottleneck_file.read()
-        # Allow exceptions to propagate here, since they shouldn't happen after a
-        # fresh creation
-        bottleneck_values = [float(x) for x in bottleneck_string.split(',')]
-    return bottleneck_values
-</code></pre>
+    <span class="n">did_hit_error</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)]</span>
+    <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Invalid float found, recreating bottleneck'</span><span class="p">)</span>
+        <span class="n">did_hit_error</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">did_hit_error</span><span class="p">:</span>
+        <span class="n">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                               <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                               <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+            <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c"># Allow exceptions to propagate here, since they shouldn't happen after a</span>
+        <span class="c"># fresh creation</span>
+        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">bottleneck_values</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def get_bottleneck_path(image_lists, label_name, index, bottleneck_dir, category):
-    return get_image_path(image_lists, label_name, index, bottleneck_dir, category) + '.txt'
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_bottleneck_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span> <span class="o">+</span> <span class="s">'.txt'</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def get_image_path(image_lists, label_name, index, image_dir, category):
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
     
-    if label_name not in image_lists:
-        tf.logging.fatal('Label does not exist %s.', label_name)
-    label_lists = image_lists[label_name]
+    <span class="k">if</span> <span class="n">label_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_lists</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Label does not exist </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">label_name</span><span class="p">)</span>
+    <span class="n">label_lists</span> <span class="o">=</span> <span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
     
-    if category not in label_lists:
-        tf.logging.fatal('Category does not exist %s.', category)
-    category_list = label_lists[category]
+    <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">label_lists</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Category does not exist </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="n">category_list</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
     
-    if not category_list:
-        tf.logging.fatal('Label %s has no images in the category %s.', label_name, category)
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">category_list</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Label </span><span class="si">%</span><span class="s">s has no images in the category </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
         
-    mod_index = index % len(category_list)
-    base_name = category_list[mod_index]
-    sub_dir = label_lists['dir']
-    full_path = os.path.join(image_dir, sub_dir, base_name)
+    <span class="n">mod_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">category_list</span><span class="p">)</span>
+    <span class="n">base_name</span> <span class="o">=</span> <span class="n">category_list</span><span class="p">[</span><span class="n">mod_index</span><span class="p">]</span>
+    <span class="n">sub_dir</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="s">'dir'</span><span class="p">]</span>
+    <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">sub_dir</span><span class="p">,</span> <span class="n">base_name</span><span class="p">)</span>
     
-    return full_path
-</code></pre>
+    <span class="k">return</span> <span class="n">full_path</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def create_bottleneck_file(bottleneck_path, image_lists, label_name, index, image_dir,
-                          category, sess, jpeg_data_tensor, bottleneck_tensor):
-    print('보틀넥 파일 생성 시작 - {}'.format(bottleneck_path))
-    image_path = get_image_path(image_lists, label_name, index, image_dir, category)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                          <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'보틀넥 파일 생성 시작 - {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">))</span>
+    <span class="n">image_path</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
     
-    if not gfile.Exists(image_path):
-        tf.logging.fata('File does nto exist %s', image_path)
-    image_data = gfile.FastGFile(image_path, 'rb').read()
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fata</span><span class="p">(</span><span class="s">'File does nto exist </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="n">image_path</span><span class="p">)</span>
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     
-    try:
-        bottleneck_values = run_bottleneck_on_image(
-            sess, image_data, jpeg_data_tensor, bottleneck_tensor)
-    except:
-        raise RuntimeError('파일 처리 중 에러 발생: %s' % image_path)
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">run_bottleneck_on_image</span><span class="p">(</span>
+            <span class="n">sess</span><span class="p">,</span> <span class="n">image_data</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'파일 처리 중 에러 발생: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">image_path</span><span class="p">)</span>
         
-    bottleneck_string = ','.join(str(x) for x in bottleneck_values)
-    with open(bottleneck_path, 'w') as bottleneck_file:
-        bottleneck_file.write(bottleneck_string)
-</code></pre>
+    <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="s">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_values</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+        <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bottleneck_string</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def run_bottleneck_on_image(sess, image_data, image_data_tensor, bottleneck_tensor):
-    bottleneck_values = sess.run(
-        bottleneck_tensor, {image_data_tensor: image_data})
-    bottleneck_values = np.squeeze(bottleneck_values)
-    return bottleneck_values
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_bottleneck_on_image</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_data</span><span class="p">,</span> <span class="n">image_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="p">{</span><span class="n">image_data_tensor</span><span class="p">:</span> <span class="n">image_data</span><span class="p">})</span>
+    <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">bottleneck_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bottleneck_values</span>
+</code></pre></div></div>
 
 <hr />
 
 <h3 id="transfer-learning">Transfer Learning</h3>
 <p>이제 비로소 모델에 마지막 classifer를 붙이는 작업을 한다.</p>
 <ul>
-  <li><code>def add_final_training_ops</code> - 마지막 레이어를 정의하고 loss과 optimizer를 정의한다.</li>
-  <li><code>def add_evaluation_step</code> - 성능 평가를 위한 지표 (accuracy)를 정의한다.</li>
-  <li><code>def get_random_cached_bottlenecks</code> - 랜덤 혹은 전체 보틀넥을 가져와 모델에 집어넣는다.</li>
+  <li><code class="highlighter-rouge">def add_final_training_ops</code> - 마지막 레이어를 정의하고 loss과 optimizer를 정의한다.</li>
+  <li><code class="highlighter-rouge">def add_evaluation_step</code> - 성능 평가를 위한 지표 (accuracy)를 정의한다.</li>
+  <li><code class="highlighter-rouge">def get_random_cached_bottlenecks</code> - 랜덤 혹은 전체 보틀넥을 가져와 모델에 집어넣는다.</li>
 </ul>
 
-<pre><code class="language-python">def add_final_training_ops(class_count, final_tensor_name, bottleneck_tensor):
-    with tf.name_scope('input'):
-        bottleneck_input = tf.placeholder_with_default(
-            bottleneck_tensor, shape=[None, BOTTLENECK_TENSOR_SIZE],
-            name='BottleneckInputPlaceholder')
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_final_training_ops</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">final_tensor_name</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'input'</span><span class="p">):</span>
+        <span class="n">bottleneck_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder_with_default</span><span class="p">(</span>
+            <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">BOTTLENECK_TENSOR_SIZE</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">'BottleneckInputPlaceholder'</span><span class="p">)</span>
         
-        ground_truth_input = tf.placeholder(tf.float32, [None, class_count], name='GroundTruthInput')
+        <span class="n">ground_truth_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_count</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'GroundTruthInput'</span><span class="p">)</span>
         
-    layer_name = 'final_training_ops'
-    with tf.name_scope(layer_name):
-        with tf.name_scope('weights'):
-            initial_value = tf.truncated_normal([BOTTLENECK_TENSOR_SIZE, class_count], stddev=0.01)
+    <span class="n">layer_name</span> <span class="o">=</span> <span class="s">'final_training_ops'</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="n">layer_name</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'weights'</span><span class="p">):</span>
+            <span class="n">initial_value</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="n">BOTTLENECK_TENSOR_SIZE</span><span class="p">,</span> <span class="n">class_count</span><span class="p">],</span> <span class="n">stddev</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
             
-            layer_weights = tf.Variable(initial_value, name='final_weight')
+            <span class="n">layer_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'final_weight'</span><span class="p">)</span>
         
-        with tf.name_scope('biases'):
-            layer_biases = tf.Variable(tf.zeros([class_count]), name='final_biases')
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'biases'</span><span class="p">):</span>
+            <span class="n">layer_biases</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">class_count</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'final_biases'</span><span class="p">)</span>
             
-        with tf.name_scope('Wx_plus_b'):
-            logits = tf.matmul(bottleneck_input, layer_weights) + layer_biases
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'Wx_plus_b'</span><span class="p">):</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">bottleneck_input</span><span class="p">,</span> <span class="n">layer_weights</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer_biases</span>
             
-    final_tensor = tf.nn.softmax(logits, name=final_tensor_name)
+    <span class="n">final_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">final_tensor_name</span><span class="p">)</span>
     
-    with tf.name_scope('cross_entropy'):
-        cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
-            labels=ground_truth_input, logits=logits)
-        with tf.name_scope('total'):
-            cross_entropy_mean = tf.reduce_mean(cross_entropy)
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'cross_entropy'</span><span class="p">):</span>
+        <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'total'</span><span class="p">):</span>
+            <span class="n">cross_entropy_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     
-    with tf.name_scope('train'):
-        optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-        train_step = optimizer.minimize(cross_entropy_mean)
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'train'</span><span class="p">):</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="n">train_step</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy_mean</span><span class="p">)</span>
         
-    return (train_step, cross_entropy_mean, bottleneck_input, ground_truth_input, final_tensor)
-</code></pre>
+    <span class="k">return</span> <span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="n">cross_entropy_mean</span><span class="p">,</span> <span class="n">bottleneck_input</span><span class="p">,</span> <span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">final_tensor</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def add_evaluation_step(result_tensor, ground_truth_tensor):
-    with tf.name_scope('accuracy'):
-        with tf.name_scope('correct_prediction'):
-            prediction = tf.argmax(result_tensor, 1)
-            correct_prediction = tf.equal(
-                prediction, tf.argmax(ground_truth_tensor, 1))
-        with tf.name_scope('accuracy'):
-            evaluation_step = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    return evaluation_step, prediction
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_evaluation_step</span><span class="p">(</span><span class="n">result_tensor</span><span class="p">,</span> <span class="n">ground_truth_tensor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'correct_prediction'</span><span class="p">):</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">result_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span>
+                <span class="n">prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ground_truth_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">):</span>
+            <span class="n">evaluation_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def get_random_cached_bottlenecks(sess, image_lists, how_many, category, bottleneck_dir, image_dir,
-                                 jpeg_data_tensor, bottleneck_tensor):
-    class_count = len(image_lists.keys())
-    bottlenecks = []
-    ground_truths = []
-    filenames = []
-    if how_many &gt;= 0:
-        # 샘플링한 보틀넥을 가져온다.
-        for unused_i in range(how_many):
-            label_index = random.randrange(class_count)
-            label_name = list(image_lists.keys())[label_index]
-            image_index = random.randrange(MAX_NUM_IMAGES_PER_CLASS + 1)
-            image_name = get_image_path(image_lists, label_name, image_index,
-                                      image_dir, category)
-            bottleneck = get_or_create_bottleneck(sess, image_lists, label_name,
-                                                image_index, image_dir, category,
-                                                bottleneck_dir, jpeg_data_tensor,
-                                                bottleneck_tensor)
-            ground_truth = np.zeros(class_count, dtype=np.float32)
-            ground_truth[label_index] = 1.0
-            bottlenecks.append(bottleneck)
-            ground_truths.append(ground_truth)
-            filenames.append(image_name)
-    else:
-        # 보틀넥을 모두 가져온다.
-        for label_index, label_name in enumerate(image_lists.keys()):
-            for image_index, image_name in enumerate(image_lists[label_name][category]):
-                image_name = get_image_path(image_lists, label_name, image_index,
-                                            image_dir, category)
-                bottleneck = get_or_create_bottleneck(sess, image_lists, label_name,
-                                                      image_index, image_dir, category,
-                                                      bottleneck_dir, jpeg_data_tensor,
-                                                      bottleneck_tensor)
-                ground_truth = np.zeros(class_count, dtype=np.float32)
-                ground_truth[label_index] = 1.0
-                bottlenecks.append(bottleneck)
-                ground_truths.append(ground_truth)
-                filenames.append(image_name)
-    return bottlenecks, ground_truths, filenames
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_random_cached_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">how_many</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                                 <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">class_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">bottlenecks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ground_truths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">how_many</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c"># 샘플링한 보틀넥을 가져온다.</span>
+        <span class="k">for</span> <span class="n">unused_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">how_many</span><span class="p">):</span>
+            <span class="n">label_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">class_count</span><span class="p">)</span>
+            <span class="n">label_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">label_index</span><span class="p">]</span>
+            <span class="n">image_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">image_name</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">image_index</span><span class="p">,</span>
+                                      <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+            <span class="n">bottleneck</span> <span class="o">=</span> <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span>
+                                                <span class="n">image_index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span>
+                                                <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                                                <span class="n">bottleneck_tensor</span><span class="p">)</span>
+            <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">ground_truth</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">bottlenecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottleneck</span><span class="p">)</span>
+            <span class="n">ground_truths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">)</span>
+            <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># 보틀넥을 모두 가져온다.</span>
+        <span class="k">for</span> <span class="n">label_index</span><span class="p">,</span> <span class="n">label_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">image_index</span><span class="p">,</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">][</span><span class="n">category</span><span class="p">]):</span>
+                <span class="n">image_name</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">image_index</span><span class="p">,</span>
+                                            <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+                <span class="n">bottleneck</span> <span class="o">=</span> <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span>
+                                                      <span class="n">image_index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span>
+                                                      <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                                                      <span class="n">bottleneck_tensor</span><span class="p">)</span>
+                <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="n">ground_truth</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">bottlenecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottleneck</span><span class="p">)</span>
+                <span class="n">ground_truths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">)</span>
+                <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bottlenecks</span><span class="p">,</span> <span class="n">ground_truths</span><span class="p">,</span> <span class="n">filenames</span>
 
 
-</code></pre>
+</code></pre></div></div>
 
 <hr />
 
 <h3 id="하이퍼파라미터-설정-모델-관련">하이퍼파라미터 설정 (모델 관련)</h3>
 <p>파일 경로 및 모델 구현에 필요한 일부 파라미터를 설정한다. 테스트에 사용할 데이터로, 패스트캠퍼스 강의에서 제공한 3가지 종류의 고양이 이미지를 사용해보았다.</p>
 
-<pre><code class="language-python">image_dir = 'cat_photos'
-output_graph = '/tmp/output_graph.pb'
-output_labels = '/tmp/output_labels.txt'
-summaries_dir = '/tmp/retrain_logs'
-how_many_training_steps = 300
-learning_rate = 0.01
-testing_percentage = 10
-validation_percentage = 10
-eval_step_interval = 10
-train_batch_size = 100
-test_batch_size = -1
-validation_batch_size = 100
-print_misclassified_test_images = False
-model_dir = '/tmp/imagenet'
-bottleneck_dir = '/tmp/bottleneck'
-final_tensor_name = 'final_result'
-flip_left_right = False
-random_crop = 0
-random_scale = 0
-random_brightness = 0 
-log_frequency = 10
-log_device_placement = False
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_dir</span> <span class="o">=</span> <span class="s">'cat_photos'</span>
+<span class="n">output_graph</span> <span class="o">=</span> <span class="s">'/tmp/output_graph.pb'</span>
+<span class="n">output_labels</span> <span class="o">=</span> <span class="s">'/tmp/output_labels.txt'</span>
+<span class="n">summaries_dir</span> <span class="o">=</span> <span class="s">'/tmp/retrain_logs'</span>
+<span class="n">how_many_training_steps</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">testing_percentage</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">validation_percentage</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">eval_step_interval</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">validation_batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">print_misclassified_test_images</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">model_dir</span> <span class="o">=</span> <span class="s">'/tmp/imagenet'</span>
+<span class="n">bottleneck_dir</span> <span class="o">=</span> <span class="s">'/tmp/bottleneck'</span>
+<span class="n">final_tensor_name</span> <span class="o">=</span> <span class="s">'final_result'</span>
+<span class="n">flip_left_right</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">random_crop</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">random_scale</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">random_brightness</span> <span class="o">=</span> <span class="mi">0</span> 
+<span class="n">log_frequency</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">log_device_placement</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
 
 <hr />
 
 <h3 id="모델-다운로드-및-준비">모델 다운로드 및 준비</h3>
 
-<pre><code class="language-python">## inception_v3를 다운받아 압축을 푼다.
-maybe_download_and_extract()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## inception_v3를 다운받아 압축을 푼다.</span>
+<span class="n">maybe_download_and_extract</span><span class="p">()</span>
+</code></pre></div></div>
 
-<pre><code>그래프 파일이 이미 존재합니다.
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>그래프 파일이 이미 존재합니다.
+</code></pre></div></div>
 
-<pre><code class="language-python">## 그래프와 보틀넥 텐서, 이미지데이터 텐서, 리사이즈 이미지 텐서를 불러온다.
-graph, bottleneck_tensor, jpeg_data_tensor, resize_image_tensor = (create_inception_graph())
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## 그래프와 보틀넥 텐서, 이미지데이터 텐서, 리사이즈 이미지 텐서를 불러온다.</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resize_image_tensor</span> <span class="o">=</span> <span class="p">(</span><span class="n">create_inception_graph</span><span class="p">())</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">## 재학습할 폴더를 가져와서 레이블화한다.
-image_lists = create_image_lists(image_dir, testing_percentage, validation_percentage)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## 재학습할 폴더를 가져와서 레이블화한다.</span>
+<span class="n">image_lists</span> <span class="o">=</span> <span class="n">create_image_lists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">testing_percentage</span><span class="p">,</span> <span class="n">validation_percentage</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>Looking for images in 'chartreux'
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Looking for images in 'chartreux'
 Looking for images in 'persian'
 Looking for images in 'ragdoll'
-</code></pre>
+</code></pre></div></div>
 
-<pre><code class="language-python">class_count = len(image_lists.keys())
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">class_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">if class_count == 0:
-    print('이미지가 해당 경로에 없습니다: ' + image_dir)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">class_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'이미지가 해당 경로에 없습니다: '</span> <span class="o">+</span> <span class="n">image_dir</span><span class="p">)</span>
     
-elif class_count == 1:
-    print('해당 경로에 클래스가 1개만 발견되었습니다: ' + image_dir + ' - 분류를 위해 2개 이상의 클래스가 필요합니다.')
+<span class="k">elif</span> <span class="n">class_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'해당 경로에 클래스가 1개만 발견되었습니다: '</span> <span class="o">+</span> <span class="n">image_dir</span> <span class="o">+</span> <span class="s">' - 분류를 위해 2개 이상의 클래스가 필요합니다.'</span><span class="p">)</span>
     
-else:
-    print("클래스가 2개 이상 있습니다. 학습을 시작합니다.")
-</code></pre>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"클래스가 2개 이상 있습니다. 학습을 시작합니다."</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>클래스가 2개 이상 있습니다. 학습을 시작합니다.
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>클래스가 2개 이상 있습니다. 학습을 시작합니다.
+</code></pre></div></div>
 
-<pre><code class="language-python">## Image distortion // 현재 설정: False
-do_distort_images = should_distort_images(flip_left_right, random_crop, random_scale, random_brightness)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## Image distortion // 현재 설정: False</span>
+<span class="n">do_distort_images</span> <span class="o">=</span> <span class="n">should_distort_images</span><span class="p">(</span><span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">)</span>
+</code></pre></div></div>
 
 <hr />
 
@@ -543,95 +543,95 @@ do_distort_images = should_distort_images(flip_left_right, random_crop, random_s
 이후 에폭을 돌면서 이미지를 넣어 Training / Validation Accuracy를 산출한다.<br />
 학습이 완료되면 테스트셋 이미지를 넣어 최종 테스트셋 정확도를 평가한다.</p>
 
-<pre><code class="language-python">acc_list = []
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
 
-with tf.Session(graph=graph) as sess:
-    if do_distort_images:
-        (distorted_jpeg_data_tensor, distorted_image_tensor) = add_input_distortion(
-            flip_left_right, random_crop, random_scale, random_brightness)
-    else:
-        cache_bottlenecks(sess, image_lists, image_dir, bottleneck_dir, jpeg_data_tensor, bottleneck_tensor)
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">do_distort_images</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">distorted_jpeg_data_tensor</span><span class="p">,</span> <span class="n">distorted_image_tensor</span><span class="p">)</span> <span class="o">=</span> <span class="n">add_input_distortion</span><span class="p">(</span>
+            <span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cache_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
     
-    ## 네트워크의 끝에 우리가 원하는 분류 레이어를 붙인다.
-    (train_step, cross_entropy, bottleneck_input, 
-     ground_truth_input, final_tensor) = add_final_training_ops(len(image_lists.keys()), 
-                                                                final_tensor_name, 
-                                                                bottleneck_tensor)
+    <span class="c">## 네트워크의 끝에 우리가 원하는 분류 레이어를 붙인다.</span>
+    <span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="n">cross_entropy</span><span class="p">,</span> <span class="n">bottleneck_input</span><span class="p">,</span> 
+     <span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">final_tensor</span><span class="p">)</span> <span class="o">=</span> <span class="n">add_final_training_ops</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> 
+                                                                <span class="n">final_tensor_name</span><span class="p">,</span> 
+                                                                <span class="n">bottleneck_tensor</span><span class="p">)</span>
         
-    ## 정확도 평가를 위한 새로운 오퍼레이션
-    evaluation_step, prediction = add_evaluation_step(final_tensor, ground_truth_input)
+    <span class="c">## 정확도 평가를 위한 새로운 오퍼레이션</span>
+    <span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">add_evaluation_step</span><span class="p">(</span><span class="n">final_tensor</span><span class="p">,</span> <span class="n">ground_truth_input</span><span class="p">)</span>
     
-    ## 가중치 초기화
-    init = tf.global_variables_initializer()
-    sess.run(init)
+    <span class="c">## 가중치 초기화</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
     
-    for i in range(how_many_training_steps):
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">how_many_training_steps</span><span class="p">):</span>
         
-        ## 보틀넥과 정답지를 준비한다.
-        if do_distort_images:
-            (train_bottlenecks, train_ground_truth) = get_random_distorted_bottlenecks(
-                sess, image_lists, train_batch_size, 'training', image_dir, distorted_jpeg_data_tensor,
-                distorted_image_tensor, resized_image_tensor, bottleneck_tensor)
-        else:
-            (train_bottlenecks, train_ground_truth, _) = get_random_cached_bottlenecks(
-                sess, image_lists, train_batch_size, 'training', bottleneck_dir, image_dir,
-                jpeg_data_tensor, bottleneck_tensor)
+        <span class="c">## 보틀넥과 정답지를 준비한다.</span>
+        <span class="k">if</span> <span class="n">do_distort_images</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">train_bottlenecks</span><span class="p">,</span> <span class="n">train_ground_truth</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_random_distorted_bottlenecks</span><span class="p">(</span>
+                <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="s">'training'</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">distorted_jpeg_data_tensor</span><span class="p">,</span>
+                <span class="n">distorted_image_tensor</span><span class="p">,</span> <span class="n">resized_image_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">train_bottlenecks</span><span class="p">,</span> <span class="n">train_ground_truth</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span>
+                <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="s">'training'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
         
         
-        ## 보틀넥과 정답지를 모델에 집어넣어 학습시킨다.
-        _ = sess.run(
-            [train_step],
-            feed_dict={bottleneck_input: train_bottlenecks,
-                      ground_truth_input: train_ground_truth})
+        <span class="c">## 보틀넥과 정답지를 모델에 집어넣어 학습시킨다.</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">train_step</span><span class="p">],</span>
+            <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">train_bottlenecks</span><span class="p">,</span>
+                      <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">train_ground_truth</span><span class="p">})</span>
     
-        ## 특정 구간마다 트레이닝 정확도와 cross entropy 로그, 밸리데이션 정확도를 출력한다.
-        is_last_step = (i + 1 == how_many_training_steps)
-        if (i % eval_step_interval) == 0 or is_last_step:
-            train_accuracy, cross_entropy_value = sess.run(
-                [evaluation_step, cross_entropy],
-                feed_dict = {bottleneck_input: train_bottlenecks,
-                            ground_truth_input: train_ground_truth})
+        <span class="c">## 특정 구간마다 트레이닝 정확도와 cross entropy 로그, 밸리데이션 정확도를 출력한다.</span>
+        <span class="n">is_last_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">how_many_training_steps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">eval_step_interval</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">is_last_step</span><span class="p">:</span>
+            <span class="n">train_accuracy</span><span class="p">,</span> <span class="n">cross_entropy_value</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">evaluation_step</span><span class="p">,</span> <span class="n">cross_entropy</span><span class="p">],</span>
+                <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">train_bottlenecks</span><span class="p">,</span>
+                            <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">train_ground_truth</span><span class="p">})</span>
             
-            print('%s: Step %d: Train accuracy = %.1f%%'% (datetime.now(), i, train_accuracy * 100))
-            print('%s: Step %d: Cross entropy = %f' % (datetime.now(), i, cross_entropy_value))
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Train accuracy = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%%</span><span class="s">'</span><span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Cross entropy = </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span> <span class="n">cross_entropy_value</span><span class="p">))</span>
             
-            validation_bottlenecks, validation_ground_truth, _ = (
-                get_random_cached_bottlenecks(
-                    sess, image_lists, validation_batch_size, 'validation', bottleneck_dir,
-                    image_dir, jpeg_data_tensor, bottleneck_tensor))
+            <span class="n">validation_bottlenecks</span><span class="p">,</span> <span class="n">validation_ground_truth</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span>
+                    <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">validation_batch_size</span><span class="p">,</span> <span class="s">'validation'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span>
+                    <span class="n">image_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">))</span>
             
-            validation_accuracy = sess.run(
-                evaluation_step,
-                feed_dict = {bottleneck_input: validation_bottlenecks,
-                            ground_truth_input: validation_ground_truth})
-            print('%s: Step %d: Validation accuracy = %.1f%% (N=%d)'% (datetime.now(), i,
-                                                                       validation_accuracy * 100, 
-                                                                       len(validation_bottlenecks)))
+            <span class="n">validation_accuracy</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">evaluation_step</span><span class="p">,</span>
+                <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">validation_bottlenecks</span><span class="p">,</span>
+                            <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">validation_ground_truth</span><span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Validation accuracy = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%% </span><span class="s">(N=</span><span class="si">%</span><span class="s">d)'</span><span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span>
+                                                                       <span class="n">validation_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
+                                                                       <span class="nb">len</span><span class="p">(</span><span class="n">validation_bottlenecks</span><span class="p">)))</span>
             
-            ## 시각화를 위해 로그를 한벌 더 저장한다.
-            acc_list.append({"epoch": i, "train_accuracy": train_accuracy, "validation_accuracy": validation_accuracy})
+            <span class="c">## 시각화를 위해 로그를 한벌 더 저장한다.</span>
+            <span class="n">acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">"epoch"</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s">"train_accuracy"</span><span class="p">:</span> <span class="n">train_accuracy</span><span class="p">,</span> <span class="s">"validation_accuracy"</span><span class="p">:</span> <span class="n">validation_accuracy</span><span class="p">})</span>
     
-    ## 테스트셋에 사용할 보틀넥과 정답지를 가져온다.
-    test_bottlenecks, test_ground_truth, test_filenames = (
-        get_random_cached_bottlenecks(sess, image_lists, test_batch_size, 'testing', bottleneck_dir,
-                                     image_dir, jpeg_data_tensor, bottleneck_tensor))
+    <span class="c">## 테스트셋에 사용할 보틀넥과 정답지를 가져온다.</span>
+    <span class="n">test_bottlenecks</span><span class="p">,</span> <span class="n">test_ground_truth</span><span class="p">,</span> <span class="n">test_filenames</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">test_batch_size</span><span class="p">,</span> <span class="s">'testing'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span>
+                                     <span class="n">image_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">))</span>
     
-    ## 테스트셋 정확도와 예측 분류값을 가져온다.
-    test_accuracy, predictions = sess.run(
-        [evaluation_step, prediction], 
-        feed_dict={bottleneck_input: test_bottlenecks,
-                  ground_truth_input: test_ground_truth})
-    print('최종 학습 정확도 = %.1f%% (N=%d)' % (test_accuracy * 100, len(test_bottlenecks)))
+    <span class="c">## 테스트셋 정확도와 예측 분류값을 가져온다.</span>
+    <span class="n">test_accuracy</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span><span class="p">],</span> 
+        <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">test_bottlenecks</span><span class="p">,</span>
+                  <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">test_ground_truth</span><span class="p">})</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'최종 학습 정확도 = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%% </span><span class="s">(N=</span><span class="si">%</span><span class="s">d)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">test_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_bottlenecks</span><span class="p">)))</span>
     
-    output_graph_def = graph_util.convert_variables_to_constants(
-        sess, graph.as_graph_def(), [final_tensor_name])
-    with gfile.FastGFile(output_graph, 'wb') as f:
-        f.write(output_graph_def.SerializeToString())
-    with gfile.FastGFile(output_labels, 'w') as f:
-        f.write('\n'.join(image_lists.keys()) + '\n')
-</code></pre>
+    <span class="n">output_graph_def</span> <span class="o">=</span> <span class="n">graph_util</span><span class="o">.</span><span class="n">convert_variables_to_constants</span><span class="p">(</span>
+        <span class="n">sess</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_graph_def</span><span class="p">(),</span> <span class="p">[</span><span class="n">final_tensor_name</span><span class="p">])</span>
+    <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">output_graph</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_graph_def</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+    <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">output_labels</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>2017-09-12 22:57:31.651697: Step 0: Train accuracy = 90.0%
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-09-12 22:57:31.651697: Step 0: Train accuracy = 90.0%
 2017-09-12 22:57:31.651842: Step 0: Cross entropy = 0.971989
 2017-09-12 22:57:31.728077: Step 0: Validation accuracy = 50.0% (N=100)
 2017-09-12 22:57:32.482163: Step 10: Train accuracy = 97.0%
@@ -727,7 +727,7 @@ with tf.Session(graph=graph) as sess:
 최종 학습 정확도 = 100.0% (N=10)
 INFO:tensorflow:Froze 2 variables.
 Converted 2 variables to const ops.
-</code></pre>
+</code></pre></div></div>
 
 <hr />
 
@@ -735,15 +735,15 @@ Converted 2 variables to const ops.
 <p>중간에 따로 저장한 트레이닝과 벨리데이션 정확도가 에폭에 따라 얼마나 개선되는지 살펴보았다.<br />
 몇 에폭 지나지 않아 밸리데이션 정확도가 1을 찍는 것으로 보아 학습이 빠르게 잘 되었으며, 굳이 1000번 돌리지 않고 약 300번 정도에서 끊었다.</p>
 
-<pre><code class="language-python">import pandas as pd
-acc_df = pd.DataFrame.from_dict(acc_list)
-acc_df.set_index('epoch', inplace=True)
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">acc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">acc_list</span><span class="p">)</span>
+<span class="n">acc_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">f, ax = plt.subplots(figsize=(10, 5))
-acc_df.plot(ax=ax)
-plt.show()
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">acc_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p><img src="/assets/inception_v3/retrain_36_0.png" alt="에폭에 따른 정확도 차트" /></p>
 
@@ -752,62 +752,62 @@ plt.show()
 <h3 id="추론">추론</h3>
 <p>마지막 레이어까지 모두 학습이 끝났다. 이제는 새로운 이미지를 잘 분류하는지 라이브에 태워본다.</p>
 
-<pre><code class="language-python">imagePath = 'tmp/test_chartreux.jpg'                                      
-modelFullPath = '/tmp/output_graph.pb'                                    
-labelsFullPath = '/tmp/output_labels.txt'                                 
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">imagePath</span> <span class="o">=</span> <span class="s">'tmp/test_chartreux.jpg'</span>                                      
+<span class="n">modelFullPath</span> <span class="o">=</span> <span class="s">'/tmp/output_graph.pb'</span>                                    
+<span class="n">labelsFullPath</span> <span class="o">=</span> <span class="s">'/tmp/output_labels.txt'</span>                                 
 
 
-def create_graph():
-    """저장된(saved) GraphDef 파일로부터 graph를 생성하고 saver를 반환한다."""
-    with tf.gfile.FastGFile(modelFullPath, 'rb') as f:
-        graph_def = tf.GraphDef()
-        graph_def.ParseFromString(f.read())
-        _ = tf.import_graph_def(graph_def, name='')
-</code></pre>
+<span class="k">def</span> <span class="nf">create_graph</span><span class="p">():</span>
+    <span class="s">"""저장된(saved) GraphDef 파일로부터 graph를 생성하고 saver를 반환한다."""</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">modelFullPath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">graph_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+        <span class="n">graph_def</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">import_graph_def</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code class="language-python">def run_inference_on_image(imagePath):
-    answer = None
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_inference_on_image</span><span class="p">(</span><span class="n">imagePath</span><span class="p">):</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="bp">None</span>
 
-    if not tf.gfile.Exists(imagePath):
-        tf.logging.fatal('파일이 존재하지 않습니다: %s', imagePath)
-        return answer
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">imagePath</span><span class="p">):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'파일이 존재하지 않습니다: </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="n">imagePath</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">answer</span>
 
-    image_data = tf.gfile.FastGFile(imagePath, 'rb').read()
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">imagePath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-    # 저장된(saved) GraphDef 파일로부터 graph를 생성한다.
-    create_graph()
+    <span class="c"># 저장된(saved) GraphDef 파일로부터 graph를 생성한다.</span>
+    <span class="n">create_graph</span><span class="p">()</span>
 
-    with tf.Session() as sess:
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
 
-        ## 학습이 끝난 마지막 소프트맥스 텐서를 가져온다.
-        softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')
-        ## 이미지 데이터를 네트워크 맨 앞에 넣어 분류를 실행한다.
-        predictions = sess.run(softmax_tensor,
-                               {'DecodeJpeg/contents:0': image_data})
-        ## [[]]로 중첩된 어레이가 떨어지는데 np.squeeze로 하나의 어레이로 만든다.
-        predictions = np.squeeze(predictions)
+        <span class="c">## 학습이 끝난 마지막 소프트맥스 텐서를 가져온다.</span>
+        <span class="n">softmax_tensor</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s">'final_result:0'</span><span class="p">)</span>
+        <span class="c">## 이미지 데이터를 네트워크 맨 앞에 넣어 분류를 실행한다.</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">softmax_tensor</span><span class="p">,</span>
+                               <span class="p">{</span><span class="s">'DecodeJpeg/contents:0'</span><span class="p">:</span> <span class="n">image_data</span><span class="p">})</span>
+        <span class="c">## [[]]로 중첩된 어레이가 떨어지는데 np.squeeze로 하나의 어레이로 만든다.</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
         
-        ## 가장 높은 확률 값을 가진 5개를 선택한다. 여기서는 클래스가 3개 뿐이라 3개만 출력된다.
-        top_k = predictions.argsort()[-5:][::-1]
-        print(top_k)
-        f = open(labelsFullPath, 'rb')
-        lines = f.readlines()
-        labels = [str(w).replace("\n", "") for w in lines]
-        for node_id in top_k:
-            human_string = labels[node_id]
-            score = predictions[node_id]
-            print('%s (score = %.5f)' % (human_string, score))
+        <span class="c">## 가장 높은 확률 값을 가진 5개를 선택한다. 여기서는 클래스가 3개 뿐이라 3개만 출력된다.</span>
+        <span class="n">top_k</span> <span class="o">=</span> <span class="n">predictions</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">5</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">top_k</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">labelsFullPath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">top_k</span><span class="p">:</span>
+            <span class="n">human_string</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s (score = </span><span class="si">%.5</span><span class="s">f)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">human_string</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
 
-        answer = labels[top_k[0]]
-        return answer
-</code></pre>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">top_k</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">answer</span>
+</code></pre></div></div>
 
 <p><img src="/assets/inception_v3/test_chartreux.jpg" alt="라이브 테스트1: chartreux" /></p>
 
-<pre><code class="language-python">run_inference_on_image('tmp/test_chartreux.jpg')
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">run_inference_on_image</span><span class="p">(</span><span class="s">'tmp/test_chartreux.jpg'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>[0 2 1]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0 2 1]
 b'chartreux\n' (score = 0.99032)
 b'ragdoll\n' (score = 0.00569)
 b'persian\n' (score = 0.00399)
@@ -817,15 +817,15 @@ b'persian\n' (score = 0.00399)
 
 
 "b'chartreux\\n'"
-</code></pre>
+</code></pre></div></div>
 
 <p>이번에는 우리집 러시안 블루도 잘 분류하는지 살펴보았다. 러시안 블루는 애초 분류 레이블에 없지만, 외형적으로 가장 유사한 샤트룩스가 선택된 것으로 보아 학습이 꽤 잘되었다고 평가할 수 있겠다. 또, 아이폰에서 바로 찍은 큰 JPG을 모델이 집어넣고 돌렸는데 바로 잘 돌아가는 것으로 보아.. 라이브 환경에 돌아가는 모델 구현에 참고할 만한 점이 많은 코드라 하겠다.
 <img src="/assets/inception_v3/test_russian_blue.jpg" alt="라이브 테스트2: russian blue" /></p>
 
-<pre><code class="language-python">run_inference_on_image('tmp/test_russian_blue.jpg')
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">run_inference_on_image</span><span class="p">(</span><span class="s">'tmp/test_russian_blue.jpg'</span><span class="p">)</span>
+</code></pre></div></div>
 
-<pre><code>[0 2 1]
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0 2 1]
 b'chartreux\n' (score = 0.94632)
 b'ragdoll\n' (score = 0.03988)
 b'persian\n' (score = 0.01380)
@@ -835,7 +835,7 @@ b'persian\n' (score = 0.01380)
 
 
 "b'chartreux\\n'"
-</code></pre>
+</code></pre></div></div>
 
         </section>
         <footer class="post-footer">

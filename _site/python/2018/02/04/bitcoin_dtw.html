@@ -89,11 +89,11 @@
 
 <p>하이먼 민스키 데이터는 차트 이미지를 <a href="https://automeris.io/WebPlotDigitizer/">WebPlotDigitizer</a>라는 툴에 집어넣어 데이터 포인트를 추출했다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">## 일단 필요한 라이브러리를 불러온다.</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 일단 필요한 라이브러리를 불러온다.</span>
 <span class="kn">import</span> <span class="nn">coin_crawler</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 <span class="kn">from</span> <span class="nn">fastdtw</span> <span class="kn">import</span> <span class="n">fastdtw</span>
 <span class="kn">import</span> <span class="nn">_ucrdtw</span>
 <span class="kn">import</span> <span class="nn">glob</span>
@@ -102,28 +102,28 @@
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">euclidean</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
 <span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
 
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span></code></pre></figure>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">## 비트코인 데이터와 하이먼 민스키 데이터를 불러와</span>
-<span class="c1">## 비트코인 종가와 민스키 그래프를 그린다.</span>
-<span class="n">bitcoin_path</span> <span class="o">=</span> <span class="s1">&#39;dataset/bitcoin.csv&#39;</span>
-<span class="n">minsky_path</span> <span class="o">=</span> <span class="s1">&#39;HymanMinsky.csv&#39;</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 비트코인 데이터와 하이먼 민스키 데이터를 불러와</span>
+<span class="c">## 비트코인 종가와 민스키 그래프를 그린다.</span>
+<span class="n">bitcoin_path</span> <span class="o">=</span> <span class="s">'dataset/bitcoin.csv'</span>
+<span class="n">minsky_path</span> <span class="o">=</span> <span class="s">'HymanMinsky.csv'</span>
 
 <span class="n">bitcoin_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">bitcoin_path</span><span class="p">)</span>
-<span class="n">bitcoin_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bitcoin_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span>
+<span class="n">bitcoin_df</span><span class="p">[</span><span class="s">'Date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">bitcoin_df</span><span class="p">[</span><span class="s">'Date'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span>
 <span class="n">minsky_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">minsky_path</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin price&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Hyman Minsky bubble chart&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin price"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Hyman Minsky bubble chart"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
@@ -134,25 +134,25 @@
 
 <p>여기서 어떻게 두 시계열의 유사성을 비교할 수 있을까? 가장 쉬운 방법은 time series 데이터간에 correlation을 구하는 방법이 되겠다. [3]의 조언을 따라 numpy의 corrcoef함수를 써보자!</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">## 함수 테스트</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 함수 테스트</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">104</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'b'</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;numpy corrcoef test&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"numpy corrcoef test"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_5_0.png" alt="" /></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span></code></pre></figure>
 
-<pre><code>array([[ 1.        ,  0.99984636],
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[ 1.        ,  0.99984636],
        [ 0.99984636,  1.        ]])
-</code></pre>
+</code></pre></div></div>
 
 <p>샘플로 만들어본 a와 b는 육안으로 봐도 매우 상관성이 높아보이고, numpy.corrcoef로 뽑아봐도 지표가 0.999로 매우 높은 양의 상관관계를 가진다.</p>
 
@@ -160,10 +160,10 @@
 
 <p>그럼 하이먼민스키를 길게 늘려서 비교하면 되지 않을까? 인덱스를 길쭉하게 뜯어놓는 방식으로 민스키 데이터 포인트를 늘린 다음, numpy.interp를 사용해서 linear interpolation으로 중간을 메워보자[4].</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">hm_datapoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">hm_datapoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 <span class="n">bc_datapoints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">every</span> <span class="o">=</span> <span class="n">bc_datapoints</span> <span class="o">//</span> <span class="n">hm_datapoints</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">every</span> <span class="o">=</span> <span class="n">bc_datapoints</span> <span class="o">//</span> <span class="n">hm_datapoints</span>
 <span class="n">stretched</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">bc_datapoints</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">hd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hm_datapoints</span><span class="p">):</span>
     <span class="n">stretched</span><span class="p">[</span><span class="n">hd</span> <span class="o">*</span> <span class="n">every</span><span class="p">]</span> <span class="o">=</span> <span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">hd</span><span class="p">]</span>
@@ -171,18 +171,18 @@
 <span class="n">stretched</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">stretched</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">stretched</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">nan_helper</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">nan_helper</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">nans</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">nan_helper</span><span class="p">(</span><span class="n">stretched</span><span class="p">)</span>
 <span class="n">stretched</span><span class="p">[</span><span class="n">nans</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">(</span><span class="n">nans</span><span class="p">),</span> <span class="n">x</span><span class="p">(</span><span class="o">~</span><span class="n">nans</span><span class="p">),</span> <span class="n">stretched</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">])</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stretched</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin price&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Hyman Minsky bubble chart(linear interpolation)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin price"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Hyman Minsky bubble chart(linear interpolation)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
@@ -191,11 +191,11 @@
 
 <p>길이가 같아졌으니 np.corrcoef를 돌려볼 수 있다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">([</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">stretched</span><span class="p">])</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">([</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">stretched</span><span class="p">])</span></code></pre></figure>
 
-<pre><code>array([[ 1.       , -0.2074127],
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[ 1.       , -0.2074127],
        [-0.2074127,  1.       ]])
-</code></pre>
+</code></pre></div></div>
 
 <p>corrcoef값은 -0.206으로 상관성이 거의 없다고 나온다. y축을 sklearn의 MinMaxScaler를 사용해 0과 1 사이로 맞추고 돌려도 결과는 같게 나온다. 왜 그런걸까?</p>
 
@@ -244,23 +244,23 @@
 <p>fastdtw를 사용해 하이먼 민스키를 비트코인에 맞춰보자.
 비트코인의 종가를 그대로 집어넣으면 하이먼민스키의 y와 스케일이 너무 달라 결과가 제대로 피팅되지 않는다. sklearn의 MinMaxScaler를 사용해 둘다 0과 1 사이로 맞춰준다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">mns</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">mns</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
 
-<span class="n">bitcoin_df</span><span class="p">[</span><span class="s1">&#39;adj_close&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
-<span class="n">minsky_df</span><span class="p">[</span><span class="s1">&#39;adj_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+<span class="n">bitcoin_df</span><span class="p">[</span><span class="s">'adj_close'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
+<span class="n">minsky_df</span><span class="p">[</span><span class="s">'adj_y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 
 <span class="n">distance</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">fastdtw</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">adj_close</span><span class="p">,</span> <span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="n">euclidean</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">adj_close</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;BitCoin&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">adj_close</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s">'b'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'BitCoin'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;HymanMinsky Model&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'HymanMinsky Model'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin vs. Hyman Minsky Model | distance: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;time steps&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;normalized price&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin vs. Hyman Minsky Model | distance: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">"time steps"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"normalized price"</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
@@ -272,12 +272,12 @@
 
 <p>Cost Matrix에서 DTW가 찾은 옵티멀한 패스는 어디였을까?</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">bitcoin_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">bitcoin_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]</span>
 <span class="n">minsky_path</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_path</span><span class="p">,</span> <span class="n">minsky_path</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;BitCoin path&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Minsky path&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"BitCoin path"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">"Minsky path"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_19_0.png" alt="" /></p>
@@ -298,24 +298,24 @@
 
 <p>단, 비교할 subsequence 구간의 길이를 어느정도로 할지 정해줘야 하는 단점이 있는 듯 하다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">find_subsequences</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">find_subsequences</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
 
     <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">run_ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         
-        <span class="c1">## 최초 300개 데이터 포인트 정도만 스캔한다.</span>
+        <span class="c">## 최초 300개 데이터 포인트 정도만 스캔한다.</span>
         <span class="n">loc</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">_ucrdtw</span><span class="o">.</span><span class="n">ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span> <span class="n">query</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         
-        <span class="c1">## distance가 5 이하인 경우에만 일치하는 시퀀스로 판정한다.</span>
+        <span class="c">## distance가 5 이하인 경우에만 일치하는 시퀀스로 판정한다.</span>
         <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
             <span class="n">tdata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:</span><span class="n">loc</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
-            <span class="n">tdata</span><span class="p">[</span><span class="s1">&#39;startDate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tdata</span><span class="p">[</span><span class="s">'startDate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tdata</span><span class="p">)</span>
             
         <span class="n">loc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-        <span class="c1">## 스캔할 데이터 포인트가 30개 이상이면 시퀀스 탐색을 지속한다.</span>
+        <span class="c">## 스캔할 데이터 포인트가 30개 이상이면 시퀀스 탐색을 지속한다.</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">:</span>
             <span class="n">run_ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:],</span> <span class="n">query</span><span class="p">)</span>
             
@@ -323,36 +323,36 @@
     
     <span class="n">tmp</span> <span class="o">=</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">res</span><span class="p">)</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-    <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span>
-    <span class="n">tmp</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">tmp</span><span class="p">[</span><span class="s">'Date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[</span><span class="s">'Date'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span>
+    <span class="n">tmp</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'Date'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">tmp</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">bitcoinSub</span> <span class="o">=</span> <span class="n">find_subsequences</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">,</span> <span class="n">minsky_df</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">bitcoinSub</span> <span class="o">=</span> <span class="n">find_subsequences</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">,</span> <span class="n">minsky_df</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">idx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 <span class="n">bitcoinSub2</span> <span class="o">=</span> <span class="n">bitcoinSub</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;BitCoin&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoinSub2</span><span class="o">.</span><span class="n">Close</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Hyman Minski Sequence&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">[</span><span class="s">'Date'</span><span class="p">],</span> <span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="s">'b'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'BitCoin'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoinSub2</span><span class="o">.</span><span class="n">Close</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">'ffill'</span><span class="p">),</span> <span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'Hyman Minski Sequence'</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Hyman Minsky sequences in BitCoin price&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Hyman Minsky sequences in BitCoin price"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_24_0.png" alt="" /></p>
 
 <p>시퀀스 추출결과 재밌는 결과가 나온다. 짤방처럼 하이먼 민스키 그래프가 앞뒤로 붙어있지는 않지만, 약 3~6개월 간격으로 반복되는 것처럼 보인다. 마지막 패턴이 12월에 끝나니, 3월~5월 사이에 비트코인을 사면 올라갈까 궁금하다. 어쨌든 실제로 추출한 구간이 얼마나 비슷한지 살펴보자.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">bitcoinSub</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">g</span> <span class="o">=</span> <span class="n">bitcoinSub</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'startDate'</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin sequence&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Hyman Minsky Chart&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin sequence"</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Hyman Minsky Chart"</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">():</span>
         <span class="n">tick</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -382,10 +382,10 @@
 
 <p>또 한가지 재미있는 것은 요새 이슈가 되고 있는 2017년 11월 ~ 2월 구간이 민스키 시퀀스로 추출되지 않았다는 점이다. 해당 시점의 그래프를 찍어보면 다음과 같다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;</span> <span class="s1">&#39;2017-11-10&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">bitcoin_df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;</span> <span class="s1">&#39;2017-11-10&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin price from 2017-11-10 to 2018-02-02&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;</span> <span class="s">'2017-11-10'</span><span class="p">]</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">bitcoin_df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">Date</span> <span class="o">&gt;</span> <span class="s">'2017-11-10'</span><span class="p">]</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin price from 2017-11-10 to 2018-02-02"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"price"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_29_0.png" alt="" /></p>
@@ -405,15 +405,15 @@
 <h2 id="그래서-저점은-어디인가">그래서 저점은 어디인가?</h2>
 <p>실존하는 회사의 자산가치에 연동되어 있는 주식과 달리 비트코인은 그 가치를 보증하는 것이 없다. 그래서 본질적 가치에 기반한 저점을 산출하는 것은 의미가 없지 않나 싶다. 비트코인이 앞으로 하이먼민스키 차트와 비슷한 패턴으로 이동한다면, 대략 기다려야할 가격대를 알 수 있지 않을까?</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bitcoin_df</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">stretched</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;BitCoin price&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Hyman Minsky bubble chart(linear interpolation)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin price"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Hyman Minsky bubble chart(linear interpolation)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">'-'</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
@@ -426,19 +426,19 @@
 
 <h2 id="회로에는-여전히-99개의-코인이-남아있다">회로에는 여전히 99개의 코인이 남아있다.</h2>
 
-<p>비트코인만이 유일한 암호화폐는 아니다. 개중에는 하이먼 민스키 패턴을 보이지 않는 것도 있을 것이며, 아직 떡상의 패턴을 보이지 않았다면 대박의 기회는 남아있다! coinmarketcap.com에서 나머지 데이터도 긁어와서 테스트해보자. BeatifulSoup을 사용해 간단한 크롤러를 만든 후, 첫 페이지에 올라온 100개의 주요 코인 데이터를 받아와 csv로 저장한다. 해당 코드는 <code>coin_crawler.py</code>에 구현해두었다.</p>
+<p>비트코인만이 유일한 암호화폐는 아니다. 개중에는 하이먼 민스키 패턴을 보이지 않는 것도 있을 것이며, 아직 떡상의 패턴을 보이지 않았다면 대박의 기회는 남아있다! coinmarketcap.com에서 나머지 데이터도 긁어와서 테스트해보자. BeatifulSoup을 사용해 간단한 크롤러를 만든 후, 첫 페이지에 올라온 100개의 주요 코인 데이터를 받아와 csv로 저장한다. 해당 코드는 <code class="highlighter-rouge">coin_crawler.py</code>에 구현해두었다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">):</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&quot;dataset&quot;</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s">"dataset"</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s">"dataset"</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">currencies</span> <span class="o">=</span> <span class="n">coin_crawler</span><span class="o">.</span><span class="n">crawl_currency_names</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">currencies</span> <span class="o">=</span> <span class="n">coin_crawler</span><span class="o">.</span><span class="n">crawl_currency_names</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">for</span> <span class="n">cur</span> <span class="ow">in</span> <span class="n">currencies</span><span class="p">:</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">cur</span> <span class="ow">in</span> <span class="n">currencies</span><span class="p">:</span>
     <span class="n">currency</span> <span class="o">=</span> <span class="n">coin_crawler</span><span class="o">.</span><span class="n">currency</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
-    <span class="n">currency</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;dataset/{}.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Done: currency {} -&gt; csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span></code></pre></figure>
+    <span class="n">currency</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">"dataset/{}.csv"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Done: currency {} -&gt; csv"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span></code></pre></figure>
 
-<pre><code>Done: currency bitcoin -&gt; csv
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Done: currency bitcoin -&gt; csv
 Done: currency ethereum -&gt; csv
 Done: currency ripple -&gt; csv
 Done: currency bitcoin-cash -&gt; csv
@@ -538,28 +538,28 @@ Done: currency potcoin -&gt; csv
 Done: currency dimecoin -&gt; csv
 Done: currency shield-xsh -&gt; csv
 Done: currency flash -&gt; csv
-</code></pre>
+</code></pre></div></div>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
-    <span class="n">currency</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;dataset/(.+?).csv&#39;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">currency</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">'dataset/(.+?).csv'</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;currency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">currency</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">'currency'</span><span class="p">]</span> <span class="o">=</span> <span class="n">currency</span>
     <span class="k">return</span> <span class="n">df</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">dataset_path</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;dataset/*.csv&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">dataset_path</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'dataset/*.csv'</span><span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="p">[</span><span class="n">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">dataset_path</span><span class="p">])</span>
-<span class="n">df</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span></code></pre></figure>
+<span class="n">df</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span></code></pre></figure>
 
 <h3 id="코인-가격-이동">코인 가격 이동</h3>
 <p>크롤링한 100개 코인 데이터를 함께 보면 비트코인처럼 서서히 가격이 증가하는 패턴과 고점에서 시작해 급락하는 패턴이 보인다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;currency&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'currency'</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
     
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;How the price of Cryptocurrencies change over time&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"How the price of Cryptocurrencies change over time"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_41_0.png" alt="" /></p>
@@ -568,32 +568,32 @@ Done: currency flash -&gt; csv
 <p>비트코인의 가격이 타 코인에 비해 훨씬 높아 패턴 비교가 어렵다. MinMaxScaler로 코인별 저점과 고점을 정규화한 후 비교해보자.
 이전 차트와 다르게 훨씬 더 다양한 패턴이 보인다. ‘namecoin’이라는 코인은 2014년에 최고점을 찍었고, ‘bitcoin-gold’는 시작할때 기록한 최고점을 결국 경신하지 못했다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;currency&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'currency'</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Close_mn&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><span class="s">'Close_mn'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">Close_mn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
     
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;How the price of Cryptocurrencies change over time (MinMax Normalised)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"How the price of Cryptocurrencies change over time (MinMax Normalised)"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_43_0.png" alt="" /></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">currency</span> <span class="o">==</span> <span class="s1">&#39;namecoin&#39;</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">currency</span> <span class="o">==</span> <span class="s">'namecoin'</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">sdf</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;namecoin price over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;USD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"namecoin price over time"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"USD"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_44_0.png" alt="" /></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">currency</span> <span class="o">==</span> <span class="s1">&#39;bitcoin-gold&#39;</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">sdf</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">currency</span> <span class="o">==</span> <span class="s">'bitcoin-gold'</span><span class="p">]</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">sdf</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;bitcoin-gold price over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;USD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"bitcoin-gold price over time"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"USD"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
 <p><img src="/assets/bitcoin/Coin%20Analysis_45_0.png" alt="" /></p>
@@ -601,21 +601,21 @@ Done: currency flash -&gt; csv
 <h3 id="하이먼-민스키-테스트">하이먼 민스키 테스트</h3>
 <p>코인별로 하이먼 민스키 차트와의 distance를 계산해보자.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;currency&#39;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'currency'</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">g</span><span class="p">:</span>
     <span class="n">tmp</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">data_normed</span> <span class="o">=</span> <span class="n">mns</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="p">)</span>
     <span class="n">distance</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">fastdtw</span><span class="p">(</span><span class="n">data_normed</span><span class="p">,</span> <span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="n">euclidean</span><span class="p">)</span>
-    <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;currency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
-    <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+    <span class="n">tmp</span><span class="p">[</span><span class="s">'currency'</span><span class="p">]</span> <span class="o">=</span> <span class="n">label</span>
+    <span class="n">tmp</span><span class="p">[</span><span class="s">'distance'</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
     <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">dist_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-<span class="n">dist_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;currency&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">dist_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">dist_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'currency'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="n">bars</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'distance'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">'bar'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
@@ -623,13 +623,13 @@ Done: currency flash -&gt; csv
 
 <p>distance가 34 정도인 bitcoin은 중간 정도에 위치해있다. distance가 작거나 큰 5개의 차트를 살펴보자.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">low_dist5</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">high_dist5</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">low_dist5</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'distance'</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">high_dist5</span> <span class="o">=</span> <span class="n">dist_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'distance'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></code></pre></figure>
 
 <h3 id="coins-close-to-hyman-minsky">Coins close to Hyman Minsky</h3>
 <p>하이먼 민스키 패턴과 가장 가까운 코인들이다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">mdates</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="n">mdates</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cur</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">low_dist5</span><span class="p">):</span>
@@ -648,7 +648,7 @@ Done: currency flash -&gt; csv
 <h3 id="coins-far-from-hyman-minsky">Coins far from Hyman Minsky</h3>
 <p>하이먼 민스키 패턴과 가장 거리가 먼 코인들이다. 투자 기회? 라고 보기에는 애매하다. 후반부는 하이먼 민스키 패턴을 보이지만, 전반부의 큰 피크로 인해 디스턴스가 높게 나온 것으로 보인다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">mdates</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="n">mdates</span>
 <span class="n">years</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">YearLocator</span><span class="p">()</span> 
 <span class="n">months</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">()</span>
 

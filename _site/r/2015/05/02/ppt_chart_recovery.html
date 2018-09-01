@@ -93,83 +93,83 @@
 <p><img src="/assets/ppt_recovery/pic7.png" alt="pic7" /></p>
 <p>Job done!</p>
 
-<figure class="highlight"><pre><code class="language-r" data-lang="r"><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;XML&quot;</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">library</span><span class="p">(</span><span class="s2">"XML"</span><span class="p">)</span><span class="w">
 
-<span class="c1">#loading files</span>
-current_files <span class="o">&lt;-</span> <span class="kp">dir</span><span class="p">()</span>
-file_vec <span class="o">&lt;-</span> <span class="kt">vector</span><span class="p">()</span>
-<span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>current_files<span class="p">))</span> <span class="p">{</span>
-  file <span class="o">&lt;-</span> current_files<span class="p">[</span>i<span class="p">]</span>
-  <span class="kr">if</span> <span class="p">(</span><span class="kp">grepl</span><span class="p">(</span><span class="s">&quot;.xml&quot;</span><span class="p">,</span> <span class="kp">file</span><span class="p">))</span> <span class="p">{</span>
-    <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span>file <span class="o">%in%</span> file_vec<span class="p">))</span> <span class="p">{</span>
-      file_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>file_vec<span class="p">,</span> <span class="kp">file</span><span class="p">)</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-ser_list <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">()</span>
-<span class="kr">for</span> <span class="p">(</span>file <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>file_vec<span class="p">))</span> <span class="p">{</span>
-  doc <span class="o">&lt;-</span> xmlTreeParse<span class="p">(</span>file_vec<span class="p">[</span><span class="kp">file</span><span class="p">])</span>
-  root <span class="o">&lt;-</span> xmlRoot<span class="p">(</span>doc<span class="p">)</span>
-  <span class="c1">#chart type</span>
-  chart_type <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span>doc<span class="o">$</span>doc<span class="o">$</span>children<span class="o">$</span>chartSpace<span class="p">[</span><span class="s">&quot;chart&quot;</span><span class="p">]</span><span class="o">$</span>chart<span class="p">[</span><span class="s">&quot;plotArea&quot;</span><span class="p">]</span><span class="o">$</span>plotArea<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="c1">#loading files</span><span class="w">
+</span><span class="n">current_files</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">dir</span><span class="p">()</span><span class="w">
+</span><span class="n">file_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">()</span><span class="w">
+</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">current_files</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">current_files</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">grepl</span><span class="p">(</span><span class="s2">".xml"</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">file_vec</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">file_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">file_vec</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">)</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">ser_list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">()</span><span class="w">
+</span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">file</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">file_vec</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="n">doc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xmlTreeParse</span><span class="p">(</span><span class="n">file_vec</span><span class="p">[</span><span class="n">file</span><span class="p">])</span><span class="w">
+  </span><span class="n">root</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xmlRoot</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span><span class="w">
+  </span><span class="c1">#chart type</span><span class="w">
+  </span><span class="n">chart_type</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">doc</span><span class="o">$</span><span class="n">doc</span><span class="o">$</span><span class="n">children</span><span class="o">$</span><span class="n">chartSpace</span><span class="p">[</span><span class="s2">"chart"</span><span class="p">]</span><span class="o">$</span><span class="n">chart</span><span class="p">[</span><span class="s2">"plotArea"</span><span class="p">]</span><span class="o">$</span><span class="n">plotArea</span><span class="p">[</span><span class="m">2</span><span class="p">])</span><span class="w">
   
-  <span class="c1">#fetching series</span>
-  ser <span class="o">=</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v&quot;</span><span class="p">)</span>
+  </span><span class="c1">#fetching series</span><span class="w">
+  </span><span class="n">ser</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xpathApply</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v"</span><span class="p">)</span><span class="w">
   
-  ser_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
-  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>ser<span class="p">))</span> <span class="p">{</span>
-    ser_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span>ser<span class="p">[[</span>i<span class="p">]])</span>
-    ser_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> ser_item<span class="p">)</span>
-    ser_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> ser_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
-    ser_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>ser_vec<span class="p">,</span> ser_item<span class="p">)</span>
+  </span><span class="n">ser_vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vector</span><span class="p">()</span><span class="w">
+  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">ser</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">ser_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">toString.XMLNode</span><span class="p">(</span><span class="n">ser</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w">
+    </span><span class="n">ser_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"&lt;.*?&gt;"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">ser_item</span><span class="p">)</span><span class="w">
+    </span><span class="n">ser_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">" $"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">ser_item</span><span class="p">,</span><span class="w"> </span><span class="n">perl</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+    </span><span class="n">ser_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">ser_vec</span><span class="p">,</span><span class="w"> </span><span class="n">ser_item</span><span class="p">)</span><span class="w">
     
-  <span class="p">}</span>
+  </span><span class="p">}</span><span class="w">
   
-  <span class="c1">#fetching categories</span>
-  cat0 <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat&quot;</span><span class="p">)</span>
-  cat_val <span class="o">&lt;-</span> <span class="kp">names</span><span class="p">(</span>cat0<span class="p">[[</span><span class="m">1</span><span class="p">]])</span>
-  <span class="kr">if</span> <span class="p">(</span>cat_val <span class="o">==</span> <span class="s">&quot;c:strRef&quot;</span><span class="p">)</span> <span class="p">{</span>
-    cat <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat/c:strRef/c:strCache/c:pt/c:v&quot;</span><span class="p">)</span>
-  <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span>
-    cat <span class="o">&lt;-</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:cat/c:numRef/c:numCache/c:pt/c:v&quot;</span><span class="p">)</span> 
-  <span class="p">}</span>
+  </span><span class="c1">#fetching categories</span><span class="w">
+  </span><span class="n">cat0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathApply</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//c:cat"</span><span class="p">)</span><span class="w">
+  </span><span class="n">cat_val</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">cat0</span><span class="p">[[</span><span class="m">1</span><span class="p">]])</span><span class="w">
+  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cat_val</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">"c:strRef"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">cat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathApply</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//c:cat/c:strRef/c:strCache/c:pt/c:v"</span><span class="p">)</span><span class="w">
+  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">cat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathApply</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//c:cat/c:numRef/c:numCache/c:pt/c:v"</span><span class="p">)</span><span class="w"> 
+  </span><span class="p">}</span><span class="w">
   
   
   
-  cat_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
-  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span><span class="kp">cat</span><span class="p">))</span> <span class="p">{</span>
-    cat_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span><span class="kp">cat</span><span class="p">[[</span>i<span class="p">]])</span>
-    cat_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> cat_item<span class="p">)</span>
-    cat_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> cat_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
-    <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span>cat_item <span class="o">%in%</span> cat_vec<span class="p">))</span> <span class="p">{</span>
-      cat_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>cat_vec<span class="p">,</span> cat_item<span class="p">)</span>
-    <span class="p">}</span> 
-  <span class="p">}</span>
+  </span><span class="n">cat_vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vector</span><span class="p">()</span><span class="w">
+  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">cat</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">cat_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">toString.XMLNode</span><span class="p">(</span><span class="n">cat</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w">
+    </span><span class="n">cat_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"&lt;.*?&gt;"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">cat_item</span><span class="p">)</span><span class="w">
+    </span><span class="n">cat_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">" $"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">cat_item</span><span class="p">,</span><span class="w"> </span><span class="n">perl</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">cat_item</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">cat_vec</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="n">cat_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">cat_vec</span><span class="p">,</span><span class="w"> </span><span class="n">cat_item</span><span class="p">)</span><span class="w">
+    </span><span class="p">}</span><span class="w"> 
+  </span><span class="p">}</span><span class="w">
   
-  <span class="c1">#fetching values</span>
-  value <span class="o">=</span> xpathApply<span class="p">(</span>root<span class="p">,</span> <span class="s">&quot;//c:ser/c:val/c:numRef/c:numCache/c:pt/c:v&quot;</span><span class="p">)</span>
+  </span><span class="c1">#fetching values</span><span class="w">
+  </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xpathApply</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//c:ser/c:val/c:numRef/c:numCache/c:pt/c:v"</span><span class="p">)</span><span class="w">
   
-  val_vec <span class="o">=</span> <span class="kt">vector</span><span class="p">()</span>
-  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>value<span class="p">))</span> <span class="p">{</span>
-    value_item <span class="o">&lt;-</span> toString.XMLNode<span class="p">(</span>value<span class="p">[[</span>i<span class="p">]])</span>
-    value_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&lt;.*?&gt;&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> value_item<span class="p">)</span>
-    value_item <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot; $&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span> value_item<span class="p">,</span> perl<span class="o">=</span><span class="bp">T</span><span class="p">)</span>
-    value_item <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>value_item<span class="p">)</span>
-    val_vec <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span>val_vec<span class="p">,</span> value_item<span class="p">)</span>
-  <span class="p">}</span>
+  </span><span class="n">val_vec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vector</span><span class="p">()</span><span class="w">
+  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">length</span><span class="p">(</span><span class="n">value</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">value_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">toString.XMLNode</span><span class="p">(</span><span class="n">value</span><span class="p">[[</span><span class="n">i</span><span class="p">]])</span><span class="w">
+    </span><span class="n">value_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">"&lt;.*?&gt;"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">value_item</span><span class="p">)</span><span class="w">
+    </span><span class="n">value_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gsub</span><span class="p">(</span><span class="s2">" $"</span><span class="p">,</span><span class="s2">""</span><span class="p">,</span><span class="w"> </span><span class="n">value_item</span><span class="p">,</span><span class="w"> </span><span class="n">perl</span><span class="o">=</span><span class="nb">T</span><span class="p">)</span><span class="w">
+    </span><span class="n">value_item</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.numeric</span><span class="p">(</span><span class="n">value_item</span><span class="p">)</span><span class="w">
+    </span><span class="n">val_vec</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">val_vec</span><span class="p">,</span><span class="w"> </span><span class="n">value_item</span><span class="p">)</span><span class="w">
+  </span><span class="p">}</span><span class="w">
   
-  <span class="c1">#creating matrix</span>
-  final <span class="o">&lt;-</span> <span class="kt">matrix</span><span class="p">(</span>val_vec<span class="p">,</span>nrow<span class="o">=</span><span class="kp">length</span><span class="p">(</span>cat_vec<span class="p">),</span>ncol<span class="o">=</span><span class="kp">length</span><span class="p">(</span>ser_vec<span class="p">))</span>
+  </span><span class="c1">#creating matrix</span><span class="w">
+  </span><span class="n">final</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">matrix</span><span class="p">(</span><span class="n">val_vec</span><span class="p">,</span><span class="n">nrow</span><span class="o">=</span><span class="nf">length</span><span class="p">(</span><span class="n">cat_vec</span><span class="p">),</span><span class="n">ncol</span><span class="o">=</span><span class="nf">length</span><span class="p">(</span><span class="n">ser_vec</span><span class="p">))</span><span class="w">
   
-  <span class="kp">rownames</span><span class="p">(</span>final<span class="p">)</span> <span class="o">&lt;-</span> cat_vec
-  <span class="kp">colnames</span><span class="p">(</span>final<span class="p">)</span> <span class="o">&lt;-</span> ser_vec
+  </span><span class="n">rownames</span><span class="p">(</span><span class="n">final</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cat_vec</span><span class="w">
+  </span><span class="n">colnames</span><span class="p">(</span><span class="n">final</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">ser_vec</span><span class="w">
   
-  <span class="c1">#export as a csv file</span>
-  filename <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span><span class="s">&quot;done_&quot;</span><span class="p">,</span> <span class="s">&quot;chart&quot;</span><span class="p">,</span> <span class="kp">file</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-  filename <span class="o">&lt;-</span> <span class="kp">paste</span><span class="p">(</span>filename<span class="p">,</span> <span class="s">&quot;.csv&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
-  write.csv<span class="p">(</span>final<span class="p">,</span> filename<span class="p">)</span>
+  </span><span class="c1">#export as a csv file</span><span class="w">
+  </span><span class="n">filename</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"done_"</span><span class="p">,</span><span class="w"> </span><span class="s2">"chart"</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
+  </span><span class="n">filename</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="s2">".csv"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
+  </span><span class="n">write.csv</span><span class="p">(</span><span class="n">final</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">)</span><span class="w">
   
-<span class="p">}</span></code></pre></figure>
+</span><span class="p">}</span></code></pre></figure>
 
         </section>
         <footer class="post-footer">

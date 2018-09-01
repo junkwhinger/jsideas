@@ -64,25 +64,25 @@
           <h1 id="transfer-learning-wtih-keras-on-floydhub">Transfer Learning wtih Keras on FloydHub</h1>
 
 <h2 id="tfkeras">tf.keras</h2>
-<p>딥러닝 라이브러리로는 <code>tensorflow</code>가 가장 널리 사용되지만 다른 편리한 선택지도 많다. <code>Keras</code>는 2016년 9월 기준으로 텐서플로우에 이어 두번째로 많이 쓰이는 라이브러리이며, 빠르고 간결하게 딥러닝 모델을 구현할 수 있다는 큰 장점이 있다. 또 2017년 들어 텐서플로우 라이브러리 안에서도 keras를 사용할 수 있게 되면서 사용상 번거로움도 줄었다. 텐서플로우 최신 버전 1.4에서는 <a href="https://www.tensorflow.org/api_docs/python/tf/keras">tf.keras</a>로 바로 사용할 수 있다.</p>
+<p>딥러닝 라이브러리로는 <code class="highlighter-rouge">tensorflow</code>가 가장 널리 사용되지만 다른 편리한 선택지도 많다. <code class="highlighter-rouge">Keras</code>는 2016년 9월 기준으로 텐서플로우에 이어 두번째로 많이 쓰이는 라이브러리이며, 빠르고 간결하게 딥러닝 모델을 구현할 수 있다는 큰 장점이 있다. 또 2017년 들어 텐서플로우 라이브러리 안에서도 keras를 사용할 수 있게 되면서 사용상 번거로움도 줄었다. 텐서플로우 최신 버전 1.4에서는 <a href="https://www.tensorflow.org/api_docs/python/tf/keras">tf.keras</a>로 바로 사용할 수 있다.</p>
 
 <p><img src="/assets/transfer_learning_with_keras_on_floydhub/keras-tensorflow.jpg" alt="Keras + TensorFlow" /></p>
 
 <h2 id="floydhub">FloydHub</h2>
 <p>회사 업무에서는 컴퓨터에 내장된 고사양 GPU나 EC2 인스턴스를 자유롭게 쓸 수 있으나, 집에서는 그만큼 좋은 딥러닝 환경을 구축하기 어려운 경우가 많다. 특히 집에서는 맥북에서 코딩을 하는데 내장된 GPU가 딥러닝을 지원하지도 않고, 또 찾아본 바로는 external GPU를 붙이는 것도 가성비가 좋지는 않다고 한다. 그래서 최근 쉽게 사용할 수 있는 Cloud GPU를 알아보다 <a href="https://www.floydhub.com">FloydHub</a>를 사용하게 되었다.</p>
 
-<p>평소에 나는 tensorflow가 깔린 conda 환경에서 jupyter notebook을 실행시켜 딥러닝을 돌려보는데, 이런 실행 환경에서 FloydHub를 매우 자연스럽게 사용할 수 있다. <code>pip install floyd-cli</code>를 깔고 간단한 인증 과정을 거치면 터미널에서 바로 FloydHub를 사용할 수 있게 된다. 허브를 띄울 때 몇가지 파라미터를 넣을 수 있다.</p>
+<p>평소에 나는 tensorflow가 깔린 conda 환경에서 jupyter notebook을 실행시켜 딥러닝을 돌려보는데, 이런 실행 환경에서 FloydHub를 매우 자연스럽게 사용할 수 있다. <code class="highlighter-rouge">pip install floyd-cli</code>를 깔고 간단한 인증 과정을 거치면 터미널에서 바로 FloydHub를 사용할 수 있게 된다. 허브를 띄울 때 몇가지 파라미터를 넣을 수 있다.</p>
 
 <ul>
-  <li><code>--gpu</code> : GPU 머신을 돌린다.</li>
-  <li><code>--mode jupyter</code> : 주피터 환경을 실행한다.</li>
-  <li><code>--env tensorflow-1.4</code> : 텐서플로우 버전 1.4로 환경을 설정한다.</li>
-  <li><code>--data myacc/datasets/mydata</code> : 사용할 데이터셋의 위치를 설정한다.</li>
-  <li><code>--tensorboard</code> : 텐서보드를 실행한다.</li>
+  <li><code class="highlighter-rouge">--gpu</code> : GPU 머신을 돌린다.</li>
+  <li><code class="highlighter-rouge">--mode jupyter</code> : 주피터 환경을 실행한다.</li>
+  <li><code class="highlighter-rouge">--env tensorflow-1.4</code> : 텐서플로우 버전 1.4로 환경을 설정한다.</li>
+  <li><code class="highlighter-rouge">--data myacc/datasets/mydata</code> : 사용할 데이터셋의 위치를 설정한다.</li>
+  <li><code class="highlighter-rouge">--tensorboard</code> : 텐서보드를 실행한다.</li>
 </ul>
 
-<pre><code>$ floyd run --gpu --env tensorflow-1.4 --tensorboard --data junkwhinger/datasets/presidential_candidates_2017 --mode jupyter
-</code></pre>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ floyd run --gpu --env tensorflow-1.4 --tensorboard --data junkwhinger/datasets/presidential_candidates_2017 --mode jupyter
+</code></pre></div></div>
 <p>이런식으로 터미널에서 실행시키면 브라우저 창에서 FloydHub 페이지가 뜨면서 localhost에서 jupyter notebook을 쓰는 것처럼 바로 딥러닝을 돌려볼 수 있다. 랩탑에 최신 GPU가 없어도, 귀찮게 환경설정이나 텐서보드를 실행하지 않고도 말이다.</p>
 
 <p>프라이싱은 무료회원이나 한달에 9달러를 내는 Data Scientist 회원은 GPU를 시간당 0.59달러에 빌릴 수 있다. jupyter notebook을 실행하면 running이라고 뜨는데, 그게 활성화된 시간만큼 잔여 시간에서 깎는 구조다. AWS EC2 인스턴스랑 쓰는 것은 비슷하지만 그보다 훨씬 간편하게 사용할 수 있어 좋았다.</p>
@@ -141,48 +141,48 @@
 
 <ol>
   <li>사용할 pre-trained 모델을 가져온다. 모델 끝부분에 달린 FC 분류레이어를 파인튜닝해야 하므로 이를 제외하기 위해 include_top 파라미터에 False를 넘긴다.
-    <pre><code class="language-python">base_model = vgg19.VGG19(include_top = False, 
-                        input_shape=(img_width, img_height, img_channel))
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">base_model</span> <span class="o">=</span> <span class="n">vgg19</span><span class="o">.</span><span class="n">VGG19</span><span class="p">(</span><span class="n">include_top</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> 
+                        <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_channel</span><span class="p">))</span>
+</code></pre></div>    </div>
   </li>
   <li>pre-trained 모델에 새로운 분류 레이어를 만들어붙인 새로운 모델을 정의한다. 여기서는 FC 대신에 Global Average Pooling을 사용해봤다. FC는 오버피팅에 취약하고 Flatten하는 과정에서 피쳐의 위치정보가 소실되는 단점이 있는 반면, Global Average Pooling은 피쳐맵의 평균값을 softmax에 넘겨 피쳐 영향력을 해석하기 용이하고 구조 자체가 오버피팅을 방지하는 효과가 있다.
-    <pre><code class="language-python">last = base_model.output
-x = GlobalAveragePooling2D()(last)
-x = Dense(512, activation='relu')(x)
-preds = Dense(nb_classes, activation='softmax')(x)
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">last</span> <span class="o">=</span> <span class="n">base_model</span><span class="o">.</span><span class="n">output</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">last</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">preds</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>    </div>
   </li>
   <li>불러온 원래 모델의 웨이트를 학습하지 않도록 설정하고 컴파일한다.
-    <pre><code class="language-python">for layer in base_model.layers:
- layer.trainable = False
-tl_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">base_model</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+ <span class="n">layer</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">tl_model</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'categorical_crossentropy'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s">'adam'</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
+</code></pre></div>    </div>
     <p><img src="/assets/transfer_learning_with_keras_on_floydhub/trainable.png" alt="마지막 dense 레이어의 파라미터만 학습하도록 지정되었다" /></p>
   </li>
   <li>callback을 사용해서 EarlyStopping과 텐서보드를 사용해보자.
-    <pre><code class="language-python">from tensorflow.python.keras.callbacks import EarlyStopping, TensorBoard
-es = EarlyStopping(patience=10, monitor='val_acc')
-tb = TensorBoard(log_dir='vgg19_tl')
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tensorflow.python.keras.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">TensorBoard</span>
+<span class="n">es</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span><span class="n">patience</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s">'val_acc'</span><span class="p">)</span>
+<span class="n">tb</span> <span class="o">=</span> <span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="s">'vgg19_tl'</span><span class="p">)</span>
+</code></pre></div>    </div>
     <p>학습 epoch 수가 많아지면 어느 순간 과적합이 발생하면서 training accuracy는 높아지지만 validation accuracy가 꺾이는 순간이 온다. validation accuracy가 좋은 시점에서 적절하게 학습을 그만 두어야 하는데, 이를 자동으로 처리해주는 것이 EarlyStopping 콜백이다. patience 파라미터를 10로 지정하면, validation accuracy가 직전 최고점수에 비해 떨어지는 걸 연속 10번까지 견디게 된다. Tensorboard 콜백은 지정한 log_dir로 loss, accuracy 등의 정보를 저장해준다. 여기서 정의한 콜백들을 뒤에 fit을 수행할때 넘기기만 하면 된다.</p>
   </li>
   <li>모델을 학습한다.
-    <pre><code class="language-python">tl_model.fit_generator(generator=train_generator, 
-                    epochs=300, 
-                    validation_data=validation_generator, 
-                    steps_per_epoch=50, 
-                    validation_steps=10,
-                    callbacks=[es, tb])
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tl_model</span><span class="o">.</span><span class="n">fit_generator</span><span class="p">(</span><span class="n">generator</span><span class="o">=</span><span class="n">train_generator</span><span class="p">,</span> 
+                    <span class="n">epochs</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> 
+                    <span class="n">validation_data</span><span class="o">=</span><span class="n">validation_generator</span><span class="p">,</span> 
+                    <span class="n">steps_per_epoch</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                    <span class="n">validation_steps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">es</span><span class="p">,</span> <span class="n">tb</span><span class="p">])</span>
+</code></pre></div>    </div>
     <p>텐서플로우를 쓸 때는 for문으로 epoch을 돌면서 행할 행동을 지정해야 했는데, keras에서는 fit만으로 간단히 학습을 실행할 수 있어 매우 좋다. 또 generator를 넘길 수 있어 사용이 매우 간편하다.</p>
   </li>
   <li>여러 노트북을 만든 후, 모델만 다르게 지정하기만 하면 된다.
-    <pre><code class="language-python">from tensorflow.python.keras.applications import vgg16
-from tensorflow.python.keras.applications import vgg19
-from tensorflow.python.keras.applications import inception_v3
-from tensorflow.python.keras.applications import xception
-from tensorflow.python.keras.applications import resnet50
-</code></pre>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">tensorflow.python.keras.applications</span> <span class="kn">import</span> <span class="n">vgg16</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.applications</span> <span class="kn">import</span> <span class="n">vgg19</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.applications</span> <span class="kn">import</span> <span class="n">inception_v3</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.applications</span> <span class="kn">import</span> <span class="n">xception</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.keras.applications</span> <span class="kn">import</span> <span class="n">resnet50</span>
+</code></pre></div>    </div>
     <p>resnet50를 제외한 모든 모델은 가로세로 150, 150 이미지를 입력으로 받을 수 있다. resnet50는 197, 197만 받도록 되어있어 이 모델만 따로 이미지 사이즈를 지정했다.</p>
   </li>
 </ol>
@@ -201,7 +201,7 @@ from tensorflow.python.keras.applications import resnet50
 
 <p>FloydHub GPU에서는 epoch 하나가 거의 10초 내에 끝나는데 반해 로컬 CPU에서는 360초, 그러니까 전자가 대략 36배 빠르다고 볼 수 있다.</p>
 
-<p>이번에는 돌려본 5가지 모델의 성능 비교를 위해 텐서보드를 실행시켜보았다. FloydHub를 실행시킬때 <code>--tensorboard</code> 옵션을 주면 아래 그림과 같이 텐서보드 링크가 뜬다.</p>
+<p>이번에는 돌려본 5가지 모델의 성능 비교를 위해 텐서보드를 실행시켜보았다. FloydHub를 실행시킬때 <code class="highlighter-rouge">--tensorboard</code> 옵션을 주면 아래 그림과 같이 텐서보드 링크가 뜬다.</p>
 
 <p><img src="/assets/transfer_learning_with_keras_on_floydhub/tensorboard_link.png" alt="텐서보드 링크" /></p>
 
@@ -213,57 +213,57 @@ from tensorflow.python.keras.applications import resnet50
 
 <h2 id="inference-with-resnet">Inference with ResNet</h2>
 <p>좀 수상하지만 강력한 성능을 보인 ResNet을 사용해서 얼굴 분류를 시도해보자. Keras를 이용해 간단히 학습을 진행해본 것처럼, 간단하게 모델을 저장하고 불러와서 인퍼런스를 돌려볼 수 있다. 모델을 저장할때 2개 파일을 만드는데, 하나는 모델 아키텍쳐가 저장된 json 파일이고, 다른 하나는 weight 정보를 담은 h5 파일이다. h5파일은 90.4MB 정도로 VGG에 비해 확실히 가벼웠다.</p>
-<pre><code class="language-python">model_json = tl_model.to_json()
-with open("resnet_model.json", "w") as json_file:
-    json_file.write(model_json)
-tl_model.save_weights("resnet.h5")
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model_json</span> <span class="o">=</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">"resnet_model.json"</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+    <span class="n">json_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">model_json</span><span class="p">)</span>
+<span class="n">tl_model</span><span class="o">.</span><span class="n">save_weights</span><span class="p">(</span><span class="s">"resnet.h5"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>인퍼런스를 수행할 노트북에서는 아래처럼 파일을 불러와서 model을 만들면 된다.</p>
-<pre><code class="language-python">with open('resnet_model.json', 'r') as f:
-    loaded_model_json = f.read()
-loaded_model = model_from_json(loaded_model_json)
-loaded_model.load_weights('resnet.h5')
-</code></pre>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'resnet_model.json'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">loaded_model_json</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">loaded_model</span> <span class="o">=</span> <span class="n">model_from_json</span><span class="p">(</span><span class="n">loaded_model_json</span><span class="p">)</span>
+<span class="n">loaded_model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="s">'resnet.h5'</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>urllib과 cv2를 적절히 활용해 구글 이미지 링크에서 이미지를 따와서 numpy array로 만든 다음,
 이를 resnet에 맞게 197, 197 사이즈로 변환하고 인퍼런스를 수행한 다음 결과를 디스플레이하는 코드를 만든다.</p>
-<pre><code class="language-python">def predict_who_is_who(url):
-    img = url_to_image(url)
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">predict_who_is_who</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">url_to_image</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     
-    ## to fit ResNet
-    resized_img = imresize(img, size=(197, 197))
-    adj_img = np.expand_dims(resized_img / 255, 0)
+    <span class="c">## to fit ResNet</span>
+    <span class="n">resized_img</span> <span class="o">=</span> <span class="n">imresize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">197</span><span class="p">,</span> <span class="mi">197</span><span class="p">))</span>
+    <span class="n">adj_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">resized_img</span> <span class="o">/</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     
-    ## make prediction
-    res = np.squeeze(loaded_model.predict(adj_img))
+    <span class="c">## make prediction</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">loaded_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">adj_img</span><span class="p">))</span>
     
-    ## ground_truth
-    gt = np.array(['ahn', 'hong', 'moon', 'sim', 'you'])
-    result = pd.DataFrame(res, index=gt)
+    <span class="c">## ground_truth</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">'ahn'</span><span class="p">,</span> <span class="s">'hong'</span><span class="p">,</span> <span class="s">'moon'</span><span class="p">,</span> <span class="s">'sim'</span><span class="p">,</span> <span class="s">'you'</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">gt</span><span class="p">)</span>
     
     
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     
-    ## present image
-    ax1.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-    ax1.axis("off")
+    <span class="c">## present image</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">))</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">"off"</span><span class="p">)</span>
 
-    ## present bar plot
-    result.plot(ax=ax2, kind='bar')
+    <span class="c">## present bar plot</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s">'bar'</span><span class="p">)</span>
 
-    ## annotate bar pot
-    rects = ax2.patches
-    labels = [round(res[l], 3) for l in range(len(rects))]
-    for rect, label in zip(rects, labels):
-        height = rect.get_height()
-        ax2.text(rect.get_x() + rect.get_width() / 2, height + 0.01, label, ha='center', va='bottom')
+    <span class="c">## annotate bar pot</span>
+    <span class="n">rects</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">patches</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rects</span><span class="p">))]</span>
+    <span class="k">for</span> <span class="n">rect</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rects</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">rect</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">rect</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'bottom'</span><span class="p">)</span>
 
-    ax2.set_title("Face recognition test with ResNet50", fontsize=20)
-    ax2.tick_params(labelsize=20)
-    plt.xticks(rotation='horizontal')
-    plt.show()
-</code></pre>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Face recognition test with ResNet50"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="s">'horizontal'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
 <p>결과는 아래와 같다.</p>
 

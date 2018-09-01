@@ -78,9 +78,9 @@
 <p>여기서 고등학교때 안 배운 것같지만 들어본 것 같은 theta(쎄타)라는 녀석이 등장한다. theta는 회귀계수로 x에 곱해주는 계수. 즉 y=ax+b라는 식에서 a와 b의 역할이다. 기울기와 절편으로 나눠지기 때문에 theta_0(절편), theta_1(기울기)로 univariate linear regression에서는 2개가 들어있는 값으로 생각해야 된다.. 여기서부터 theta가 뭐였드라? 하는 기억 상실증이 시작된다. 그리고 y 자리에는 x를 계산한 예측 값인 h_theta(x)를 넣어준다. y는 최종 결과값일 뿐이니까.</p>
 
 <h2 id="rmse와-cost-function">RMSE와 cost function</h2>
-<p>그럼 x와 회귀계수 theta를 사용해서 h_theta(x)라는 예측값을 뽑고, 실제 결과값인 y가 있다고 했을때 뭘 더해야 될까. 당연히 가장 정확한 선형식을 찾는 것이므로 예측한 값과 실제값 사이에 오차를 계산한다. 그냥 빼면 된다. <code>error = h_theta(x) - y</code>. 여기서 계산한 error는 모든 x, y 좌표에서 발생할 것이고, 가장 적합한 선형식을 찾기 위해서는 error의 합이 최소화되는 지점을 찾아야 한다. (이제부터 슬슬 머리아파진다..) 그런데 어떤 지점에서는 h_theta(x)가 y보다 크거나 작을 것이므로, 이들을 합했을 때 상쇄되는 오류를 방지하기 위해 모든 h_theta(X) - y에다가 제곱을 씌운다. 이거를 Root mean square error (RMSE)라고 한다.</p>
+<p>그럼 x와 회귀계수 theta를 사용해서 h_theta(x)라는 예측값을 뽑고, 실제 결과값인 y가 있다고 했을때 뭘 더해야 될까. 당연히 가장 정확한 선형식을 찾는 것이므로 예측한 값과 실제값 사이에 오차를 계산한다. 그냥 빼면 된다. <code class="highlighter-rouge">error = h_theta(x) - y</code>. 여기서 계산한 error는 모든 x, y 좌표에서 발생할 것이고, 가장 적합한 선형식을 찾기 위해서는 error의 합이 최소화되는 지점을 찾아야 한다. (이제부터 슬슬 머리아파진다..) 그런데 어떤 지점에서는 h_theta(x)가 y보다 크거나 작을 것이므로, 이들을 합했을 때 상쇄되는 오류를 방지하기 위해 모든 h_theta(X) - y에다가 제곱을 씌운다. 이거를 Root mean square error (RMSE)라고 한다.</p>
 
-<p>그리고 이 RMSE 값들을 다 합쳐서 평균 녀석을 cost function이라고 부르고 보통 J(theta)로 표현하는데, 여기서 또 조건이 붙는다. 모든 RMSE값을 합치기 위해 앞에 sigma를 달고, 데이터의 갯수인 m만큼을 나눠주는데, <code>2</code>라는 녀석이 등장한다.</p>
+<p>그리고 이 RMSE 값들을 다 합쳐서 평균 녀석을 cost function이라고 부르고 보통 J(theta)로 표현하는데, 여기서 또 조건이 붙는다. 모든 RMSE값을 합치기 위해 앞에 sigma를 달고, 데이터의 갯수인 m만큼을 나눠주는데, <code class="highlighter-rouge">2</code>라는 녀석이 등장한다.</p>
 
 <p><img src="/assets/ml_linear_regression/work - 27.png" alt="cost function" /></p>
 

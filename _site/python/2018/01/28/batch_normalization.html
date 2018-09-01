@@ -108,12 +108,12 @@
 <p>논문에서는 여러 실험을 통해 BN을 사용한 아키텍쳐가 그렇지 않은 모델에 비해 더 안정적이고 빠르게 학습함을 증명했다. 왜 그런걸까?</p>
 
 <h3 id="covariate-shift">Covariate Shift</h3>
-<p>딥러닝이나 머신러닝 모델은 학습(training) 데이터를 기반으로 학습힌다. 고양이와 개를 분류하는 모델을 예로 들자. 모종의 이유로 학습에 사용한 고양이 데이터가 모두 <code>러시안 블루</code> 종이었다고 가정하자. <code>페르시안</code> 고양이 이미지를 이 모델에 넣으면 모델은 어떤 대답을 내놓을까? 형태를 보고 고양이라 판단할 수도 있지만, 털 색상으로 보아 개라고 판단할 수 도 있을 것이다.</p>
+<p>딥러닝이나 머신러닝 모델은 학습(training) 데이터를 기반으로 학습힌다. 고양이와 개를 분류하는 모델을 예로 들자. 모종의 이유로 학습에 사용한 고양이 데이터가 모두 <code class="highlighter-rouge">러시안 블루</code> 종이었다고 가정하자. <code class="highlighter-rouge">페르시안</code> 고양이 이미지를 이 모델에 넣으면 모델은 어떤 대답을 내놓을까? 형태를 보고 고양이라 판단할 수도 있지만, 털 색상으로 보아 개라고 판단할 수 도 있을 것이다.</p>
 
 <p><img src="/assets/batch_normalization/cat_dog_classifier.png" alt="CAT vs. DOG classifier" />
 이미지 출처: Google</p>
 
-<p>이처럼 트레이닝에 사용한 학습 데이터와 인퍼런스에 사용한 테스트 데이터의 차이가 생기는 것을 <code>Covariate Shift</code>라 한다. 도메인 어댑테이션(<a href="http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html">링크</a>)에서는 다음과 같이 설명한다.</p>
+<p>이처럼 트레이닝에 사용한 학습 데이터와 인퍼런스에 사용한 테스트 데이터의 차이가 생기는 것을 <code class="highlighter-rouge">Covariate Shift</code>라 한다. 도메인 어댑테이션(<a href="http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html">링크</a>)에서는 다음과 같이 설명한다.</p>
 
 <blockquote>
   <p>Another assumption one can make about the connection between the source and the target domains is that given the same observation <script type="math/tex">X = x</script>, the conditional distributions of Y are the same in the two domains. However, the marginal distributions of <script type="math/tex">X</script> may be different in the source and the target domains. 
@@ -205,12 +205,12 @@ This difference between the two domains is called <strong>covariate shift</stron
 
 <p>tf.keras.layers에 구현되어있는 Batch Normalization 코드를 보면 아래와 같이 해당 코드가 training 상황에서 돌아가는지에 대한 정보를 처리한다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">training</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
       <span class="n">training</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">learning_phase</span><span class="p">()</span>
     <span class="n">output</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">BatchNormalization</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">training</span> <span class="ow">is</span> <span class="n">K</span><span class="o">.</span><span class="n">learning_phase</span><span class="p">():</span>
-      <span class="n">output</span><span class="o">.</span><span class="n">_uses_learning_phase</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c1"># pylint: disable=protected-access</span>
+      <span class="n">output</span><span class="o">.</span><span class="n">_uses_learning_phase</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c"># pylint: disable=protected-access</span>
     <span class="k">return</span> <span class="n">output</span></code></pre></figure>
 
 <h2 id="bn-in-action">BN in Action!</h2>
