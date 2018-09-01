@@ -423,3 +423,9 @@ Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 
 ## Outro
 
 이번 포스팅에서는 LSTM + Self Attention 모델을 사용해 남아 / 여아 이름을 분류하는 모델을 만들고, Attention을 통해 뉴럴 네트워크가 이름의 어떤 부분에 집중했는지 시각화해보았다. 뉴럴 네트워크가 집중했던 흔적은 보통 이름의 끝 부분에 남겨져 있었다. 같은 Jun이라도 e가 붙으면 여자가 되고 sik이 붙으면 남자가 되었다. 분석 전에 내가 어렴풋이 생각했던 가설과 비슷해 놀라웠다. 또 2차원 공간에 뿌려진 이름들이 성별이나 문화권에 따라 끼리끼리 모이는 점도 흥미로웠다. 해석가능한 딥러닝은 내가 생각하는 방식을 되돌아보는 재미가 있다.
+
+
+
+## Reference
+<a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>
+<a href="https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding">An open-source implementation of the paper 'A Structured Self-Attentive Sentence Embedding' published by IBM and MILA.</a>
