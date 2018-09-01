@@ -169,7 +169,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 일반적인 텍스트 분류 모델에서는 LSTM이나 CNN 레이어를 통해 데이터에서 패턴을 추출한다. 그리고 이를 단층 혹은 다층으로 구성된 Fully Connected Layer에 통과시켜 각 레이블에 해당할 확률값을 얻는다.
 
-![basic_lstm_classifier](../assets/selfattention/basic_lstm_classifier.png) 
+![basic_lstm_classifier](/assets/selfattention/basic_lstm_classifier.png) 
 
 BiLSTM 모델은 이름을 분류하는 목적은 달성했지만 이름의 어떤 부분에 근거했는지는 말해주지 않는다. Local Interpretable Model-Agnostic Explanations (LIME) 방법을 사용해 글자를 하나씩 빼가면서 어떤 글자가 결과에 가장 큰 영향을 주었는지 판단하는 방법을 쓸 수도 있긴 하지만, 모델 자체는 답을 가지고 있지 않다.
 
@@ -179,7 +179,7 @@ BiLSTM 모델은 이름을 분류하는 목적은 달성했지만 이름의 어�
 
 2017년 3월 발표된 A Structured Self-Attentive Sentence Embedding은 Self-Attention을 통해 이 문제를 해결한다. 이 논문에서 제안한 방식은 BiLSTM이나 CNN 레이어를 통과한 feature를 다음과 같은 방식으로 처리한다.
 
-![self_attention](../assets/selfattention/self_attention.png)
+![self_attention](/assets/selfattention/self_attention.png)
 
 BiLSTM 레이어를 통해 얻은 feature를 2개의 FC 레이어에 통과시켜 n_token x hops 크기를 가진 매트릭스 형태의 Attention을 얻는다. 이때 W_s1의 `da`와 W_s2의 `hops`는 하이퍼파라미터로 적절한 값을 선택해 입력한다. 입력 텍스트를 하나의 벡터로 임베딩했던 기존의 Attention 메커니즘과 달리 본 논문에서 제안한 Attention은 매트릭스 형태를 띈다. 이러한 임베딩 추출 방식을 통해 다음과 같은 효과를 기대할 수 있다.
 
@@ -274,7 +274,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 모델은 이름의 어떤 부분을 보고 판단을 내렸을까? Self Attention은 `hops`갯수의 row vector들로 구성된 matrix이며, 각 vector의 합은 1이 되도록 softmax를 취했다. 이름 텍스트를 전처리하여 모델에 집어넣고 뽑은 Attention을 시각화해보았다.
 
-![attention_heatmap](../assets/selfattention/attention_heatmap.png)
+![attention_heatmap](/assets/selfattention/attention_heatmap.png)
 
 히트맵을 뿌려보면 위와 같이 각 어텐션 벡터(y축)가 이름의 특정 글자들에만 반응하고 있는 것을 볼 수 있다. loss에 더해준 Penalization Term이 가이딩해준 효과로 보인다. 하이퍼파라미터를 튜닝할 때 `hops`를 5개가 아닌 30개로 늘려서도 해보았는데 이때는 거의 모든 글자에 어텐션이 할당되는 결과를 낳았다. 분류 성능에는 차이가 없었으나 해석이 더 어려워졌다. 데이터셋의 형태에 따라 hops의 크기를 적절하게 선택하는 것이 중요해보인다.
 
@@ -286,7 +286,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 먼저 유명한 이름들부터 해보자. 해리포터의 주요 인물들이다.
 
-![harrypotter](../assets/selfattention/harrypotter.png)
+![harrypotter](/assets/selfattention/harrypotter.png)
 
 대부분 어텐션이 끝에 몰려있는 가운데, Harry, Hermione와 Albus, Draco는 조금 다른 양상을 보인다. 언어학자는 아니지만 대략 공감이 가는 해석이라고 생각한다.
 
@@ -294,7 +294,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 다음은 마블 시네마틱 유니버스의 캐릭터들이다.
 
-![mcu](../assets/selfattention/mcu.png)
+![mcu](/assets/selfattention/mcu.png)
 
 해리포터는 다 맞췄으나 Tony, Loki를 여자로, Pepper를 남자로 분류했다. 흠터레스팅.. 페퍼는 끝의 'er'이 여자 이름에 거의 없기 때문이 아닐까 싶다.
 
@@ -302,11 +302,11 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 그럼 이름의 끝부분을 조금씩 변경해보면 어떤 결과가 나올까?
 
-![variants_of_cat](../assets/selfattention/variants_of_cat.png)
+![variants_of_cat](/assets/selfattention/variants_of_cat.png)
 
 `Cat`도 여성일 확률이 높았지만, 이후에 `ne`, `na`를 붙임에 따라 분류 확률이 거의 100%에 근접하게 올라가는 것을 확인할 수 있었다.
 
-![variants_of_chris](../assets/selfattention/variants_of_chris.png)
+![variants_of_chris](/assets/selfattention/variants_of_chris.png)
 
  
 
@@ -318,13 +318,13 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
  
 
-![koreanboys](../assets/selfattention/koreanboys.png)
+![koreanboys](/assets/selfattention/koreanboys.png)
 
 남자는 올패스.
 
 
 
-![koreangirls](../assets/selfattention/koreangirls.png)
+![koreangirls](/assets/selfattention/koreangirls.png)
 
 여자는 모두 틀렸다. 모델이 한국어 이름의 엔딩을 남성적으로 판단한 것으로 보인다.
 
@@ -332,7 +332,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 마지막으로 내 이름은 어떨까?
 
-![variants_of_junsik](../assets/selfattention/variants_of_junsik.png)
+![variants_of_junsik](/assets/selfattention/variants_of_junsik.png)
 
 아쉽게도 Jun을 여자로 분류하긴 했으나 June보다는 확률이 좀 떨어졌다. 뉴럴 네트워크에게도 June은 여자 이름처럼 들렸나보다.
 
@@ -346,7 +346,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 먼저 성별에 따라 살펴보자.
 
-![bySex](../assets/selfattention/bySex.png)
+![bySex](/assets/selfattention/bySex.png)
 
 재밌는 결과가 나왔다. 남아 이름들은 우상단으로, 여아 이름들은 좌하단에 몰려있는 경향을 보인다. 자세히 들여다보면 이름의 끝부분끼리 몰려있다. 먼 좌하단은 Mia, Sophia, Olivia, Victoria들이 있고, 먼 우상단에는 Nicholas, Thomas, Lucas가 뭉쳐있다. 성별이 다르지만 끝부분이 유사한 Scarlett, Wyatt, Robert, Margaret도 서로 근접해 위치한다.
 
@@ -354,7 +354,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 혹 이름이 속한 문화권이 그 이름의 끝부분을 결정짓는걸까? 이름의 문화권을 기준으로 살펴보자.
 
-![byOrigin](../assets/selfattention/byOrigin.png)
+![byOrigin](/assets/selfattention/byOrigin.png)
 
 
 
@@ -364,13 +364,13 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 남자들만-
 
-![boysByOrigin](../assets/selfattention/boysByOrigin.png)
+![boysByOrigin](/assets/selfattention/boysByOrigin.png)
 
 
 
 여자들만-
 
-![girlsByOrigin](../assets/selfattention/girlsByOrigin.png)
+![girlsByOrigin](/assets/selfattention/girlsByOrigin.png)
 
 
 
@@ -380,7 +380,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 King - Man + Woman = Queen은 Word Embedding의 멋진 사례 중 하나로 빠짐없이 등장한다. 왕에서 남자라는 성을 제거하면 권력이 남고, 그 권력을 여자라는 성에 더하면 여왕이 된다. 관념적으로도 말이 되고 간단한 사칙연산으로도 말이 된다. 뉴럴 네트워크를 통해 얻은 숫자 뭉치가 우리가 가진 관념적인 정보를 담고 있음을 보여주는 멋진 결과다.
 
-![king_to_queen](../assets/selfattention/king_to_queen.jpeg)
+![king_to_queen](/assets/selfattention/king_to_queen.jpeg)
 
 source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-using-word-embedding-and-convolutional-neural-networks-on-keras-163197aef623  
 
@@ -396,7 +396,7 @@ source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-us
 
 1) Emilia - Emily  + Lucy = Lucia!
 
-![emily](../assets/selfattention/emily.png)
+![emily](/assets/selfattention/emily.png)
 
 Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 될거라고 생각했는데 실제로 됐다!
 
@@ -404,17 +404,17 @@ Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 
 
 2) Susie - Susanne + Roxie = Roxie!
 
-![susie](../assets/selfattention/susie.png)
+![susie](/assets/selfattention/susie.png)
 
 3) Christina - Christine + Austine = Austina!
 
-![christina](../assets/selfattention/christina.png)
+![christina](/assets/selfattention/christina.png)
 
 예상과 같은 결과가 나오긴 하지만 King - Man + Woman = Queen 만큼 어떤 추상적인 의미를 조작했다고 보기는 어렵다. 예를 들어 "Paul"에서 "John"을 뺀 다음 "Hank"를 더하면 어떨까?
 
 4) Paul - John + Hank = ?
 
-![paul](../assets/selfattention/paul.png)
+![paul](/assets/selfattention/paul.png)
 
  "Bank"라는 결과를 얻을 수 있지만 어떤 로직이나 의미가 느껴지지 않는다.
 
