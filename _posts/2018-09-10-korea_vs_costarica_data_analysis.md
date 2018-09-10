@@ -262,7 +262,7 @@ plt.show()
 {% endhighlight %}
 
 
-![png](korea_vs_costarica_data_analysis_files/korea_vs_costarica_data_analysis_14_0.png)
+![png](assets/korea_football/korea_vs_costarica_data_analysis_14_0.png)
 
 
 ## 코스타리카는 개인돌파가, 대한민국은 중장거리 패스를 많이 썼다.
