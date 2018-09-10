@@ -4,7 +4,7 @@ title:      "대한민국 vs 코스타리카전 축구 A 매치 데이터로 살
 date:       2018-09-10 10:00:00
 author:     "Jun"
 categories: "Python"
-image: //assets/korea_football/selfattention/variants_of_junsik.png
+image: //assets/korea_football/attackingthird.png
 ---
 
 # 대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기
@@ -262,7 +262,7 @@ plt.show()
 {% endhighlight %}
 
 
-![png](korea_vs_costarica_data_analysis_files/korea_vs_costarica_data_analysis_14_0.png)
+![png](/assets/korea_football/korea_vs_costarica_data_analysis_14_0.png)
 
 
 ## 코스타리카는 개인돌파가, 대한민국은 중장거리 패스를 많이 썼다.
