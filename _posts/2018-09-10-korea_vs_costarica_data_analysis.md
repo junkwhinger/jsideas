@@ -158,7 +158,7 @@ source: https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trend
 
 
 ### 중거리 패스
-![장거리패스](/assets/korea_football/mid.gif)
+![중거리패스](/assets/korea_football/mid.gif)
 
 
 ### 단거리 패스
