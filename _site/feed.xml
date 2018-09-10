@@ -6,9 +6,788 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 01 Sep 2018 15:12:34 +0900</pubDate>
-    <lastBuildDate>Sat, 01 Sep 2018 15:12:34 +0900</lastBuildDate>
+    <pubDate>Tue, 11 Sep 2018 01:44:24 +0900</pubDate>
+    <lastBuildDate>Tue, 11 Sep 2018 01:44:24 +0900</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
+    
+      <item>
+        <title>대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기</title>
+        <description>&lt;h1 id=&quot;대한민국-vs-코스타리카전-축구-a-매치-데이터로-살펴보기&quot;&gt;대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기&lt;/h1&gt;
+
+&lt;p&gt;요새 축구가 개꿀잼이다. 우리흥이 아시안게임에서 금메달따서 군대제껴서 좋고, 신임 대표팀 벤투 감독이 와서 첫 경기를 잘해서 좋다.&lt;/p&gt;
+
+&lt;p&gt;오랜만에 A매치를 편안하게 즐기면서 봤는데, 생각하면 할수록 뭔가 이전 대표팀 경기와 많은 부분이 달랐던 것 같다. 코스타리카가 엄청난 강팀이라곤 할 수 없지만, 나름 북중미의 강호인데다, 2014년에 있었던 경기에서는 3:1로 우리가 발렸다. 월드컵때와 달리 우리는 점유율을 높게 가져갔고, 많은 공격 기회를 만들었으며, 공격 기회에서의 패스 성공률도 매우 높게 느껴졌다. 특히 이전의 답없던 뻥축구가 아닌 정확히 구석구석을 찌르는 롱패스를 보면서 ‘아니 갑자기 왤케 패스를 잘하지?’ 라는 생각이 절로 들면서 국대 축구를 보는게 맞나..라는 생각도 들었더란다.&lt;/p&gt;
+
+&lt;p&gt;그냥 그랬구나 하고 넘겨보기엔 아쉬워서 SBS에서 다시보기를 구매한 후 클립을 보면서 데이터를 만들어봤다. 언젠가는 영상인식으로 축구 데이터를 뽑을 수 있기를..&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pandas&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inline&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;data_dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;vsCostarica_20180908/&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_csv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data_dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;attackingThirdRecord.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;class 'pandas.core.frame.DataFrame'&amp;gt;
+RangeIndex: 74 entries, 0 to 73
+Data columns (total 7 columns):
+team               74 non-null object
+half               74 non-null object
+time               74 non-null object
+from               74 non-null object
+to                 74 non-null object
+passtype(단/중/장)    74 non-null object
+isSuccess          74 non-null object
+dtypes: object(7)
+memory usage: 4.1+ KB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;team&lt;/th&gt;
+      &lt;th&gt;half&lt;/th&gt;
+      &lt;th&gt;time&lt;/th&gt;
+      &lt;th&gt;from&lt;/th&gt;
+      &lt;th&gt;to&lt;/th&gt;
+      &lt;th&gt;passtype(단/중/장)&lt;/th&gt;
+      &lt;th&gt;isSuccess&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;kor&lt;/td&gt;
+      &lt;td&gt;1st&lt;/td&gt;
+      &lt;td&gt;0:38&lt;/td&gt;
+      &lt;td&gt;김영권&lt;/td&gt;
+      &lt;td&gt;손흥민&lt;/td&gt;
+      &lt;td&gt;장&lt;/td&gt;
+      &lt;td&gt;성공&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;kor&lt;/td&gt;
+      &lt;td&gt;1st&lt;/td&gt;
+      &lt;td&gt;2:27&lt;/td&gt;
+      &lt;td&gt;기성용&lt;/td&gt;
+      &lt;td&gt;손흥민&lt;/td&gt;
+      &lt;td&gt;장&lt;/td&gt;
+      &lt;td&gt;실패&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;kor&lt;/td&gt;
+      &lt;td&gt;1st&lt;/td&gt;
+      &lt;td&gt;5:13&lt;/td&gt;
+      &lt;td&gt;홍철&lt;/td&gt;
+      &lt;td&gt;손흥민&lt;/td&gt;
+      &lt;td&gt;단&lt;/td&gt;
+      &lt;td&gt;성공&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;kor&lt;/td&gt;
+      &lt;td&gt;1st&lt;/td&gt;
+      &lt;td&gt;6:22&lt;/td&gt;
+      &lt;td&gt;김영권&lt;/td&gt;
+      &lt;td&gt;남태희&lt;/td&gt;
+      &lt;td&gt;장&lt;/td&gt;
+      &lt;td&gt;실패&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;kor&lt;/td&gt;
+      &lt;td&gt;1st&lt;/td&gt;
+      &lt;td&gt;6:32&lt;/td&gt;
+      &lt;td&gt;장현수&lt;/td&gt;
+      &lt;td&gt;이용&lt;/td&gt;
+      &lt;td&gt;중&lt;/td&gt;
+      &lt;td&gt;성공&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;dataset-info&quot;&gt;Dataset Info&lt;/h2&gt;
+
+&lt;p&gt;데이터 해상도가 높으면 높을수록 더 디테일한 분석을 할 수 있겠지만, 해상도 상승에 따른 노가다의 양은 지수적으로 증가한다. 오늘 퇴근길에 생각한 이 씨잘데기없는 상상을 구현하는데 2시간 이상의 시간을 쓸 계획은 없다. 따라서 &lt;code class=&quot;highlighter-rouge&quot;&gt;아니 우리 공격 패스 왤케 잘하지?&lt;/code&gt;만 검증해보기 위한 데이터셋을 만들어보기로 했다.&lt;/p&gt;
+
+&lt;p&gt;모든 패스를 기록하기에는 너무 양이 많고 분류가 어려우므로, 상대 문전앞 Attacking Third(이하 at)에 진입하는 키 패스를 따기로 했다. at에 진입하는 패스는 모든 적극적 공격의 시발점이 되므로 해석하기에도 쉽고, 양도 적당해서 기록하기에도 좋았다.&lt;/p&gt;
+
+&lt;p&gt;Attacking Third는 아래 그림과 같이 전체 경기장을 3등분으로 나눈 부분 중 적진에 해당하는 영역을 의미한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/attackingthird.png&quot; alt=&quot;Drawing&quot; style=&quot;width: 400px;&quot; /&gt;
+source: https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trends-and-buzzwords&lt;/p&gt;
+
+&lt;p&gt;이 영역에 볼이 넘어가는 방식을 장거리 / 중거리 / 단거리 / 개인돌파로 나누고 이 횟수를 카운팅해보았다. 코스타리카전에서의 장/중/단 패스와 개인돌파의 예시는 다음과 같다.&lt;/p&gt;
+
+&lt;h3 id=&quot;장거리-패스&quot;&gt;장거리 패스&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/long.gif&quot; alt=&quot;장거리패스&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;중거리-패스&quot;&gt;중거리 패스&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/mid.gif&quot; alt=&quot;장거리패스&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;단거리-패스&quot;&gt;단거리 패스&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/short.gif&quot; alt=&quot;단거리패스&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;개인돌파&quot;&gt;개인돌파&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/indiv.gif&quot; alt=&quot;개인돌파&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;각 패스의 메타 정보를 함께 기록해 다음과 같은 데이터프레임을 만들었다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;team: kor (대한민국) / cos (코스타리카)&lt;/li&gt;
+  &lt;li&gt;half: 1st (전반) / 2nd (후반)&lt;/li&gt;
+  &lt;li&gt;time: minute:second (전후반 분할)&lt;/li&gt;
+  &lt;li&gt;from: 패스를 한 선수 (이름을 모르면 등번호, 아예 모르면 ?표시)&lt;/li&gt;
+  &lt;li&gt;to: 패스를 받은 선수 (마찬가지)&lt;/li&gt;
+  &lt;li&gt;passtype(단/중/장)
+    &lt;ul&gt;
+      &lt;li&gt;attacking third (이하 at) 밖에서 안으로 이어지는 연결을 pass로 정의함&lt;/li&gt;
+      &lt;li&gt;at 밖으로 유의미하게 나갔다가 다시 들어오는 경우 pass로 인정&lt;/li&gt;
+      &lt;li&gt;슛, 코너킥은 No인정&lt;/li&gt;
+      &lt;li&gt;타입 구분
+        &lt;ul&gt;
+          &lt;li&gt;단: 선수간 거리가 가까워보이는 경우 (자의적 판단)&lt;/li&gt;
+          &lt;li&gt;중: 중앙선에서 at로 패스가 이어지거나, &lt;code class=&quot;highlighter-rouge&quot;&gt;단&lt;/code&gt;보다는 조금 긴 경우&lt;/li&gt;
+          &lt;li&gt;장: 수비라인 후방에서 at로 패스가 바로 이어지는 경우&lt;/li&gt;
+          &lt;li&gt;개인돌파: at밖에서 안으로 선수가 독자적으로 드리블해서 진입하는 경우&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;isSuccess:
+    &lt;ul&gt;
+      &lt;li&gt;단/중/장 패스는 패스를 받는 선수가 무사히 퍼스트 터치를 하는 경우 성공으로 판정&lt;/li&gt;
+      &lt;li&gt;개인돌파는 at안으로 진입후, 크로스/슈팅을 한 경우 성공, 차단당하는 경우 실패로 판정&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;단/중 분류에 내 주관적인 판단과 그당시 눈의 피로도가 조금 영향을 미쳤지만, 그건 그냥 넘어가도록 한다.
+다시보기 클립을 보면서 위의 데이터셋을 정리하는데는 약 30분 정도가 소요되었다. at를 넘어가는 공격 부분만 보면 되니까 시간은 생각보다 오래걸리지 않았다. 문득 국대 대표팀 분석실에서는 어떤 방식으로 데이터를 확보하는지 궁금해졌다. 아마 영상인식 알고리즘이나 장비같은걸 써서 수비대열 측정이나 경기 템포 등을 정량화하지 않나 싶다.&lt;/p&gt;
+
+&lt;p&gt;여튼 정리한 데이터를 몇가지 측면에서 살펴보자.&lt;/p&gt;
+
+&lt;h2 id=&quot;대한민국이-약-25배-더-많은-공격-기회를-가져갔다&quot;&gt;대한민국이 약 2.5배 더 많은 공격 기회를 가져갔다.&lt;/h2&gt;
+&lt;p&gt;전후반 합쳐 한국은 55회 공격했지만, 코스타리카는 19회에 그쳤다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;team
+cos    19
+kor    55
+Name: time, dtype: int64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;전후반-공격-기회는-두-팀-다-비슷했다&quot;&gt;전후반 공격 기회는 두 팀 다 비슷했다.&lt;/h2&gt;
+&lt;p&gt;하프타임에 기성용이 빠졌지만, 한국의 공격기회는 전반 30회, 후반 25회로 비슷했다. 기분탓?이었나보다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'half'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;team  half
+cos   1st      9
+      2nd     10
+kor   1st     30
+      2nd     25
+Name: time, dtype: int64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;대한민국은-중반에-조금-숨을-돌리는-듯&quot;&gt;대한민국은 중반에 조금 숨을 돌리는 듯?&lt;/h2&gt;
+&lt;p&gt;at를 넘어간 패스를 시간순으로 찍어보면 전반/후반에 초중반과 중후반에 몰리고 중간은 조금 비어있다. 45분 내내 공격하는 것도 상당히 지칠 것 같다. 코스타리카는 이번에 시차적응이 좀 덜된 듯. 드문드문 공격했다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;convert_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a_time_str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;_min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_sec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a_time_str&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;_min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_sec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_min&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_sec&lt;/span&gt;
+    
+&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'ts_in_sec'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;convert_time&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'half'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subplots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax_idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;enumerate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax_idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ts_in_sec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ones&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ts_in_sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alpha&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_xlabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;minutes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suptitle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;attacking opportunities by team&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;1.02&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tight_layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;korea_vs_costarica_data_analysis_files/korea_vs_costarica_data_analysis_14_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;코스타리카는-개인돌파가-대한민국은-중장거리-패스를-많이-썼다&quot;&gt;코스타리카는 개인돌파가, 대한민국은 중장거리 패스를 많이 썼다.&lt;/h2&gt;
+&lt;p&gt;개인기가 좋은 남미팀이라서 그런지 코스타리카 공격의 26%는 개인돌파였다. 수치상으로는 한국의 개인돌파가 6회로, 코스타리카에 1회 더 많지만, 이보다 더 많은 패스가 중장거리로 이루어졌다.&lt;/p&gt;
+
+&lt;p&gt;재미있는 점은 코스타리카는 장거리 패스가 하나도 없다는 것. 전술의 차이일까?&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;byTeamPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'passtype(단/중/장)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;teamPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'totalPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byTeamPass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;teamPass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passRatio'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'totalPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;passCnt&lt;/th&gt;
+      &lt;th&gt;totalPassCnt&lt;/th&gt;
+      &lt;th&gt;passRatio&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;team&lt;/th&gt;
+      &lt;th&gt;passtype(단/중/장)&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;cos&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.26&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.32&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.42&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;4&quot; valign=&quot;top&quot;&gt;kor&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.11&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;21&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;코스타리카는-중거리-패스가-아쉬웠고-갓한민국의-장거리-패스는-지렸다&quot;&gt;코스타리카는 중거리 패스가 아쉬웠고, 갓한민국의 장거리 패스는 지렸다.&lt;/h2&gt;
+&lt;p&gt;코스타리카의 패스는 전반적으로 성공률이 좋지 않았다. 장기인 개인돌파가 60%로 체면치레를 했다. 이번에 컨디션이 좋아보였던 대한민국은 중장거리 패스 정확도도 60%나 기록했고, 좁은 공간에서의 개인돌파와 단거리 패스도 정확도가 매우 높았다. 후방에서 구석으로 찌르는 플레이도 좋았고, 문전에서의 플레이도 세밀했다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;byTeamSuccessPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'성공'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'passtype(단/중/장)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;mergedSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byTeamSuccessPass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;teamPass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;pass_df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;merged&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mergedSuccess&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lsuffix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'left'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;drop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'totalPassCntleft'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successPassRatio'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;pass_df&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;passCnt&lt;/th&gt;
+      &lt;th&gt;passRatio&lt;/th&gt;
+      &lt;th&gt;successPassCnt&lt;/th&gt;
+      &lt;th&gt;totalPassCnt&lt;/th&gt;
+      &lt;th&gt;successPassRatio&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;team&lt;/th&gt;
+      &lt;th&gt;passtype(단/중/장)&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;cos&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;0.26&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.60&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;0.32&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;0.42&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;4&quot; valign=&quot;top&quot;&gt;kor&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;0.11&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.93&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;0.25&lt;/td&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.64&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;21&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;55&lt;/td&gt;
+      &lt;td&gt;0.62&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;기성용의-발끝에서-시작하는-장거리-패스의-성공률이-좋았다-이용홍철의-양-사이드도-활발했다&quot;&gt;기성용의 발끝에서 시작하는 장거리 패스의 성공률이 좋았다. 이용/홍철의 양 사이드도 활발했다.&lt;/h2&gt;
+&lt;p&gt;후방 수비에서 at로 찌르는 장거리 패스가 많았는데, 역시 기성용의 패스가 좋았다. 기라드의 장거리 패스 정확도는 83%로 김민재(67%), 김영권(50%), 장현수(0%)에 비해 좋았다. 양쪽 풀백인 이용과 홍철이 이번에 공격에 많이 가담했는데, 홍철보다는 이용쪽이 조금 더 패스 정확도가 좋았다. 공격수들의 과감한 개인돌파 역시 매우 좋았다. 카타르 메시 남태희.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;byPlayerPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'from'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'passtype(단/중/장)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;byPlayerSuccessPass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isSuccess&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'성공'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'team'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'from'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'passtype(단/중/장)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;playerPass_df&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;byPlayerPass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;byPlayerSuccessPass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fillna&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;playerPass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successRate'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;playerPass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'successPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;playerPass_df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;playerPass_df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'kor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;passCnt&lt;/th&gt;
+      &lt;th&gt;successPassCnt&lt;/th&gt;
+      &lt;th&gt;successRate&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;from&lt;/th&gt;
+      &lt;th&gt;passtype(단/중/장)&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;기성용&lt;/th&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;5.0&lt;/td&gt;
+      &lt;td&gt;0.83&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;김민재&lt;/th&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;0.67&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;김영권&lt;/th&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;남태희&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;문선민&lt;/th&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;손흥민&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;3.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;이승우&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;이용&lt;/th&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;0.50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;이재성&lt;/th&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;4.0&lt;/td&gt;
+      &lt;td&gt;0.80&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;3&quot; valign=&quot;top&quot;&gt;장현수&lt;/th&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;정우영&lt;/th&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;3.0&lt;/td&gt;
+      &lt;td&gt;0.75&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;지동원&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;2&quot; valign=&quot;top&quot;&gt;홍철&lt;/th&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;0.0&lt;/td&gt;
+      &lt;td&gt;0.00&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;황인범&lt;/th&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1.0&lt;/td&gt;
+      &lt;td&gt;1.00&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;기갓갓이-나간-후에는-장거리-패스가-줄었다&quot;&gt;기갓갓이 나간 후에는 장거리 패스가 줄었다.&lt;/h2&gt;
+&lt;p&gt;정확한 장거리 패스를 뿌려줄 기성용이 교체되어서 그런지, 전반에 높았던 장거리 패스의 비율(33%)가 후반에는 (16%)로 줄어든다. 후반에는 황인범, 이승우 등 미들에서 패스게임을 하는 선수들이 들어갔는데, 그때문인지 중거리 패스와 개인돌파의 비율이 소폭 늘었다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;korPassHalf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;team&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'kor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'half'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'passtype(단/중/장)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;teamPassHalf&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;team&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'kor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'half'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;columns&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'time'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'totalPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;korMerged&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;korPassHalf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;teamPassHalf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;korMerged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passRatio'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;korMerged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'passCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;korMerged&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'totalPassCnt'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;korMerged&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div&gt;
+&lt;style scoped=&quot;&quot;&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border=&quot;1&quot; class=&quot;dataframe&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&quot;text-align: right;&quot;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;passCnt&lt;/th&gt;
+      &lt;th&gt;totalPassCnt&lt;/th&gt;
+      &lt;th&gt;passRatio&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;half&lt;/th&gt;
+      &lt;th&gt;passtype(단/중/장)&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;4&quot; valign=&quot;top&quot;&gt;1st&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;0.07&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;0.27&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th rowspan=&quot;4&quot; valign=&quot;top&quot;&gt;2nd&lt;/th&gt;
+      &lt;th&gt;개인돌파&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;0.16&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;단&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;0.24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;장&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;0.16&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;중&lt;/th&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;25&lt;/td&gt;
+      &lt;td&gt;0.44&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;다가올-칠레전-기성용-홍철-정우영-손흥민-김민재-빛의조의-장거리패스를-기대해보자&quot;&gt;다가올 칠레전, 기성용-&amp;gt;홍철, 정우영-&amp;gt;손흥민, 김민재-&amp;gt;빛의조의 장거리패스를 기대해보자.&lt;/h2&gt;
+&lt;p&gt;코스타리카전에서는 기성용이 홍철에게, 정우영이 손흥민에게, 김민재가 황의조에게 뿌려주는 패스가 가장 많은 빈도를 기록했다. 선발/교체에 따라 조금 달라질 수 있겠지만, 칠레전에서도 후방에서 전방으로 찔러주는 장거리 킬패스가 효과를 발휘할까? 칠레전도 마음편히 보고잡다.&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;dataframe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;lambda&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;team&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'kor'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;groupby&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'from'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'to'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sort_values&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ascending&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;head&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;from  to 
+기성용   홍철     3
+정우영   손흥민    3
+김민재   황의조    3
+이재성   지동원    3
+손흥민   손흥민    2
+기성용   손흥민    2
+홍철    손흥민    2
+기성용   이용     2
+장현수   지동원    2
+손흥민   홍철     2
+Name: time, dtype: int64
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;본 분석에 사용한 데이터셋은 &lt;a href=&quot;&quot;&gt;github&lt;/a&gt;에 공개되어있으니 마음껏 가져가셔도 됩니다.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 10 Sep 2018 19:00:00 +0900</pubDate>
+        <link>http://localhost:4000/python/2018/09/10/korea_vs_costarica_data_analysis.html</link>
+        <guid isPermaLink="true">http://localhost:4000/python/2018/09/10/korea_vs_costarica_data_analysis.html</guid>
+        
+        
+        <category>Python</category>
+        
+      </item>
     
       <item>
         <title>Self Attention: 이름 분류기</title>
@@ -524,7 +1303,7 @@
 
 &lt;p&gt;일반적인 텍스트 분류 모델에서는 LSTM이나 CNN 레이어를 통해 데이터에서 패턴을 추출한다. 그리고 이를 단층 혹은 다층으로 구성된 Fully Connected Layer에 통과시켜 각 레이블에 해당할 확률값을 얻는다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/basic_lstm_classifier.png&quot; alt=&quot;basic_lstm_classifier&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/basic_lstm_classifier.png&quot; alt=&quot;basic_lstm_classifier&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;BiLSTM 모델은 이름을 분류하는 목적은 달성했지만 이름의 어떤 부분에 근거했는지는 말해주지 않는다. Local Interpretable Model-Agnostic Explanations (LIME) 방법을 사용해 글자를 하나씩 빼가면서 어떤 글자가 결과에 가장 큰 영향을 주었는지 판단하는 방법을 쓸 수도 있긴 하지만, 모델 자체는 답을 가지고 있지 않다.&lt;/p&gt;
 
@@ -532,7 +1311,7 @@
 
 &lt;p&gt;2017년 3월 발표된 A Structured Self-Attentive Sentence Embedding은 Self-Attention을 통해 이 문제를 해결한다. 이 논문에서 제안한 방식은 BiLSTM이나 CNN 레이어를 통과한 feature를 다음과 같은 방식으로 처리한다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/self_attention.png&quot; alt=&quot;self_attention&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/self_attention.png&quot; alt=&quot;self_attention&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;BiLSTM 레이어를 통해 얻은 feature를 2개의 FC 레이어에 통과시켜 n_token x hops 크기를 가진 매트릭스 형태의 Attention을 얻는다. 이때 W_s1의 &lt;code class=&quot;highlighter-rouge&quot;&gt;da&lt;/code&gt;와 W_s2의 &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt;는 하이퍼파라미터로 적절한 값을 선택해 입력한다. 입력 텍스트를 하나의 벡터로 임베딩했던 기존의 Attention 메커니즘과 달리 본 논문에서 제안한 Attention은 매트릭스 형태를 띈다. 이러한 임베딩 추출 방식을 통해 다음과 같은 효과를 기대할 수 있다.&lt;/p&gt;
 
@@ -668,7 +1447,7 @@
 
 &lt;p&gt;모델은 이름의 어떤 부분을 보고 판단을 내렸을까? Self Attention은 &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt;갯수의 row vector들로 구성된 matrix이며, 각 vector의 합은 1이 되도록 softmax를 취했다. 이름 텍스트를 전처리하여 모델에 집어넣고 뽑은 Attention을 시각화해보았다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/attention_heatmap.png&quot; alt=&quot;attention_heatmap&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/attention_heatmap.png&quot; alt=&quot;attention_heatmap&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;히트맵을 뿌려보면 위와 같이 각 어텐션 벡터(y축)가 이름의 특정 글자들에만 반응하고 있는 것을 볼 수 있다. loss에 더해준 Penalization Term이 가이딩해준 효과로 보인다. 하이퍼파라미터를 튜닝할 때 &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt;를 5개가 아닌 30개로 늘려서도 해보았는데 이때는 거의 모든 글자에 어텐션이 할당되는 결과를 낳았다. 분류 성능에는 차이가 없었으나 해석이 더 어려워졌다. 데이터셋의 형태에 따라 hops의 크기를 적절하게 선택하는 것이 중요해보인다.&lt;/p&gt;
 
@@ -678,39 +1457,39 @@
 
 &lt;p&gt;먼저 유명한 이름들부터 해보자. 해리포터의 주요 인물들이다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/harrypotter.png&quot; alt=&quot;harrypotter&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/harrypotter.png&quot; alt=&quot;harrypotter&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;대부분 어텐션이 끝에 몰려있는 가운데, Harry, Hermione와 Albus, Draco는 조금 다른 양상을 보인다. 언어학자는 아니지만 대략 공감이 가는 해석이라고 생각한다.&lt;/p&gt;
 
 &lt;p&gt;다음은 마블 시네마틱 유니버스의 캐릭터들이다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/mcu.png&quot; alt=&quot;mcu&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/mcu.png&quot; alt=&quot;mcu&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;해리포터는 다 맞췄으나 Tony, Loki를 여자로, Pepper를 남자로 분류했다. 흠터레스팅.. 페퍼는 끝의 ‘er’이 여자 이름에 거의 없기 때문이 아닐까 싶다.&lt;/p&gt;
 
 &lt;p&gt;그럼 이름의 끝부분을 조금씩 변경해보면 어떤 결과가 나올까?&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/variants_of_cat.png&quot; alt=&quot;variants_of_cat&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_cat.png&quot; alt=&quot;variants_of_cat&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Cat&lt;/code&gt;도 여성일 확률이 높았지만, 이후에 &lt;code class=&quot;highlighter-rouge&quot;&gt;ne&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;na&lt;/code&gt;를 붙임에 따라 분류 확률이 거의 100%에 근접하게 올라가는 것을 확인할 수 있었다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/variants_of_chris.png&quot; alt=&quot;variants_of_chris&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_chris.png&quot; alt=&quot;variants_of_chris&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;모델은 &lt;code class=&quot;highlighter-rouge&quot;&gt;Chris&lt;/code&gt;와 &lt;code class=&quot;highlighter-rouge&quot;&gt;Christina&lt;/code&gt;를 여자로 분류했다. 그러나 끝에 &lt;code class=&quot;highlighter-rouge&quot;&gt;o&lt;/code&gt;를 붙여 우리 형을 만들자 매우 높은 확률로 남자로 분류했다.  &lt;code class=&quot;highlighter-rouge&quot;&gt;Christian&lt;/code&gt;을 여자로 분류한 점이 조금 아쉽다.&lt;/p&gt;
 
 &lt;p&gt;일부 잘못 판단한 경우가 있긴 했지만 어느정도 괜찮은 성능을 보인다. 데이터셋에 없는 전혀 다른 언어권에도 이 모델이 잘 동작할까? 해외 아기 이름을 크롤링해서인지 데이터셋에는 아시안 언어권의 이름이 서구권에 비해 상대적으로 적었고 한국어권 이름은 아예 없었다. 한글 이름을 넣어보자. 회사 동료들의 이름을 랜덤으로 소환했다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/koreanboys.png&quot; alt=&quot;koreanboys&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/koreanboys.png&quot; alt=&quot;koreanboys&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;남자는 올패스.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/koreangirls.png&quot; alt=&quot;koreangirls&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/koreangirls.png&quot; alt=&quot;koreangirls&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;여자는 모두 틀렸다. 모델이 한국어 이름의 엔딩을 남성적으로 판단한 것으로 보인다.&lt;/p&gt;
 
 &lt;p&gt;마지막으로 내 이름은 어떨까?&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/variants_of_junsik.png&quot; alt=&quot;variants_of_junsik&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_junsik.png&quot; alt=&quot;variants_of_junsik&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;아쉽게도 Jun을 여자로 분류하긴 했으나 June보다는 확률이 좀 떨어졌다. 뉴럴 네트워크에게도 June은 여자 이름처럼 들렸나보다.&lt;/p&gt;
 
@@ -722,29 +1501,29 @@
 
 &lt;p&gt;먼저 성별에 따라 살펴보자.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/bySex.png&quot; alt=&quot;bySex&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/bySex.png&quot; alt=&quot;bySex&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;재밌는 결과가 나왔다. 남아 이름들은 우상단으로, 여아 이름들은 좌하단에 몰려있는 경향을 보인다. 자세히 들여다보면 이름의 끝부분끼리 몰려있다. 먼 좌하단은 Mia, Sophia, Olivia, Victoria들이 있고, 먼 우상단에는 Nicholas, Thomas, Lucas가 뭉쳐있다. 성별이 다르지만 끝부분이 유사한 Scarlett, Wyatt, Robert, Margaret도 서로 근접해 위치한다.&lt;/p&gt;
 
 &lt;p&gt;혹 이름이 속한 문화권이 그 이름의 끝부분을 결정짓는걸까? 이름의 문화권을 기준으로 살펴보자.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/byOrigin.png&quot; alt=&quot;byOrigin&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/byOrigin.png&quot; alt=&quot;byOrigin&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;성별만큼 명확하지는 않지만 이름들은 같은 문화권끼리 뭉치는 경향을 보여준다. 중앙 상단의 Grayson, Jackson, Brandon, Jameson 등 영국에서 온 슨자 돌림 남자들이 보인다. 좌하단에는 Valentina, Emilia, Victoria, Aurora, Olivia 등 아자 돌림 라틴 여자분들도 있다.&lt;/p&gt;
 
 &lt;p&gt;남자들만-&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/boysByOrigin.png&quot; alt=&quot;boysByOrigin&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/boysByOrigin.png&quot; alt=&quot;boysByOrigin&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;여자들만-&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/girlsByOrigin.png&quot; alt=&quot;girlsByOrigin&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/girlsByOrigin.png&quot; alt=&quot;girlsByOrigin&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;matrix-computation-emilia---emily--lucy&quot;&gt;Matrix Computation: Emilia - Emily + Lucy?&lt;/h3&gt;
 
 &lt;p&gt;King - Man + Woman = Queen은 Word Embedding의 멋진 사례 중 하나로 빠짐없이 등장한다. 왕에서 남자라는 성을 제거하면 권력이 남고, 그 권력을 여자라는 성에 더하면 여왕이 된다. 관념적으로도 말이 되고 간단한 사칙연산으로도 말이 된다. 뉴럴 네트워크를 통해 얻은 숫자 뭉치가 우리가 가진 관념적인 정보를 담고 있음을 보여주는 멋진 결과다.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/king_to_queen.jpeg&quot; alt=&quot;king_to_queen&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/king_to_queen.jpeg&quot; alt=&quot;king_to_queen&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-using-word-embedding-and-convolutional-neural-networks-on-keras-163197aef623&lt;/p&gt;
 
@@ -754,29 +1533,33 @@
 
 &lt;p&gt;1) Emilia - Emily  + Lucy = Lucia!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/emily.png&quot; alt=&quot;emily&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/emily.png&quot; alt=&quot;emily&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 될거라고 생각했는데 실제로 됐다!&lt;/p&gt;
 
 &lt;p&gt;2) Susie - Susanne + Roxie = Roxie!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/susie.png&quot; alt=&quot;susie&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/susie.png&quot; alt=&quot;susie&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;3) Christina - Christine + Austine = Austina!&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/christina.png&quot; alt=&quot;christina&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/christina.png&quot; alt=&quot;christina&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;예상과 같은 결과가 나오긴 하지만 King - Man + Woman = Queen 만큼 어떤 추상적인 의미를 조작했다고 보기는 어렵다. 예를 들어 “Paul”에서 “John”을 뺀 다음 “Hank”를 더하면 어떨까?&lt;/p&gt;
 
 &lt;p&gt;4) Paul - John + Hank = ?&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;../assets/selfattention/paul.png&quot; alt=&quot;paul&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/paul.png&quot; alt=&quot;paul&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;“Bank”라는 결과를 얻을 수 있지만 어떤 로직이나 의미가 느껴지지 않는다.&lt;/p&gt;
 
 &lt;h2 id=&quot;outro&quot;&gt;Outro&lt;/h2&gt;
 
 &lt;p&gt;이번 포스팅에서는 LSTM + Self Attention 모델을 사용해 남아 / 여아 이름을 분류하는 모델을 만들고, Attention을 통해 뉴럴 네트워크가 이름의 어떤 부분에 집중했는지 시각화해보았다. 뉴럴 네트워크가 집중했던 흔적은 보통 이름의 끝 부분에 남겨져 있었다. 같은 Jun이라도 e가 붙으면 여자가 되고 sik이 붙으면 남자가 되었다. 분석 전에 내가 어렴풋이 생각했던 가설과 비슷해 놀라웠다. 또 2차원 공간에 뿌려진 이름들이 성별이나 문화권에 따라 끼리끼리 모이는 점도 흥미로웠다. 해석가능한 딥러닝은 내가 생각하는 방식을 되돌아보는 재미가 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1703.03130.pdf&quot;&gt;A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding&quot;&gt;An open-source implementation of the paper ‘A Structured Self-Attentive Sentence Embedding’ published by IBM and MILA.&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 01 Sep 2018 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/python/2018/09/01/name_classifier.html</link>
@@ -6032,247 +6815,6 @@ tf.keras에서 제공하는 Conv2D는 padding이 &lt;code class=&quot;highlighte
         <pubDate>Sun, 31 Dec 2017 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/python/2017/12/31/The-First-and-Second-Derivatives-and-Local-Minima.html</link>
         <guid isPermaLink="true">http://localhost:4000/python/2017/12/31/The-First-and-Second-Derivatives-and-Local-Minima.html</guid>
-        
-        
-        <category>Python</category>
-        
-      </item>
-    
-      <item>
-        <title>Transfer Learning wtih Keras on FloydHub</title>
-        <description>&lt;h1 id=&quot;transfer-learning-wtih-keras-on-floydhub&quot;&gt;Transfer Learning wtih Keras on FloydHub&lt;/h1&gt;
-
-&lt;h2 id=&quot;tfkeras&quot;&gt;tf.keras&lt;/h2&gt;
-&lt;p&gt;딥러닝 라이브러리로는 &lt;code class=&quot;highlighter-rouge&quot;&gt;tensorflow&lt;/code&gt;가 가장 널리 사용되지만 다른 편리한 선택지도 많다. &lt;code class=&quot;highlighter-rouge&quot;&gt;Keras&lt;/code&gt;는 2016년 9월 기준으로 텐서플로우에 이어 두번째로 많이 쓰이는 라이브러리이며, 빠르고 간결하게 딥러닝 모델을 구현할 수 있다는 큰 장점이 있다. 또 2017년 들어 텐서플로우 라이브러리 안에서도 keras를 사용할 수 있게 되면서 사용상 번거로움도 줄었다. 텐서플로우 최신 버전 1.4에서는 &lt;a href=&quot;https://www.tensorflow.org/api_docs/python/tf/keras&quot;&gt;tf.keras&lt;/a&gt;로 바로 사용할 수 있다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/keras-tensorflow.jpg&quot; alt=&quot;Keras + TensorFlow&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;floydhub&quot;&gt;FloydHub&lt;/h2&gt;
-&lt;p&gt;회사 업무에서는 컴퓨터에 내장된 고사양 GPU나 EC2 인스턴스를 자유롭게 쓸 수 있으나, 집에서는 그만큼 좋은 딥러닝 환경을 구축하기 어려운 경우가 많다. 특히 집에서는 맥북에서 코딩을 하는데 내장된 GPU가 딥러닝을 지원하지도 않고, 또 찾아본 바로는 external GPU를 붙이는 것도 가성비가 좋지는 않다고 한다. 그래서 최근 쉽게 사용할 수 있는 Cloud GPU를 알아보다 &lt;a href=&quot;https://www.floydhub.com&quot;&gt;FloydHub&lt;/a&gt;를 사용하게 되었다.&lt;/p&gt;
-
-&lt;p&gt;평소에 나는 tensorflow가 깔린 conda 환경에서 jupyter notebook을 실행시켜 딥러닝을 돌려보는데, 이런 실행 환경에서 FloydHub를 매우 자연스럽게 사용할 수 있다. &lt;code class=&quot;highlighter-rouge&quot;&gt;pip install floyd-cli&lt;/code&gt;를 깔고 간단한 인증 과정을 거치면 터미널에서 바로 FloydHub를 사용할 수 있게 된다. 허브를 띄울 때 몇가지 파라미터를 넣을 수 있다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--gpu&lt;/code&gt; : GPU 머신을 돌린다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--mode jupyter&lt;/code&gt; : 주피터 환경을 실행한다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--env tensorflow-1.4&lt;/code&gt; : 텐서플로우 버전 1.4로 환경을 설정한다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--data myacc/datasets/mydata&lt;/code&gt; : 사용할 데이터셋의 위치를 설정한다.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;--tensorboard&lt;/code&gt; : 텐서보드를 실행한다.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ floyd run --gpu --env tensorflow-1.4 --tensorboard --data junkwhinger/datasets/presidential_candidates_2017 --mode jupyter
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;이런식으로 터미널에서 실행시키면 브라우저 창에서 FloydHub 페이지가 뜨면서 localhost에서 jupyter notebook을 쓰는 것처럼 바로 딥러닝을 돌려볼 수 있다. 랩탑에 최신 GPU가 없어도, 귀찮게 환경설정이나 텐서보드를 실행하지 않고도 말이다.&lt;/p&gt;
-
-&lt;p&gt;프라이싱은 무료회원이나 한달에 9달러를 내는 Data Scientist 회원은 GPU를 시간당 0.59달러에 빌릴 수 있다. jupyter notebook을 실행하면 running이라고 뜨는데, 그게 활성화된 시간만큼 잔여 시간에서 깎는 구조다. AWS EC2 인스턴스랑 쓰는 것은 비슷하지만 그보다 훨씬 간편하게 사용할 수 있어 좋았다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/floydhub.png&quot; alt=&quot;FloydHub 실행화면&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;대선주자-얼굴-분류기-revisited&quot;&gt;대선주자 얼굴 분류기 revisited&lt;/h2&gt;
-&lt;p&gt;큰맘 먹고 GPU 100 시간을 지른 기념으로 올초 벚꽃대선을 맞아 만들어본 &lt;a href=&quot;http://jsideas.net/python/2017/05/07/transfer_learning.html&quot;&gt;대선주자 얼굴 분류기&lt;/a&gt;를 Keras와 FloydHub를 사용해서 다시 돌려봤다. 당시에는 VGG16을 사용해서 여러 transfer learning 방법을 적용해보았는데, 이번에는 Keras에서 제공하는 여러 다른 pre-trained 모델을 FloydHub 환경에서 사용해보았다.&lt;/p&gt;
-
-&lt;h2 id=&quot;keras의-pre-trained-모델들&quot;&gt;keras의 pre-trained 모델들&lt;/h2&gt;
-&lt;p&gt;Transfer Learning을 할 때는 보통 이미 학습이 끝난 모델을 불러와서 끝단에 새로 만든 분류 레이어를 더한 다음 fine-tuning을 한다. 예전에 텐서플로우로 짰을 때는 Model 파일을 내려받아서 모델을 새로 짜고 가공하기가 좀 번거로운 점이 있었는데, Keras로는 이 작업을 매우 쉽고 오류 적게 처리할 수 있다. 게다가 2017년 들어 구글 텐서플로우 팀이 Keras를 텐서플로우 코어 라이브러리에서 제공하면서 더 사용하기 편해졌다. tf.keras에서 제공하는 pre-trained 모델 중에 VGG, Inception_V3, Xception, ResNet50을 사용해보았다. 공부하면서 알게된 내용을 간략히 정리해본다.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;VGG16 &amp;amp; 19
-    &lt;ul&gt;
-      &lt;li&gt;2014년 이미지넷 대회에서 두각을 보인 모델로, Oxford VGG 그룹에서 창안함.&lt;/li&gt;
-      &lt;li&gt;컨볼루션 레이어와 FC를 16 혹은 19층으로 깊게 쌓은 모델로, 층이 깊어질수록 성능이 좋아진다는 것을 증명함.&lt;/li&gt;
-      &lt;li&gt;11x11과 같이 큰 컨볼루션 필터보다는 여러개의 작은(3x3) 필터의 조합이 파라미터 수 등에서 더 효과적임을 증명함.&lt;/li&gt;
-      &lt;li&gt;Image Segmentation 등 다른 이미지 태스크에도 자주 활용됨. 데뷰 2017에서 본 자율주행 차선변경 프로젝트에서도 VGG16을 사용함.&lt;/li&gt;
-      &lt;li&gt;단순하고 직관적인 구조로 이해와 구현이 쉬움.&lt;/li&gt;
-      &lt;li&gt;반면 학습시간이 굉장히 오래 걸리고, 모델 용량이 약 540~570MB로 꽤 큼.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Inception_v3
-    &lt;ul&gt;
-      &lt;li&gt;2014년 이미지넷에서 두각을 보인 GoogleNet의 후속 버전 중 하나.&lt;/li&gt;
-      &lt;li&gt;v3는 v2에 Batch Normalization과 여러 마이너 개선이 추가된 버전임.&lt;/li&gt;
-      &lt;li&gt;단순히 깊이만 늘린 VGG와 달리 Inception 모델은 한번에 여러 크기의 필터를 동시에 사용하는 Inception 아키텍쳐를 채택함. 인셉션 모듈은 이미지에서 여러 차원의 피쳐를 추출하는 방식으로, 하나의 모듈 안에서 1x1, 3x3, 5x5 등 여러 필터로 이미지를 처리하고 그 결과를 묶은 다음 다음 레이어로 넘김.&lt;/li&gt;
-      &lt;li&gt;컨볼루션 레이어는 가로-세로(2차원)와 채널(+1차원)에서 필터를 학습함. 이때 각 필터는 채널간 상관성(cross channel correlation)과 공간상의 상관성(spatial correlation)을 동시에 맵핑하게 됨. 인셉션은 이 과정을 더 효율적으로 처리하기 위해 채널간 상관성과 공간상 상관성을 따로따로 처리할수 있는 구조를 취함. 그래서 1x1 컨볼루션으로 차원을 줄이고 3x3이나 5x5 컨볼루션을 뒤이어 실행하는 방식임. 이를 더 익스트림하게 분리한 케이스가 Xception.&lt;/li&gt;
-      &lt;li&gt;Inception_v3 모델은 VGG나 ResNet에 비해 용량이 96MB 정도로 작음.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;XCEPTION
-    &lt;ul&gt;
-      &lt;li&gt;인셉션 모델의 Extreme 버전으로, 2017년 Keras 라이브러리의 창시자 Francois Chollet가 제안함.&lt;/li&gt;
-      &lt;li&gt;채널간, 공간상 상관성 분리를 기조로 하는 인셉션 모델을 극단으로 밀어붙여 depthwise separable convolution 구조를 만듦. 인풋에 1x1 컨볼루션을 씌운 후 나오는 모든 채널에 3x3 컨볼루션 연산을 수행하는 개념.&lt;/li&gt;
-      &lt;li&gt;separable convolution은 크로스 뎁스 피쳐와 2d 피쳐를 구분해서 처리할 수 있음. 이러면 cross depth 피쳐가 노멀 컨볼루션에 의해 파괴되지 않음. 익스트림 인셉션 가설이라고 함. 이 부분에 대해서는 다른 포스팅에서 더 자세하게 공부해보는 것으로 함.&lt;/li&gt;
-      &lt;li&gt;91MB로 모델 중 가장 가벼움.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;RESNET50
-    &lt;ul&gt;
-      &lt;li&gt;층을 더 많이 쌓을수록 성능이 개선될 듯 하지만 그만큼 학습이 더 어려워지고 트레이닝 에러가 커지는 문제가 발생함. 이 문제를 해결하고 더 깊은 층을 쌓기 위해 residual connection을 이용한 것이 ResNet.&lt;/li&gt;
-      &lt;li&gt;ResNet을 구성하는 residual block은 일반적인 컨볼루션 연산과는 다름. 입력 x를 일련의 컨볼루션 연산을 통해 처리한 F(x)에 다시 x를 더해, H(x)를 만들어 다음 레이어에 넘김.&lt;/li&gt;
-      &lt;li&gt;그래서 H(x) = F(x) + x를 F(x) = H(x) - x로 볼 때, ResNet의 residual block은 잔차(residual)를 학습하는 것이라고도 보여짐&lt;/li&gt;
-      &lt;li&gt;논문에서는 각 레이어를 학습시켜 우리가 바라는 이상적인 목표에 피팅하는 것보다, 잔차를 학습하고 이 잔차가 0이 되도록 푸시하는 것이 더 최적화하기 쉬운 문제라고 함.&lt;/li&gt;
-      &lt;li&gt;residual block 덕분에 깊이가 엄청 깊어지면서도 학습이 잘 되는 장점을 가져감.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;transfer-learning-with-keras&quot;&gt;Transfer Learning with Keras&lt;/h2&gt;
-&lt;p&gt;tf.keras의 applications에서 위에 언급한 다양한 pre-trained 모델을 가져다 쓸 수 있다. 입출력이 깔끔하게 정리된 모듈이어서 모델명만 바꿔가면서 매우 쉽게 여러 모델을 테스트할 수 있는 장점이 있다.&lt;/p&gt;
-
-&lt;p&gt;Keras에서 transfer learning은 다음과 같은 방식으로 진행했다.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;사용할 pre-trained 모델을 가져온다. 모델 끝부분에 달린 FC 분류레이어를 파인튜닝해야 하므로 이를 제외하기 위해 include_top 파라미터에 False를 넘긴다.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;base_model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vgg19&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;VGG19&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;include_top&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-                        &lt;span class=&quot;n&quot;&gt;input_shape&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img_width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;img_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;img_channel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;pre-trained 모델에 새로운 분류 레이어를 만들어붙인 새로운 모델을 정의한다. 여기서는 FC 대신에 Global Average Pooling을 사용해봤다. FC는 오버피팅에 취약하고 Flatten하는 과정에서 피쳐의 위치정보가 소실되는 단점이 있는 반면, Global Average Pooling은 피쳐맵의 평균값을 softmax에 넘겨 피쳐 영향력을 해석하기 용이하고 구조 자체가 오버피팅을 방지하는 효과가 있다.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GlobalAveragePooling2D&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'relu'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;preds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dense&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nb_classes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;activation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'softmax'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;불러온 원래 모델의 웨이트를 학습하지 않도록 설정하고 컴파일한다.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;layer&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;layers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
- &lt;span class=&quot;n&quot;&gt;layer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;trainable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tl_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;compile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loss&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'categorical_crossentropy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;optimizer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'adam'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;metrics&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'accuracy'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/trainable.png&quot; alt=&quot;마지막 dense 레이어의 파라미터만 학습하도록 지정되었다&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;callback을 사용해서 EarlyStopping과 텐서보드를 사용해보자.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.callbacks&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EarlyStopping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TensorBoard&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;es&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EarlyStopping&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;patience&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;monitor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'val_acc'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tb&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TensorBoard&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log_dir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'vgg19_tl'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;학습 epoch 수가 많아지면 어느 순간 과적합이 발생하면서 training accuracy는 높아지지만 validation accuracy가 꺾이는 순간이 온다. validation accuracy가 좋은 시점에서 적절하게 학습을 그만 두어야 하는데, 이를 자동으로 처리해주는 것이 EarlyStopping 콜백이다. patience 파라미터를 10로 지정하면, validation accuracy가 직전 최고점수에 비해 떨어지는 걸 연속 10번까지 견디게 된다. Tensorboard 콜백은 지정한 log_dir로 loss, accuracy 등의 정보를 저장해준다. 여기서 정의한 콜백들을 뒤에 fit을 수행할때 넘기기만 하면 된다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;모델을 학습한다.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;tl_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fit_generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;train_generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-                    &lt;span class=&quot;n&quot;&gt;epochs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-                    &lt;span class=&quot;n&quot;&gt;validation_data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;validation_generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-                    &lt;span class=&quot;n&quot;&gt;steps_per_epoch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; 
-                    &lt;span class=&quot;n&quot;&gt;validation_steps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                    &lt;span class=&quot;n&quot;&gt;callbacks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;es&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;텐서플로우를 쓸 때는 for문으로 epoch을 돌면서 행할 행동을 지정해야 했는데, keras에서는 fit만으로 간단히 학습을 실행할 수 있어 매우 좋다. 또 generator를 넘길 수 있어 사용이 매우 간편하다.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;여러 노트북을 만든 후, 모델만 다르게 지정하기만 하면 된다.
-    &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.applications&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vgg16&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.applications&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vgg19&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.applications&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inception_v3&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.applications&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xception&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;tensorflow.python.keras.applications&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resnet50&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-    &lt;p&gt;resnet50를 제외한 모든 모델은 가로세로 150, 150 이미지를 입력으로 받을 수 있다. resnet50는 197, 197만 받도록 되어있어 이 모델만 따로 이미지 사이즈를 지정했다.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;running-on-floydhub&quot;&gt;Running on FloydHub&lt;/h2&gt;
-
-&lt;p&gt;FloydHub에 GPU 모드로 진입한 다음, 위 5개 모델을 각각의 노트북으로 만들고 TensorBoard를 callback으로 넣어 학습시켰다. Floyd 문서에 보니 GPU는 Tesla K80를 쓴다고 하는데, 아마존에서 얼마인지 대강 보니 3천불 정도 하는 듯 하다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/tesla_K80.png&quot; alt=&quot;Tesla K80 on Amazon&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;속도 비교를 위해 같은 VGG19 모델 코드를 FloydHub GPU 환경과 내 로컬 맥북 CPU로 돌려보았다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/floydhub_gpu.gif&quot; alt=&quot;FloydHub GPU(Tesla K80) / VGG19 Fine-Tuning 속도&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/local_cpu.gif&quot; alt=&quot;local CPU(Intel i7) / VGG19 Fine-Tuning 속도&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;FloydHub GPU에서는 epoch 하나가 거의 10초 내에 끝나는데 반해 로컬 CPU에서는 360초, 그러니까 전자가 대략 36배 빠르다고 볼 수 있다.&lt;/p&gt;
-
-&lt;p&gt;이번에는 돌려본 5가지 모델의 성능 비교를 위해 텐서보드를 실행시켜보았다. FloydHub를 실행시킬때 &lt;code class=&quot;highlighter-rouge&quot;&gt;--tensorboard&lt;/code&gt; 옵션을 주면 아래 그림과 같이 텐서보드 링크가 뜬다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/tensorboard_link.png&quot; alt=&quot;텐서보드 링크&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/tensorboard.png&quot; alt=&quot;텐서보드 모델 loss &amp;amp; accuracy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Validation Accuracy를 기준으로 보자면 ResNet &amp;gt; VGG16 &amp;gt; Xception &amp;amp; VGG19 &amp;gt; InceptionV3 순으로 성능이 좋았다. ResNet이 가장 성능이 좋을거라고 예상하기는 했는데, 그 과정이 흥미롭다. 나머지 모델들은 초반부터 validation accuracy의 개선 속도가 급격한데 반해, ResNet은 10번째 Epoch을 돌때까지만해도 그 정확도가 0.2 정도로 오지선다를 랜덤으로 찍는 수준을 기록했다. 또 validation loss 역시 다른 모델과 달리 급격하게 상승하는 추세를 보인다. 보통 training loss가 감소할 때 validation loss가 증가한다면 training dataset에 대한 오버피팅으로 보기에, 처음에는 이 데이터셋에 적용하기에는 ResNet의 구조가 너무 복잡한게 아닐까하는 의심도 들었다. 그런데 12번째 Epoch부터 Validation Accuracy가 거의 10%p씩 오르더니 이내 다른 모델을 추월해버렸다. 결과적으로 5가지 모델 중 가장 낮은 validation loss를 기록했다. 하지만 여전히 training result에 비해 validation result가 좋지 않은 점은 긍정적으로 해석하기 어려우며 그 원인 중 하나는 적은 데이터셋일 수도 있겠다는 생각이 든다. (Global Average Pooling 뒷단에 FC를 제거하고 바로 softmax로 넘겨보기도 했는데 결과는 비슷했다.)&lt;/p&gt;
-
-&lt;p&gt;또 한가지는 VGG16의 선방이다. 깊이로 따지자면 VGG19이, 구조적으로는 InceptionV3나 Xception이 더 나은 성능을 보일거라 예상했지만, ResNet에 가장 근접한 성과를 낸 것은 VGG16이었다. 층이 깊어질수록 학습이 어려워지는 것을 ResNet에서 residual connection으로 보완했다는 것을 생각해볼 때 그런 보완 구조 없이 단순히 컨볼루션 레이어를 깊게 쌓은 VGG의 경우 16이 19보다 더 나은 성능을 보이는 것일지도 모르겠다.&lt;/p&gt;
-
-&lt;h2 id=&quot;inference-with-resnet&quot;&gt;Inference with ResNet&lt;/h2&gt;
-&lt;p&gt;좀 수상하지만 강력한 성능을 보인 ResNet을 사용해서 얼굴 분류를 시도해보자. Keras를 이용해 간단히 학습을 진행해본 것처럼, 간단하게 모델을 저장하고 불러와서 인퍼런스를 돌려볼 수 있다. 모델을 저장할때 2개 파일을 만드는데, 하나는 모델 아키텍쳐가 저장된 json 파일이고, 다른 하나는 weight 정보를 담은 h5 파일이다. h5파일은 90.4MB 정도로 VGG에 비해 확실히 가벼웠다.&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;model_json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tl_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;resnet_model.json&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;w&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;json_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;json_file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;model_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;tl_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;save_weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;resnet.h5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;인퍼런스를 수행할 노트북에서는 아래처럼 파일을 불러와서 model을 만들면 된다.&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;with&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'resnet_model.json'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'r'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;loaded_model_json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;loaded_model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model_from_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loaded_model_json&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;loaded_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;load_weights&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'resnet.h5'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;urllib과 cv2를 적절히 활용해 구글 이미지 링크에서 이미지를 따와서 numpy array로 만든 다음,
-이를 resnet에 맞게 197, 197 사이즈로 변환하고 인퍼런스를 수행한 다음 결과를 디스플레이하는 코드를 만든다.&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;predict_who_is_who&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url_to_image&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    
-    &lt;span class=&quot;c&quot;&gt;## to fit ResNet&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;resized_img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;imresize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;197&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;197&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;adj_img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;expand_dims&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resized_img&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;255&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    
-    &lt;span class=&quot;c&quot;&gt;## make prediction&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;res&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;squeeze&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;loaded_model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;predict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;adj_img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    
-    &lt;span class=&quot;c&quot;&gt;## ground_truth&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'ahn'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'hong'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'moon'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'sim'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'you'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DataFrame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    
-    
-    &lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ax1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subplots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    
-    &lt;span class=&quot;c&quot;&gt;## present image&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;ax1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;imshow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cv2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cvtColor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;img&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cv2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;ax1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;axis&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;off&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;## present bar plot&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'bar'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;## annotate bar pot&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;rects&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;patches&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;round&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rects&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))]&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rects&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;height&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.01&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ha&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'center'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;va&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'bottom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Face recognition test with ResNet50&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fontsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;ax2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tick_params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;labelsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xticks&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rotation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'horizontal'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;결과는 아래와 같다.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/moon.png&quot; alt=&quot;문재인 - 성공&quot; /&gt;
-&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/ahn.png&quot; alt=&quot;안철수 - 성공&quot; /&gt;
-&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/hong.png&quot; alt=&quot;홍준표 - 실패&quot; /&gt;
-&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/sim.png&quot; alt=&quot;심상정 - 성공&quot; /&gt;
-&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/you.png&quot; alt=&quot;유승민 - 성공&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;마지막 번외 - 유담씨
-&lt;img src=&quot;/assets/transfer_learning_with_keras_on_floydhub/youdam.png&quot; alt=&quot;유담 - 실패?&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;참고자료&quot;&gt;참고자료&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;https://en.wikipedia.org/wiki/Keras&lt;/li&gt;
-  &lt;li&gt;http://nicolovaligi.com/history-inception-deep-learning-architecture.html&lt;/li&gt;
-  &lt;li&gt;https://datascience.stackexchange.com/questions/15328/what-is-the-difference-between-inception-v2-and-inception-v3&lt;/li&gt;
-  &lt;li&gt;https://www.pyimagesearch.com/2017/03/20/imagenet-vggnet-resnet-inception-xception-keras/&lt;/li&gt;
-  &lt;li&gt;https://www.quora.com/Why-does-a-depth-wise-separable-convolution-model-like-Keras-Xception-perform-exceptionally-well-compared-to-GoogleNet-Inception-or-any-other-TL-models&lt;/li&gt;
-  &lt;li&gt;https://arxiv.org/pdf/1610.02357.pdf&lt;/li&gt;
-  &lt;li&gt;https://blog.waya.ai/deep-residual-learning-9610bb62c355&lt;/li&gt;
-  &lt;li&gt;http://cv-tricks.com/cnn/understand-resnet-alexnet-vgg-inception/&lt;/li&gt;
-  &lt;li&gt;http://openresearch.ai/t/inception-v1-going-deeper-with-convolutions/40&lt;/li&gt;
-  &lt;li&gt;http://openresearch.ai/t/xception-deep-learning-with-depthwise-separable-convolutions/49&lt;/li&gt;
-  &lt;li&gt;https://www.quora.com/What-is-global-average-pooling&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 26 Nov 2017 09:00:00 +0900</pubDate>
-        <link>http://localhost:4000/python/2017/11/26/transfer_learning_with_keras_on_floydhub.html</link>
-        <guid isPermaLink="true">http://localhost:4000/python/2017/11/26/transfer_learning_with_keras_on_floydhub.html</guid>
         
         
         <category>Python</category>
