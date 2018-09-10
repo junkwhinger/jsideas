@@ -4,7 +4,7 @@ title:      "대한민국 vs 코스타리카전 축구 A 매치 데이터로 살
 date:       2018-09-10 10:00:00
 author:     "Jun"
 categories: "Python"
-image: //assets/korea_football/attackingthird.png
+image: /assets/korea_football/attackingthird.png
 ---
 
 # 대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기
