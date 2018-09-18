@@ -41,11 +41,11 @@ Let's dive into the dataset and find out some useful patterns.
 
 | Rank | Total               | Girl               | Boy                 |
 | ---- | ------------------- | ------------------ | ------------------- |
-| 1    | A - 3,792건 (10.2%) | A - 2,118건 (9.7%) | A - 1,674건 (10.8%) |
-| 2    | C - 2,887건 (7.7%)  | C - 1,880건 (8.6%) | B - 1,051건 (6.8%)  |
-| 3    | S - 2,862건 (7.7%)  | S - 1,825건 (8.4%) | M - 1,051건 (6.8%)  |
-| 4    | M - 2,615건 (7.0%)  | M - 1,564건 (7.2%) | S - 1,037건 (6.7%)  |
-| 5    | K - 2,262건 (6.1%)  | K - 1,531건 (7.0%) | C - 1,007건 (6.5%)  |
+| 1    | A - 3,792 (10.2%) | A - 2,118 (9.7%) | A - 1,674 (10.8%) |
+| 2    | C - 2,887 (7.7%)  | C - 1,880 (8.6%) | B - 1,051 (6.8%)  |
+| 3    | S - 2,862 (7.7%)  | S - 1,825 (8.4%) | M - 1,051 (6.8%)  |
+| 4    | M - 2,615 (7.0%)  | M - 1,564 (7.2%) | S - 1,037 (6.7%)  |
+| 5    | K - 2,262 (6.1%)  | K - 1,531 (7.0%) | C - 1,007 (6.5%)  |
 
 A is the most commonly chosen first letter in both sexes. B stands out among the boys' first letters.
 
@@ -54,11 +54,11 @@ A is the most commonly chosen first letter in both sexes. B stands out among the
 
 | Rank | Total               | Girl              | Boy               |
 | ---- | ------------------- | ----------------- | ----------------- |
-| 1    | Ma - 1,454건 (3.9%) | Ma - 907건 (4.2%) | Ma - 547건 (3.5%) |
-| 2    | Ka - 914건 (2.4%)   | Ka - 726건 (3.3%) | Ha - 368건 (2.4%) |
-| 3    | Sh - 864건 (2.3%)   | Sh - 715건 (3.3%) | Al - 336건 (2.2%) |
-| 4    | Ca - 856건 (2.3%)   | Ca - 624건 (2.9%) | Da - 305건 (2.0%) |
-| 5    | Al - 842건 (2.3%)   | Ch - 600건 (2.8%) | De - 300건 (1.9%) |
+| 1    | Ma - 1,454 (3.9%) | Ma - 907 (4.2%) | Ma - 547 (3.5%) |
+| 2    | Ka - 914 (2.4%)   | Ka - 726 (3.3%) | Ha - 368 (2.4%) |
+| 3    | Sh - 864 (2.3%)   | Sh - 715 (3.3%) | Al - 336 (2.2%) |
+| 4    | Ca - 856 (2.3%)   | Ca - 624 (2.9%) | Da - 305 (2.0%) |
+| 5    | Al - 842 (2.3%)   | Ch - 600 (2.8%) | De - 300 (1.9%) |
 
 M pops up in the top first two letters. The difference between sexes is a little bit more prominent than the first letter chart.
 
@@ -87,11 +87,11 @@ Sh, Ka, Ch, La, Jo are used more frequently in female names than male names. Mal
 
 | Rank | Total                | Girl                 | Boy                 |
 | ---- | -------------------- | -------------------- | ------------------- |
-| 1    | a - 10,693건 (28.6%) | a - 10,198건 (46.8%) | n - 3,123건 (20.1%) |
-| 2    | e - 6,471건 (17.3%)  | e - 4,989건 (22.9%)  | o - 1,519건 (9.8%)  |
-| 3    | n - 4,813건 (12.9%)  | n - 1,690건 (7.8%)   | e - 1,482건 (9.5%)  |
-| 4    | y - 1,992건 (5.3%)   | y - 1,036건 (4.8%)   | s - 1,448건 (9.3%)  |
-| 5    | s - 1,825건 (4.9%)   | i - 927건 (4.3%)     | r - 1,123건 (7.2%)  |
+| 1    | a - 10,693 (28.6%) | a - 10,198 (46.8%) | n - 3,123 (20.1%) |
+| 2    | e - 6,471 (17.3%)  | e - 4,989 (22.9%)  | o - 1,519 (9.8%)  |
+| 3    | n - 4,813 (12.9%)  | n - 1,690 (7.8%)   | e - 1,482 (9.5%)  |
+| 4    | y - 1,992 (5.3%)   | y - 1,036 (4.8%)   | s - 1,448 (9.3%)  |
+| 5    | s - 1,825 (4.9%)   | i - 927 (4.3%)     | r - 1,123 (7.2%)  |
 
 The last letter might hold some clues.
 Nearly half of the female names end with A. A fifth of them have E ending. These endings are not as dominant in male names as in female names.
@@ -118,11 +118,11 @@ Nearly half of the female names end with A. A fifth of them have E ending. These
 
 | Rank | Total               | Girl                 | Boy               |
 | ---- | ------------------- | -------------------- | ----------------- |
-| 1    | na - 2,419건 (6.5%) | na - 2,375건 (10.9%) | on - 890건 (5.7%) |
-| 2    | ne - 1,713건 (4.6%) | ne - 1,476건 (6.8%)  | an - 763건 (4.9%) |
-| 3    | ia - 1,510건 (4.0%) | ia - 1,472건 (6.8%)  | er - 558건 (3.6%) |
-| 4    | ie - 1,022건 (2.7%) | la - 909건 (4.2%)    | in - 482건 (3.1%) |
-| 5    | on - 1,000건 (2.7%) | ta - 837건 (3.8%)    | us - 476건 (3.1%) |
+| 1    | na - 2,419 (6.5%) | na - 2,375 (10.9%) | on - 890 (5.7%) |
+| 2    | ne - 1,713 (4.6%) | ne - 1,476 (6.8%)  | an - 763 (4.9%) |
+| 3    | ia - 1,510 (4.0%) | ia - 1,472 (6.8%)  | er - 558 (3.6%) |
+| 4    | ie - 1,022 (2.7%) | la - 909 (4.2%)    | in - 482 (3.1%) |
+| 5    | on - 1,000 (2.7%) | ta - 837 (3.8%)    | us - 476 (3.1%) |
 
 
 
@@ -222,8 +222,7 @@ So I reduced some of the hyperparameters to 1/10 or 1/5 of the ones suggested by
 
 
 ### Model Performance
-
-분류 성능 비교를 위해 논문의 베이스라인 모델 중 하나인 BiLSTM + MaxPooling 모델을 만들었다. Self Attention 모델과 같은 하이퍼파라미터를 사용했다 (사용하지 않는 레이어 제외).
+For classification performance evaluation I made a baseline BiLSTM + MaxPooling model that uses the same hyperparameter settings as the one with self-attention.
 
 | Models                        | Validation Accuracy |
 | ----------------------------- | ------------------- |
@@ -390,7 +389,7 @@ We get "Bank" but does it mean anything meaningful?
 
 In this simple research project, I implemented LSTM + Self Attention model to classify boy/girl names and visualized where the model paid attention. In many example cases, the model tends to pay special attention to how the names end. 'e' at the end makes 'Jun' female, but 'sik' makes it masculine. It coincides more or less with how I predict if it's he or she on hearing a person's name. Interpretable deep learning makes me think about how I think.
 
-
+My pytorch implementation is on my <a href="https://github.com/junkwhinger/babynames_classifier">github repo</a>.
 
 ## Reference
 <a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>  
