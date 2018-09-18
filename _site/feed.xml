@@ -6,9 +6,9 @@
 </description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 11 Sep 2018 01:44:24 +0900</pubDate>
-    <lastBuildDate>Tue, 11 Sep 2018 01:44:24 +0900</lastBuildDate>
-    <generator>Jekyll v3.8.3</generator>
+    <pubDate>Wed, 19 Sep 2018 00:02:41 +0900</pubDate>
+    <lastBuildDate>Wed, 19 Sep 2018 00:02:41 +0900</lastBuildDate>
+    <generator>Jekyll v3.7.3</generator>
     
       <item>
         <title>대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기</title>
@@ -146,7 +146,7 @@ source: https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trend
 &lt;p&gt;&lt;img src=&quot;/assets/korea_football/long.gif&quot; alt=&quot;장거리패스&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;중거리-패스&quot;&gt;중거리 패스&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/korea_football/mid.gif&quot; alt=&quot;장거리패스&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/mid.gif&quot; alt=&quot;중거리패스&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;단거리-패스&quot;&gt;단거리 패스&lt;/h3&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/korea_football/short.gif&quot; alt=&quot;단거리패스&quot; /&gt;&lt;/p&gt;
@@ -238,7 +238,7 @@ Name: time, dtype: int64
 &lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tight_layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;img src=&quot;korea_vs_costarica_data_analysis_files/korea_vs_costarica_data_analysis_14_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/korea_football/korea_vs_costarica_data_analysis_14_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;코스타리카는-개인돌파가-대한민국은-중장거리-패스를-많이-썼다&quot;&gt;코스타리카는 개인돌파가, 대한민국은 중장거리 패스를 많이 썼다.&lt;/h2&gt;
 &lt;p&gt;개인기가 좋은 남미팀이라서 그런지 코스타리카 공격의 26%는 개인돌파였다. 수치상으로는 한국의 개인돌파가 6회로, 코스타리카에 1회 더 많지만, 이보다 더 많은 패스가 중장거리로 이루어졌다.&lt;/p&gt;
@@ -778,7 +778,7 @@ Name: time, dtype: int64
 Name: time, dtype: int64
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;본 분석에 사용한 데이터셋은 &lt;a href=&quot;&quot;&gt;github&lt;/a&gt;에 공개되어있으니 마음껏 가져가셔도 됩니다.&lt;/p&gt;
+&lt;p&gt;본 분석에 사용한 데이터셋은 &lt;a href=&quot;https://github.com/junkwhinger/korea_football_attackingthird_data&quot;&gt;github&lt;/a&gt;에 공개되어있으니 마음껏 가져가셔도 됩니다.&lt;/p&gt;
 </description>
         <pubDate>Mon, 10 Sep 2018 19:00:00 +0900</pubDate>
         <link>http://localhost:4000/python/2018/09/10/korea_vs_costarica_data_analysis.html</link>
@@ -1564,6 +1564,769 @@ Name: time, dtype: int64
         <pubDate>Sat, 01 Sep 2018 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/python/2018/09/01/name_classifier.html</link>
         <guid isPermaLink="true">http://localhost:4000/python/2018/09/01/name_classifier.html</guid>
+        
+        
+        <category>Python</category>
+        
+      </item>
+    
+      <item>
+        <title>Self Attention: Name Classifier</title>
+        <description>&lt;h1 id=&quot;self-attention-name-classifier&quot;&gt;Self Attention: Name Classifier&lt;/h1&gt;
+
+&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+
+&lt;p&gt;On hearing a person’s name, we can often correctly tell if it’s he or she. Male names tend to have strong pronunciations like Mark, Robert, and Lucas. On the other hand, female names are likely to sound smoother like Lucy, Stella, and Valerie. Would a neural network be able to replicate our classification process? And what part of names would it pay attention to mainly?&lt;/p&gt;
+
+&lt;h2 id=&quot;dataset&quot;&gt;Dataset&lt;/h2&gt;
+
+&lt;p&gt;For this personal research project, I crawled commonly used baby names that are freely available on the internet. Some of them had metadata like origin and popularities.&lt;/p&gt;
+
+&lt;h3 id=&quot;example&quot;&gt;example&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;babyname&lt;/th&gt;
+      &lt;th&gt;sex&lt;/th&gt;
+      &lt;th&gt;origin&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Aakesh&lt;/td&gt;
+      &lt;td&gt;boy&lt;/td&gt;
+      &lt;td&gt;Indian&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Aaren&lt;/td&gt;
+      &lt;td&gt;boy&lt;/td&gt;
+      &lt;td&gt;Hebrew&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Abalina&lt;/td&gt;
+      &lt;td&gt;girl&lt;/td&gt;
+      &lt;td&gt;Hebrew&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt;…&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;exploration&quot;&gt;Exploration&lt;/h3&gt;
+
+&lt;p&gt;Let’s dive into the dataset and find out some useful patterns.&lt;/p&gt;
+
+&lt;h4 id=&quot;most-frequently-used-first-letter&quot;&gt;Most frequently used first letter&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;Total&lt;/th&gt;
+      &lt;th&gt;Girl&lt;/th&gt;
+      &lt;th&gt;Boy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;A - 3,792건 (10.2%)&lt;/td&gt;
+      &lt;td&gt;A - 2,118건 (9.7%)&lt;/td&gt;
+      &lt;td&gt;A - 1,674건 (10.8%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;C - 2,887건 (7.7%)&lt;/td&gt;
+      &lt;td&gt;C - 1,880건 (8.6%)&lt;/td&gt;
+      &lt;td&gt;B - 1,051건 (6.8%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;S - 2,862건 (7.7%)&lt;/td&gt;
+      &lt;td&gt;S - 1,825건 (8.4%)&lt;/td&gt;
+      &lt;td&gt;M - 1,051건 (6.8%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;M - 2,615건 (7.0%)&lt;/td&gt;
+      &lt;td&gt;M - 1,564건 (7.2%)&lt;/td&gt;
+      &lt;td&gt;S - 1,037건 (6.7%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;K - 2,262건 (6.1%)&lt;/td&gt;
+      &lt;td&gt;K - 1,531건 (7.0%)&lt;/td&gt;
+      &lt;td&gt;C - 1,007건 (6.5%)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;A is the most commonly chosen first letter in both sexes. B stands out among the boys’ first letters.&lt;/p&gt;
+
+&lt;h4 id=&quot;most-frequently-used-first-two-letters&quot;&gt;Most frequently used first two letters&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;Total&lt;/th&gt;
+      &lt;th&gt;Girl&lt;/th&gt;
+      &lt;th&gt;Boy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Ma - 1,454건 (3.9%)&lt;/td&gt;
+      &lt;td&gt;Ma - 907건 (4.2%)&lt;/td&gt;
+      &lt;td&gt;Ma - 547건 (3.5%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Ka - 914건 (2.4%)&lt;/td&gt;
+      &lt;td&gt;Ka - 726건 (3.3%)&lt;/td&gt;
+      &lt;td&gt;Ha - 368건 (2.4%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Sh - 864건 (2.3%)&lt;/td&gt;
+      &lt;td&gt;Sh - 715건 (3.3%)&lt;/td&gt;
+      &lt;td&gt;Al - 336건 (2.2%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;Ca - 856건 (2.3%)&lt;/td&gt;
+      &lt;td&gt;Ca - 624건 (2.9%)&lt;/td&gt;
+      &lt;td&gt;Da - 305건 (2.0%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;Al - 842건 (2.3%)&lt;/td&gt;
+      &lt;td&gt;Ch - 600건 (2.8%)&lt;/td&gt;
+      &lt;td&gt;De - 300건 (1.9%)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;M pops up in the top first two letters. The difference between sexes is a little bit more prominent than the first letter chart.&lt;/p&gt;
+
+&lt;h4 id=&quot;most-dominant-first-two-letters-by-sex&quot;&gt;Most dominant first two letters by sex&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;first_two_letters&lt;/th&gt;
+      &lt;th&gt;Girl_ratio&lt;/th&gt;
+      &lt;th&gt;Boy_ratio&lt;/th&gt;
+      &lt;th&gt;Absolute Difference&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Sh&lt;/td&gt;
+      &lt;td&gt;3.3%&lt;/td&gt;
+      &lt;td&gt;1.0%&lt;/td&gt;
+      &lt;td&gt;2.3%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;Ka&lt;/td&gt;
+      &lt;td&gt;3.3%&lt;/td&gt;
+      &lt;td&gt;1.2%&lt;/td&gt;
+      &lt;td&gt;2.1%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;Ch&lt;/td&gt;
+      &lt;td&gt;2.8%&lt;/td&gt;
+      &lt;td&gt;1.3%&lt;/td&gt;
+      &lt;td&gt;1.5%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;Ha&lt;/td&gt;
+      &lt;td&gt;0.9%&lt;/td&gt;
+      &lt;td&gt;2.4%&lt;/td&gt;
+      &lt;td&gt;1.5%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;Ca&lt;/td&gt;
+      &lt;td&gt;2.9%&lt;/td&gt;
+      &lt;td&gt;1.5%&lt;/td&gt;
+      &lt;td&gt;1.4%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;Ba&lt;/td&gt;
+      &lt;td&gt;0.5%&lt;/td&gt;
+      &lt;td&gt;1.7%&lt;/td&gt;
+      &lt;td&gt;1.2%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;Ga&lt;/td&gt;
+      &lt;td&gt;0.4%&lt;/td&gt;
+      &lt;td&gt;1.4%&lt;/td&gt;
+      &lt;td&gt;1.0%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;Jo&lt;/td&gt;
+      &lt;td&gt;1.8%&lt;/td&gt;
+      &lt;td&gt;1.0%&lt;/td&gt;
+      &lt;td&gt;0.8%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;La&lt;/td&gt;
+      &lt;td&gt;2.0%&lt;/td&gt;
+      &lt;td&gt;1.3%&lt;/td&gt;
+      &lt;td&gt;0.7%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;Co&lt;/td&gt;
+      &lt;td&gt;0.9%&lt;/td&gt;
+      &lt;td&gt;1.6%&lt;/td&gt;
+      &lt;td&gt;0.7%&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Sh, Ka, Ch, La, Jo are used more frequently in female names than male names. Male names prefer Ha, Ba, Ga, Co as their opening sequences. But the ratio gaps don’t seem to be widened significantly.&lt;/p&gt;
+
+&lt;h4 id=&quot;most-frequently-used-last-letter&quot;&gt;Most frequently used last letter&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;Total&lt;/th&gt;
+      &lt;th&gt;Girl&lt;/th&gt;
+      &lt;th&gt;Boy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;a - 10,693건 (28.6%)&lt;/td&gt;
+      &lt;td&gt;a - 10,198건 (46.8%)&lt;/td&gt;
+      &lt;td&gt;n - 3,123건 (20.1%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;e - 6,471건 (17.3%)&lt;/td&gt;
+      &lt;td&gt;e - 4,989건 (22.9%)&lt;/td&gt;
+      &lt;td&gt;o - 1,519건 (9.8%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;n - 4,813건 (12.9%)&lt;/td&gt;
+      &lt;td&gt;n - 1,690건 (7.8%)&lt;/td&gt;
+      &lt;td&gt;e - 1,482건 (9.5%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;y - 1,992건 (5.3%)&lt;/td&gt;
+      &lt;td&gt;y - 1,036건 (4.8%)&lt;/td&gt;
+      &lt;td&gt;s - 1,448건 (9.3%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;s - 1,825건 (4.9%)&lt;/td&gt;
+      &lt;td&gt;i - 927건 (4.3%)&lt;/td&gt;
+      &lt;td&gt;r - 1,123건 (7.2%)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The last letter might hold some clues.
+Nearly half of the female names end with A. A fifth of them have E ending. These endings are not as dominant in male names as in female names.&lt;/p&gt;
+
+&lt;h4 id=&quot;most-dominant-last-letter-by-sex&quot;&gt;Most dominant last letter by sex&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;last_letter&lt;/th&gt;
+      &lt;th&gt;Girl_ratio&lt;/th&gt;
+      &lt;th&gt;Boy_ratio&lt;/th&gt;
+      &lt;th&gt;Absolute Difference&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;a&lt;/td&gt;
+      &lt;td&gt;46.8%&lt;/td&gt;
+      &lt;td&gt;3.2%&lt;/td&gt;
+      &lt;td&gt;43.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;e&lt;/td&gt;
+      &lt;td&gt;22.9%&lt;/td&gt;
+      &lt;td&gt;9.5%&lt;/td&gt;
+      &lt;td&gt;13.4%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;7.8%&lt;/td&gt;
+      &lt;td&gt;20.1%&lt;/td&gt;
+      &lt;td&gt;12.3%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;o&lt;/td&gt;
+      &lt;td&gt;0.8%&lt;/td&gt;
+      &lt;td&gt;9.8%&lt;/td&gt;
+      &lt;td&gt;9.0%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;s&lt;/td&gt;
+      &lt;td&gt;1.7%&lt;/td&gt;
+      &lt;td&gt;9.3%&lt;/td&gt;
+      &lt;td&gt;7.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;r&lt;/td&gt;
+      &lt;td&gt;0.9%&lt;/td&gt;
+      &lt;td&gt;7.2%&lt;/td&gt;
+      &lt;td&gt;6.3%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;d&lt;/td&gt;
+      &lt;td&gt;0.7%&lt;/td&gt;
+      &lt;td&gt;5.9%&lt;/td&gt;
+      &lt;td&gt;5.2%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;l&lt;/td&gt;
+      &lt;td&gt;2.6%&lt;/td&gt;
+      &lt;td&gt;6.6%&lt;/td&gt;
+      &lt;td&gt;4.0%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;k&lt;/td&gt;
+      &lt;td&gt;0.1%&lt;/td&gt;
+      &lt;td&gt;2.7%&lt;/td&gt;
+      &lt;td&gt;2.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;t&lt;/td&gt;
+      &lt;td&gt;1.5%&lt;/td&gt;
+      &lt;td&gt;4.0%&lt;/td&gt;
+      &lt;td&gt;2.5%&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;most-frequently-used-last-two-letters&quot;&gt;Most frequently used last two letters&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;Total&lt;/th&gt;
+      &lt;th&gt;Girl&lt;/th&gt;
+      &lt;th&gt;Boy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;na - 2,419건 (6.5%)&lt;/td&gt;
+      &lt;td&gt;na - 2,375건 (10.9%)&lt;/td&gt;
+      &lt;td&gt;on - 890건 (5.7%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;ne - 1,713건 (4.6%)&lt;/td&gt;
+      &lt;td&gt;ne - 1,476건 (6.8%)&lt;/td&gt;
+      &lt;td&gt;an - 763건 (4.9%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;ia - 1,510건 (4.0%)&lt;/td&gt;
+      &lt;td&gt;ia - 1,472건 (6.8%)&lt;/td&gt;
+      &lt;td&gt;er - 558건 (3.6%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;ie - 1,022건 (2.7%)&lt;/td&gt;
+      &lt;td&gt;la - 909건 (4.2%)&lt;/td&gt;
+      &lt;td&gt;in - 482건 (3.1%)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;on - 1,000건 (2.7%)&lt;/td&gt;
+      &lt;td&gt;ta - 837건 (3.8%)&lt;/td&gt;
+      &lt;td&gt;us - 476건 (3.1%)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;most-dominant-last-two-letters-by-sex&quot;&gt;Most dominant last two letters by sex&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Rank&lt;/th&gt;
+      &lt;th&gt;last_letter&lt;/th&gt;
+      &lt;th&gt;Girl_ratio&lt;/th&gt;
+      &lt;th&gt;Boy_ratio&lt;/th&gt;
+      &lt;th&gt;Absolute Difference&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;na&lt;/td&gt;
+      &lt;td&gt;10.9%&lt;/td&gt;
+      &lt;td&gt;0.3%&lt;/td&gt;
+      &lt;td&gt;10.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;ia&lt;/td&gt;
+      &lt;td&gt;6.8%&lt;/td&gt;
+      &lt;td&gt;0.2%&lt;/td&gt;
+      &lt;td&gt;6.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;ne&lt;/td&gt;
+      &lt;td&gt;6.8%&lt;/td&gt;
+      &lt;td&gt;1.5%&lt;/td&gt;
+      &lt;td&gt;5.3%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;on&lt;/td&gt;
+      &lt;td&gt;0.5%&lt;/td&gt;
+      &lt;td&gt;5.7%&lt;/td&gt;
+      &lt;td&gt;5.2%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;la&lt;/td&gt;
+      &lt;td&gt;4.2%&lt;/td&gt;
+      &lt;td&gt;0.2%&lt;/td&gt;
+      &lt;td&gt;4.0%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;an&lt;/td&gt;
+      &lt;td&gt;0.9%&lt;/td&gt;
+      &lt;td&gt;4.9%&lt;/td&gt;
+      &lt;td&gt;4.0%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;ta&lt;/td&gt;
+      &lt;td&gt;3.8%&lt;/td&gt;
+      &lt;td&gt;0.2%&lt;/td&gt;
+      &lt;td&gt;3.6%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;ra&lt;/td&gt;
+      &lt;td&gt;3.6%&lt;/td&gt;
+      &lt;td&gt;0.2%&lt;/td&gt;
+      &lt;td&gt;3.4%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;er&lt;/td&gt;
+      &lt;td&gt;0.4%&lt;/td&gt;
+      &lt;td&gt;3.6%&lt;/td&gt;
+      &lt;td&gt;3.2%&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;da&lt;/td&gt;
+      &lt;td&gt;3.3%&lt;/td&gt;
+      &lt;td&gt;0.1%&lt;/td&gt;
+      &lt;td&gt;3.2%&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The simple aggregations above revealed that the last one or two letters might influence how we tell male names from female names. Would a neural classifier perform better than simple rules? Would it also pay attention to how the names end?&lt;/p&gt;
+
+&lt;h2 id=&quot;model&quot;&gt;Model&lt;/h2&gt;
+
+&lt;p&gt;Text classification models usually extract patterns from text via RNN or CNN layers before processing them through a single or multiple fully connected layers to obtain probability values for each class.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/basic_lstm_classifier.png&quot; alt=&quot;basic_lstm_classifier&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;BiLSTM model above does perform well, but it does not tell us the evidence that it takes into account. I could use occlusion methods like Local Interpretable Model-Agnostic Explanations(LIME), but these methods run the model multiple times with masked inputs to figure out the part that contributes the most. There must be a more straight-forward and convenient way to do this.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-structure-self-attentive-sentence-embedding&quot;&gt;A Structure Self-Attentive Sentence Embedding&lt;/h3&gt;
+
+&lt;p&gt;A Structured Self-Attentive Sentence Embedding (2017.03) introduces Self-Attention to instill visibility into the text model.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/self_attention.png&quot; alt=&quot;self_attention&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The self-attention model uses the same BiLSTM feature extractor as an ordinary text classifier. It passes the feature through two fully connected layers (W_s1, W_s2) to achieve Attention matrix whose shape is n_token x hops. &lt;code class=&quot;highlighter-rouge&quot;&gt;da&lt;/code&gt; for W_s1 and &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt; for W_s2 are hyperparameters. Compared to the conventional attention mechanisms that output an attention vector, the attention matrix has the following benefits:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Multiple attention vectors represent multiple features that a sentence has.&lt;/li&gt;
+  &lt;li&gt;The model does not need extra inputs to obtain attention.&lt;/li&gt;
+  &lt;li&gt;Attention alleviates the burden of LSTM as it accesses all the time steps of the LSTM layer.&lt;/li&gt;
+  &lt;li&gt;Attention matrix is incredibly easy to visualize as a heat map whose size is hops x n_token.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A softmax operation is included in the attention part to normalize each vector so that the visualized heat map would be understood intuitively.&lt;/p&gt;
+
+&lt;p&gt;To obtain the classification result, the model multiplies the LSTM output with the attention matrix before flattening and fully connected layers. Some pruning methods are suggested by the paper to decrease the trainable parameters, but I skipped this part as my model itself was not big enough to be pruned.&lt;/p&gt;
+
+&lt;h3 id=&quot;loss-function&quot;&gt;Loss Function&lt;/h3&gt;
+
+&lt;p&gt;In addition to the cross-entropy loss for classification error, the paper introduces another loss function called &lt;code class=&quot;highlighter-rouge&quot;&gt;Penalization Term&lt;/code&gt;. The attention matrix is composed of multiple vectors that focus on specific parts of the input sentence. It will be of a huge waste if several attention vectors end up looking at the same area. Penalization term prevents this from happening.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;$ P =&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;(AA^T - I )&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;_F^2 $&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;The attention matrix $A$ is multiplied with its own transposed matrix before subtracting an identity matrix. The penalization term is the Frobenius norm of the operation.&lt;/p&gt;
+
+&lt;h2 id=&quot;experiment&quot;&gt;Experiment&lt;/h2&gt;
+
+&lt;h3 id=&quot;training-setting&quot;&gt;Training Setting&lt;/h3&gt;
+
+&lt;p&gt;The authors carried out some interesting experiments such as classifying emotions of reviews and predicting ages of Twitterians by their tweets. The fundamental component of the inputs used in these experiments is words.&lt;/p&gt;
+
+&lt;p&gt;However, in my experiment, the basic unit is alphabets. As the diversity of alphabet letters is far less complicated than of English word I thought the hyperparameters used in the paper would be much of an overkill to classify names.&lt;/p&gt;
+
+&lt;p&gt;So I reduced some of the hyperparameters to 1/10 or 1/5 of the ones suggested by the paper.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;num_epochs&quot;: 10,
+    &quot;batch_size&quot;: 16,
+    &quot;save_summary_steps&quot;: 100,
+    &quot;learning_rate&quot;: 0.001,
+    &quot;weight_decay&quot;: 0.0001,
+    &quot;embedding_dim&quot;: 100,
+    &quot;hidden_dim&quot;: 300,
+    &quot;nb_layers&quot;: 1,
+    &quot;nb_hops&quot;: 5,
+    &quot;da&quot;: 30,
+    &quot;fc_ch&quot;: 300,
+    &quot;nb_classes&quot;: 2,
+    &quot;device&quot;: &quot;cpu&quot;,
+    &quot;train_size&quot;: 33609,
+    &quot;val_size&quot;: 3735,
+    &quot;vocab_size&quot;: 35,
+    &quot;coef&quot;: 0.5,
+    &quot;isPenalize&quot;: 1,
+    &quot;dropout&quot;: 0.0,
+    &quot;model&quot;: &quot;selfattention&quot;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;model-performance&quot;&gt;Model Performance&lt;/h3&gt;
+
+&lt;p&gt;분류 성능 비교를 위해 논문의 베이스라인 모델 중 하나인 BiLSTM + MaxPooling 모델을 만들었다. Self Attention 모델과 같은 하이퍼파라미터를 사용했다 (사용하지 않는 레이어 제외).&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Models&lt;/th&gt;
+      &lt;th&gt;Validation Accuracy&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BiLSTM + MaxPooling (epoch 8)&lt;/td&gt;
+      &lt;td&gt;0.884&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Self Attention (epoch 10)&lt;/td&gt;
+      &lt;td&gt;0.892&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;In line with the experimental results of the paper, the self-attention model outperformed the baseline model regarding validation accuracy. The training accuracy was about the same, indicating that the model learned generalized representations.&lt;/p&gt;
+
+&lt;p&gt;By class…&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Models&lt;/th&gt;
+      &lt;th&gt;Precision(girl)&lt;/th&gt;
+      &lt;th&gt;Precision(boy)&lt;/th&gt;
+      &lt;th&gt;Recall(girl)&lt;/th&gt;
+      &lt;th&gt;Recall(boy)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BiLSTM + MaxPooling&lt;/td&gt;
+      &lt;td&gt;0.901&lt;/td&gt;
+      &lt;td&gt;0.860&lt;/td&gt;
+      &lt;td&gt;0.900&lt;/td&gt;
+      &lt;td&gt;0.862&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Self Attention&lt;/td&gt;
+      &lt;td&gt;0.903&lt;/td&gt;
+      &lt;td&gt;0.876&lt;/td&gt;
+      &lt;td&gt;0.913&lt;/td&gt;
+      &lt;td&gt;0.862&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Neither of them produced biased predictions.&lt;/p&gt;
+
+&lt;h2 id=&quot;visualizing-self-attention&quot;&gt;Visualizing Self Attention&lt;/h2&gt;
+
+&lt;h3 id=&quot;attention-heatmap&quot;&gt;Attention Heatmap&lt;/h3&gt;
+
+&lt;p&gt;And here comes the hidden purpose of this blog post. Which part of the names did the model pay attention to before making the final decision? As explained above, each row vector of the attention matrix sums up to 1. All I have to do is to pass the numpy array to matplotlib.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/attention_heatmap.png&quot; alt=&quot;attention_heatmap&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The heat map above shows how each attention vector highlights different parts of the name. During hyperparameter tuning, I set &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt; as 30 and ended up seeing nearly all the letters highlighted. The model performance was not inferior, but unnecessarily large hops severely damaged the model interpretability.&lt;/p&gt;
+
+&lt;h3 id=&quot;attention-on-names&quot;&gt;Attention on Names&lt;/h3&gt;
+
+&lt;p&gt;To make it more visually appealing, I summed up all the row vectors and normalized it (softmax) to overlay on the text directly.&lt;/p&gt;
+
+&lt;p&gt;Here are some of the famous names from Happy Potter.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/harrypotter.png&quot; alt=&quot;harrypotter&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Apart from Harry, Hermione, Albus, and Draco, attentions tend to locate at the end of the names. It agrees with my previous hypothesis and simple aggregation results.&lt;/p&gt;
+
+&lt;p&gt;The following are the characters from Marvel Cinematic Universe.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/mcu.png&quot; alt=&quot;mcu&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The model thought Tony and Loki as girly names and pepper as a boy’s name. ‘er’ must be an unusual ending for female names.&lt;/p&gt;
+
+&lt;p&gt;How would the model react to the various endings?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_cat.png&quot; alt=&quot;variants_of_cat&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;‘ne’ and ‘na’ endings boost the probability for female.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_chris.png&quot; alt=&quot;variants_of_chris&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Chris and Christina are classified as female names by the model, but the ending ‘o’ flips the result. Christian is misclassified as a female name.&lt;/p&gt;
+
+&lt;p&gt;Albeit some prediction mistakes, the model does do its job. Would it also work decently on the names that it has nearly never seen before? The majority of the names in my dataset have western origins. Only a handful are from South Korea. Let’s see how the model works on my colleagues’ names.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/koreanboys.png&quot; alt=&quot;koreanboys&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Boys are all correctly classified.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/koreangirls.png&quot; alt=&quot;koreangirls&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Girls are all incorrect. It seems that the typical Korean female name endings are perceived boyish by the model.&lt;/p&gt;
+
+&lt;p&gt;Lastly, what about my own name?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/variants_of_junsik.png&quot; alt=&quot;variants_of_junsik&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The model predicted Jun as a girly name, but its probability is much lower than June’s. So June did sound female to the neural network because of the &lt;code class=&quot;highlighter-rouge&quot;&gt;e&lt;/code&gt; at the end.&lt;/p&gt;
+
+&lt;h3 id=&quot;on-embedding-space&quot;&gt;On Embedding Space&lt;/h3&gt;
+
+&lt;p&gt;During the forward propagation, the model obtains the embedded representation of the input data (name in my case). If the embedding matrices are numerical versions of the input texts, would they be forming clusters based on their semantic meaning and features?&lt;/p&gt;
+
+&lt;p&gt;I flattened the embedding matrix into a single vector and reduced its dimensions to 2 using TSNE algorithm. It took too long to process all 30,000 names, so I picked the most popular 100 names from each sex for visualization.&lt;/p&gt;
+
+&lt;p&gt;First of all, by sex.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/bySex.png&quot; alt=&quot;bySex&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;TSNE works wonderfully like in many other cases. Boys’ names form a big cluster on the top right corners and girls’ names bottom left. It seems that the names that are located close to each other tend to end the same.&lt;/p&gt;
+
+&lt;p&gt;Would the origins of the names influence how they end?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/byOrigin.png&quot; alt=&quot;byOrigin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It’s not as apparent as sex, but the names tend to cluster by their origins. Grayson, Jackson, Brandon, Jameson from the UK, Valentina, Emilia, Victoria, Aurora, Olivia from Latin heritage.&lt;/p&gt;
+
+&lt;p&gt;male by origin-&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/boysByOrigin.png&quot; alt=&quot;boysByOrigin&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;female by origin-&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/girlsByOrigin.png&quot; alt=&quot;girlsByOrigin&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;matrix-computation-emilia---emily--lucy&quot;&gt;Matrix Computation: Emilia - Emily + Lucy?&lt;/h3&gt;
+
+&lt;p&gt;King - Man + Woman = Queen은 Word Embedding의 멋진 사례 중 하나로 빠짐없이 등장한다. 왕에서 남자라는 성을 제거하면 권력이 남고, 그 권력을 여자라는 성에 더하면 여왕이 된다. 관념적으로도 말이 되고 간단한 사칙연산으로도 말이 된다. 뉴럴 네트워크를 통해 얻은 숫자 뭉치가 우리가 가진 관념적인 정보를 담고 있음을 보여주는 멋진 결과다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/king_to_queen.jpeg&quot; alt=&quot;king_to_queen&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-using-word-embedding-and-convolutional-neural-networks-on-keras-163197aef623&lt;/p&gt;
+
+&lt;p&gt;단어와 마찬가지로 이름을 임베딩 스페이스상에 표현할 수 있다면 사칙연산을 통해 재밌는 결과를 만들어볼 수 있을까? 이름은 단어만큼 풍부한 의미를 가지지는 않지만, 그냥 해보자.&lt;/p&gt;
+
+&lt;p&gt;먼저 Training과 Validation 데이터셋을 모두 모델에 넣어 이름의 임베딩을 얻었다. 각 임베딩은 &lt;code class=&quot;highlighter-rouge&quot;&gt;hops&lt;/code&gt;x&lt;code class=&quot;highlighter-rouge&quot;&gt;hidden_dim * 2&lt;/code&gt;크기의 매트릭스 형태로 내 실험에서는 5x600 크기였다. 이름 3개를 고른 후 element-wise로 - + 연산을 수행하여 query matrix를 만든다. 그리고 이 query matrix와 모든 embedding matrix간의 matrix euclidean distance를 구하고, distance가 가장 낮은 5개를 출력해보았다.&lt;/p&gt;
+
+&lt;p&gt;1) Emilia - Emily  + Lucy = Lucia!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/emily.png&quot; alt=&quot;emily&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 될거라고 생각했는데 실제로 됐다!&lt;/p&gt;
+
+&lt;p&gt;2) Susie - Susanne + Roxie = Roxie!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/susie.png&quot; alt=&quot;susie&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3) Christina - Christine + Austine = Austina!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/christina.png&quot; alt=&quot;christina&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;예상과 같은 결과가 나오긴 하지만 King - Man + Woman = Queen 만큼 어떤 추상적인 의미를 조작했다고 보기는 어렵다. 예를 들어 “Paul”에서 “John”을 뺀 다음 “Hank”를 더하면 어떨까?&lt;/p&gt;
+
+&lt;p&gt;4) Paul - John + Hank = ?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/selfattention/paul.png&quot; alt=&quot;paul&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;“Bank”라는 결과를 얻을 수 있지만 어떤 로직이나 의미가 느껴지지 않는다.&lt;/p&gt;
+
+&lt;h2 id=&quot;outro&quot;&gt;Outro&lt;/h2&gt;
+
+&lt;p&gt;이번 포스팅에서는 LSTM + Self Attention 모델을 사용해 남아 / 여아 이름을 분류하는 모델을 만들고, Attention을 통해 뉴럴 네트워크가 이름의 어떤 부분에 집중했는지 시각화해보았다. 뉴럴 네트워크가 집중했던 흔적은 보통 이름의 끝 부분에 남겨져 있었다. 같은 Jun이라도 e가 붙으면 여자가 되고 sik이 붙으면 남자가 되었다. 분석 전에 내가 어렴풋이 생각했던 가설과 비슷해 놀라웠다. 또 2차원 공간에 뿌려진 이름들이 성별이나 문화권에 따라 끼리끼리 모이는 점도 흥미로웠다. 해석가능한 딥러닝은 내가 생각하는 방식을 되돌아보는 재미가 있다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://arxiv.org/pdf/1703.03130.pdf&quot;&gt;A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING&lt;/a&gt;&lt;br /&gt;
+&lt;a href=&quot;https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding&quot;&gt;An open-source implementation of the paper ‘A Structured Self-Attentive Sentence Embedding’ published by IBM and MILA.&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Sep 2018 09:00:00 +0900</pubDate>
+        <link>http://localhost:4000/python/2018/09/01/name_classifier-copy.html</link>
+        <guid isPermaLink="true">http://localhost:4000/python/2018/09/01/name_classifier-copy.html</guid>
         
         
         <category>Python</category>
@@ -6695,126 +7458,6 @@ tf.keras에서 제공하는 Conv2D는 padding이 &lt;code class=&quot;highlighte
         <pubDate>Thu, 04 Jan 2018 09:00:00 +0900</pubDate>
         <link>http://localhost:4000/python/2018/01/04/class_activation_map.html</link>
         <guid isPermaLink="true">http://localhost:4000/python/2018/01/04/class_activation_map.html</guid>
-        
-        
-        <category>Python</category>
-        
-      </item>
-    
-      <item>
-        <title>The First and Second Derivatives and Local Minima</title>
-        <description>&lt;script type=&quot;text/javascript&quot; async=&quot;&quot; src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;
-&lt;/script&gt;
-
-&lt;h2 id=&quot;the-first-and-second-derivatives-and-local-minima&quot;&gt;The First and Second Derivatives and Local Minima&lt;/h2&gt;
-
-&lt;p&gt;Whilst brushing up on linear algebra, I stumbled upon this &lt;a href=&quot;https://math.dartmouth.edu/opencalc2/cole/lecture8.pdf&quot;&gt;webpage&lt;/a&gt; that provides a nice and short explanation on the first and second derivatives. To deepen my understanding I visualised the relationship between the first and second derivatives and local minimum / maximum.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-meaning-of-the-first-and-second-derivatives&quot;&gt;The Meaning of the First and Second Derivatives&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;the function &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;its first derivative &lt;script type=&quot;math/tex&quot;&gt;f'(x)&lt;/script&gt; is the slope of the tangent line at point x
-    &lt;ul&gt;
-      &lt;li&gt;it tells whether the function is increasing or decreasing and how much it is increasing or decreasing&lt;/li&gt;
-      &lt;li&gt;if the first derivative is 0, x is called a critical point of &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;its second derivative &lt;script type=&quot;math/tex&quot;&gt;f''(x)&lt;/script&gt;
-    &lt;ul&gt;
-      &lt;li&gt;it tells if the first derivative is increasing or decreasing. when the second derivative is positive, the curve &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; is concave up, and vice versa.&lt;/li&gt;
-      &lt;li&gt;when the second derivative is 0 then we do not know anything new about the behaviour of &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; at that point&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;critical-points-and-the-second-derivative-test&quot;&gt;Critical Points and the Second Derivative Test&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;we can use the second derivative to find out when x is a local maximum or minimum&lt;/li&gt;
-  &lt;li&gt;suppose that x is a critical point (first derivative = 0) and the second derivative is positive.
-    &lt;ul&gt;
-      &lt;li&gt;the second derivative tells us that the first derivative is increasing at that point and the graph is concave up.&lt;/li&gt;
-      &lt;li&gt;the only way to visualise this is local minimum where the slope of the function is zero but the graph is concave up.&lt;/li&gt;
-      &lt;li&gt;when the second derivative is negative with x being the critical point, it means that x is the local maximum.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;visualisation-with-python&quot;&gt;Visualisation with Python&lt;/h3&gt;
-&lt;p&gt;Sympy is a great python library when playing with mathematical symbols and complex formulas. Taking a derivative is easy with Sympy.&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sympy&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matplotlib&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inline&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Suppose &lt;script type=&quot;math/tex&quot;&gt;f(x) = x^3 - 9x^2 + 15x - 7&lt;/script&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Symbol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'x'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## the first derivative&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;yfirst&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;diff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yfirst&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;3&lt;em&gt;x**2 - 18&lt;/em&gt;x + 15&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## the second derivative&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ysecond&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;yfirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;diff&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ysecond&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;blockquote&gt;
-  &lt;blockquote&gt;
-    &lt;p&gt;6*x - 18&lt;/p&gt;
-  &lt;/blockquote&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## input x range&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;linspace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## corresponding y, first_derivative, second_derivative&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;test_y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;test_y_f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;yfirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;test_y_s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ysecond&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;v&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;fig&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subplots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'black'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'function_f'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_y_f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'red'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'first_order'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test_y_s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'blue'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'second_order'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;zeros&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;test_x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'g--'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'y=0'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;circle1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Circle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'red'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;circle2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Circle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'r'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_artist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;circle1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_artist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;circle2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;annotate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'local maximum'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xytext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fontsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;annotate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'local minimum'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xytext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fontsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;ax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fontsize&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/The%20First%20and%20Second%20Derivatives%20and%20Local%20Minima_files/The%20First%20and%20Second%20Derivatives%20and%20Local%20Minima_10_0.png&quot; alt=&quot;png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As stated above, the function is at local maximum when the first derivative is at 0 and the second derivative is negative. And it’s at local minimum when the second derivative is positive.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 31 Dec 2017 09:00:00 +0900</pubDate>
-        <link>http://localhost:4000/python/2017/12/31/The-First-and-Second-Derivatives-and-Local-Minima.html</link>
-        <guid isPermaLink="true">http://localhost:4000/python/2017/12/31/The-First-and-Second-Derivatives-and-Local-Minima.html</guid>
         
         
         <category>Python</category>
