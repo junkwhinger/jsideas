@@ -417,6 +417,11 @@ Voila! 예전에 처음 이미지 분류 모델을 만들때만 하더라도, �
 end.
 
 
+## Related Posts
+- <a href="https://jsideas.net/python/2018/01/12/grad_cam.html">Grad-CAM: 대선주자 얼굴 위치 추적기</a>  
+- <a href="https://jsideas.net/python/2018/07/03/acol.html">Adversarial Complementary Learning</a>
+
+
 
 ## Reference
 - https://arxiv.org/abs/1512.04150
