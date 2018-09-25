@@ -3,8 +3,7 @@ layout:     post
 title:      "Vigenere Cypher"
 date:       2015-05-05 22:30:00
 author:     "Jun"
-categories: "Python"
-header-img: "img/post-bg-05.jpg"
+tags: [python]
 ---
 
 <h2 class="section-heading">Vigenere Cypher</h2>

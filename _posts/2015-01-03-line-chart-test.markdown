@@ -3,13 +3,14 @@ layout:     post
 title:      "A Simple Line Chart with d3.js"
 date:       2015-01-03 17:54:00
 author:     "Jun"
-categories: "d3.js"
 header-img: "img/post-bg-05.jpg"
+tags: [d3.js]
+
 ---
 <h2 class="section-heading">A line chart using d3.js</h2>
 
 <div id="chart"></div>
-<link href="/d3_css/line_chart.css" rel='stylesheet'>
+<link href="/assets/materials/20150103/line_chart.css" rel='stylesheet'>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script type="text/javascript">
    
@@ -43,7 +44,7 @@ var svg = d3.select("div#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv("/d3_data/data.tsv", function(error, data) {
+d3.tsv("/assets/materials/20150103/data.tsv", function(error, data) {
   data.forEach(function(d) {
     d.date = parseDate(d.date);
     d.close = +d.close;
@@ -107,7 +108,7 @@ var svg = d3.select("div#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv("/d3_data/data.tsv", function(error, data) {
+d3.tsv("/assets/materials/20150103/data.tsv", function(error, data) {
   data.forEach(function(d) {
     d.date = parseDate(d.date);
     d.close = +d.close;

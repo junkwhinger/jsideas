@@ -3,8 +3,9 @@ layout:     post
 title:      "Avengers 2015 - communication network"
 date:       2015-05-30 01:50:00
 author:     "Jun"
-categories: "d3.js"
-header-img: "img/post-bg-05.jpg"
+author:     "Jun"
+tags: [d3.js, data visualisation]
+
 ---
 
 <h2 class="section-heading">Avengers: Age of Ultron [2015] - communication network using d3.js</h2>
@@ -16,7 +17,7 @@ header-img: "img/post-bg-05.jpg"
 
 <div id="chart"></div>
 
-<link href="/d3_css/avengers_2015.css" rel="stylesheet">
+<link href="/assets/materials/20150530/avengers_2015.css" rel="stylesheet">
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript">
 
@@ -35,7 +36,7 @@ var svg = d3.select("div#chart").append("svg")
     .attr("height", height);
 
 
-d3.json("/d3_data/avengers_2015.json", function(error, graph) {
+d3.json("/assets/materials/20150530/avengers_2015.json", function(error, graph) {
   force
       .nodes(graph.nodes)
       .links(graph.links)

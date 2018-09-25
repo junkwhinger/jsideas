@@ -2,8 +2,9 @@
 layout: post
 title:  "The Hacking Team - 'SKA' emails"
 date:   2015-07-21 00:34:25
-categories: python
-image: /assets/nsa_header.jpg
+img: 20150721.png
+tags: [python, data analytics]
+
 ---
 
 <h2>'The Hacking Team' Crisis in South Korea</h2>
@@ -31,7 +32,7 @@ image: /assets/nsa_header.jpg
 
 공개된 메일 중 검색 키워드가 포함된, 즉 5163부대와 관련된 메일은 2010년 8월부터 나오기 시작합니다. 해당 시점의 바에 마우스를 올려보면 해당월에 가장 많이 대화가 진행되었던 (Re:, Fwd: 등이 가장 많은) 이메일을 찾아볼 수 있는데, `nanatech`가 제목과 수신인에 등장합니다. 메일 본문을 추적해보면 2010년 8월부터 프로그램 도입에 대한 논의가 오간 모양입니다. 실제로 2010년 8월에 표시된 <a href="https://wikileaks.org/hackingteam/emails/emailid/440959#searchresult">440959번</a> 메일을 보면 아래와 같은 답변 메일이 달려있습니다.
 
-![email-440959](/assets/ska_leaks/sales.png)
+![email-440959](/assets/materials/20150721/sales.png)
 
 내용 말미에 보면 `스카이프와 같은 암호화된 컨텐츠에 대한 접근`을 위해 `다른 이탈리안 회사`를 소개해주는데 그게 바로 `The Hacking Team`입니다. 그리고 이 메일이 해킹팀에도 전해져 5163부대로 `Remote Control System` 관련 문서를 전송하는 등 향후 계약을 위한 논의가 준비되는 것으로 보입니다.
 
@@ -514,5 +515,5 @@ image: /assets/nsa_header.jpg
 
 5163부대가 누구를 타겟으로 RCS 프로그램을 사용했는지는 아직 아무도 모릅니다. 다만 분석 결과, 2011년 말~2012년 초의 어느 시점부터 5163부대에서 RCS 프로그램을 운용해왔고, 지속적인 추가계약, 유지보수, 트레이닝을 받아왔으며, 이 과정에서 양측이 한국과 밀라노에서 지속적으로 접선해왔다는 것이 드러났습니다. 5163부대는 어떤 목적으로 RCS 프로그램을 사용했던 걸까요? 현 국정원의 주장처럼 내국인 사찰은 없었던 것일까요? 최근에 안타깝게 자살을 선택한 국정원 직원은 The Hacking Team이나 Nanatech와 어떤 관계가 있었을까요? 우리나라의 사이버 보안을 해치지 않으면서도 국정원의 잘못된 점이 있었다면 확실히 개선하여 국민들이 가진 의구심을 해소할 수 있도록 현 국정원 사태가 공명정대한 결말로 이어졌으면 좋겠습니다.  
 
-[시사인]:		   http://m.sisainlive.com/news/articleView.html?idxno=23895
-[위키리크스]:		   https://wikileaks.org/hackingteam/emails
+<a href="http://m.sisainlive.com/news/articleView.html?idxno=23895">[시사인]</a>		   
+<a href="https://wikileaks.org/hackingteam/emails">[위키리크스]</a>		   

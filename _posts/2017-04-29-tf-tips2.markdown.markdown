@@ -3,8 +3,8 @@ layout:     post
 title:      "TF: tips 2 - 개념 정리"
 date:       2017-05-01 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/tf/header.jpg
+img: 20170501.png
+tags: [python, deep learning, tensorflow]
 ---
 
 ## tf tips. 2 - TensorFlow 개념 정리
@@ -101,7 +101,7 @@ plt.imshow(mnist.train.images[0].reshape([28,28]))
 
 
 
-![png](/assets/basic%20tensorflow%20tutorial_files/basic%20tensorflow%20tutorial_16_1.png)
+![png](/assets/materials/20170501/basic%20tensorflow%20tutorial_16_1.png)
 
 
 `tensorflow`에는 MNIST 데이터가 이미 들어있어서 위와 같이 편리하게 가져올 수 있다. 하나의 손글씨는 위와 같이 784개의 float으로 된 벡터로 표현되어 있다. 이를 시각화하려면 28x28로 쉐입을 변환한다음 `plt.imshow`를 쓰면 된다.
@@ -1329,7 +1329,7 @@ plt.show()
 ```
 
 
-![png](/assets/basic%20tensorflow%20tutorial_files/basic%20tensorflow%20tutorial_45_0.png)
+![png](/assets/materials/20170501/basic%20tensorflow%20tutorial_45_0.png)
 
 
 `epoch`을 20번만 돌아도 `loss`가 급격하게 떨어지면서 `val_acc`가 크게 상승하는 것을 볼 수 있다. 

@@ -3,9 +3,12 @@ layout:     post
 title:      "이름점 - Scala Code 수정"
 date:       2016-10-30 00:00:00
 author:     "Jun"
-categories: "Scala"
-image: /assets/name_chemistry/header.jpg
+img: 20161030.jpeg
+tags: [scala]
+
 ---
+(이미지 출처: <a href="http://mlbpark.donga.com/mlbpark/b.php?p=1&b=bullpen2&id=6331350&select=title&query=&user=&reply=">MLB PARK</a>)
+
 
 ## Scala로 만들어 본 이름점
 <br>

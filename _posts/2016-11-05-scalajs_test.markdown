@@ -3,12 +3,12 @@ layout:     post
 title:      "Scala.js test"
 date:       2016-11-05 00:00:00
 author:     "Jun"
-categories: "Scala"
-image: /assets/name_chemistry/header2.jpg
+tags: [scala]
+
 ---
 
-<script type="text/javascript" src="/assets/scalajs_test/test3-jsdeps.js"></script>
-<script type="text/javascript" src="/assets/scalajs_test/test3-fastopt.js"></script>
+<script type="text/javascript" src="/assets/materials/20161105/test3-jsdeps.js"></script>
+<script type="text/javascript" src="/assets/materials/20161105/test3-fastopt.js"></script>
 <script type="text/javascript">
     demo.webapp.LoveScalaJsApp().main();
 </script>

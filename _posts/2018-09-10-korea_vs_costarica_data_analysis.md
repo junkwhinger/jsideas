@@ -3,11 +3,9 @@ layout:     post
 title:      "대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기"
 date:       2018-09-10 10:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/korea_football/attackingthird.png
+img: 20180910.jpg
+tags: [python, data analytics]
 ---
-
-# 대한민국 vs 코스타리카전 축구 A 매치 데이터로 살펴보기
 
 요새 축구가 개꿀잼이다. 우리흥이 아시안게임에서 금메달따서 군대제껴서 좋고, 신임 대표팀 벤투 감독이 와서 첫 경기를 잘해서 좋다.
 
@@ -138,35 +136,35 @@ dataframe.head()
 </table>
 </div>
 
+<br>
 
+# Dataset Info
 
-## Dataset Info
-
-데이터 해상도가 높으면 높을수록 더 디테일한 분석을 할 수 있겠지만, 해상도 상승에 따른 노가다의 양은 지수적으로 증가한다. 오늘 퇴근길에 생각한 이 씨잘데기없는 상상을 구현하는데 2시간 이상의 시간을 쓸 계획은 없다. 따라서 `아니 우리 공격 패스 왤케 잘하지?`만 검증해보기 위한 데이터셋을 만들어보기로 했다.
+데이터 해상도가 높으면 높을수록 더 디테일한 분석을 할 수 있겠지만, 해상도 상승에 따른 노가다의 양은 지수적으로 증가한다. 오늘 퇴근길에 생각한 이 씨잘데기없는 상상을 구현하는데 2시간 이상의 시간을 쓸 계획은 없다. 따라서 **아니 우리 공격 패스 왜이렇게 잘하지?**만 검증해보기 위한 데이터셋을 만들어보기로 했다.
 
 모든 패스를 기록하기에는 너무 양이 많고 분류가 어려우므로, 상대 문전앞 Attacking Third(이하 at)에 진입하는 키 패스를 따기로 했다. at에 진입하는 패스는 모든 적극적 공격의 시발점이 되므로 해석하기에도 쉽고, 양도 적당해서 기록하기에도 좋았다.
 
 Attacking Third는 아래 그림과 같이 전체 경기장을 3등분으로 나눈 부분 중 적진에 해당하는 영역을 의미한다.
 
-<img src="/assets/korea_football/attackingthird.png" alt="Drawing" style="width: 400px;"/>
-source: https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trends-and-buzzwords
-
+<img src="/assets/materials/20180910/attackingthird.png" alt="Drawing" style="width: 400px;"/>  
+source: <a href="https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trends-and-buzzwords
+">globallcoach</a>  
 이 영역에 볼이 넘어가는 방식을 장거리 / 중거리 / 단거리 / 개인돌파로 나누고 이 횟수를 카운팅해보았다. 코스타리카전에서의 장/중/단 패스와 개인돌파의 예시는 다음과 같다.
 
 ### 장거리 패스
-![장거리패스](/assets/korea_football/long.gif)
+![장거리패스](/assets/materials/20180910/long.gif)
 
 
 ### 중거리 패스
-![중거리패스](/assets/korea_football/mid.gif)
+![중거리패스](/assets/materials/20180910/mid.gif)
 
 
 ### 단거리 패스
-![단거리패스](/assets/korea_football/short.gif)
+![단거리패스](/assets/materials/20180910/short.gif)
 
 
 ### 개인돌파
-![개인돌파](/assets/korea_football/indiv.gif)
+![개인돌파](/assets/materials/20180910/indiv.gif)
 
 각 패스의 메타 정보를 함께 기록해 다음과 같은 데이터프레임을 만들었다.
 
@@ -193,6 +191,8 @@ source: https://www.globallcoach.com/blog/2018/3/23/zone-14-explaining-the-trend
 
 여튼 정리한 데이터를 몇가지 측면에서 살펴보자.
 
+<br>
+
 ## 대한민국이 약 2.5배 더 많은 공격 기회를 가져갔다.
 전후반 합쳐 한국은 55회 공격했지만, 코스타리카는 19회에 그쳤다.
 
@@ -210,6 +210,7 @@ dataframe.groupby('team').time.count()
     Name: time, dtype: int64
 
 
+<br>
 
 ## 전후반 공격 기회는 두 팀 다 비슷했다.
 하프타임에 기성용이 빠졌지만, 한국의 공격기회는 전반 30회, 후반 25회로 비슷했다. 기분탓?이었나보다.
@@ -229,7 +230,7 @@ dataframe.groupby(['team', 'half']).time.count()
           2nd     25
     Name: time, dtype: int64
 
-
+<br>
 
 ## 대한민국은 중반에 조금 숨을 돌리는 듯?
 at를 넘어간 패스를 시간순으로 찍어보면 전반/후반에 초중반과 중후반에 몰리고 중간은 조금 비어있다. 45분 내내 공격하는 것도 상당히 지칠 것 같다. 코스타리카는 이번에 시차적응이 좀 덜된 듯. 드문드문 공격했다.
@@ -240,9 +241,9 @@ def convert_time(a_time_str):
     _min, _sec = a_time_str.split(":")
     _min, _sec = int(_min), int(_sec)
     return _min * 60 + _sec
-    
 dataframe['ts_in_sec'] = dataframe.time.map(convert_time)
 {% endhighlight %}
+
 
 
 {% highlight python %}
@@ -262,8 +263,9 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/korea_football/korea_vs_costarica_data_analysis_14_0.png)
+![png](/assets/materials/20180910/korea_vs_costarica_data_analysis_14_0.png)
 
+<br>
 
 ## 코스타리카는 개인돌파가, 대한민국은 중장거리 패스를 많이 썼다.
 개인기가 좋은 남미팀이라서 그런지 코스타리카 공격의 26%는 개인돌파였다. 수치상으로는 한국의 개인돌파가 6회로, 코스타리카에 1회 더 많지만, 이보다 더 많은 패스가 중장거리로 이루어졌다. 
@@ -282,8 +284,6 @@ merged['passRatio'] = np.round(merged['passCnt'] / merged['totalPassCnt'], 2)
 {% highlight python %}
 merged
 {% endhighlight %}
-
-
 
 
 <div>
@@ -367,6 +367,7 @@ merged
 </div>
 
 
+<br>
 
 ## 코스타리카는 중거리 패스가 아쉬웠고, 갓한민국의 장거리 패스는 지렸다.
 코스타리카의 패스는 전반적으로 성공률이 좋지 않았다. 장기인 개인돌파가 60%로 체면치레를 했다. 이번에 컨디션이 좋아보였던 대한민국은 중장거리 패스 정확도도 60%나 기록했고, 좁은 공간에서의 개인돌파와 단거리 패스도 정확도가 매우 높았다. 후방에서 구석으로 찌르는 플레이도 좋았고, 문전에서의 플레이도 세밀했다.
@@ -486,7 +487,7 @@ pass_df
 </table>
 </div>
 
-
+<br>
 
 ## 기성용의 발끝에서 시작하는 장거리 패스의 성공률이 좋았다. 이용/홍철의 양 사이드도 활발했다.
 후방 수비에서 at로 찌르는 장거리 패스가 많았는데, 역시 기성용의 패스가 좋았다. 기라드의 장거리 패스 정확도는 83%로 김민재(67%), 김영권(50%), 장현수(0%)에 비해 좋았다. 양쪽 풀백인 이용과 홍철이 이번에 공격에 많이 가담했는데, 홍철보다는 이용쪽이 조금 더 패스 정확도가 좋았다. 공격수들의 과감한 개인돌파 역시 매우 좋았다. 카타르 메시 남태희.
@@ -724,6 +725,8 @@ playerPass_df.loc['kor']
 </div>
 
 
+<br>
+
 
 ## 기갓갓이 나간 후에는 장거리 패스가 줄었다. 
 정확한 장거리 패스를 뿌려줄 기성용이 교체되어서 그런지, 전반에 높았던 장거리 패스의 비율(33%)가 후반에는 (16%)로 줄어든다. 후반에는 황인범, 이승우 등 미들에서 패스게임을 하는 선수들이 들어갔는데, 그때문인지 중거리 패스와 개인돌파의 비율이 소폭 늘었다.
@@ -827,6 +830,8 @@ korMerged
 </div>
 
 
+<br>
+
 
 ## 다가올 칠레전, 기성용->홍철, 정우영->손흥민, 김민재->빛의조의 장거리패스를 기대해보자.
 코스타리카전에서는 기성용이 홍철에게, 정우영이 손흥민에게, 김민재가 황의조에게 뿌려주는 패스가 가장 많은 빈도를 기록했다. 선발/교체에 따라 조금 달라질 수 있겠지만, 칠레전에서도 후방에서 전방으로 찔러주는 장거리 킬패스가 효과를 발휘할까? 칠레전도 마음편히 보고잡다.
@@ -835,8 +840,6 @@ korMerged
 {% highlight python %}
 dataframe[lambda x: x.team == 'kor'].groupby(['from', 'to']).time.count().sort_values(ascending=False).head(10)
 {% endhighlight %}
-
-
 
 
     from  to 

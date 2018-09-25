@@ -3,8 +3,8 @@ layout:     post
 title:      "TF: tips 3 - CNN 개념 정리"
 date:       2017-05-02 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/tf/header.jpg
+img: 20170502.png
+tags: [python, deep learning, tensorflow]
 ---
 
 ## tf tips. 3 - CNN 개념 정리
@@ -207,7 +207,7 @@ plt.show()
 ```
 
 
-![png](/assets/CNN_tutorial_files/CNN_tutorial_7_0.png)
+![png](/assets/materials/20170502/CNN_tutorial_7_0.png)
 
 
 ## 비교를 위해 간단한 DNN을 만든다
@@ -348,7 +348,7 @@ plt.show()
 ```
 
 
-![png](/assets/CNN_tutorial_files/CNN_tutorial_11_0.png)
+![png](/assets/materials/20170502/CNN_tutorial_11_0.png)
 
 
 CNN 만큼은 아니지만 DNN도 꽤 괜찮은 성능을 보였다. 모델간 성능 비교를 위해 `train_cost`와 `val_acc`를 플롯화해보자.
@@ -362,7 +362,7 @@ plt.show()
 ```
 
 
-![png](/assets/CNN_tutorial_files/CNN_tutorial_13_0.png)
+![png](/assets/materials/20170502/CNN_tutorial_13_0.png)
 
 
 
@@ -374,7 +374,7 @@ plt.show()
 ```
 
 
-![png](/assets/CNN_tutorial_files/CNN_tutorial_14_0.png)
+![png](/assets/materials/20170502/CNN_tutorial_14_0.png)
 
 
 CNN이 DNN에 비해 `train_cost`가 더 빨리 떨어지며, `validation accuracy` 역시 빠르게 상승하는 것을 볼 수 있다. 또한 학습을 시킴에 따라 `validation_accuracy`가 두 모델 다 수렴했으나, CNN의 수렴점이 DNN의 그것에 비해 소폭 높음을 확인할 수 있다. 

@@ -3,8 +3,8 @@ layout:     post
 title:      "OVERWATCH: MASTER CLASSIFIER"
 date:       2016-10-01 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/overwatch/overwatch_header.jpg
+img: 20161001.png
+tags: [python, data analytics, web crawling]
 ---
 
 ## Intro
@@ -14,7 +14,7 @@ Gone are the glorious days of League of Legends. Blizzard's Overwatch has been a
 
 Riot Games provides an extensive variety of data through their api, but Blizzard isn't doing so at the moment. Instead, overlog.gg offers user logs and various stats. In this post, I've built and tested machine-learning models that classify Master-class users from the rest based on some data samples from overlog.gg.  
 
-![overlog.gg](/assets/overwatch/overlog_homepage_eng.png)
+![overlog.gg](/assets/materials/20161001/overlog_homepage_eng.png)
 
 <hr>
 
@@ -27,7 +27,7 @@ The <a href="http://overlog.gg/leaderboards">leaderboard</a> page contains appro
 <br>
 In Overwatch you can play either quick play or competitive play. Competitive play, which only allows 25+ level users, classifies users with points based on their game win/defeat logs. You get Grand Master from 4,000 pts, Master from 3,500 pts and the rest we are not interested in. Let's see what our sample dataset's rank distribution looks like. Here I put points as `skillRating`.
 
-![Competitive play skillRating distribution](/assets/overwatch/overlog_ladder_eng.png)
+![Competitive play skillRating distribution](/assets/materials/20161001/overlog_ladder_eng.png)
 
 The skillRating distribution from the sample dataset shows that there is a chasm between the leader group and the followers. This is caused by the way I crawled the sample dataset. The second best subgroup was from page 700 to 710, and the cut-off of Master-class (skillRating 3500) was around page 65. Although it was not intended at all in the first place, this chasm led me to build and test some machine-learning algorithms to tell the very best users from the crowd, for fun! (It's for fun so it might contain some technical glitches and procedural mistakes. TT) 
 
@@ -37,7 +37,7 @@ The skillRating distribution from the sample dataset shows that there is a chasm
 <br>
 Let's see what the dataset looks like first. 
 
-![raw data](/assets/overwatch/overlog_raw.png)
+![raw data](/assets/materials/20161001/overlog_raw.png)
 
 * avgFire: Average time on fire in minutes (when you kill loads of 'em)
 * kd: Kill / Death ratio
@@ -61,7 +61,7 @@ df['winRatio'] = df['winRatio'].map(lambda x: int(x) / 100)
 
 And `mostHeroes` column has lists that each contains 3 (sometimes 2) hero strings. All the Overwatch heores fall into 4 big categories (attack, defence, charge, heal), so I added these four features (e.g. `['McCree', 'Reaper', 'Mei']` => `attack: 2`, `defence: 1`)
 
-![why Torbjörn and Widowmaker on ATTACK? // source: gamecrate.com](/assets/overwatch/overlog_selection.png)
+![why Torbjörn and Widowmaker on ATTACK? // source: gamecrate.com](/assets/materials/20161001/overlog_selection.png)
 
 {% highlight python %}
 def attack(hero_list):
@@ -129,33 +129,33 @@ df['user_class'] = df['skillRating'].map(lambda x: label_class(x))
 
 Now we've got the columns ready, let's have a look at some plots!
 
-![user_class ~ kd, level, playTime](/assets/overwatch/overlog_corr1_eng.png)
+![user_class ~ kd, level, playTime](/assets/materials/20161001/overlog_corr1_eng.png)
 
-![user_class ~ winRatio, avgFire_sec](/assets/overwatch/overlog_corr2_eng.png)
+![user_class ~ winRatio, avgFire_sec](/assets/materials/20161001/overlog_corr2_eng.png)
 
 Whilst `level` and `playTime` are positively skewed, `kd`, `winRatio` and `avgFire_sec` are more or less normally distributed. The target variable `user_class` is extremely imbalanced, as only one-twentith of them are top players. In the joint plots, blue dots(user_class 0) are the master-level players. Classifying them from the rest is a bit of a tricky challenge as some good yet under 3500 users tend to show stats as good as top players.
 
 Next, the heroes. To see which heros are favoured by which, I calculated the probabilities of heroes being chosen for the top 3 most played heores in master and non-master class user groups. 
 
-![Zarya, McCree, Genji are loved by the top players](/assets/overwatch/overlog_hero_selection_eng.png)
+![Zarya, McCree, Genji are loved by the top players](/assets/materials/20161001/overlog_hero_selection_eng.png)
 
 The x-axis is the top players' probabilities of choosing heros for their top3, and y-axis the rest. The heroes below the red line are more favoured by the master players and above by the rest. From my personal experience (of skillRating 1800) Genji and McCree were the most difficult heroes to control as I was forced to move and jump constantly to keep myself alive. So was Zarya as her ultimatum requires a good level of team-spirit and understanding of game-flow. On the other hand, Lucio was a pretty easy-going hero: fast speed, simple music change and powerful touch down(Q).
 
 Would there be more drastic differences between the top and the bottom?
 
-![top vs bottom (under 2100)](/assets/overwatch/overlog_hero_selection_deepsea_eng.png)
+![top vs bottom (under 2100)](/assets/materials/20161001/overlog_hero_selection_deepsea_eng.png)
 
 This plot doesn't look too different from the previous one, apart from some heroes like Junkrat. Junkrat seems to be in favour of bottom-rank users as Junkrat doesn't usually get involved with dog fights in the battle front thanks to his long-ranged weapon.
 
 Pandas has this amazing visualisation tool `radviz` that makes nice plots like the following. As the hero type columns are integer values I added a bit of noise to make the plots clearer. (integer points overlap each other.)
 
 ### Users that are under skillRating 2100
-![under-2100 users are rather balanced in choosing hero types](/assets/overwatch/overlog_radviz_deepsea.png)
+![under-2100 users are rather balanced in choosing hero types](/assets/materials/20161001/overlog_radviz_deepsea.png)
 <br>
 ### Master-class users
-![Masters are not that into defence type heroes](/assets/overwatch/overlog_radviz_top.png)
+![Masters are not that into defence type heroes](/assets/materials/20161001/overlog_radviz_top.png)
 
-![Bastion rocks in quick play // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg](/assets/overwatch/overlog_bastion.png)
+![Bastion rocks in quick play // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg](/assets/materials/20161001/overlog_bastion.png)
 
 There is much more to discover from this dataset, but it's time to move on and get our hands dirty with some machine-learning algorithms.
 
@@ -179,13 +179,13 @@ model.fit(X_train, y_train)
 
 {% endhighlight %}
 
-![Feature Selection via ExtraTreeClassifier](/assets/overwatch/overlog_feature_importance.png)
+![Feature Selection via ExtraTreeClassifier](/assets/materials/20161001/overlog_feature_importance.png)
 
 The ExtraTreeClassifier got rid of all the hero categories apart from `gtwh` and put McCree, Tracer, Winston, Zarya, Genji and Ana in their places. 
 
 I have also tried PCA and SVD to extract some latent variables, but the result (e.g. explained variance curve) didn't look convincing for some unknown issues. PCA said the best number of features is 2 for all the individual hero variables.
 
-![Feature Extraction via PCA](/assets/overwatch/overlog_pca.png)
+![Feature Extraction via PCA](/assets/materials/20161001/overlog_pca.png)
 
 On the PCA plot above, top players(user_class 0) are distributed nearly the same as the rest. Disappointing.
 
@@ -265,14 +265,14 @@ logistic_coeff.sort_values(by='coefficient')
 {% endhighlight %}
 
 
-![Coefficients of the logistic classifier](/assets/overwatch/overlog_logistic.png)
+![Coefficients of the logistic classifier](/assets/materials/20161001/overlog_logistic.png)
 
 As the top player's classification label is 0, all the coffefficients are minus values. Going by the size of them, winRatio and playTime are the most influential variables. 
 
 Likewise I made `pipeline` and `gridSearchCV` for Random Forest and Support Vector Classifier. I passed `n_estimators` and `min_samples_split` for Random Forest, and `kernel` and `C` for SVM for hyper parameter tuning.
 
 Let's see what variables Random Forest picked.
-![Feature Importance of Random Forest classifier](/assets/overwatch/overlog_imp.png)
+![Feature Importance of Random Forest classifier](/assets/materials/20161001/overlog_imp.png)
 
 Random Forest picked winRatio and playTime too. However, it selected 5 variables when logistic classifier picked 7.
 
@@ -320,7 +320,7 @@ def tf_iteration():
         
 {% endhighlight %}
 
-![DNN's AUC score over steps](/assets/overwatch/overlog_dnn_auc.png)
+![DNN's AUC score over steps](/assets/materials/20161001/overlog_dnn_auc.png)
 
 After fitting DNN for 38,000 times, the AUC score curve flattens out. I hardcoded the code above to fit the model 38,000times and evaluated the model performance with the test dataset. 
 
@@ -345,17 +345,17 @@ def model_tester(cv, X_test, y_test):
 In this classification_report, I'm going to focus on the f1-score of class 0, because A) this dataset is imbalance and B) I'm particularly interested in detecting top players well.
 
 ### LogisticRegression
-![Logistic_Classifier_Result](/assets/overwatch/overlog_logi_result.png)
+![Logistic_Classifier_Result](/assets/materials/20161001/overlog_logi_result.png)
 <br>
 ### RandomForestClassifier
-![RF_Result](/assets/overwatch/overlog_rf_result.png)
+![RF_Result](/assets/materials/20161001/overlog_rf_result.png)
 <br>
 
 ### SupportVectorClassifier
-![SVM_Result](/assets/overwatch/overlog_svm_result.png)
+![SVM_Result](/assets/materials/20161001/overlog_svm_result.png)
 <br>
 ### DNNClassifier
-![DNN_Result](/assets/overwatch/overlog_dnn_result.png)
+![DNN_Result](/assets/materials/20161001/overlog_dnn_result.png)
 <br>
 
 Based on the F1-score of class 0, DNN performed best, then RF, SVM and Logistic Regression. DNN was the best performer, but I believe RF and SVM could do better. (I spent most of my time finetuning DNN :P) (DNN with 100,000 steps got test F1-score of 0.92 but the DNN with 38,000 steps was chosen for the best valdiation AUC.)
@@ -367,13 +367,13 @@ Based on the F1-score of class 0, DNN performed best, then RF, SVM and Logistic 
 Alright. It's time for a real classification. DNN is my weapon of choice.
 
 First of all, let me test with my own Overwatch log. 0 means top players, 1 means the rest.
-![junk3 - Competitive Play](/assets/overwatch/overlog_junk3.png)
+![junk3 - Competitive Play](/assets/materials/20161001/overlog_junk3.png)
 <br>
-![Yup, the model is well built.](/assets/overwatch/overlog_junk3_result.png)
+![Yup, the model is well built.](/assets/materials/20161001/overlog_junk3_result.png)
 The DNN says 1. Correct. 
 
 What about some random good and good-ish players from the leaderboard?
-![Random Test Result](/assets/overwatch/overlog_random_test.png)
+![Random Test Result](/assets/materials/20161001/overlog_random_test.png)
 The second player, who is a Master-class player, is mis-classified as a non-Master player. I guess it's due to his low winRatio, k/d and relatively short playTime. 
 
 <hr>

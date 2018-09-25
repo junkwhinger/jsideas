@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석 - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/fridge_please_final/" property="og:url">
+  
+  
+    <meta content="2015-07-07T23:30:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20150707.jpg" property="og:image">
+  
+  
+    
+    <meta content="python" property="article:section">
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="d3.js" property="article:tag">
+    
+    <meta content="machine learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/fridge_please_final/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20150707.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20150707.jpg alt="냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석</h1>
+        <div class="page-date"><span>2015, Jul 07&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 class="section-heading">[JTBC]냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석</h2>
+<p><br />
+<strong>[주의]모바일 환경에서는 차트가 제대로 보이지 않습니다.</strong></p>
+<p>이미지출처: <a href="http://home.jtbc.joins.com/Photo/Photo.aspx?prog_id=PR10010331&amp;menu_id=PM10026760&amp;gall_id=IG10010186&amp;pgi=1">JTBC</a></p>
+<p><br /></p>
+<h3>1. 분석 배경</h3>
+<p>최근에 Fast Campus(패스트 캠퍼스)를 통해 머신러닝 강의를 들었습니다. 다중선형회귀분석부터 텍스트 마이닝까지 총 10강으로 구성된 알찬 코스로, 학부 1학년때 B0를 맞고 손대본 적 없는 통계에 관해 많은 것을 배울 수 있는 좋은 기회였습니다. 매 수업마다 배운 알고리즘을 써먹어보려고 했었는데, 활용할만한 데이터를 구하는 것 자체가 매우 큰 허들이었습니다. 그러던 중 JTBC의 "냉장고를 부탁해"를 보다가 문득 몇가지 알고리즘을 활용해보면 되겠다 싶었고 데이터를 긁기 시작했습니다. 머신러닝 코스에서 커버한 몇가지 알고리즘을 활용하기는 했으나, 단점이 많습니다. 머신러닝이 필요한 정도로 데이터량이 많지도 않고, 이론적 지식이 얕은터라 과하거나 모자란 해석이 달렸습니다. 그럼에도 불구하고 그냥 재미로, 혹 저처럼 머신러닝이나 통계 알고리즘에 대해 전혀 몰랐던 분이라면 역시 재미로 읽어주시면 감사하겠습니다. 혹 분석방법이나 결과에 대해 피드백을 주실 수 있다면 junsik.whang@gmail.com으로 보내주시면 감사하겠습니다!</p>
+
+<p><br /></p>
+<h3>2. 자료수집 및 방법론</h3>
+<p>본 분석에 사용한 데이터는 '냉장고를 부탁해' 1회부터 33회까지 프로그램의 화면(냉장고 재료 선택 장면)과 검색결과(네이버 트렌드 검색, 출연자 공식 프로 자료)입니다.</p>
+
+<p>본 분석에서 사용한 방법론 및 간략한 설명은 다음과 같습니다.</p>
+<ul>
+  <li><strong>다중선형회귀분석</strong>: 결과를 설명하는 조건변수를 찾고, 조건변수를 기반으로 결과를 설명하는 회귀식을 만든다.</li>
+  <li><strong>연관분석</strong>: 변수들의 공통출현빈도를 기반으로 상관관계가 높은 변수묶음(규칙)을 도출한다.</li>
+  <li><strong>계층적 군집화</strong>: 다양한 변수를 기준으로 비슷한 개체끼리 군집화한다.(상향식)</li>
+  <li><strong>자기조직화지도</strong>: 다차원상의 변수를 가진 개체를 2차원 공간에 위치시켜 군집화한다.</li>
+</ul>
+<p><br /></p>
+
+<h3>3. 게스트 분석</h3>
+<p>'냉장고를 부탁해' 1회부터 33회까지 등장한 게스트들은 어떤 사람들일까요?</p>
+<h4>게스트 성별 / 결혼여부 파이차</h4>
+<iframe width="100%" height="420" src="//jsfiddle.net/junkwhinger/qkHK6/1342/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h4>게스트 나이 히스토그램</h4>
+<iframe width="100%" height="450" src="//jsfiddle.net/junkwhinger/unjve1rr/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>위의 인적사항 분포를 개략적으로 조합해보면 주 게스트 층은 '30대 초반 혼자사는 남성 연예인'으로 볼 수도 있을 것 같습니다. 홍진호나 심형탁, 케이윌처럼 요리를 잘 모르는 사람들을 적극 섭외한다는 점에서 프로그램의 주 타겟 시청자 역시 '30대 초반 미혼 남성'일 가능성이 높을 듯 합니다.</p>
+
+<p><br /></p>
+<h4>게스트 인적사항 기반 계층적 군집화</h4>
+<p>이번에는 계층적 군집화 알고리즘을 활용하여 위의 개략적 분석이 정말 들어맞는지 획인해보겠습니다.</p>
+
+<iframe width="100%" height="840" src="//jsfiddle.net/junkwhinger/afekraLf/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>R의 hclust함수를 활용해서 게스트의 나이, 성별, 결혼유무의 3가지 변수로 군집화를 돌렸고, 군집 개수를 5개로 나누어 색을 칠해봤습니다. 그 결과 <span style="color:#e41a1c">[미혼 남성]</span>, <span style="color:#377eb8">[미혼 여성]</span>,<span style="color:#ff7f00">[기혼 남성]</span>, <span style="color:#4daf4a">[기혼 여성]</span>, <span style="color:#984ea3">[고령 기혼 여성]</span>의 5가지 카테고리로 나뉘어졌습니다. 그 중 <span style="color:#e41a1c">[미혼 남성]</span>이 19명으로 전체의 52.7%를 차지합니다. '남자들이 만드는 요리'라는 최근의 사회적 트렌드가 바뀌지 않는 한, 앞으로도 미혼 남성 연예인이 주로 게스트로 섭외되지 않을까 싶습니다.</p>
+<p><br /></p>
+<h4>게스트-냉장고 다중선형회귀분석</h4>
+<p>흔히들 혼자 자취하는 남자의 원룸 냉장고에는 편의점 음식만 가득할 거라고, 반대로 결혼한 여자분들의 냉장고에는 식재료가 차곡차곡 쌓여있을거라 기대합니다. 의미있는 분석결과를 도출하기에는 데이터 개체수가 너무 적으나, 그래도 냉장고속 재료량과 게스트의 인적사항간의 관계를 다중선형회귀분석으로 돌려보았습니다. 냉장고 속 재료 갯수은 프로그램 화면에 등장한 재료테이블을 기준으로 했습니다.</p>
+
+<p><img src="/assets/materials/20150707/fp_mvlr.png" alt="fridge mvlr" /></p>
+
+<p>36명의 데이터를 기준으로 full model을 만들었기에 p-value가 0.1712로, 그렇게 신뢰할만한 모델은 아닌 것 같습니다. 그러나 굳이 해석을 하자면, 이 모델에서 유일하게 유의미한 변수는 Intercept(y절편)으로, 게스트의 성별, 결혼유무, 나이는 재료 갯수와 유의미한 상관관계가 없다고 할 수 있겠습니다.</p>
+<p>그러나 주어진 재료 갯수가 재료의 양을 의미하지 않는다는 점에서 위의 분석은 헛점이 있으며, 재료 갯수보다는 재료의 양*시장가격을 계산한 냉장고 가치를 결과절로 두었을 때 더 유의미한 결과가 나오지 않을까 싶습니다. (냉장고 가치 계산은 시도해보았으나, 역시 재료 양이 주어지지 않아 계산이 불가능했습니다.)</p>
+
+<p><br /></p>
+<h4>게스트 냉장고 재료 시각화</h4>
+<p>연예인들의 냉장고에는 과연 어떤 재료들이 있을까요? 재료들의 출연빈도를 워드클라우드로 시각화해보았습니다.</p>
+
+<p><img src="/assets/materials/20150707/fp_all_wc.png" alt="fridge wordcloud" /></p>
+
+<p>달걀, 우유, 김치, 사과가 압도적으로 많이 나온 가운데, 페페론치노, 할라피뇨, 생크림 등 저희집 냉장고에는 없는 재료들도 간간히 보입니다. 이중에서 실제 셰프 경연에 사용되었던 재료들은 어땠을까요?</p>
+
+<p><br /></p>
+<h4>셰프 선택 재료 시각화</h4>
+<p><img src="/assets/materials/20150707/fp_used_wc.png" alt="fridge wordcloud" /></p>
+
+<p>냉장고에서 가장 많이 나왔던 달걀과 우유가 셰프들의 선택을 가장 많이 받았습니다. 자세한 빈도분석을 위해 셰프 선택 최다빈도(상대) 10개 재료와, 냉장고 출현빈도(상대)와 셰프 선택 빈도차가 가장 적었던 재료 10개를 선정하여 이들의 상대빈도를 비교해보았습니다.</p>
+
+<p>우측 범례를 눌러 재료의 그래프를 활성화시켜보세요.</p>
+<iframe width="100%" height="550" src="//jsfiddle.net/junkwhinger/1tv9eyvz/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p>아쉽게도 냉장고 빈도는 적었으나, 셰프 사용 빈도가 높은 스타급 재료는 없었습니다. 모든 재료의 셰프 선택 빈도는 냉장고 선택 빈도보다 작았습니다. 빈도 차가 거의 없었던 재료는 모두 냉장고 출현빈도가 거의 적었던 '밀싹'같은 재료였는데, 빈도차로 미루어보아 이러한 희귀재료들은 등장하면 거의 선택을 받는다고 볼 수 있습니다.</p>
+
+<p><br /></p>
+<h4>냉장고 재료 연관규칙분석</h4>
+<p>R의 Arules 패키지를 사용하여 함께 등장할 가능성이 높은 재료 규칙을 뽑아봤습니다.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-s6z2{text-align:center}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">#</th>
+    <th class="tg-031e">lhs</th>
+    <th class="tg-031e">rhs</th>
+    <th class="tg-031e">support</th>
+    <th class="tg-031e">confidence</th>
+    <th class="tg-031e">lift</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">아이스크림=&gt;</td>
+    <td class="tg-031e">초콜릿</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">2</td>
+    <td class="tg-031e">초콜릿=&gt;</td>
+    <td class="tg-031e">아이스크림</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">0.5</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">3</td>
+    <td class="tg-031e">블랙올리브=&gt;</td>
+    <td class="tg-031e">파슬리</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-s6z2">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">4</td>
+    <td class="tg-031e">파슬리=&gt;</td>
+    <td class="tg-031e">블랙올리브</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">0.5</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">5</td>
+    <td class="tg-031e">플레인요거트=&gt;</td>
+    <td class="tg-031e">딸기</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">6</td>
+    <td class="tg-031e">딸기=&gt;</td>
+    <td class="tg-031e">플레인요거트</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">0.5</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">7</td>
+    <td class="tg-031e">사과,양파=&gt;</td>
+    <td class="tg-031e">깻잎</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">8</td>
+    <td class="tg-031e">달걀,애호박=&gt;</td>
+    <td class="tg-031e">페페론치노</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">9</td>
+    <td class="tg-031e">사과,양파,파프리카=&gt;</td>
+    <td class="tg-031e">깻잎</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">10</td>
+    <td class="tg-031e">달걀,사과,양파=&gt;</td>
+    <td class="tg-031e">깻잎</td>
+    <td class="tg-031e">0.0697</td>
+    <td class="tg-031e">1.0</td>
+    <td class="tg-031e">7.1667</td>
+  </tr>
+</table>
+
+<p>개략적인 해석은 다음과 같습니다.</p>
+<ul>
+  <li>lhs는 조건절, rhs는 결과절로, '조건절이 있으면 결과절이 있다'라고 해석할 수 있습니다만, 상관관계일 뿐 인과관계를 의미하지는 않습니다.</li>
+  <li>support는 lhs가 있을 확률입니다. support를 0.5로 잡아서 규칙을 뽑으면 달걀밖에 안나옵니다. 앞서 얘기했지만, 달걀이 나올 확률은 거의 60%에 수렴하며, 이 정도 상대 빈도를 보이는 다른 재료는 없기 때문입니다. 이 분석에서는 특이한 재료를 잡아보기 위해 support를 0.05로 잡았습니다.</li>
+  <li>confidence는 lhs가 있을 때 rhs가 있을 확률입니다. 여기서는 confidence cut-off를 0.5로 설정했습니다.</li>
+  <li>마지막으로 lift는 lhs와 rhs가 독립이 아닐 확률로, 독립일 경우 1이 됩니다. 위에서 뽑은 10가지 규칙이 모두 7.1667인 것으로 보아, 꽤 신빙성있는 규칙이 도출되었다고 볼 수 있습니다.</li>
+  <li>위의 표에서는 마트에서 장을 볼 때 '파슬리를 산다면 블랙올리브로 사보자', '플레인요거트를 산다면 딸기도 사보자'의 임플리케이션을 뽑아볼 수 있겠습니다.</li>
+</ul>
+
+<p><br /></p>
+<h4>냉장고 기준 게스트 군집화 분석</h4>
+
+<iframe width="100%" height="900" src="//jsfiddle.net/junkwhinger/tcr8u94a/11/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>냉장고에 들어있는 재료를 기준으로 계층적 군집화 알고리즘을 사용하여 게스트를 묶었습니다. 앞서 돌렸던 인적사항 기준 군집화와 비교해보면 어느 정도 유사한 패턴이 보입니다. 2~3단계 위에서는 여러 인적 구성이 섞여있는 모양이지만, 재료구성 군집화의 맨 밑단에는 같은 인적구성을 가진 게스트끼리 모여있는 경우가 많이 발견됩니다.</p>
+
+<p><br /></p>
+<h4>자기조직화지도(SOM)</h4>
+<p><img src="/assets/materials/20150707/fp_som.png" alt="fridge wordcloud" /></p>
+
+<p>'냉장고를 부탁해'에 소개된 36개의 냉장고에는 459개의 식재료가 들어있습니다. 자기조직화지도를 만드는데 쓰인 데이터베이스에는 각 냉장고의 자료가 범주형으로 저장되어있습니다. 예를 들어.. 강균성 냉장고 - 오이, 사과, 달걀.. 이 레코드를 1,0의 이산형으로 변형시킵니다. 강균성 냉장고 - 1, 0, 1, 1, 0.. 그렇게 되면 36개의 냉장고에 대해 459차원이 생기고, 459차원 상의 냉장고간 유사도를 대폭 줄여 2차원 공간상에 뿌린 것이 자기조직화지도입니다.</p>
+<p>R의 Kohonen 패키지를 써서 지도를 만드는데까지는 성공을 했습니다만, 459차원 상의 유사성을 하나하나 검증할 수 없기에 사실 올바르게 분류되었는지는 알 턱이 없습니다. 원안에 같이 들어있는 인물들끼리는 같은 유형이라고 파악학 수 있으며, 굵은 선은 원들간의 경계를 의미합니다. 격리선이 일부 원들을 감싸고 있는 것으로 보아, 대부분의 냉장고는 상호간 어느정도 유사성을 띄고 있는 것으로 보입니다.</p>
+
+<p><br /></p>
+<h3>4. 셰프 레시피 분석</h3>
+
+<p><br /></p>
+<h4>셰프 재료 워드클라우드 비교 시각</h4>
+<p>앞서 그려봤던 셰프 선택 재료 워드클라우드를 셰프별로 뽑아보면 어떤 결과가 나올까요?</p>
+
+<iframe width="100%" height="500" src="//jsfiddle.net/junkwhinger/o2L3rcqe/8/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>전체 워드클라우드는 달걀, 우유 등 일반적 재료가 주요하게 부각되었지만, 개별 셰프의 그림에서는 다른 양상이 나타납니다. 워드클라우드 기준 주요 재료를 뽑아보면 다음과 같습니다.</p>
+<ul>
+  <li>김풍 - 달걀, 우유, 방울토마토, 식빵, 통조림류</li>
+  <li>샘킴 - 레몬, 감자, 파슬리, 양파</li>
+  <li>미카엘 - 달걀, 파프리카, 닭가슴살</li>
+  <li>정창욱 - 달걀, 닭가슴살, 굴소스, 사과</li>
+  <li>홍석천 - 달걀, 사과, 삼겹살, 고추장아찌</li>
+  <li>이연복 - 달걀, 돼지고기, 애호박, 굴소스</li>
+  <li>박준우 - 우유, 달걀, 두부, 레드와인</li>
+  <li>맹기용 - 꽁치..(레시피 수가 3건이라 겹치는 재료가 없었습니다.)</li>
+  <li>최현석 - 새우, 달걀, 닭가슴살, 딸기잼, 크림치즈</li>
+  <li>이원일 - 된장, 달걀, 페페론치노</li>
+</ul>
+<p>셰프별로 뽑아본 결과, 재료선택을 통해 셰프들의 색깔이 어느정도 드러납니다. 인스턴트와 일상적 재료를 많이 사용하는 김풍, 닭전무패 미카엘, 유럽식 요리를 자주 만드는 샘킴, 된장깡패라는 이원일 등.. 방송을 통해 얻은 셰프들의 별명이 보입니다.</p>
+
+<p><br /></p>
+<h4>셰프 선택 재료 연관규칙분석</h4>
+<p>앞선 냉장고 재료 연관규칙분석처럼 셰프들의 요리에 선택된 재료 중 강한 연관성을 띈 재료규칙을 뽑아봤습니다.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">#</th>
+    <th class="tg-031e">lhs</th>
+    <th class="tg-031e">rhs</th>
+    <th class="tg-031e">support</th>
+    <th class="tg-031e">confidence</th>
+    <th class="tg-031e">lift</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">라조장=&gt;</td>
+    <td class="tg-031e">족발</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">2</td>
+    <td class="tg-031e">족발=&gt;</td>
+    <td class="tg-031e">라조장</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">3</td>
+    <td class="tg-031e">트러플오일=&gt;</td>
+    <td class="tg-031e">치킨스톡</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">4</td>
+    <td class="tg-031e">치킨스톡=&gt;</td>
+    <td class="tg-031e">트러플오일</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">5</td>
+    <td class="tg-031e">프로슈토=&gt;</td>
+    <td class="tg-031e">바게트</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">6</td>
+    <td class="tg-031e">바게트=&gt;</td>
+    <td class="tg-031e">프로슈토</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">7</td>
+    <td class="tg-031e">파르메산치즈=&gt;</td>
+    <td class="tg-031e">설렁탕</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">8</td>
+    <td class="tg-031e">설렁탕=&gt;</td>
+    <td class="tg-031e">파르메산치즈</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">9</td>
+    <td class="tg-031e">사워크림=&gt;</td>
+    <td class="tg-031e">타코시즈닝</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">10</td>
+    <td class="tg-031e">타코시즈닝=&gt;</td>
+    <td class="tg-031e">사워크림</td>
+    <td class="tg-031e">0.011</td>
+    <td class="tg-031e">1</td>
+    <td class="tg-031e">84.5</td>
+  </tr>
+</table>
+<p>해석은 아래와 같습니다.</p>
+<ul>
+  <li>이번에는 support cut-off를 0.01로 대폭 낮췄습니다. 기존의 0.05로 돌려봤더니 달걀과 우유(당연한 조합)만 검출이 되었습니다. 냉장고와는 달리 셰프의 레시피에는 더 적은 재료가 다양하게 들어가서 그런 모양입니다. support를 0.01로 낮추고 돌려본 결과, 재밌는 조합이 나옵니다. 이 중 써먹을만한 유의미한 규칙은 아래와 같습니다. </li>
+  <li>족발 - 라조장</li>
+  <li>프로슈토(햄) - 바게트</li>
+  <li>타코 - 사워크림</li>
+  <li>마트에서 장을 보거나 집에서 요리를 할 때 레시피를 몰라도 위의 규칙을 써보면 얼추 맞지 않을까요?</li>
+</ul>
+
+<p><br /></p>
+<h4>레시피 계층적 군집화 분석</h4>
+<iframe width="100%" height="2250" src="//jsfiddle.net/junkwhinger/06oLbqyL/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>냉장고를 부탁해에 등장한 132종의 레시피를 재료를 기준으로 계층적 군집화를 돌려보았습니다.</p>
+<ul>
+  <li>레시피에 쓰인 재료를 기준으로 군집화를 돌렸기 때문에 맨 우측에 같은 회에 출연한 (동일한 냉장고를 사용한) 레시피가 많이 뭉쳐있습니다.</li>
+  <li>같은 회에 출연한 레시피가 뭉친 경우, 셰프들이 비슷한 재료를 사용했다고 볼 수 있습니다. 하지만 홍석천의 '렛잇컵'(8회)와 미카엘의 '따라미소'(29회)는 시기가 다르지만 재료 구성에서는 가장 유사하다고 합니다.</li>
+  <li>좋아하는 레시피를 찾아보세요. 그 레시피와 함께 묶인 레시피도 입맛에 맞을 가능성이 높습니다.</li>
+</ul>
+
+<p><br /></p>
+<h4>셰프 대결 분석</h4>
+<p>이번에는 경연의 승패 데이터를 사용하여 '냉장고를 부탁해'의 셰프간 먹이사슬을 시각화해봤습니다.</p>
+
+<p>네트워크 해설</p>
+<ul>
+  <li>노드 크기: 라디오 버튼으로 선택할 수 있는 지표에 따라 달라지며, 지표값이 클수록 노드 크기가 커집니다.</li>
+  <li>노드 색상: 같은 색의 노드는 같은 그룹에 속합니다. (*directed graph를 undirected로 변형하여 계산함)</li>
+  <li>링크 화살표: 승리자 -&gt; 패배자이며, 화살표가 클수록 많이 승리하거나 많이 패배한 것입니다.</li>
+
+</ul>
+
+<p>해보세요!</p>
+<ul>
+  <li>노드 더블클릭 - 해당 셰프의 직접적인 네트워크를 보여줍니다.</li>
+  <li>노드 마우스오버 - 해당 셰프의 전적 요약을 보여줍니다.</li>
+  <li>노드 드래그 - 노드를 이리저리 끌어당길 수 있습니다.</li> 
+  <li>라디오 버튼 - 노드 크기를 셰프의 '출연 횟수', '승리 횟수', '패배 횟수', '승리 확률'로 변형시킬 수 있습니다.</li>
+</ul>
+
+<iframe width="100%" height="700" src="//jsfiddle.net/junkwhinger/3ea5u9vb/25/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>이중에서 개인적으로 샘킴 셰프의 네트워크를 굉장히 흥미롭게 생각했습니다. 샘풍으로 격하(?)될만큼 이상하게 김풍과의 대결에서 열세에 놓이며 허당으로 놀림을 받는 샘킴셰프는 현재 냉부 최강으로 평가받는 정창욱 셰프에게는 우세한 전적을 보유하고 있습니다. 정창욱 셰프의 독주를 막으면서도 허당스러운 모습을 통해 프로그램의 다양한 재미를 살리는 감초같은 역할을 자처하는 듯 합니다.</p>
+
+<p><br /></p>
+
+<h4>셰프 승리/패배 누적차트</h4>
+<p>좌측의 누적 승리/패배 기준과 우측의 범례를 눌러 셰프의 누적 전적을 확인해보세요.</p>
+<iframe width="100%" height="600" src="//jsfiddle.net/junkwhinger/c0j0qm70/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<p>'냉장고를 부탁해' 정상을 다투는 정창욱 vs 홍석천, 최근에 합류했지만 무섭게 승수를 쌓아가는 이연복 / 이원일 셰프, 그동안 승점자판기로 패배를 밥먹듯 했던 김풍셰프의 성장세가 그래프에 드러납니다. 꽤 승수를 많이 쌓았을 것 같은 미카엘 셰프는 김풍 셰프만큼이나 승점을 많이 헌납하고 있었습니다. 의외네요.</p>
+
+<p><br /></p>
+<h4>레시피 관심도 분석</h4>
+<p>경연에서의 승리가 대중적 인기로 그대로 이어지지는 않습니다. 지더라도 화제성있거나 따라하기 쉬운 레시피가 시청자들의 관심을 많이 받는데요, 네이버 트렌드의 모바일 검색량을 통해서 승리하거나 패배한 레시피의 대중적 인기를 측정해봤습니다.</p>
+
+<iframe width="100%" height="600" src="//jsfiddle.net/junkwhinger/7m9fawug/embedded/result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>많은 경우, 해당 회가 방영된 주에 가장 높은 검색량을 기록하고, 승리한 레시피가 가장 많이 검색됩니다. 몇가지 예외가 있는데, 하나는 8회(한혜진)에 나온 홍석천 셰프의 렛잇컵입니다. 렛잇컵은 방영시점에서 5개월이 지난 5월에 갑자기 검색량이 급상승했는데, 이는 '렛잇컵' 레시피를 타 방송에서 써봤다는 최현석 셰프의 고백(?)이 기사화되면서 급증한 것으로 보입니다. 또 28회(지누)에서는 맹기용 셰프의 맹모닝이 괴작으로 화제에 떠오르며 검색량을 독식했었네요.</p>
+
+<p><br /></p>
+<h3>5. 마치며</h3>
+<p>월요일 밤마다 퇴근하고 재밌게 봤던 프로그램을 양적으로 분석해보니 또 색다른 느낌입니다. 다른 여러 요리 프로그램들이 있었지만 '냉장고를 부탁해'가 화제의 중심에 서있는 이유가 보입니다. 유명인사들의 다양한 냉장고 속 식재료들, 한식 양식 중식 불가리아식 등 다채롭고 독특한 색상을 지닌 셰프들, 서로 물리고 물리는 경연 기록들이 '냉장고를 부탁해'가 갖춘 재미와 긴장의 재료이지 않나 싶습니다. 앞으로도 '냉장고를 부탁해'가 좋은 레시피를 꾸준히 소개하는 프로그램으로 장수했으면 좋겠습니다. 부족한 글 읽어주셔서 감사합니다.</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=냉장고를 부탁해 - 머신러닝 알고리즘을 활용한 각종 분석&url=http://localhost:4000/fridge_please_final/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/fridge_please_final/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/fridge_please_final/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#d3.js" class="tag">&#35; d3.js</a>
+          
+            <a href="/tags#machine learning" class="tag">&#35; machine learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

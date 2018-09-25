@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/view-rates-of-history-dramas/" property="og:url">
+  
+  
+    <meta content="2015-01-08T07:10:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/author.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="d3.js" property="article:tag">
+    
+    <meta content="data visualisation" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/view-rates-of-history-dramas/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/author.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas</h1>
+        <div class="page-date"><span>2015, Jan 08&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 class="section-heading">지상파 사극 드라마 시청률 비교</h2>
+<p> View Rates of Korean History dramas </p>
+
+<div id="chart"></div>
+
+<p> This d3 chart shows view rates of various Korean History Dramas. Click the names of dramas on the right side to compare their view rates. The x Axis is episode, and y Axis view rate.
+
+<p> 자료 출처: Nielson Korea 시청률 (네이버 검색) </p>
+
+<p>Img source: <a href="https://rv.wkcdn.net/http://rigvedawiki.net/r1/pds/jngdjn.jpg">Google</a></p> 
+
+<link href="/assets/materials/20150107/view_rates.css" rel="stylesheet" />
+<script src="http://d3js.org/d3.v3.js"></script>
+<script type="text/javascript">
+
+//setting the canvas
+var margin = {top: 20, right: 120, bottom: 30, left: 50},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+//setting the ranges
+var x = d3.scale.linear()
+    .range([0, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+//coloring lines
+var color = d3.scale.category20();
+
+//changing view rate's format to %
+var formatPercent = d3.format(".0%");
+
+//defining the axes
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(formatPercent);
+
+
+//defining the lines
+var line = d3.svg.line()
+    .interpolate("basis") // this makes the lines smoother!
+    .x(function(d) { return x(d.episode); })
+    .y(function(d) { return y(d.view_rate); })
+    .defined(function(d) { return d.view_rate; }); // this makes the lines end where they have no data.
+
+//creating svg
+var svg = d3.select("div#chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//maxY is for resetting the y axis using legends
+var maxY;
+
+//function for x grid
+function make_x_axis() {
+  return d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .ticks(20)
+}
+
+//getting the data
+d3.tsv("/assets/materials/20150107/view_rates.tsv", function(error, data) {
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "episode"; }));
+
+//changing the format from text to number
+  data.forEach(function(d){
+    d.episode = +d.episode;
+  }) 
+
+//organising the drama data from csv
+  var dramas = color.domain().map(function(name) {
+    return {
+      name: name,
+      values: data.map(function(d) {
+        return {episode: d.episode, view_rate: +d[name]};
+      }),
+      // making 정도전 and 기황후 visible when the page is loaded
+      visible: ((name === "정도전") | (name === "기황후") ? true : false)
+    };
+  });
+
+//adding domains of x and y axis
+  x.domain(d3.extent(data, function(d) { return d.episode; }));
+
+  y.domain([
+    d3.min(dramas, function(c) { return d3.min(c.values, function(v) { return v.view_rate; }); }),
+    d3.max(dramas, function(c) { return d3.max(c.values, function(v) { return v.view_rate; }); })
+  ]);
+
+//adding the x Axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+//adding the y Axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("시청률");
+
+//adding the paths
+  var drama = svg.selectAll(".drama")
+      .data(dramas)
+    .enter().append("g")
+      .attr("class", "drama");
+
+  drama.append("path")
+      .attr("class", "line")
+      .style("pointer-events", "none")
+      .attr("id", function(d) {
+        return "line-" + d.name.replace(" ", "").replace("/", "");
+      })
+      .attr("d", function(d) { 
+        return d.visible ? line(d.values) : null; })
+      .style("stroke", function(d) { return color(d.name); });
+
+  //drawing grid lines
+  svg.append("g")
+    .attr("class", "grid")
+    .attr("transform", "translate(0," + height + ")")
+    .call(make_x_axis()
+      .tickSize(-height, 0, 0)
+      .tickFormat("")
+      )
+
+  //drawing legend
+  var legendSpace = 450 / dramas.length;
+  drama.append("rect")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("id", function(d) {
+        return "legend-" + d.name.replace(" ", "").replace("/", "");
+      })
+    .attr("x", width + (margin.right/3) -15)
+    .attr("y", function(d,i) { return (legendSpace) + i*(legendSpace) - 8;})
+    .attr("fill", function(d) {
+      return d.visible ? color(d.name) : "#F1F1F2";
+    })
+    .attr("class", "legend-box")
+
+    .on("click", function(d){
+      d.visible = !d.visible;
+
+      maxY = findMaxY(dramas);
+      y.domain([0,maxY]);
+      svg.select(".y.axis")
+        .transition()
+        .call(yAxis);
+
+      drama.select("path")
+        .transition()
+        .attr("d", function(d) {
+          return d.visible ? line(d.values) : null;
+        })
+
+      drama.select("rect")
+        .transition()
+        .attr("fill", function(d){
+          return d.visible ? color(d.name) : "#F1F1F2";
+        })
+    })
+
+//adding legend texts
+  drama.append("text")
+    .attr("x", width + (margin.right/3))
+    .attr("y", function(d,i){ return (legendSpace) + i*(legendSpace);})
+    .text(function(d) {return d.name;});
+
+
+
+});
+
+//adding a function to reset y axis
+function findMaxY(data) {
+  var maxYValues = data.map(function(d) {
+    if (d.visible){
+      return d3.max(d.values, function(value) {
+        return value.view_rate; })
+    }
+  });
+  return d3.max(maxYValues);
+}
+
+</script>
+
+
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">//setting the canvas</span>
+<span class="kd">var</span> <span class="nx">margin</span> <span class="o">=</span> <span class="p">{</span><span class="na">top</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="na">right</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span> <span class="na">bottom</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="na">left</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
+    <span class="nx">width</span> <span class="o">=</span> <span class="mi">960</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span>
+    <span class="nx">height</span> <span class="o">=</span> <span class="mi">500</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">;</span>
+
+<span class="c1">//setting the ranges</span>
+<span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="nx">width</span><span class="p">]);</span>
+
+<span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">linear</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">range</span><span class="p">([</span><span class="nx">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">]);</span>
+
+<span class="c1">//coloring lines</span>
+<span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">category20</span><span class="p">();</span>
+
+<span class="c1">//changing view rate's format to %</span>
+<span class="kd">var</span> <span class="nx">formatPercent</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s2">".0%"</span><span class="p">);</span>
+
+<span class="c1">//defining the axes</span>
+<span class="kd">var</span> <span class="nx">xAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"bottom"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">yAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"left"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="nx">formatPercent</span><span class="p">);</span>
+
+
+<span class="c1">//defining the lines</span>
+<span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">line</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">interpolate</span><span class="p">(</span><span class="s2">"basis"</span><span class="p">)</span> <span class="c1">// this makes the lines smoother!</span>
+    <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">);</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">y</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">y</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">);</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">defined</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">;</span> <span class="p">});</span> <span class="c1">// this makes the lines end where they have no data.</span>
+
+<span class="c1">//creating svg</span>
+<span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"div#chart"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">"svg"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"width"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"height"</span><span class="p">,</span> <span class="nx">height</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate("</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">);</span>
+
+<span class="c1">//maxY is for resetting the y axis using legends</span>
+<span class="kd">var</span> <span class="nx">maxY</span><span class="p">;</span>
+
+<span class="c1">//function for x grid</span>
+<span class="kd">function</span> <span class="nx">make_x_axis</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"bottom"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">ticks</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">//getting the data</span>
+<span class="nx">d3</span><span class="p">.</span><span class="nx">tsv</span><span class="p">(</span><span class="s2">"/assets/materials/20150107/view_rates.tsv"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">color</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">key</span> <span class="o">!==</span> <span class="s2">"episode"</span><span class="p">;</span> <span class="p">}));</span>
+
+<span class="c1">//changing the format from text to number</span>
+  <span class="nx">data</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+    <span class="nx">d</span><span class="p">.</span><span class="nx">episode</span> <span class="o">=</span> <span class="o">+</span><span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">;</span>
+  <span class="p">})</span> 
+
+<span class="c1">//organising the drama data from csv</span>
+  <span class="kd">var</span> <span class="nx">dramas</span> <span class="o">=</span> <span class="nx">color</span><span class="p">.</span><span class="nx">domain</span><span class="p">().</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">name</span><span class="p">:</span> <span class="nx">name</span><span class="p">,</span>
+      <span class="na">values</span><span class="p">:</span> <span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">{</span><span class="na">episode</span><span class="p">:</span> <span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">,</span> <span class="na">view_rate</span><span class="p">:</span> <span class="o">+</span><span class="nx">d</span><span class="p">[</span><span class="nx">name</span><span class="p">]};</span>
+      <span class="p">}),</span>
+      <span class="c1">// making 정도전 and 기황후 visible when the page is loaded</span>
+      <span class="na">visible</span><span class="p">:</span> <span class="p">((</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"정도전"</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"기황후"</span><span class="p">)</span> <span class="p">?</span> <span class="kc">true</span> <span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+    <span class="p">};</span>
+  <span class="p">});</span>
+
+<span class="c1">//adding domains of x and y axis</span>
+  <span class="nx">x</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">extent</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">;</span> <span class="p">}));</span>
+
+  <span class="nx">y</span><span class="p">.</span><span class="nx">domain</span><span class="p">([</span>
+    <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">dramas</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">;</span> <span class="p">});</span> <span class="p">}),</span>
+    <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">dramas</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">v</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">;</span> <span class="p">});</span> <span class="p">})</span>
+  <span class="p">]);</span>
+
+<span class="c1">//adding the x Axis</span>
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"x axis"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate(0,"</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">xAxis</span><span class="p">);</span>
+
+<span class="c1">//adding the y Axis</span>
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"y axis"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"rotate(-90)"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"dy"</span><span class="p">,</span> <span class="s2">".71em"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"text-anchor"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"시청률"</span><span class="p">);</span>
+
+<span class="c1">//adding the paths</span>
+  <span class="kd">var</span> <span class="nx">drama</span> <span class="o">=</span> <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">".drama"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">dramas</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">enter</span><span class="p">().</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"drama"</span><span class="p">);</span>
+
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"pointer-events"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"line-"</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">line</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span> <span class="p">})</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"stroke"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="p">});</span>
+
+  <span class="c1">//drawing grid lines</span>
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"grid"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate(0,"</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">make_x_axis</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">tickSize</span><span class="p">(</span><span class="o">-</span><span class="nx">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+      <span class="p">)</span>
+
+  <span class="c1">//drawing legend</span>
+  <span class="kd">var</span> <span class="nx">legendSpace</span> <span class="o">=</span> <span class="mi">450</span> <span class="o">/</span> <span class="nx">dramas</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"width"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"height"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"legend-"</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+      <span class="p">})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">+</span> <span class="nx">i</span><span class="o">*</span><span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="p">;})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"fill"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"#F1F1F2"</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"legend-box"</span><span class="p">)</span>
+
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+      <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="o">!</span><span class="nx">d</span><span class="p">.</span><span class="nx">visible</span><span class="p">;</span>
+
+      <span class="nx">maxY</span> <span class="o">=</span> <span class="nx">findMaxY</span><span class="p">(</span><span class="nx">dramas</span><span class="p">);</span>
+      <span class="nx">y</span><span class="p">.</span><span class="nx">domain</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="nx">maxY</span><span class="p">]);</span>
+      <span class="nx">svg</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">".y.axis"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">);</span>
+
+      <span class="nx">drama</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">line</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">})</span>
+
+      <span class="nx">drama</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"fill"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+          <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"#F1F1F2"</span><span class="p">;</span>
+        <span class="p">})</span>
+    <span class="p">})</span>
+
+<span class="c1">//adding legend texts</span>
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span><span class="nx">i</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">+</span> <span class="nx">i</span><span class="o">*</span><span class="p">(</span><span class="nx">legendSpace</span><span class="p">);})</span>
+    <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">;});</span>
+
+
+
+<span class="p">});</span>
+
+<span class="c1">//adding a function to reset y axis</span>
+<span class="kd">function</span> <span class="nx">findMaxY</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">maxYValues</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">visible</span><span class="p">){</span>
+      <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">value</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">;</span> <span class="p">})</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+  <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="nx">maxYValues</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+
+</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas&url=http://localhost:4000/view-rates-of-history-dramas/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/view-rates-of-history-dramas/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/view-rates-of-history-dramas/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#d3.js" class="tag">&#35; d3.js</a>
+          
+            <a href="/tags#data visualisation" class="tag">&#35; data visualisation</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

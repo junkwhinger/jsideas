@@ -3,8 +3,7 @@ layout:     post
 title:      "[UPDATED]PDF Extractor in python"
 date:       2015-05-23 10:30:00
 author:     "Jun"
-categories: "Python"
-header-img: "img/post-bg-05.jpg"
+tags: [python]
 ---
 
 <h2 class="section-heading">[Updated]PDf Extractor in python</h2>

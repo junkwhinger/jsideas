@@ -3,8 +3,9 @@ layout:     post
 title:      "AlphaGo vs. Lee Sedol: Levenshtein Distance"
 date:       2016-07-07 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/alphago/header.jpg
+img: 20160707.jpg
+tags: [python, data analytics]
+
 ---
 # AlphaGo vs. Lee Sedol: time spent pattern comparison 
  
@@ -16,7 +17,7 @@ and thought it would be interesting to see the patterns between human and
 machine! (Even though we already know that AlphaGo is a man-made machine). 
  
 ### Thinking Time Remaining
-![Man vs. Machine!](/assets/alphago/total_remaining_edited.png)
+![Man vs. Machine!](/assets/materials/20160707/total_remaining_edited.png)
 
 # Data Preprocessing 
  
@@ -312,7 +313,7 @@ levheatmap(list_A, list_L, 'full')
 {% endhighlight %}
 
  
-![string length: full]({{ BASE_PATH }}/assets/distance_analysis_files/distance_analysis_26_0.png) 
+![string length: full]({{ BASE_PATH }}/assets/materials/20160707/distance_analysis_26_0.png) 
 
  
 Well, to my surprise, AlphaGo's LevenShtein distance was a little bit higher
@@ -328,7 +329,7 @@ levheatmap(list_A, list_L, 10)
 {% endhighlight %}
 
  
-![string length: 10]({{ BASE_PATH }}/assets/distance_analysis_files/distance_analysis_28_0.png) 
+![string length: 10]({{ BASE_PATH }}/assets/materials/20160707/distance_analysis_28_0.png) 
 
 
 **In [253]:**
@@ -339,7 +340,7 @@ levheatmap(list_A, list_L, 30)
 {% endhighlight %}
 
  
-![string length: 30]({{ BASE_PATH }}/assets/distance_analysis_files/distance_analysis_29_0.png) 
+![string length: 30]({{ BASE_PATH }}/assets/materials/20160707/distance_analysis_29_0.png) 
 
 
 **In [254]:**
@@ -350,7 +351,7 @@ levheatmap(list_A, list_L, 60)
 {% endhighlight %}
 
  
-![string length: 60]({{ BASE_PATH }}/assets/distance_analysis_files/distance_analysis_30_0.png) 
+![string length: 60]({{ BASE_PATH }}/assets/materials/20160707/distance_analysis_30_0.png) 
 
 
 **In [255]:**
@@ -361,7 +362,7 @@ levheatmap(list_A, list_L, 90)
 {% endhighlight %}
 
  
-![string length: 90]({{ BASE_PATH }}/assets/distance_analysis_files/distance_analysis_31_0.png) 
+![string length: 90]({{ BASE_PATH }}/assets/materials/20160707/distance_analysis_31_0.png) 
 
  
 Now we got it. Just by looking at the first 10 time logs, we can successfully

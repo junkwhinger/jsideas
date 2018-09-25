@@ -2,8 +2,8 @@
 layout: post
 title:  "HiveQL - Useful Tips"
 date:   2016-01-13 22:34:25
-categories: sql
-image: /assets/hiveql/header.png
+tags: [sql]
+
 ---
 
 파이썬과 더불어 회사 업무를 처리하는데 있어 SQL의 도움을 많이 받는다. 대용량의 데이터가 저장된 시스템에서 원하는 정보를 가져와 가공하는데 정말 좋다. 작년 8월부터 초보적인 Select * From을 쳐가면서 데이터를 뽑기 시작했는데, 모르는 부분을 구글링하다보니 내가 쓰는 SQL은 HiveQL로 MySQL이나 Oracle SQL과는 조금 다른 부분이 있다는 걸 알게 되었다. 언어 자체가 크게 다른 것은 아니고 사투리 정도의 차이가 있는 듯 한데 MySQL에서 지원하는 기능이 HiveQL에서는 돌아가지 않거나, 업무적으로 유용하게 쓰는 함수가 있어 기록을 남겨두고자 한다.

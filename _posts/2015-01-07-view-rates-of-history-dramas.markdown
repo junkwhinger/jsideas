@@ -3,8 +3,9 @@ layout:     post
 title:      "지상파 사극 드라마 시청률 비교 <br> View rates of Korean History Dramas"
 date:       2015-01-07 22:10:00
 author:     "Jun"
-categories: "d3.js"
 header-img: "img/post-bg-07.jpg"
+tags: [d3.js, data visualisation]
+
 ---
 <h2 class="section-heading">지상파 사극 드라마 시청률 비교</h2>
 <p> View Rates of Korean History dramas </p>
@@ -17,7 +18,7 @@ header-img: "img/post-bg-07.jpg"
 
 <p>Img source: <a href="https://rv.wkcdn.net/http://rigvedawiki.net/r1/pds/jngdjn.jpg">Google</a></p> 
 
-<link href="/d3_css/view_rates.css" rel='stylesheet'>
+<link href="/assets/materials/20150107/view_rates.css" rel='stylesheet'>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script type="text/javascript">
 
@@ -76,7 +77,7 @@ function make_x_axis() {
 }
 
 //getting the data
-d3.tsv("/d3_data/view_rates.tsv", function(error, data) {
+d3.tsv("/assets/materials/20150107/view_rates.tsv", function(error, data) {
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "episode"; }));
 
 //changing the format from text to number
@@ -264,7 +265,7 @@ function make_x_axis() {
 }
 
 //getting the data
-d3.tsv("/d3_data/view_rates.tsv", function(error, data) {
+d3.tsv("/assets/materials/20150107/view_rates.tsv", function(error, data) {
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "episode"; }));
 
 //changing the format from text to number

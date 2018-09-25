@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Adversarial Complementary Learning - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Adversarial Complementary Learning" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/acol/" property="og:url">
+  
+  
+    <meta content="2018-07-03T18:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20180703.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="deep learning" property="article:tag">
+    
+    <meta content="image" property="article:tag">
+    
+    <meta content="weekly supervised learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Adversarial Complementary Learning">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/acol/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20180703.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20180703.png alt="Adversarial Complementary Learning">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Adversarial Complementary Learning</h1>
+        <div class="page-date"><span>2018, Jul 03&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <p>Weakly supervised learning gives us an interesting insight into how deep neural network works. I recently found an interesting paper by Zhang et al using multiple sequetial classifiers to produce more holistic class activation map. I implemented their approach in PyTorch and added a bit of my own ideas.</p>
+
+<p><br /></p>
+
+<h2 id="paper">Paper</h2>
+
+<p><strong><a href="https://arxiv.org/abs/1804.06962">Adversarial Complementary Learning for Weakly Supervised Object Localization</a></strong>
+Xiaolin Zhang, Yunchao Wei, Jiashi Feng, Yi Yang, Thomas Huang
+<a href="https://arxiv.org/abs/1804.06962">https://arxiv.org/abs/1804.06962</a></p>
+
+<p>The model suggested by the paper consists of <code class="highlighter-rouge">backbone</code> as a feature extractor and two <code class="highlighter-rouge">classifiers</code>  in a sequential order.</p>
+
+<p><img src="/assets/materials/20180703/ACoL_approach.png" alt="ACoL Architecture" /></p>
+
+<p>The two classifiers are made up of a <code class="highlighter-rouge">1x1 convolution layer</code> that shrinks the feature channel (i.e. 2048) into the output channel of label size C  (i.e. 4 or 5) and a global average pooling layer. Then the classifier produces a <code class="highlighter-rouge">class activation map</code> using the cth weight of the 1x1 conv layer.</p>
+
+<p>Class activation map reveals the most discriminative region related to the target label in a given image. ACoL zeros out the areas of the feature maps where its values are higher than <code class="highlighter-rouge">delta</code>. Then the masked feature maps are fed into the second classifier that, in turn, searches for the next most discriminative regions for the label.</p>
+
+<p>All in all, the second classifier complements the first classifier’s decision to generate a more holistic class activation map.</p>
+
+<p><img src="/assets/materials/20180703/ACoL_vs_CAM.png" alt="ACoL_vs_CAM" /></p>
+
+<p><br /></p>
+
+<h2 id="acol-with-transfer-learning">Acol with Transfer Learning</h2>
+
+<p><code class="highlighter-rouge">delta</code> is a cruicial hyper-parameter in training ACoL. High delta would leave most of the feature regions alive, so that the second classifier is likely to look at the regions that are already found by its predecessor. Setting delta low has a risk of forcing the second classifier to learn the mapping between irrelevant regions to the target label when all the relevant features are wiped out. For this reason, the authors carried out an abalation study to find the optimal value for their datasets. Their choice of delta is 0.6.</p>
+
+<p>For my own image dataset of 4 footballers (700~900 images per class), thresholding with 0.6 was too low that it misled the second classifier and ended up with poor CAM outputs. 0.9 showed better results yet it fails to deliver the outstanding performance shown in the paper.</p>
+
+<p>So I came up with an idea to turn the second classifier into an adversarial classifier. Let’s say that the target label is Messi [1, 0, 0, 0]. The second classifier’s loss is defined as a modified version of cross entropy loss of its output and the other labels [0, 1, 1, 1].</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">restCrossEtropyLoss</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+    <span class="n">_base</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">size</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">_one_hot</span> <span class="o">=</span> <span class="n">_base</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">_one_hot</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span>
+
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">numer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">X</span> <span class="o">*</span> <span class="n">_one_hot</span><span class="p">)</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span>
+
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">numer</span> <span class="o">/</span> <span class="n">denom</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div></div>
+
+<p>The lower the classifier output for the target label is, the lower the loss of the second classifier becomes. As ACoL updates its parameters with the first and second classifier loss, I speculated that the second adversarial classifier would guide the backbone and the first classifier to find the discriminative region as wide as possible to lower the second loss.</p>
+
+<p>In my own PyTorch implementation in this repo, ‘p’ refers to the normal classifier and ‘n’ to the adversarial one. The model in the original paper is ‘pp’ according to my model definition.</p>
+
+<p>I ran my own experiments with various hyper parameters like pretrained models (resent50, 101, 152), weight decay, delta, etc, and here’s what I found.</p>
+
+<ul>
+  <li>p and pn converged well when pp’s val loss exploded in the later epochs. The validation losses of p and pn were nearly the same as their training losses.
+<img src="/assets/materials/20180703/pp_metrics.png" alt="pp_metrics" /></li>
+  <li>pp with delta 0.6 generated poor heat maps that cover most of the image.</li>
+  <li>p (basic resnet + 1x1 conv + GAP) produced good CAM but the first classifier result was not as accurate as pn 0.9.</li>
+  <li>In terms of classification accuracy, the best p, pn, pp models were more or less the same level (77~79%)</li>
+  <li>From my own point of view, pn with delta 0.9 produces the best CAM output. The below is some of the cherry picked results from the validation images.</li>
+</ul>
+
+<p><img src="/assets/materials/20180703/experiment_result.png" alt="experiment_result" /></p>
+
+<p><br /></p>
+
+<h2 id="usage">Usage</h2>
+
+<p>To train your own ACoL, clone this <a href="https://github.com/junkwhinger/adversarial_complementary_learning">repo</a>, ready your own dataset and run the following command.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python train_acol.py <span class="nt">--input-path</span> <span class="s1">'../input/'</span> <span class="nt">--batch-size</span> 64 <span class="nt">--epochs</span> 10 <span class="nt">--model</span> resnet101 <span class="nt">--cls-recipe</span> pp <span class="nt">--delta-list</span> 0.9
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">--image-path</code>: training / validation dataset path</li>
+  <li><code class="highlighter-rouge">--batch-size</code>: batch size for training and validation</li>
+  <li><code class="highlighter-rouge">--epochs</code>: number of epochs to run</li>
+  <li><code class="highlighter-rouge">--model</code>: torchvision pretrained model name</li>
+  <li><code class="highlighter-rouge">--cls-recipe</code>: recipe sequence for classifiers (ex. pp or pn or p)
+    <ul>
+      <li>p: complementary classifier that looks for other clues for the given label</li>
+      <li>n: adversarial classifier that links the rest of the feature maps to the other labels</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://arxiv.org/pdf/1804.06962.pdf">“Adversarial Complementary Learning for Weakly Supervised Object”</a></li>
+</ul>
+
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Adversarial Complementary Learning&url=http://localhost:4000/acol/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/acol/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/acol/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#deep learning" class="tag">&#35; deep learning</a>
+          
+            <a href="/tags#image" class="tag">&#35; image</a>
+          
+            <a href="/tags#weekly supervised learning" class="tag">&#35; weekly supervised learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

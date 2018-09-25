@@ -2,8 +2,9 @@
 layout: post
 title:  "[python-numpy] 인물사진에서 턱 각도 구하기"
 date:   2015-10-25 15:34:25
-categories: python
-image: /assets/chin_angle/header3.jpg
+img: 20151026.jpg
+tags: [python, data analytics]
+
 ---
 
 (이미지 출처: <a href="http://theqoo.net/square/99488872">theqoo</a>)
@@ -25,18 +26,18 @@ image: /assets/chin_angle/header3.jpg
 ##재료 준비 - 인물 사진
 이번 튜토리얼에서 사용할 인물 사진을 구해봅니다. 요새 자주보는 개그맨 정성호님의 성대모사 영상 중 하나를 구해봤습니다. 턱의 각도는 시선에 따라 달라질 수 있으므로 되도록 정면샷을 준비해봅시다.
 
-![재료 - 조철왕 코스프레를 하는 정성호님 / 출처: SNL KOREA](/assets/chin_angle/img1.jpg)
+![재료 - 조철왕 코스프레를 하는 정성호님 / 출처: SNL KOREA](/assets/materials/20151026/img1.jpg)
 
 이 이미지를 웹에서 사용하기 위해 `imgur`같은 서비스에 올려 direct link를 땁니다. 'http://i.imgur.com/zaX7Sbr.jpg'
 
 ##face++에서 인물 랜드마크를 JSON 파일로 저장하기
 <a href="http://www.faceplusplus.com/">face++</a>는 인물 사진에서 주요 키포인트를 뽑아주는 아주 유용한 사이트입니다. `Demo` > `Face Landmark` 메뉴로 이동합니다.
 
-![face++ 화면](/assets/chin_angle/img2.png)
+![face++ 화면](/assets/materials/20151026/img2.png)
 
 아까 땄던 direct link를 url입력창에 넣고 랜드마크를 뽑아봅니다.
 
-![face++ 정성호님 랜드마크](/assets/chin_angle/img3.png)
+![face++ 정성호님 랜드마크](/assets/materials/20151026/img3.png)
 
 눈 양쪽 끝에서 시작해서 턱선을 따라 라인이 잡힙니다. 그리고 눈썹, 눈, 코, 입에도 주요 키포인트가 잡혔습니다. 우측 `RESPONSE JSON`에 보면 2차원 벡터값으로 주요 키포인트가 정량화되서 출력됩니다. `{`부터 끝까지 드래그해서 텍스트에디터에 `JSON`(jsh.json)파일로 저장합니다. 이제 자료 준비가 끝났습니다.
 
@@ -62,7 +63,7 @@ conda install pandas #pandas 라이브러리 설치
 
 터미널에서 `ipython notebook` 명령어를 입력하면, 웹브라우져에 로컬환경의 ipython notebook이 실행됩니다. 우측 상단의 `New`를 누르고 `Python 3`을 눌러 콘솔 창을 활성화시킵니다. 
 
-![ipython notebook 실행화면](/assets/chin_angle/img4.png)
+![ipython notebook 실행화면](/assets/materials/20151026/img4.png)
 
 ##데이터프레임 잡기
 
@@ -93,7 +94,7 @@ ldf_T = ldf.T #ldf는 columns가 랜드마크로 되어있으므로, 이를 inde
 ldf_T.head() #뽑은 데이터의 상위 5개 row를 확인합니다.
 {% endhighlight %}
 
-![ldf_T 상위 5개 row](/assets/chin_angle/img5.png)
+![ldf_T 상위 5개 row](/assets/materials/20151026/img5.png)
 
 ##턱 각도 계산하기
 
@@ -143,7 +144,7 @@ def avg__angle(df):
 avg_angle(ldf_T)
 {% endhighlight %}
 
-![턱 각도 최종 아웃풋](/assets/chin_angle/img6.png)
+![턱 각도 최종 아웃풋](/assets/materials/20151026/img6.png)
 조철왕 코스프레를 한 정성호의 턱 각도는 평균 152도로 나왔네요. 원래 사진과 비교해보면 각도가 달라질까요? 다음에 더 자세히 얼굴간 유사도를 비교해보겠습니다.
 
 ##완료!

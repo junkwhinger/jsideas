@@ -3,7 +3,8 @@ layout: post
 title:  "coursera_ML: neural network (1)"
 date:   2016-01-12 20:34:25
 categories: octave
-image: /assets/ml_neural_network1/header.png
+tags: [octave, deep learning]
+
 ---
 
 (주의 - 공부하면서 까먹지 않기 위한 개인적인 생각 및 정리이므로 수리적, 이론적으로 정확하지 않을 가능성이 있습니다.)
@@ -18,11 +19,11 @@ image: /assets/ml_neural_network1/header.png
 
 바로 전 강의에서 binary classification을 가능하게 해주는 logistic regression을 다뤘다. 그리고 스리슬쩍 인공신경망으로 넘어오는데 이 연결고리가 재밌다. 인공신경망이라는 이름에서 유추할 수 있듯이 수리적으로 신경망을 구성하는데, 당연히 먼저 신경 하나를 만드는데서부터 시작한다. 그리고 신경을 여러개로 묶어서 망을 구축하는 거다. 여기서 만드는 하나의 신경이 logistic regression을 사용한다. 신경 하나에 값을 입력하면 그 신경이 값을 처리해서 1이나 0으로 아웃풋을 뱉는다. 뱉어낸 아웃풋은 다시 다른 신경에 들어가는 인풋이 된다. 이런식으로 여러 신경들이 묶인 신경망을 통과하면서 최종적인 결과물이 나오는 방식이 뉴럴네트워크다.
 
-![neuron](/assets/neural_network1/1.png)
+![neuron](/assets/materials/20160113/1.png)
 
 위의 도식은 인공신경망을 구성하는 최소단위인 뉴런을 도식화해놓은 것이다. x라는 입력변수가 input wires로 연결되어 입력되고 output wire를 거쳐 출력된다. 그리고 뉴런은 결과적으로 0과 1 사이의 value를 뱉어내므로 logistic regression과 동일한 방식, Sigmoid Activation을 사용한다.
 
-![neural network](/assets/neural_network1/2.png)
+![neural network](/assets/materials/20160113/2.png)
 
 이러한 뉴런이 여러 레이어로 중첩된 형태가 뉴럴네트워크다. 뉴럴네트워크의 기본형을 시각적으로 구성하면 위와 같다. 간단하게 3가지 레이어로 구성해보았는데, 첫번째 레이어는 인풋레이어, 마지막 레이어는 아웃풋 레이어라고 한다. 말마따라 값을 받아와서 뱉는다. 중간에 레이어 1단이 하나 더 들어가는데 이 녀석이 인공신경망이 가지는 특징이다. Hidden layer, 즉 숨겨진 레이어라고 불리는 녀석으로, 인공신경망의 허리를 담당한다고 보면 된다. 이 숨겨진 레이어를 통해서 연산이 고도화된다. 숨겨진 레이어가 많으면 많을수록 연산도 복잡해지지만 결과도 좋아지는데, 기초적인 뉴럴넷이 1~2개의 히든레이어로 구성된다면 딥러닝은 더 많은 히든레이어를 돌린다.  (자세한 내용은 <a href='https://www.quora.com/How-does-deep-learning-work-and-how-is-it-different-from-normal-neural-networks-and-or-SVM'>여기</a>를 참조하면 좋다)
 
@@ -32,7 +33,7 @@ image: /assets/ml_neural_network1/header.png
 
 ## Neural Network 수식
 
-![neural network](/assets/neural_network1/3.png)
+![neural network](/assets/materials/20160113/3.png)
 
 a는 레이어 안에 있는 유닛을 의미하는데 i와 j를 달고 있다. 여기서 i는 j번째 레이어 L의 i번째 유닛을 의미한다. 수식에 보다보면 0번째 유닛도 등장하는데, 학습을 위한 bias 유닛으로 임의로 집어넣는다. 예를 들어 20픽셀 * 20픽셀로 이루어진 이미지를 처리한다고 하면 400개의 변수가 있지만 bias 유닛이 들어가므로 실제 피쳐의 개수는 401개가 된다. bias 유닛은 아웃풋 레이어를 제외한 모든 레이어에 들어간다.
 
@@ -43,7 +44,7 @@ a는 레이어 안에 있는 유닛을 의미하는데 i와 j를 달고 있다. 
 ## 뉴럴넷을 통한 boolean 연산
 Andrew가 수식에 이어서 설명하는 부분이 뉴럴넷을 통한 boolean 연산이다. 여기서 or, and, not 등의 연산이 나오는데 이걸 모두 다 뉴럴넷을 통해 구현할 수 있다. 예를 들어 1개의 뉴런(sigmoid function)을 통해 출력되는 값이 1이나 0이라고 하자. 그러면 이를 조합할 수 있다.
 
-![boolean expression](/assets/neural_network1/4.png)
+![boolean expression](/assets/materials/20160113/4.png)
 
 예컨대 위와 같이 1개의 bias 유닛과 2개의 x변수가 주어지고 임의의 theta값이 주어졌다고 해보자. 아웃풋 노드를 계산하면 어떤 결과가 나오는데 이는 sigmoid function을 통과한 값이다. 우상단의 sigmoid function 그래프를 보면 4를 넘어가면 거의 1에 가깝고 -4를 넘어가면 0에 근접한다. 이를 활용해서 x1와 x2가 0이거나 1인 4가지 경우를 생각해서 앞서 설명한 뉴럴넷 수식으로 a(2)1를 계산해보면 그림과 같이 0, 0, 0, 1이라는 값이 출력된다.
 

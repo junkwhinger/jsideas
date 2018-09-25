@@ -2,8 +2,8 @@
 layout: post
 title:  "coursera_ML: linear regression"
 date:   2015-12-28 23:34:25
-categories: octave
-image: /assets/ml_linear_regression/header.png
+tags: [octave, deep learning]
+
 ---
 
 
@@ -19,7 +19,7 @@ univariate (변수가 1개)와 multivariate(다중선형 회귀. 변수가 2개 
 
 여튼 가장 심플한 예제는 부동산 가격. 선형식을 만들 트레이닝 셋에 집의 크기(x)와 가격(y)가 주어진다. x와 y의 관계를 가장 잘 설명하는 선형식을 찾고, 그 식을 통해 y가 없는 x가 들어왔을 때 y가 어떤 값이겠냐는 것이 회귀예측의 최종 목표다. 당연히 실제 예측과는 큰 차이가 있다.
 
-![linear regression example](/assets/ml_linear_regression/work - 26.png)
+![linear regression example](/assets/materials/20151229/work - 26.png)
 
 여기서 고등학교때 안 배운 것같지만 들어본 것 같은 theta(쎄타)라는 녀석이 등장한다. theta는 회귀계수로 x에 곱해주는 계수. 즉 y=ax+b라는 식에서 a와 b의 역할이다. 기울기와 절편으로 나눠지기 때문에 theta_0(절편), theta_1(기울기)로 univariate linear regression에서는 2개가 들어있는 값으로 생각해야 된다.. 여기서부터 theta가 뭐였드라? 하는 기억 상실증이 시작된다. 그리고 y 자리에는 x를 계산한 예측 값인 h_theta(x)를 넣어준다. y는 최종 결과값일 뿐이니까.
 
@@ -28,7 +28,7 @@ univariate (변수가 1개)와 multivariate(다중선형 회귀. 변수가 2개 
 
 그리고 이 RMSE 값들을 다 합쳐서 평균 녀석을 cost function이라고 부르고 보통 J(theta)로 표현하는데, 여기서 또 조건이 붙는다. 모든 RMSE값을 합치기 위해 앞에 sigma를 달고, 데이터의 갯수인 m만큼을 나눠주는데, `2`라는 녀석이 등장한다.
 
-![cost function](/assets/ml_linear_regression/work - 27.png)
+![cost function](/assets/materials/20151229/work - 27.png)
 
 여기서 나오는 2는 계산을 쉽게 해주기 위해서 더해준다...(실제로 Andrew가 그렇게 얘기하고 스리슬쩍 넘어간다.) 좀 더 찾아보니 이건 결국 그 다음 스텝인 gradient descent와 연결된다. cost function의 의미는 예측치와 결과값간의 차이를 평균내는 것인데, 모든 데이터를 가장 잘 설명하는 직선은 cost function의 결과가 가장 작은 최소값이어야 한다. 최소값을 만들어내는 회귀변수 theta를 그럼 어떻게 뽑을거냐로 이어지는데, 여기서 2가지 방법이 있다. 하나는 gradient descent라는 방법, 다른 하나는 normal equation이라는 방법이다.
 
@@ -37,11 +37,11 @@ univariate (변수가 1개)와 multivariate(다중선형 회귀. 변수가 2개 
 ## Gradient Descent와 Normal Equation
 gradient descent 방식은 점진적 개선 방식이다. J(theta)는 식을 보면 2차함수이므로 최소값을 중심에 두고 양옆으로 상승하는 곡선을 취한다.
 
-![J(theta) 곡선 & gradient descent](/assets/ml_linear_regression/work - 28.png)
+![J(theta) 곡선 & gradient descent](/assets/materials/20151229/work - 28.png)
 
 J(theta)가 가장 작아지는 theta값을 찾으면 되는데, gradient descent는 J(theta)의 곡선에 점을 찍고 J(theta)가 줄어드는 방향으로 조금씩 이동하면서 더 이상 J(theta)가 증가하지 않으면 멈추는 방식이다. 이 녀석이 사용하는 방식은 learning rate라는 alpha라는 값과 J(theta)를 미분한 값, 그리고 theta에 대응하는 x 피쳐를 곱해서 다시 theta에 빼주는 것이다. 음.. 그러니까 결국 요지는 미분을 할껀데 미분하면 cost function에 달려있는 2승이 앞으로 튀어나오므로 이를 제거하기 위해서 애초에 cost function의 분모에 2가 들어간다는 것이다.. 그렇게 하면 계산이 수월해진다고 한다.. gradient descent는 theta값에서 learning rate만큼 이동한 theta를 계속 빼주는 방식인데 수식으로 정리하면 이렇게 된다.
 
-![gradient descent](/assets/ml_linear_regression/work - 29.png)
+![gradient descent](/assets/materials/20151229/work - 29.png)
 
 J(theta_0, … theta_n)을 실제 수식으로 바꿔주고 이를 미분하면 아래와 같은 식으로 완성이 된다. 여기서 i와 j가 많이 나와서 좀 복잡한데, 쉽게 표현하면 i는 데이터셋의 레코드(행)이고 j는 피쳐(열)이다. 결국 모든 레코드에 대해서 오차값을 계산한 다음 오차가 최소화되는 지점까지 이동하도록 점진적으로 (alpha를 사용하여) 이동시켜 각 피쳐에 대한 최적의 theta값을 찾는 것이다. (별로 쉽지는 않다..)
 
@@ -58,11 +58,11 @@ J(theta_0, … theta_n)을 실제 수식으로 바꿔주고 이를 미분하면 
 
 행렬 곱셈은 첫번째 매트릭스의 가로행과 두번째 매트릭스의 세로열의 element들을 각각 곱하고 더해서 구한다. 즉 다음과 같이 계산이 이루어진다.
 
-![dataset](/assets/ml_linear_regression/work - 31.png)
+![dataset](/assets/materials/20151229/work - 31.png)
 
 이를 잘 활용하면 데이터셋의 크기나 피쳐의 개수에 관계없이 빠르게 계산을 할 수 있다. 다음과 같은 데이터셋이 주어졌을때...
 
-![dataset](/assets/ml_linear_regression/work - 30.png)
+![dataset](/assets/materials/20151229/work - 30.png)
 
 h_theta(x) = X * theta 를 해주는 것만으로도 h_theta(x)가 20*1의 행렬로 주루룩 출력이 된다. 여기서 y를 빼주면 element 기준으로 minus 연산이 이루어지고, 여기에 제곱을 때린 후 sum 함수를 수행한다. 그리고 2m으로 나누어주면, 최종적으로 cost function의 값이 반환된다. 만약 for loop를 사용했다면 for i in range(0, len(X)): 로 모든 행에 대해 돌고, for j in range(x, len(features): 라는 식으로 모든 열에 대해서 연산이 돌아야 했을 것이고 추가적으로 결과를 저장하기 위한 변수도 또 필요했을 것이다. 계산하기 머리아프지만 중간중간 disp()로 디버깅하면서 하면 결과값을 뽑을 수 있다.
 
