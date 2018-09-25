@@ -3,8 +3,8 @@ layout:     post
 title:      "세월호 대통령 담화문 비교분석 및 시각화"
 date:       2015-06-09 23:50:00
 author:     "Jun"
-categories: "r"
-header-img: "img/post-bg-05.jpg"
+author:     "Jun"
+tags: [d3.js, r, data visualisation]
 ---
 
 <h2 class="section-heading">세월호 대통령 담화문 비교분석 및 시각화</h2>

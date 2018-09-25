@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Parsing Kakao Story using R - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Parsing Kakao Story using R" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/kakao-story-parser/" property="og:url">
+  
+  
+    <meta content="2015-01-13T21:50:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/author.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="r" property="article:tag">
+    
+    <meta content="web crawling" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Parsing Kakao Story using R">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/kakao-story-parser/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/author.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Parsing Kakao Story using R</h1>
+        <div class="page-date"><span>2015, Jan 13&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 class="section-heading">Parsing Kakao Story using R</h2>
+
+<p> This blog post is a follow up of my previous post about crawling data from Kakao Story. As I mentioned previously, I extracted data from html sources from Kakao Story, not using its API. By using R's XML and CSS libraries, I made this simple R script by which you can extract published time, content, likes, comments, shares and urls. </p>
+
+<h2 class="section-heading">How to use</h2>
+<p> 1. Set the right R environment. Go and download R on your PC or MAC, and install XML and CSS libraries. <br />
+	&gt; install.packages("XML")<br />
+	&gt; install.packages("CSS")</p>
+
+<p> 2. Ready the data. Go to Kakao Story and find the account you want to crawl. Scroll down until you reach the extent you want to crawl. Right click the screen and select "inspect element"(on Chrome). For a demonstation, I chose SK Telecom's offical Kakao Story account. </p>
+
+<p><img src="/assets/materials/20150113/kakao_skt.png" alt="SKT official account" />
+<span class="caption text-muted">SKT’s offical Kakao Story account</span></p>
+
+<p><img src="/assets/materials/20150113/kakao_element.png" alt="SKT official account" />
+<span class="caption text-muted">Scroll down until you get to the right time period.</span></p>
+
+<p> I scrolled down to the first of November, 2014, and hit "inspect element". You'll see loads of "&lt;div class="section _activity"...&gt;"s. That is a container for each post. Go up until you find a div with a class called "_listContainer". Right click and copy the div, and paste it on an empty text editor. Save it as an html file. This is what you'll get. </p>
+
+<p><img src="/assets/materials/20150113/kakao_html.png" alt="SKT official account" />
+<span class="caption text-muted">Scroll down until you get to the right time period.</span></p>
+
+<p> 3. Download the R script file(KSParser.R). You can download it from my <a href="https://github.com/junkwhinger/kakaoStoryParser">github</a> page. </p>
+
+<p> 4. Place the script file in the same directory as the html file. </p>
+
+<p> 5. Open R or RStudio, and run the script. <br />
+	&gt; source("KSParser.R")</p>
+
+<p><img src="/assets/materials/20150113/kakao_rstudio.png" alt="SKT official account" />
+<span class="caption text-muted">KSParser.R on RStudio</span></p>
+
+<p>type in the name of the file, which in my case, 'skt' from skt.html.</p>
+
+<p> 6. In about a few seconds, a new file will be created with a prefix "done_". Open the file on Excel and see if everything's okay</p>
+
+<p><img src="/assets/materials/20150113/kakao_result.png" alt="SKT official account" />
+<span class="caption text-muted">Voila! It’s done and dusted.</span></p>
+
+<p> Extraction completed! 130 post and their attributes are all completely donwloaded. </p>
+
+<p> Here's my R script code </p>
+
+<figure class="highlight"><pre><code class="language-r" data-lang="r"><span class="n">library</span><span class="p">(</span><span class="s2">"XML"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"xlsx"</span><span class="p">)</span><span class="w">
+</span><span class="n">library</span><span class="p">(</span><span class="s2">"CSS"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">name_of_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">readline</span><span class="p">(</span><span class="s2">"type in the name of html file without .html: "</span><span class="p">)</span><span class="w">
+
+</span><span class="n">file_name</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">name_of_file</span><span class="p">,</span><span class="w"> </span><span class="s2">".html"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
+
+</span><span class="n">k_doc</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">htmlParse</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">k_root</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xmlRoot</span><span class="p">(</span><span class="n">k_doc</span><span class="p">)</span><span class="w">
+
+</span><span class="n">time</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathSApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"//a[@class='time _linkPost']"</span><span class="p">,</span><span class="w"> </span><span class="n">xmlValue</span><span class="p">)</span><span class="w">
+
+</span><span class="n">content</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cssApplyInNodeSet</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">".fd_cont"</span><span class="p">,</span><span class="w"> </span><span class="s2">".txt_wrap"</span><span class="p">,</span><span class="w"> </span><span class="n">cssCharacter</span><span class="p">)</span><span class="w">
+
+</span><span class="n">likes</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._likeCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
+
+</span><span class="n">comments</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._commentCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
+
+</span><span class="n">shares</span><span class="w"> </span><span class="o">&lt;-</span><span class="n">cssApply</span><span class="p">(</span><span class="n">k_doc</span><span class="p">,</span><span class="w"> </span><span class="s2">"._shareCount"</span><span class="p">,</span><span class="w"> </span><span class="n">cssNumeric</span><span class="p">)</span><span class="w">
+
+</span><span class="n">link</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">xpathSApply</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span><span class="w"> </span><span class="s2">"//a[@class='time _linkPost']"</span><span class="p">,</span><span class="w"> </span><span class="n">xmlGetAttr</span><span class="p">,</span><span class="w"> </span><span class="s2">"href"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">link_pasted</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"https://story.kakao.com"</span><span class="p">,</span><span class="w"> </span><span class="n">link</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
+
+</span><span class="n">final</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cbind</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">likes</span><span class="p">,</span><span class="w"> </span><span class="n">comments</span><span class="p">,</span><span class="w"> </span><span class="n">shares</span><span class="p">,</span><span class="w"> </span><span class="n">link_pasted</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p">)</span><span class="w">
+
+</span><span class="n">renamed_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="s2">"done"</span><span class="p">,</span><span class="w"> </span><span class="n">name_of_file</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">"_"</span><span class="p">)</span><span class="w">
+
+</span><span class="n">xlsx_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">renamed_file</span><span class="p">,</span><span class="w"> </span><span class="s2">".xlsx"</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span><span class="w">
+
+</span><span class="n">write.xlsx</span><span class="p">(</span><span class="n">final</span><span class="p">,</span><span class="w"> </span><span class="n">xlsx_file</span><span class="p">)</span></code></pre></figure>
+
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Parsing Kakao Story using R&url=http://localhost:4000/kakao-story-parser/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/kakao-story-parser/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/kakao-story-parser/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#r" class="tag">&#35; r</a>
+          
+            <a href="/tags#web crawling" class="tag">&#35; web crawling</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

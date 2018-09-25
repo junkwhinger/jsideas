@@ -1,10 +1,10 @@
 ---
 layout:     post
-title:      "메르스 - 기록들(업데이트 중)"
+title:      "메르스 - 기록들"
 date:       2015-06-30 21:30:00
 author:     "Jun"
-categories: "r"
-header-img: "img/post-bg-05.jpg"
+tags: [d3.js, r, data visualisation]
+
 ---
 
 <h2 class="section-heading">MERS Spread and Media Coverage</h2>

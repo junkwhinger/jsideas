@@ -3,8 +3,8 @@ layout:     post
 title:      "Learning GAN"
 date:       2017-07-01 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/Learning_GAN_files/Learning_GAN_34_0.png
+img: 20170701.png
+tags: [python, deep learning, image, gan]
 ---
 
 
@@ -381,7 +381,7 @@ plt.legend()
 
 
 
-![png](/assets/Learning_GAN_files/Learning_GAN_25_1.png)
+![png](/assets/materials/20170701/Learning_GAN_25_1.png)
 
 
 ##### 생성한 결과물 보기
@@ -411,7 +411,7 @@ _ = view_samples(-1, samples)
 ```
 
 
-![png](/assets/Learning_GAN_files/Learning_GAN_29_0.png)
+![png](/assets/materials/20170701/Learning_GAN_29_0.png)
 
 
 샘플로 16개를 만들어보았다. 1번째와 3번째 줄의 결과는 약간 애매하지만 전반적으로 사람이 알아볼 수 있을 정도다. 총 100개 epoch을 돌렸는데 10개마다 어떻게 생성 퀄리티가 개선되는지 살펴보자.
@@ -429,7 +429,7 @@ for sample, ax_row in zip(samples[::int(len(samples)/rows)], axes):
 ```
 
 
-![png](/assets/Learning_GAN_files/Learning_GAN_31_0.png)
+![png](/assets/materials/20170701/Learning_GAN_31_0.png)
 
 
 처음에는 전혀 알아볼 수 없는 노이즈가 출력되지만, epoch이 거듭될수록 숫자의 형태가 명확해지는 것을 볼 수 있다.
@@ -451,7 +451,7 @@ _ = view_samples(0, [gen_samples])
 ```
 
 
-![png](/assets/Learning_GAN_files/Learning_GAN_34_0.png)
+![png](/assets/materials/20170701/Learning_GAN_34_0.png)
 
 
 마지막 그림처럼 완전히 알아보기 어려운 것도 존재는 하지만, 전체적으로 꽤 괜찮은 결과가 나왔다. Convolutional network를 쓰지 않고도, epoch을 100번만 돌리고도 이정도 퀄리티가 나온 것은 꽤 고무적인 성과다. 다음에는 DCGAN을 살펴보자.

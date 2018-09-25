@@ -2,8 +2,8 @@
 layout: post
 title:  "대한민국 인구구조 변화"
 date:   2016-01-20 00:34:25
-categories: d3
-image: /assets/population_cliff/header.png
+tags: [d3.js, data visualisation]
+
 ---
 
 ## 피라미드형에서 종형으로 이동하는 대한민국 인구구조
@@ -464,7 +464,7 @@ image: /assets/population_cliff/header.png
 
 <div class="chart"></div>
 <script type="text/javascript">
-    d3.json("/assets/population_cliff/korea_population_sample.json", draw);
+    d3.json("/assets/materials/20160227/korea_population_sample.json", draw);
 </script>
 <br>
 

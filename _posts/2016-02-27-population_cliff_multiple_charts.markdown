@@ -2,8 +2,8 @@
 layout: post
 title:  "Population Structure Change - Korea and Japan"
 date:   2016-02-27 00:34:25
-categories: d3
-image: /assets/population_cliff/header.png
+tags: [d3.js, data visualisation]
+
 ---
 
 ## Population Structure change over time - Korea and Japan
@@ -529,7 +529,7 @@ data source: <a href="http://kosis.kr/">Statistics Korea</a>, <a href="http://ww
 
 <div class="chart"></div>
 <script type="text/javascript">
-  d3.csv("/assets/population_cliff/population.csv", function(d){
+  d3.csv("/assets/materials/20160227/population.csv", function(d){
       d.population = +d.population;
       return d;
     }, draw);

@@ -3,8 +3,8 @@ layout:     post
 title:      "TF: tips 1"
 date:       2017-04-29 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/tf/header.jpg
+img: 20170429.jpg
+tags: [python, deep learning, tensorflow]
 ---
 
 

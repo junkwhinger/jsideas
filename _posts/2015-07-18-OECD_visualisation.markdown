@@ -3,7 +3,8 @@ layout: post
 title:  "OECD Statistics Visualisation"
 date:   2015-07-18 19:34:25
 categories: d3.js
-image: /assets/oecd_header.jpg
+img: 20150719.jpg
+tags: [d3.js, data visualisation]
 ---
 
 <h2>OECD Statistics Visualisation</h2>

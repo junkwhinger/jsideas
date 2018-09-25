@@ -2,8 +2,9 @@
 layout: post
 title:  "Matplotlib을 활용한 이세돌 vs. 알파고 데이터 시각화"
 date:   2016-03-23 00:34:25
-categories: python
-image: /assets/alphago/header.png
+img: 20160323.png
+tags: [python, data visualisation]
+
 ---
 
 ## 들어가며
@@ -127,7 +128,7 @@ game5_ts = countdown(game5)
 
 잘 처리되었는지 확인해볼까요?
 `game1_ts.tail(10)`으로 데이터프레임의 맨 끝 10줄을 봅시다. 
-![game1_ts](/assets/alphago/game1_ts.png)
+![game1_ts](/assets/materials/20160323/game1_ts.png)
 
 초가 아닌 분 단위로 ts가 잘 정리되어 들어왔습니다. 마지막으로 모든 게임을 하나의 df에 묶기 전에 각 게임의 착수 순번을 기록해두어야 합니다. 현재 착수 순번은 index에 기록되어있습니다. `.reset_index`함수를 사용하면 index를 개별 컬럼으로 손쉽게 빼낼 수 있습니다. 
 
@@ -143,7 +144,7 @@ game5_ts.reset_index(level=0, inplace=True)
 
 pandas의 특출난 장점 중 하나는 df 뒤에 `.plot()`만 붙여서 바로 차트를 그릴 수 있다는 점입니다. 아주 쓸만하죠. x축을 index로 지정하여 라인플롯을 그려봅시다. 
 
-![game4_ts_plot](/assets/alphago/game4_ts_plot.png)
+![game4_ts_plot](/assets/materials/20160323/game4_ts_plot.png)
 
 <hr>
 
@@ -199,4 +200,4 @@ plt.show()
 
 빠밤!
 
-![total_remaining_plot](/assets/alphago/total_remaining.png)
+![total_remaining_plot](/assets/materials/20160323/total_remaining.png)

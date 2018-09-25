@@ -3,14 +3,9 @@ layout:     post
 title:      "The First and Second Derivatives and Local Minima"
 date:       2017-12-31 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/keras/Header.png
+img: 20171231.png
+tags: [python, math]
 ---
-
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-## The First and Second Derivatives and Local Minima
 
 Whilst brushing up on linear algebra, I stumbled upon this <a href="https://math.dartmouth.edu/opencalc2/cole/lecture8.pdf">webpage</a> that provides a nice and short explanation on the first and second derivatives. To deepen my understanding I visualised the relationship between the first and second derivatives and local minimum / maximum.
 
@@ -110,7 +105,7 @@ plt.show()
 ```
 
 
-![png](/assets/The%20First%20and%20Second%20Derivatives%20and%20Local%20Minima_files/The%20First%20and%20Second%20Derivatives%20and%20Local%20Minima_10_0.png)
+![png](/assets/materials/20171231/The%20First%20and%20Second%20Derivatives%20and%20Local%20Minima_10_0.png)
 
 
 As stated above, the function is at local maximum when the first derivative is at 0 and the second derivative is negative. And it's at local minimum when the second derivative is positive. 

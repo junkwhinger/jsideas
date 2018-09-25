@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>OVERWATCH: MASTER CLASSIFIER - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="OVERWATCH: MASTER CLASSIFIER" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/overwatch_eng/" property="og:url">
+  
+  
+    <meta content="2016-10-01T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20161001.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="data analytics" property="article:tag">
+    
+    <meta content="web crawling" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="OVERWATCH: MASTER CLASSIFIER">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/overwatch_eng/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20161001.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20161001.png alt="OVERWATCH: MASTER CLASSIFIER">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">OVERWATCH: MASTER CLASSIFIER</h1>
+        <div class="page-date"><span>2016, Oct 01&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="intro">Intro</h2>
+<p><br /></p>
+
+<p>Gone are the glorious days of League of Legends. Blizzard’s Overwatch has been a worldwide hit since its debut back in April this year. It’s has been tremendously successful over here in South Korea, to the extent that even some primary school kids sneakly played Overwatch (and got caught by the police). Overwatch’s immense popularity has lead to the birth of 3rd party services like <a href="http://overlog.gg/">overlog.gg</a> that provide user statistics and in-depth analyses. This company is also known widely for its LOL stat service <a href="http://www.op.gg/">op.gg</a>.</p>
+
+<p>Riot Games provides an extensive variety of data through their api, but Blizzard isn’t doing so at the moment. Instead, overlog.gg offers user logs and various stats. In this post, I’ve built and tested machine-learning models that classify Master-class users from the rest based on some data samples from overlog.gg.</p>
+
+<p><img src="/assets/materials/20161001/overlog_homepage_eng.png" alt="overlog.gg" /></p>
+
+<hr />
+
+<h2 id="dataset">Dataset</h2>
+<p>The <a href="http://overlog.gg/leaderboards">leaderboard</a> page contains approximately 700,000 pieces of user info. To acquire a sample dataset that represents the whole userbase, I split 700,000 users into 20 subgroups based on their ranks, and cralwed 1,000 users from each subgroup (100 users x 10 pages x 20 subgroups).</p>
+
+<hr />
+
+<h2 id="hypothesis">Hypothesis</h2>
+<p><br />
+In Overwatch you can play either quick play or competitive play. Competitive play, which only allows 25+ level users, classifies users with points based on their game win/defeat logs. You get Grand Master from 4,000 pts, Master from 3,500 pts and the rest we are not interested in. Let’s see what our sample dataset’s rank distribution looks like. Here I put points as <code class="highlighter-rouge">skillRating</code>.</p>
+
+<p><img src="/assets/materials/20161001/overlog_ladder_eng.png" alt="Competitive play skillRating distribution" /></p>
+
+<p>The skillRating distribution from the sample dataset shows that there is a chasm between the leader group and the followers. This is caused by the way I crawled the sample dataset. The second best subgroup was from page 700 to 710, and the cut-off of Master-class (skillRating 3500) was around page 65. Although it was not intended at all in the first place, this chasm led me to build and test some machine-learning algorithms to tell the very best users from the crowd, for fun! (It’s for fun so it might contain some technical glitches and procedural mistakes. TT)</p>
+
+<hr />
+
+<h2 id="eda--preprocessing">EDA &amp; Preprocessing</h2>
+<p><br />
+Let’s see what the dataset looks like first.</p>
+
+<p><img src="/assets/materials/20161001/overlog_raw.png" alt="raw data" /></p>
+
+<ul>
+  <li>avgFire: Average time on fire in minutes (when you kill loads of ‘em)</li>
+  <li>kd: Kill / Death ratio</li>
+  <li>level: User level</li>
+  <li>mostHeroes: Top 3 most played heroes</li>
+  <li>platform: Where you play (Korea, US, Europe)</li>
+  <li>playtime: Total play time in hours</li>
+  <li>player: Player name</li>
+  <li>rank: Rank</li>
+  <li>skillRating: Competitive Play Points</li>
+  <li>winRatio: Win Ratio(%)</li>
+</ul>
+
+<p>First of all, <code class="highlighter-rouge">avgFire</code>, <code class="highlighter-rouge">kd</code> and <code class="highlighter-rouge">winRatio</code> are not in the right format. Python’s lambda function does a wonderful job of changing data types nice and easily. <code class="highlighter-rouge">avgFire</code> is a string <code class="highlighter-rouge">min:sec</code> so I just made a new column called <code class="highlighter-rouge">avgFire_sec</code> in seconds.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="p">[</span><span class="s">'avgFire_sec'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'avgFire'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="n">time_converter</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'kd'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'kd'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'rank'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'rank'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">","</span><span class="p">,</span> <span class="s">""</span><span class="p">)))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'winRatio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'winRatio'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+<p>And <code class="highlighter-rouge">mostHeroes</code> column has lists that each contains 3 (sometimes 2) hero strings. All the Overwatch heores fall into 4 big categories (attack, defence, charge, heal), so I added these four features (e.g. <code class="highlighter-rouge">['McCree', 'Reaper', 'Mei']</code> =&gt; <code class="highlighter-rouge">attack: 2</code>, <code class="highlighter-rouge">defence: 1</code>)</p>
+
+<p><img src="/assets/materials/20161001/overlog_selection.png" alt="why Torbjörn and Widowmaker on ATTACK? // source: gamecrate.com" /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">attack</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
+    <span class="n">attack_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Genji'</span><span class="p">,</span> <span class="s">'Reaper'</span><span class="p">,</span> <span class="s">'McCree'</span><span class="p">,</span> 
+                     <span class="s">'Soldier: 76'</span><span class="p">,</span> <span class="s">'Tracer'</span><span class="p">,</span> <span class="s">'Pharah'</span><span class="p">]</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hero_list</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">attack_heroes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">defence</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
+    <span class="n">defence_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Mei'</span><span class="p">,</span> <span class="s">'Bastion'</span><span class="p">,</span> <span class="s">'Widowmaker'</span><span class="p">,</span> 
+                     <span class="s">'Junkrat'</span><span class="p">,</span> <span class="s">'Torbjörn'</span><span class="p">,</span> <span class="s">'Hanjo'</span><span class="p">]</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hero_list</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">defence_heroes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">charge</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
+    <span class="n">charge_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'D.va'</span><span class="p">,</span> <span class="s">'Reinhardt'</span><span class="p">,</span> <span class="s">'Roadhog'</span><span class="p">,</span>
+                     <span class="s">'Winston'</span><span class="p">,</span> <span class="s">'Zarya'</span><span class="p">]</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hero_list</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">charge_heroes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">heal</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
+    <span class="n">heal_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Lúcio'</span><span class="p">,</span> <span class="s">'Mercy'</span><span class="p">,</span> <span class="s">'Symmetra'</span><span class="p">,</span> <span class="s">'Ana'</span><span class="p">,</span> <span class="s">'Zenyatta'</span><span class="p">]</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hero_list</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">heal_heroes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">gtwh</span><span class="p">(</span><span class="n">hero_list</span><span class="p">):</span>
+    <span class="n">gtwh_heroes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'Genji'</span><span class="p">,</span> <span class="s">'Tracer'</span><span class="p">,</span> <span class="s">'Widowmaker'</span><span class="p">,</span> <span class="s">'Hanjo'</span><span class="p">]</span>
+    <span class="n">intersect</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">hero_list</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">gtwh_heroes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s">'attack'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'mostHeroes'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">attack</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'defence'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'mostHeroes'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">defence</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'charge'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'mostHeroes'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">charge</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'heal'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'mostHeroes'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">heal</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'gtwh'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'mostHeroes'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">gtwh</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></code></pre></figure>
+
+<p>And I added gtwh (Genji, Tracer, Widowmaker, Hanjo, the most hated quartet in Overwatch (in Korea at least)). They are often picked by selfish and kill-orientated buggers, and it’s my hypothesis that the more gtwh heroes you have in your top 3, the less likely that you’ll be in the master’s level.</p>
+
+<p>Plus, I added individual hero columns too.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">df</span><span class="p">[</span><span class="s">'Genji'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'Genji'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Reaper'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'Reaper'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'McCree'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'McCree'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Soldier'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'Soldier: 76'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Tracer'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'Tracer'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s">'Pharah'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">mostHeroes</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="s">'Pharah'</span> <span class="ow">in</span> <span class="n">x</span><span class="p">))</span></code></pre></figure>
+
+<p>And finally, the following code makes a user_class column that separates Master-class users(skillRating &gt;= 3500) from those are not that good (including myself).</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">label_class</span><span class="p">(</span><span class="n">skillRating</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">skillRating</span> <span class="o">&gt;=</span> <span class="mi">3500</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="mi">1</span>
+    
+<span class="n">df</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">'skillRating'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">label_class</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></code></pre></figure>
+
+<p>Now we’ve got the columns ready, let’s have a look at some plots!</p>
+
+<p><img src="/assets/materials/20161001/overlog_corr1_eng.png" alt="user_class ~ kd, level, playTime" /></p>
+
+<p><img src="/assets/materials/20161001/overlog_corr2_eng.png" alt="user_class ~ winRatio, avgFire_sec" /></p>
+
+<p>Whilst <code class="highlighter-rouge">level</code> and <code class="highlighter-rouge">playTime</code> are positively skewed, <code class="highlighter-rouge">kd</code>, <code class="highlighter-rouge">winRatio</code> and <code class="highlighter-rouge">avgFire_sec</code> are more or less normally distributed. The target variable <code class="highlighter-rouge">user_class</code> is extremely imbalanced, as only one-twentith of them are top players. In the joint plots, blue dots(user_class 0) are the master-level players. Classifying them from the rest is a bit of a tricky challenge as some good yet under 3500 users tend to show stats as good as top players.</p>
+
+<p>Next, the heroes. To see which heros are favoured by which, I calculated the probabilities of heroes being chosen for the top 3 most played heores in master and non-master class user groups.</p>
+
+<p><img src="/assets/materials/20161001/overlog_hero_selection_eng.png" alt="Zarya, McCree, Genji are loved by the top players" /></p>
+
+<p>The x-axis is the top players’ probabilities of choosing heros for their top3, and y-axis the rest. The heroes below the red line are more favoured by the master players and above by the rest. From my personal experience (of skillRating 1800) Genji and McCree were the most difficult heroes to control as I was forced to move and jump constantly to keep myself alive. So was Zarya as her ultimatum requires a good level of team-spirit and understanding of game-flow. On the other hand, Lucio was a pretty easy-going hero: fast speed, simple music change and powerful touch down(Q).</p>
+
+<p>Would there be more drastic differences between the top and the bottom?</p>
+
+<p><img src="/assets/materials/20161001/overlog_hero_selection_deepsea_eng.png" alt="top vs bottom (under 2100)" /></p>
+
+<p>This plot doesn’t look too different from the previous one, apart from some heroes like Junkrat. Junkrat seems to be in favour of bottom-rank users as Junkrat doesn’t usually get involved with dog fights in the battle front thanks to his long-ranged weapon.</p>
+
+<p>Pandas has this amazing visualisation tool <code class="highlighter-rouge">radviz</code> that makes nice plots like the following. As the hero type columns are integer values I added a bit of noise to make the plots clearer. (integer points overlap each other.)</p>
+
+<h3 id="users-that-are-under-skillrating-2100">Users that are under skillRating 2100</h3>
+<p><img src="/assets/materials/20161001/overlog_radviz_deepsea.png" alt="under-2100 users are rather balanced in choosing hero types" />
+<br /></p>
+<h3 id="master-class-users">Master-class users</h3>
+<p><img src="/assets/materials/20161001/overlog_radviz_top.png" alt="Masters are not that into defence type heroes" /></p>
+
+<p><img src="/assets/materials/20161001/overlog_bastion.png" alt="Bastion rocks in quick play // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg" /></p>
+
+<p>There is much more to discover from this dataset, but it’s time to move on and get our hands dirty with some machine-learning algorithms.</p>
+
+<hr />
+
+<h2 id="feature-engineering">Feature Engineering</h2>
+<p><br />
+In the previous part, I preprocessed the raw data and added some new columns like hero types, and ended up with 32 features. The more features you have in your model, the more likely you’ll have <code class="highlighter-rouge">the curse of dimensionality</code>, so it’s better to manually/programmatically select (or extract) features.</p>
+
+<h3 id="manual-feature-selection">Manual Feature Selection</h3>
+<p>From the exploratory Data Analysis session above, I saw a glimmer of hope of making a fairly decent classifier with the stat variable and hero categories. I added Genji as the final variable as he was often seen with the top players.</p>
+
+<h3 id="automatic-feature-selection-extratreeclassifier">Automatic Feature Selection (ExtraTreeClassifier)</h3>
+<p>It’s also possible to select features based on their importance to the model. I fed training dataset into sklearn’s ExtraTreeClassifier, and filtered the top 12 features by their <code class="highlighter-rouge">feature_importance</code>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#feature selection</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ExtraTreesClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/materials/20161001/overlog_feature_importance.png" alt="Feature Selection via ExtraTreeClassifier" /></p>
+
+<p>The ExtraTreeClassifier got rid of all the hero categories apart from <code class="highlighter-rouge">gtwh</code> and put McCree, Tracer, Winston, Zarya, Genji and Ana in their places.</p>
+
+<p>I have also tried PCA and SVD to extract some latent variables, but the result (e.g. explained variance curve) didn’t look convincing for some unknown issues. PCA said the best number of features is 2 for all the individual hero variables.</p>
+
+<p><img src="/assets/materials/20161001/overlog_pca.png" alt="Feature Extraction via PCA" /></p>
+
+<p>On the PCA plot above, top players(user_class 0) are distributed nearly the same as the rest. Disappointing.</p>
+
+<hr />
+
+<h2 id="model-testing">Model Testing</h2>
+<p><br /></p>
+
+<p>Before building models, I split the training set and test set (90/10). The training set will be used for model fitting, and the test set for final model evaluation.</p>
+
+<p>There are numerous machine-learning algorithms we can use in classification problems like this one. Here I’m going to test the following 4 options which are my favourite algorithms. (I like the sound of <code class="highlighter-rouge">Random Forest</code>. How Green.)</p>
+
+<ol>
+  <li>MinMaxScaler + SelectKBest + LogisticRegression</li>
+  <li>MinMaxScaler + SelectKBest + RandomForestClassifier</li>
+  <li>MinMaxScaler + SelectKBest + SupportVectorClassifier</li>
+  <li>MinMaxScaler + DNNClassifier</li>
+</ol>
+
+<ul>
+  <li>MinMaxScaler: Convert each data column from 0 to 1</li>
+  <li>SelectKBest: select k best features for each classifier</li>
+  <li>LogisticRegression: basic yet powerful classification algorithm</li>
+  <li>RandomForestClassifier: combine multiple decision trees to improve prediction</li>
+  <li>SupportVectorClassifier: find the hyperplane that performs best</li>
+  <li>DNNClassifier: complicated neural network using TensorFlow’s DNNClassifier</li>
+</ul>
+
+<h3 id="pipeline-and-gridsearchcv">Pipeline and GridSearchCV</h3>
+<p>Much of model building, fitting and testing is pretty repetitive and complicated. It gets worse as you have a lot of options to tune the hyper parameters of the algorithms by which you can greatly improve the predition power. Sklearn’s PipeLine and GridSearchCV ease the pain amazingly. It’s really easy to assign and control the sequential stages by putting them in a pipeline object. GridSearchCV takes parameter sets as an argument, tests them in 3 fold cross validation sets(default) and finds the model with the best performance.</p>
+
+<p>So with my first option..</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">minmax_logistic</span><span class="p">(</span><span class="n">X_training</span><span class="p">,</span> <span class="n">y_training</span><span class="p">):</span>
+    <span class="c">## scaler, selectKbest, logistic 모형 설정</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">select</span> <span class="o">=</span> <span class="n">feature_selection</span><span class="o">.</span><span class="n">SelectKBest</span><span class="p">()</span>
+    <span class="n">logistic_fit</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+
+    <span class="c">## putting scaling, feature_selection, model building in a pipeline</span>
+    <span class="n">pipeline_object</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'scaler'</span><span class="p">,</span> <span class="n">scaler</span><span class="p">),</span> 
+                                <span class="p">(</span><span class="s">'feature_selection'</span><span class="p">,</span> <span class="n">select</span><span class="p">),</span> 
+                                <span class="p">(</span><span class="s">'model'</span><span class="p">,</span> <span class="n">logistic_fit</span><span class="p">)])</span>
+    
+    <span class="c">## setting the set of parameter sets to test</span>
+    <span class="n">tuned_parameters</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'feature_selection__k'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+                        <span class="s">'model__C'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span>
+                    <span class="s">'model__penalty'</span><span class="p">:</span> <span class="p">[</span><span class="s">'l1'</span><span class="p">,</span><span class="s">'l2'</span><span class="p">]}]</span>
+
+    <span class="c">## pass the pipeline and parameter sets to GridSearchCV. </span>
+    <span class="c">## find the best model by roc_auc score.</span>
+    <span class="n">cv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline_object</span><span class="p">,</span> 
+                      <span class="n">param_grid</span><span class="o">=</span><span class="n">tuned_parameters</span><span class="p">,</span> 
+                      <span class="n">scoring</span> <span class="o">=</span> <span class="s">'roc_auc'</span><span class="p">)</span>
+    
+    <span class="c">## fit GridSearchCV with the training set</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_training</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y_training</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    
+    <span class="c">## print the best AUC score</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Best AUC score: "</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
+    
+    <span class="c">## and return the final classifier for the final evaluation</span>
+    <span class="k">return</span> <span class="n">cv</span>
+
+<span class="n">cv_log</span> <span class="o">=</span> <span class="n">minmax_logistic</span><span class="p">(</span><span class="n">X_training</span><span class="p">[</span><span class="n">feature_list</span><span class="p">],</span> <span class="n">y_training</span><span class="p">)</span></code></pre></figure>
+
+<p>The function <code class="highlighter-rouge">minmax_logistic</code> returns a trained logistic regression classifier, and we can check its best parameter set via <code class="highlighter-rouge">.best_estimator_</code>. And it’s also possible to access the coefficients of each variables.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fil</span> <span class="o">=</span> <span class="n">cv_log</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s">'feature_selection'</span><span class="p">]</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+<span class="n">selected_features</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">compress</span><span class="p">(</span><span class="n">feature_list</span><span class="p">,</span> <span class="n">fil</span><span class="p">))</span>
+<span class="n">logistic_coeff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cv_log</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+             <span class="n">selected_features</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'coefficient'</span><span class="p">])</span>
+<span class="n">logistic_coeff</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'coefficient'</span><span class="p">)</span></code></pre></figure>
+
+<p><img src="/assets/materials/20161001/overlog_logistic.png" alt="Coefficients of the logistic classifier" /></p>
+
+<p>As the top player’s classification label is 0, all the coffefficients are minus values. Going by the size of them, winRatio and playTime are the most influential variables.</p>
+
+<p>Likewise I made <code class="highlighter-rouge">pipeline</code> and <code class="highlighter-rouge">gridSearchCV</code> for Random Forest and Support Vector Classifier. I passed <code class="highlighter-rouge">n_estimators</code> and <code class="highlighter-rouge">min_samples_split</code> for Random Forest, and <code class="highlighter-rouge">kernel</code> and <code class="highlighter-rouge">C</code> for SVM for hyper parameter tuning.</p>
+
+<p>Let’s see what variables Random Forest picked.
+<img src="/assets/materials/20161001/overlog_imp.png" alt="Feature Importance of Random Forest classifier" /></p>
+
+<p>Random Forest picked winRatio and playTime too. However, it selected 5 variables when logistic classifier picked 7.</p>
+
+<p>(Model 1, 2, 3 performed slightly better with programmatically selected features than with manually selected ones.)</p>
+
+<p><br /></p>
+
+<h3 id="tensorflows-dnnclassifier">TensorFlow’s DNNClassifier</h3>
+
+<p>Google TensorFlow is the most trending machine-learning library at the minute. I’d never personally tried TensorFlow or fully understood the notion of Deep Learning, but I’ve given it a go. I made a deep neural network with 4 hidden layers by getting some ideas from its tutorial pages. At the minute I do not know how to combine DNNClassifier with gridSearchCV and cross-validation, so I split the training set into the training set and validation set to fit the parameters of the DNN, before putting it to the final evaluation with the test set.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="n">classifier</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">def</span> <span class="nf">tf_iteration</span><span class="p">():</span>
+
+    <span class="c">## acc_list saves validation accuracy after each learning step</span>
+    <span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c">## this nn use manually selected features</span>
+    <span class="c">## 4 hidden layers // 12, 20, 15, 12 nodes in each layer</span>
+    <span class="n">feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">real_valued_column</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">10</span><span class="p">)]</span>
+    <span class="n">classifier</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">learn</span><span class="o">.</span><span class="n">DNNClassifier</span><span class="p">(</span><span class="n">feature_columns</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">,</span>
+                                            <span class="n">hidden_units</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+                                            <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                            <span class="n">model_dir</span><span class="o">=</span><span class="s">"/tmp/newd_30"</span><span class="p">)</span>
+
+    <span class="c">## learn 2000 steps for 50 times</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
+        <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train</span><span class="p">[</span><span class="n">feature_list_new</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+
+        <span class="n">y_prediction</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_validation</span><span class="p">[</span><span class="n">feature_list_new</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_validation</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">],</span> <span class="n">y_prediction</span><span class="p">)</span>
+        
+        <span class="k">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
+        <span class="n">accuracy_score</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_validation</span><span class="p">[</span><span class="n">feature_list_new</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y_validation</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+        <span class="k">print</span> <span class="p">(</span><span class="s">'step:'</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">[</span><span class="s">'global_step'</span><span class="p">],</span> 
+               <span class="s">'auc_score'</span><span class="p">,</span> <span class="n">accuracy_score</span><span class="p">[</span><span class="s">'auc'</span><span class="p">])</span>
+        <span class="n">acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">acc_list</span><span class="p">,</span> <span class="n">classifier</span>
+        </code></pre></figure>
+
+<p><img src="/assets/materials/20161001/overlog_dnn_auc.png" alt="DNN's AUC score over steps" /></p>
+
+<p>After fitting DNN for 38,000 times, the AUC score curve flattens out. I hardcoded the code above to fit the model 38,000times and evaluated the model performance with the test dataset.</p>
+
+<p>It was my first time of building a neural network that has 4 hidden layers, but thanks to TensorFlow’s powerful yet easy-to-use API, the coding itselt was not too hard. However, as I’m no expert in deep learning I found it difficult to finetune the model by tweaking parameters like the number of hidden layers, the number of nodes in each hidden layer, step size, batch_size, dropout ratio, just to name a few. Furthermore, unlike Iris dataset that was more or less easy to train with low step size, the auc score didn’t get up to .5 until a few hundred times of fitting with this overlog dataset. At the end of the day I got what I wanted, but I’m still not sure fitting nn for 38,000 times was the right thing to do. (too much training? but it worked well with the unseen test dataset.)</p>
+
+<hr />
+
+<h2 id="model-evaluation">Model Evaluation</h2>
+<p><br /></p>
+
+<p>So, it’s time for a show down. I’m going to evaluate 4 models that I’ve built above with the test dataset. To make things easier, I made the following custom model_tester function.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">model_tester</span><span class="p">(</span><span class="n">cv</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">report</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">],</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">report</span><span class="p">)</span></code></pre></figure>
+
+<p>In this classification_report, I’m going to focus on the f1-score of class 0, because A) this dataset is imbalance and B) I’m particularly interested in detecting top players well.</p>
+
+<h3 id="logisticregression">LogisticRegression</h3>
+<p><img src="/assets/materials/20161001/overlog_logi_result.png" alt="Logistic_Classifier_Result" />
+<br /></p>
+<h3 id="randomforestclassifier">RandomForestClassifier</h3>
+<p><img src="/assets/materials/20161001/overlog_rf_result.png" alt="RF_Result" />
+<br /></p>
+
+<h3 id="supportvectorclassifier">SupportVectorClassifier</h3>
+<p><img src="/assets/materials/20161001/overlog_svm_result.png" alt="SVM_Result" />
+<br /></p>
+<h3 id="dnnclassifier">DNNClassifier</h3>
+<p><img src="/assets/materials/20161001/overlog_dnn_result.png" alt="DNN_Result" />
+<br /></p>
+
+<p>Based on the F1-score of class 0, DNN performed best, then RF, SVM and Logistic Regression. DNN was the best performer, but I believe RF and SVM could do better. (I spent most of my time finetuning DNN :P) (DNN with 100,000 steps got test F1-score of 0.92 but the DNN with 38,000 steps was chosen for the best valdiation AUC.)</p>
+
+<hr />
+
+<h2 id="prediction">Prediction</h2>
+
+<p>Alright. It’s time for a real classification. DNN is my weapon of choice.</p>
+
+<p>First of all, let me test with my own Overwatch log. 0 means top players, 1 means the rest.
+<img src="/assets/materials/20161001/overlog_junk3.png" alt="junk3 - Competitive Play" />
+<br />
+<img src="/assets/materials/20161001/overlog_junk3_result.png" alt="Yup, the model is well built." />
+The DNN says 1. Correct.</p>
+
+<p>What about some random good and good-ish players from the leaderboard?
+<img src="/assets/materials/20161001/overlog_random_test.png" alt="Random Test Result" />
+The second player, who is a Master-class player, is mis-classified as a non-Master player. I guess it’s due to his low winRatio, k/d and relatively short playTime.</p>
+
+<hr />
+
+<h2 id="outro">Outro</h2>
+
+<p>In this post, I have crawled some user stat data from overlog.gg, preprocessed features and built some models to classify top players from the crowd. My testing result says that DNN with 4 hidden layers performed the best. This time I have played with the fully connected Deep Learning model, but some experts said it’s also possible to use CNN with this dataset. For those who are interested in this overlog dataset and want to try their own classification models, I’ve uploaded the training and test datasets on <a href="https://github.com/junkwhinger/overlog">github</a>. Make your own model, predict y_pred with X_test and send me(junsik.whang@gmail.com) the prediction result. Then I’ll email you the performance evaluation result back :) Thank you for reading.</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=OVERWATCH: MASTER CLASSIFIER&url=http://localhost:4000/overwatch_eng/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/overwatch_eng/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/overwatch_eng/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#data analytics" class="tag">&#35; data analytics</a>
+          
+            <a href="/tags#web crawling" class="tag">&#35; web crawling</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -3,8 +3,7 @@ layout:     post
 title:      "Map of Knowledge"
 date:       2015-01-18 18:50:00
 author:     "Jun"
-categories: "Rubbish"
-header-img: "img/post-bg-05.jpg"
+tags: [thoughts]
 ---
 <h2 class="section-heading">Map of Knowledge where everything to learn is interconnected</h2>
 

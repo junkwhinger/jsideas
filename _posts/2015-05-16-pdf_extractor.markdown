@@ -3,8 +3,7 @@ layout:     post
 title:      "PDF Extractor in python"
 date:       2015-05-16 11:30:00
 author:     "Jun"
-categories: "Python"
-header-img: "img/post-bg-05.jpg"
+tags: [python]
 ---
 
 <h2 class="section-heading">PDf Extractor in python</h2>
@@ -32,11 +31,11 @@ The sample pdf file I used for this blogpost is “Impact_of_the_social_sciences
 
 <p>3) run the python code and provide the name of the pdf file without “.pdf”.</p>
 <p>Like this.</p>
-![pic1](/assets/pdf_extractor/pic1.png)
+![pic1](/assets/materials/20150516/pic1.png)
 
 <p>4) done. check your folder in Evernote.</br>
 Voila! Does this make sense to you? It can’t be perfect but I think it’s a good skimming of the article. </p>
-![pic2](/assets/pdf_extractor/pic2.png)
+![pic2](/assets/materials/20150516/pic2.png)
 
 <p>Here are the thankful blogposts and websites that helped me a lot.</p>
 <ul>

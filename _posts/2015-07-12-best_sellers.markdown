@@ -3,8 +3,8 @@ layout:     post
 title:      "교보문고 베스트셀러 분석"
 date:       2015-07-12 20:30:00
 author:     "Jun"
-categories: "d3.js"
-header-img: "img/post-bg-05.jpg"
+img: 20150712.jpg
+tags: [d3.js, data visualisation]
 ---
 
 <h2 class="section-heading">교보문고 베스트셀러 분석</h2>

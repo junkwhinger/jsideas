@@ -3,8 +3,8 @@ layout:     post
 title:      "OVERWATCH: 천상계 분류기"
 date:       2016-10-01 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/overwatch/overwatch_header.jpg
+img: 20161001.png
+tags: [python, data analytics, web crawling]
 ---
 
 ## 들어가며
@@ -14,7 +14,7 @@ image: /assets/overwatch/overwatch_header.jpg
 
 LOL을 서비스하는 라이엇게임즈에서는 상당히 폭넓은 데이터를 api를 통해 제공하지만, 블리자드에서는 오버워치용 api는 아직 구축하지 않은 모양입니다. 대신 overlog.gg에서 유저들의 전적과 각종 통계치를 확보할 수 있는데요, 이번 분석에서는 overlog.gg에서 일부 크롤링한 데이터를 바탕으로 최상위권 유저를 분류하는 '천상계 분류기' 모델을 만들어봤습니다.
 
-![overlog.gg](/assets/overwatch/overlog_homepage.png)
+![overlog.gg](/assets/materials/20161001/overlog_homepage.png)
 
 <hr>
 
@@ -27,7 +27,7 @@ overlog.gg에서는 <a href="http://overlog.gg/leaderboards">leaderboard(순위�
 <br>
 오버워치는 히오스와 동일하게 일반게임인 빠른대전과 래더게임인 경쟁전으로 나눠집니다. 유저레벨 25이상에서만 참여할 수 있는 경쟁전은 실력에 맞는 점수가 주어져서 유저들의 경쟁심을 자극하는데요, 4천점 이상이면 그랜드마스터, 3천 5백점부터는 마스터, 이하는 다이아몬드 등등으로 분류됩니다. 샘플링한 데이터셋을 보면 다음과 같이 유저가 분포하고 있습니다.
 
-![경쟁전 점수대 분포](/assets/overwatch/overlog_ladder.png)
+![경쟁전 점수대 분포](/assets/materials/20161001/overlog_ladder.png)
 
 overlog.gg의 순위표에서는 점수대가 완만한 정규분포를 이루는데 반해, 크롤링한 데이터는 페이지 단위로 샘플링을 했기 때문에 최상위와 상위권 사이의 틈이 뭉텅 날아간 것으로 보입니다. 실제로 상위 2번째 그룹의 시작페이지는 700으로 설정했습니다만, 마스터 레벨인 3천 5백점은 약 65페이지에 부근에 위치해있습니다. 
 
@@ -39,7 +39,7 @@ overlog.gg의 순위표에서는 점수대가 완만한 정규분포를 이루�
 <br>
 들어가기에 앞서 데이터셋이 어떻게 구성되어있는지 확인해봅시다. 
 
-![로데이터](/assets/overwatch/overlog_raw.png)
+![로데이터](/assets/materials/20161001/overlog_raw.png)
 
 * avgFire: 폭주시간 (연속킬을 하는 등 평균 폭주 시간(단위: 분))
 * kd: Kill / Death 비율
@@ -63,7 +63,7 @@ df['winRatio'] = df['winRatio'].map(lambda x: int(x) / 100)
 
 그리고 mostHeroes는 3명의 영웅 String이 리스트안에 들어있습니다. 유저의 숙련도에 따라서 사용하는 영웅도 다를 수 있을 것 같은데요, 모든 영웅을 컬럼으로 바꾸는 것보다는 영웅의 타입(공격형, 방어형, 돌격형, 치유형)별로 영웅 수를 새로운 피쳐로 넣어볼 수 있을 것 같습니다.
 
-![공..토르비욘?에 위도우? // 출처: gamecrate.com](/assets/overwatch/overlog_selection.png)
+![공..토르비욘?에 위도우? // 출처: gamecrate.com](/assets/materials/20161001/overlog_selection.png)
 
 {% highlight python %}
 def attack(hero_list):
@@ -104,7 +104,7 @@ df['gtwh'] = df['mostHeroes'].map(lambda x: gtwh(x))
 
 이런 식으로 각 분류별 영웅 수를 새로운 컬럼으로 넣어봤습니다. 또 오버워치에서 지탄을 받는 조합인 겐트위한(겐지/트레이서/위도우메이커/한조)도 추가해봤습니다. 충이 많은 캐릭터를 선택한다면 경쟁전 점수 역시 높지 않을 것이다라는 가설입니다.
 
-![보기만 해도 암이.. // 출처: http://bns.plaync.com/board/free/article/6450221?p=2](/assets/overwatch/overlog_gtwh.png)
+![보기만 해도 암이.. // 출처: http://bns.plaync.com/board/free/article/6450221?p=2](/assets/materials/20161001/overlog_gtwh.png)
 
 추가적으로 개별 영웅 역시 컬럼화시킬 수 있습니다.
 {% highlight python %}
@@ -132,33 +132,33 @@ df['user_class'] = df['skillRating'].map(lambda x: label_class(x))
 
 이제 먼저 유저 분류와 전적 변수간의 상관관계를 봅시다.
 
-![유저 분류 ~ 전적간 상관관계](/assets/overwatch/overlog_corr1.png)
+![유저 분류 ~ 전적간 상관관계](/assets/materials/20161001/overlog_corr1.png)
 
-![유저 분류 ~ 전적간 상관관계](/assets/overwatch/overlog_corr2.png)
+![유저 분류 ~ 전적간 상관관계](/assets/materials/20161001/overlog_corr2.png)
 
 `level`과 `playtime`은 왼쪽으로 크게 치우친 반면에, `kd`, `winRatio`, `avgFire_sec`은 어느 정도 종형 분포를 이루고 있습니다. 그리고 `user_class`는 전체 유저의 1/20만이 최상위권 유저여서 극히 불균형한 형태를 보입니다. 푸른 점이 최상위유저, 녹색점이 일반 유저인데, 각 변수간 jointplot을 보면 분류가 쉽지 않을 것 같습니다. 최상위권에 미치지는 못하지만 실력이 꽤 좋은 3000점대 유저들과의 분류를 얼마나 잘 하느냐가 핵심일 것 같습니다. 
 
 다음으로 영웅을 살펴봅시다. 영웅 범주나 영웅 선택값은 정수로 이루어져 눈에 띄는 분포가 드러나지 않았습니다. 대신에 최상위와 일반 유저를 분류한 후, 각 영웅이 최다 빈도 3인에 선택될 확률을 비교해봤습니다.
 
-![유저 분류 ~ 영웅 최빈 선택 확률](/assets/overwatch/overlog_hero_selection.png)
+![유저 분류 ~ 영웅 최빈 선택 확률](/assets/materials/20161001/overlog_hero_selection.png)
 
 x축은 최상위 유저군, y축은 일반 유저의 영웅 최빈 선택 확률입니다. 붉은 선은 선택확률이 같은 벤치마크 선으로, 선보다 아래에 있으면 최상위 유저군이 선호하는, 위에 있으면 일반 유저군이 더 자주 플레이하는 영웅으로 볼 수 있겠습니다. 최상위 유저들은 자리야, 맥크리, 겐지를 선호하고, 일반 유저들은 루시우를 상대적으로 더 플레이한 것으로 볼 수 있겠습니다. 개인적인 경험에서 해석하자면, 피통이 낮은 겐지는 빠르고 유연한 손놀림이, 맥크리는 위치 선정이나 섬광탄 & 구르기 사용이 중요하다는 점에서 초보자들은 하기 어려운 캐릭터가 아닌가 싶습니다. 자리야 역시 탱커이지만 원거리 공격을 하고 방어막을 씌운다는 점에서 플레이하기가 조금 어렵다는 인상을 받았구요. 반대로 루시우는 음악만 바꿔주고 적절히 궁극기만 잘 써주면 되어서 초보자도 하기에 무난했습니다. 
 
 그러면 경쟁점 점수 2100점 이하의 심해와 최상위권을 비교해보면 어떨까요?
 
-![유저 분류 ~ 영웅 최빈 선택 확률(천상계 vs. 심해)](/assets/overwatch/overlog_hero_selection_deepsea.png)
+![유저 분류 ~ 영웅 최빈 선택 확률(천상계 vs. 심해)](/assets/materials/20161001/overlog_hero_selection_deepsea.png)
 
 앞선 분포와 크게 차이나는 점은 없어보입니다. 다만, 왼편에 뭉쳐있던 방어형 영웅들이 조금 더 자세히 보입니다. 방어형 유닛 중 특히 정크랫의 심해 픽률이 상대적으로 올라갔는데, 장거리 곡사형 무기를 사용하다보니 후방에서 안전하게 플레이하고 싶은 심해 유저들의 선택을 많이 받은 것으로 보입니다. 
 
 pandas의 radviz를 통해서 영웅 유형에 대한 유저들의 분포를 살펴보면 비슷한 결과가 나옵니다. 영웅 유형의 값이 0, 1, 2, 3으로 정수값이어서 약간의 노이즈를 더해 분포를 뿌려봤습니다.
 ### 심해 유저의 영웅 유형 선택 경향
-![전반적으로 분포해있음](/assets/overwatch/overlog_radviz_deepsea.png)
+![전반적으로 분포해있음](/assets/materials/20161001/overlog_radviz_deepsea.png)
 <br>
 ### 천상계 유저의 영웅 유형 선택 경향
-![방어 유형에 집중된 유저는 거의 없음](/assets/overwatch/overlog_radviz_top.png)
+![방어 유형에 집중된 유저는 거의 없음](/assets/materials/20161001/overlog_radviz_top.png)
 
 
-![빠대에선 POTG를 자주 먹는 바스티온 // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg](/assets/overwatch/overlog_bastion.png)
+![빠대에선 POTG를 자주 먹는 바스티온 // 출처: https://i.ytimg.com/vi/m0dVmBmCMJs/maxresdefault.jpg](/assets/materials/20161001/overlog_bastion.png)
 
 더 알아볼 것이 많겠지만, EDA는 여기서 마무리짓고, 지금까지 뽑은 피쳐셋을 가지고 천상계 분류기를 만들어봅시다. 본 분석에서는 경쟁전 점수가 몇 점이냐가 아닌 천상계냐 아니냐 (심해냐?)로 분류를 할 것이므로, 경쟁전 점수 3500점을 기준으로 위면 0, 아니면 1로 분류를 한 'user_class'라는 target 컬럼을 만들어 사용합니다.
 
@@ -183,13 +183,13 @@ model.fit(X_train, y_train)
 
 {% endhighlight %}
 
-![ExtraTreeClassifier를 이용한 Feature Selection](/assets/overwatch/overlog_feature_importance.png)
+![ExtraTreeClassifier를 이용한 Feature Selection](/assets/materials/20161001/overlog_feature_importance.png)
 
 수동으로 선택한 피쳐와 매우 유사하지만, gtwh을 제외한 모든 상위 영웅 분류(attack 등)가 날아가고 맥크리, 트레이서, 윈스턴, 자리야, 겐지, 아나 등 일반 유저에 비해 최상위 유저의 픽률이 높았던 영웅들이 대거 포함되었습니다.
 
 최초 변수의 개수가 많고, 어느정도 영웅 선택의 경향이 보여서 PCA나 SVD로 통합적인 변수를 추출하려는 시도를 해보았었습니다. 하지만 데이터셋의 문제인지 학습 오류의 문제인지, 최적의 차원 개수가 2개로 나왔으나 플롯상 의심쩍은 부분이 많아 피쳐셋에 반영하지 않기로 결정했습니다. 
 
-![PCA를 통한 Feature Extraction 결과](/assets/overwatch/overlog_pca.png)
+![PCA를 통한 Feature Extraction 결과](/assets/materials/20161001/overlog_pca.png)
 
 user_class 0, 즉 최상위권의 분포는 일반 유저의 분포와 거의 동일하게 분포하는.. 여튼 차원축소가 잘 안되었습니다.
 
@@ -266,14 +266,14 @@ logistic_coeff.sort_values(by='coefficient')
 {% endhighlight %}
 
 
-![로지스틱회귀의 계수값](/assets/overwatch/overlog_logistic.png)
+![로지스틱회귀의 계수값](/assets/materials/20161001/overlog_logistic.png)
 
 최상위권의 분류 레이블이 0으로 되어있기에 계수(coefficient)가 모두 -로 나온 것 같습니다. 계수값의 크기로 미루어보아 승률과 플레이시간이 가장 영향을 많이 미친 것 같습니다. 승률은 그렇다쳐도 플레이 시간이 꽤 중요한 요소로 나온 것은 약간 의외였습니다.
 
 마찬가지로 Random Forest와 Support Vector Classifier도 `pipeline`과 `gridSearchCV`를 포함한 함수를 만들어줍니다. Random Forest는 `n_estimators`와 `min_samples_split`을, SVM에는 `kernel`과 `C`값에 여러 파라미터 옵션을 만들어서 테스트를 해보았습니다.
 
 랜덤포레스트 역시 feature_importance를 뽑아줍니다.
-![랜덤포레스트 피쳐중요도](/assets/overwatch/overlog_imp.png)
+![랜덤포레스트 피쳐중요도](/assets/materials/20161001/overlog_imp.png)
 
 랜덤포레스트 모델에서도 역시 승률과 플레이시간이 가장 중요한 변수로 나왔습니다. 다만 로지스틱 회귀모델과는 달리, 5개의 변수가 최적의 변수로 도출되었습니다.
 
@@ -320,7 +320,7 @@ def tf_iteration():
         
 {% endhighlight %}
 
-![DNN의 AUC 추이](/assets/overwatch/overlog_dnn_auc.png)
+![DNN의 AUC 추이](/assets/materials/20161001/overlog_dnn_auc.png)
 
 총 10만번까지 모델을 학습시켰는데 38000번대에 정점을 기록한 이후에는 소폭 하락하여 특정 수준으로 수렴했습니다. 위의 for-loop을 수정하여 38000번까지만 학습시킨 최종모델을 test셋을 기준으로 평가합니다. 
 
@@ -345,17 +345,17 @@ def model_tester(cv, X_test, y_test):
 classification_report에서 생성해주는 여러 지표 중, 여기서는 최상위군 유저 분류의 f1-score를 기준으로 최적합 모델을 선정합니다.
 
 ### LogisticRegression
-![Logistic_결과](/assets/overwatch/overlog_logi_result.png)
+![Logistic_결과](/assets/materials/20161001/overlog_logi_result.png)
 <br>
 ### RandomForestClassifier
-![RF_결과](/assets/overwatch/overlog_rf_result.png)
+![RF_결과](/assets/materials/20161001/overlog_rf_result.png)
 <br>
 
 ### SupportVectorClassifier
-![SVM_결과](/assets/overwatch/overlog_svm_result.png)
+![SVM_결과](/assets/materials/20161001/overlog_svm_result.png)
 <br>
 ### DNNClassifier (수동피쳐셋 사용)
-![DNN_결과](/assets/overwatch/overlog_dnn_result.png)
+![DNN_결과](/assets/materials/20161001/overlog_dnn_result.png)
 (DNN에서는 수동피쳐셋의 성능이 더 좋았음)
 <br>
 
@@ -368,13 +368,13 @@ classification_report에서 생성해주는 여러 지표 중, 여기서는 최�
 이제 크롤링하지 않은 실제 데이터를 넣어서 분류가 제대로 이루어지는지 확인해봅시다. 앞 단계에서 가장 높은 성능을 보여주었던 DNNClassifier를 사용해보겠습니다.
 
 먼저 제 오버워치 기록을 넣어보겠습니다.
-![junk3 경쟁전 기록](/assets/overwatch/overlog_junk3.png)
+![junk3 경쟁전 기록](/assets/materials/20161001/overlog_junk3.png)
 <br>
-![응 넌 심해야](/assets/overwatch/overlog_junk3_result.png)
+![응 넌 심해야](/assets/materials/20161001/overlog_junk3_result.png)
 제 기록은 1, 즉 일반 유저로 분류되었습니다... 
 
 그럼 overlog 순위표에서 랜덤으로 5명을 고른 후 테스트해보겠습니다.
-![랜덤 테스트 결과](/assets/overwatch/overlog_random_test.png)
+![랜덤 테스트 결과](/assets/materials/20161001/overlog_random_test.png)
 2번째 유저가 실제로는 3773점으로 최상위권 유저이나 분류 결과는 일반유저로 오분류되었습니다. 승률과 킬뎃이 낮고 플레이시간이 짧아 일반 유저로 분류된 것으로 보입니다.
 
 <hr>

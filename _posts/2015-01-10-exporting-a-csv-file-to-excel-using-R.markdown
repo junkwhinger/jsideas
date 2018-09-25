@@ -3,16 +3,17 @@ layout:     post
 title:      "Exporting a csv file to Excel using R"
 date:       2015-01-10 12:50:00
 author:     "Jun"
-categories: "R"
-header-img: "img/post-bg-05.jpg"
----
-<h2 class="section-heading">.csv to .xlsx using R</h2>
+img: "excel_right.png"
+tags: [r]
 
-<p> In many occasions, you don't really have to use R to open .csv files on Excel. You can just open a csv file on Excel, and it works!</p>
+---
+## .csv to .xlsx using R
+
+<p>In many occasions, you don't really have to use R to open .csv files on Excel. You can just open a csv file on Excel, and it works!</p>
 
 <p> You can do the same by using several commands of R, too. And it magically solves some encoding issues. I was trying to open a csv file that has Korean texts and encoded in UTF-8 on Excel(ANSI) in Windows. Notepad ++ did change the encoding type, but the file didn't look neat enough on Excel... like this</p>
 
-![this doesn't look alright](/assets/excel_wrong.png)
+![this doesn't look alright](/assets/materials/20150110/excel_wrong.png)
 <span class="caption text-muted">My twitter activities from analytics.twitter.com</span>
 
 <h2 class="section-heading">xlsx library on R</h2>
@@ -33,7 +34,7 @@ header-img: "img/post-bg-05.jpg"
 it works! <br />
 </p>
 
-![this look alright](/assets/excel_right.png)
+![this look alright](/assets/materials/20150110/excel_right.png)
 <span class="caption text-muted">Now it looks alright!</span>
 
 

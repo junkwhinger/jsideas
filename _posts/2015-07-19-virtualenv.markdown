@@ -2,8 +2,7 @@
 layout: post
 title:  "파이썬 초보 - virtualenv"
 date:   2015-07-19 15:34:25
-categories: python
-image: /assets/nsa_header.jpg
+tags: [python, data analytics]
 ---
 
 <h2>비전공자가 배우는 파이썬</h2>
@@ -24,7 +23,7 @@ image: /assets/nsa_header.jpg
 
 오랜 기간동안 가상 개발환경을 쓰지 않고 그냥 모듈들을 깔아버렸습니다. 예를 들어 `sudo pip install numpy`를 터미널 창에 입력하면 numpy가 깔리는데 권장할 만한 방식은 아니라고 알고 있습니다. 실제로 몇 일전에 코드를 다시 돌려봤는데 오류가 주욱 뜨면서 돌아가지 않았습니다.
 
-![terminal_error](/assets/python_novice/virtualenv/1.png)
+![terminal_error](/assets/materials/20150719/1.png)
 
 파이썬에서 `random forest` 함수를 돌려보려했는데 필요한 모듈에 무언가 문제가 있었던 모양입니다. 오류 내용을 구글에서 찾아봤는데 몇가지 방법을 시도해봤지만 별 성과는 없었습니다. 파이썬에도 버전이 여러개가 있고 모듈도 여러개가 있는데 기존에 깔려있던 것과 새로 깔린 내용이 충돌을 일으킨 모양입니다.
 
@@ -43,7 +42,7 @@ image: /assets/nsa_header.jpg
 가상 개발환경을 만들어 `random forest` 알고리즘을 돌리기 위해서 필요한 `numpy`, `pandas`, `scipy` 등을 깔고,
 `python random_forest_v2.py`를 돌려 파이썬 스크립트를 실행합니다.
 
-![terminal_success](/assets/python_novice/virtualenv/2.png)
+![terminal_success](/assets/materials/20150719/2.png)
 
 정상적으로 돌아갔습니다!
 
@@ -53,4 +52,4 @@ image: /assets/nsa_header.jpg
 위에 발생한 오류에 대한 해답은 분명 어딘가 있을 겁니다. 스택 오버플로우에 보면 파이썬과 관련 모듈이 저장되어있는 경로가 잘못되었다거나 엉뚱한데 설치되어있을거라 했는데 영어의 압박도 압박이지만 저같은 초보자가 이해하기엔 기술적으로 어려웠습니다. 경로가 어쨌건 일단 virtualenv를 활용한 가상 개발환경에서 코드가 돌아간다는 걸 확인했으니 일단은 코드를 돌리고 좀 더 내공이 쌓이면 다시 문제를 살펴봐야겠습니다.
 
 
-[Kaggle]:		   https://www.kaggle.com
+<a href="https://www.kaggle.com">[Kaggle]</a>	   

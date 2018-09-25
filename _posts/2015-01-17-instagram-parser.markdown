@@ -3,8 +3,8 @@ layout:     post
 title:      "Parsing Instagram using R"
 date:       2015-01-17 14:50:00
 author:     "Jun"
-categories: "R"
-header-img: "img/post-bg-05.jpg"
+tags: [r, web crawling]
+
 ---
 <h2 class="section-heading">Parsing Instagram using R</h2>
 
@@ -17,12 +17,12 @@ header-img: "img/post-bg-05.jpg"
 
 <p> 2. Ready the data. This bit is pretty much the same as Kakao Story. Go to Instagram and find the account you want to crawl. Scroll down until you reach the extent you want to crawl. Right click the screen and select "inspect element"(on Chrome). For a demonstation, I picked Cara Delevinge's instagram, @caradelevingne. </p>
 
-![@cara account](/assets/insta_cara.png)
+![@cara account](/assets/materials/20150117/insta_cara.png)
 <span class="caption text-muted">Cara Delevinge, a famous model</span>
 
 <p> I scrolled down to the first of December, 2014, and hit "inspect element". You'll see loads of "div data-reacted="..."s. That is a container for each post. Go up until you find a div with a class called "PhotoGrid". Right click and copy the div, and paste it on an empty text editor. Save it as an html file. This is what you'll get. </p>
 
-![@cara account](/assets/insta_element.png)
+![@cara account](/assets/materials/20150117/insta_element.png)
 <span class="caption text-muted">Scroll down until you get to the right time period.</span>
 
 <p> 3. Download the R script file(KSParser.R). You can download it from my <a href="https://github.com/junkwhinger/Instagram-Parser">github</a> page. </p>
@@ -36,7 +36,7 @@ header-img: "img/post-bg-05.jpg"
 
 <p> 6. In about a few seconds, a new file will be created with a prefix "done_". Open the file on Excel and see if everything's okay</p>
 
-![@cara account](/assets/insta_result.png)
+![@cara account](/assets/materials/20150117/insta_result.png)
 <span class="caption text-muted">Voila! It's done and dusted.</span>
 
 <p> Extraction completed! 160 post and their attributes are all completely donwloaded. </p>

@@ -3,8 +3,8 @@ layout:     post
 title:      "Scala로 만들어본 이름점"
 date:       2016-10-27 00:00:00
 author:     "Jun"
-categories: "Scala"
-image: /assets/name_chemistry/header.jpg
+img: 20161030.jpeg
+tags: [scala]
 ---
 
 ## 들어가며
@@ -34,33 +34,33 @@ image: /assets/name_chemistry/header.jpg
 
 Terminal에서 바로 실행할 수 있는 Python과는 달리 Scala는 설치해야 될 것이 좀 많습니다. 맥과 윈도우에서 모두 사용할 수 있는 <a href="https://www.jetbrains.com/idea/">IntelliJ</a>를 사용하면 상대적으로 더 편리하게 작업 환경을 만들 수 있습니다. IntelliJ를 설치하고, Scala & SBT plugin을 설치하면 됩니다.
 
-![IntelliJ](/assets/name_chemistry/intellij.png)
+![IntelliJ](/assets/materials/20161027/intellij.png)
 
 여기서 새로 프로젝트를 만든 후 다음과 같이 SBT를 선택합니다.
 
-![Scala - SBT](/assets/name_chemistry/intellij2.png)
+![Scala - SBT](/assets/materials/20161027/intellij2.png)
 
 만약 SBT가 보이지 않으면 plugin에서 SBT를 찾아 설치해야 합니다.
 
 <a href="http://www.scala-sbt.org/index.html">SBT</a>는 Scala나 Java 등의 프로젝트를 쉽게 빌드해주는 툴입니다. 
 
-![Project Creation](/assets/name_chemistry/intellij3.png)
+![Project Creation](/assets/materials/20161027/intellij3.png)
 여기에 프로젝트 이름을 넣으면 Project Location에 해당 프로젝트 폴더가 생깁니다.
 
-![Project Folder](/assets/name_chemistry/intellij4.png)
+![Project Folder](/assets/materials/20161027/intellij4.png)
 폴더에 들어가보면 .idea, project, src, target 폴더가 있고, build.sbt, name_chemistry.imi 파일이 생깁니다. (빌드가 진행되는 과정에서는 일부 파일만 보이게 됩니다.) 여기서 일단 신경쓸 부분은 src와 build.sbt입니다. 
 
 ### src
 src > main > scala안에 Scala object 파일을 만듭니다. 새로 생성하는 파일 옵션에 없는 경우에는 Scala class 옵션을 선택하고, 새로 생성되는 노트 화면에 Class를 Object로 바꾸면 됩니다.
 
-![Scala Object 만들기](/assets/name_chemistry/scala_object.png)
+![Scala Object 만들기](/assets/materials/20161027/scala_object.png)
 
 ### build.sbt
 여기에는 외부 라이브러리를 등록할 수 있습니다. 이름점을 계산하기 위해서는 한글 문자를 초성 / 중성 / 종성으로 분리해야 하므로, <a href="https://mvnrepository.com/artifact/com.twitter.penguin/korean-text/4.1.4">mvnrepository</a>에서 링크를 찾아 등록해주면 됩니다. 
 
-![mvnrepository](/assets/name_chemistry/twitter_sbt.png)
+![mvnrepository](/assets/materials/20161027/twitter_sbt.png)
 
-![build.sbt](/assets/name_chemistry/build_sbt.png)
+![build.sbt](/assets/materials/20161027/build_sbt.png)
  
 build.sbt 안에 libraryDependencies에 해당 주소 스트링을 추가하고, 프로젝트를 리프레시하면 프로젝트 내에서 추가한 라이브러리를 사용할 수 있게 됩니다.
 
@@ -84,7 +84,7 @@ build.sbt 안에 libraryDependencies에 해당 주소 스트링을 추가하고,
 
 뉴스에서 비중있게 다뤄진 사례를 활용하면 아래와 같이 이름궁합을 계산할 수 있습니다.
 
-![궁합 90! 엄청 높네요](/assets/name_chemistry/sung_lee.jpg)
+![궁합 90! 엄청 높네요](/assets/materials/20161027/sung_lee.jpg)
 
 <hr>
 
@@ -221,7 +221,7 @@ chemistry_calculator(a_res, b_res)
 
 {% endhighlight%}
 
-![테스트 성공](/assets/name_chemistry/sung_lee_result.png)
+![테스트 성공](/assets/materials/20161027/sung_lee_result.png)
 
 뉴스에서 나왔다시피 스칼라 코드를 빌드해서 실행한 결과 90이 나왔습니다! ㅎㅎ
 이제 잘 되었으니 다른 인물들에 대해서도 테스트해봅니다 :)
@@ -234,7 +234,7 @@ chemistry_calculator(a_res, b_res)
 
 ### 스포츠
 요새는 잠시 주춤하지만 얼마전까지만 해도 우리형의 아성을 넘본 우리흥.
-![우리흥 - 우리형](/assets/name_chemistry/ronaldo.jpg)
+![우리흥 - 우리형](/assets/materials/20161027/ronaldo.jpg)
 (출처: 중앙일보)
 {% highlight scala %}
 
@@ -252,7 +252,7 @@ chemistry_calculator(a_res, b_res)
 
 ### 연예
 방금 본 썰전의 유시민, 전원책 변호사의 케미는 어떨까요?
-![유시민 - 전원책](/assets/name_chemistry/sull.jpg)
+![유시민 - 전원책](/assets/materials/20161027/sull.jpg)
 (출처: kmib.co.kr)
 {% highlight scala %}
 
@@ -271,7 +271,7 @@ chemistry_calculator(a_res, b_res)
 ### 정치
 마지막으로 요새 가장 핫한 분야, 정치에서 핫한 2명의 인물을 뽑아보겠습니다. 랜덤으로 신문기사를 뽑았더니 박근혜 현직 대통령과 그 지인 최순실님이 눈에 띄네요. 
 
-![박근혜 - 최순실](/assets/name_chemistry/park_choi.jpg)
+![박근혜 - 최순실](/assets/materials/20161027/park_choi.jpg)
 (출처: 뉴스타파)
 {% highlight scala %}
 

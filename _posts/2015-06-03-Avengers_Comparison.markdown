@@ -3,8 +3,8 @@ layout:     post
 title:      "Avengers 2012/2015 Comparison"
 date:       2015-06-04 02:00:00
 author:     "Jun"
-categories: "d3.js"
-header-img: "img/post-bg-05.jpg"
+author:     "Jun"
+tags: [d3.js, data visualisation]
 ---
 
 <h2 class="section-heading">Background</h2>

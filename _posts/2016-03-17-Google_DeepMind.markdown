@@ -2,8 +2,9 @@
 layout: post
 title:  "Lee Sedol vs. AlphaGo: full data"
 date:   2016-03-16 12:34:25
-categories: python
-image: /assets/alphago/header.jpg
+img: 20160323.png
+tags: [python, data visualisation]
+
 ---
 
 ## Thinking Time - Full Match Visualisation
@@ -476,7 +477,7 @@ Click on the circles to further investigate thinking time details.
 
 <script type="text/javascript">
 
-  d3.csv("/assets/alphago/games.csv", function(d){
+  d3.csv("/assets/materials/20160316//games.csv", function(d){
       d.turn_index = +d.turn_index;
       d.thinking_time = +d.thinking_time / 60;
       d.game = +d.game;
@@ -489,34 +490,34 @@ Click on the circles to further investigate thinking time details.
 ## A few more data visualisations with python
 <br>
 ### Game 1
-![Game 1](/assets/alphago/g1_edited.png)
+![Game 1](/assets/materials/20160316//g1_edited.png)
 
 ### Game 2
-![Game 2](/assets/alphago/g2_edited.png)
+![Game 2](/assets/materials/20160316//g2_edited.png)
 
 ### Game 3
-![Game 3](/assets/alphago/g3_edited.png)
+![Game 3](/assets/materials/20160316//g3_edited.png)
 
 ### Game 4
-![Game 4](/assets/alphago/g4_edited.png)
+![Game 4](/assets/materials/20160316//g4_edited.png)
 
 ### Game 5
-![Game 5](/assets/alphago/g5_edited.png)
+![Game 5](/assets/materials/20160316//g5_edited.png)
 
 ### Thinking Time Distribution
-![KDE plot](/assets/alphago/KDE_total.png)
+![KDE plot](/assets/materials/20160316//KDE_total.png)
 
 ### Thinking Time Distribution: Lee Sedol
-![KDE plot](/assets/alphago/KDE_lee.png)
+![KDE plot](/assets/materials/20160316//KDE_lee.png)
 
 ### Thinking Time Distribution: AlphaGo
-![KDE plot](/assets/alphago/KDE_alpha.png)
+![KDE plot](/assets/materials/20160316//KDE_alpha.png)
 
 ### Thinking Time Remaining
-![Point plot](/assets/alphago/total_remaining_edited.png)
+![Point plot](/assets/materials/20160316//total_remaining_edited.png)
 
 ### Thinking Time Remaining: Each Game
-![KDE plot](/assets/alphago/separate_remaining.png)
+![KDE plot](/assets/materials/20160316//separate_remaining.png)
 
 <hr>
 

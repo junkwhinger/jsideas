@@ -4,13 +4,11 @@ title:      "Batch Normalization"
 date:       2018-01-28 00:00:00
 author:     "Jun"
 categories: "Python"
-image: /assets/batch_normalization/header.png
+image: /assets/materials/20180128/header.png
+img: 20180128.png
+tags: [python, deep learning]
 ---
 
-
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
 
 
 ## Introduction
@@ -39,7 +37,7 @@ h(x)를 최소화시키는 x와 y는 1과 2 모두 (0, 0)으로 동일하나, 1�
 
 실제로 최적점 수렴에 걸리는 시간도 차이가 날까? 두 함수 모두 동일한 Stochastic Gradient Descent 함수를 적용하고 x와 y가 모두 0.01보다 낮아질때까지 시간이 얼마나 걸리는지 측정해보았다. (속도를 빠르게 하기 위해 learning rate은 0.9로 지정한다.)
 
-![convergence](/assets/batch_normalization/normalization_test.png)
+![convergence](/assets/materials/20180128/normalization_test.png)
 
 x와 y의 스케일이 달랐던 1번 함수는 최적점 도달까지 27초가 걸린 반면, 스케일이 같은 2번 함수는 9초만에 학습을 완료했다.
 
@@ -54,7 +52,7 @@ x와 y의 스케일이 달랐던 1번 함수는 최적점 도달까지 27초가 
 ### Covariate Shift
 딥러닝이나 머신러닝 모델은 학습(training) 데이터를 기반으로 학습힌다. 고양이와 개를 분류하는 모델을 예로 들자. 모종의 이유로 학습에 사용한 고양이 데이터가 모두 `러시안 블루` 종이었다고 가정하자. `페르시안` 고양이 이미지를 이 모델에 넣으면 모델은 어떤 대답을 내놓을까? 형태를 보고 고양이라 판단할 수도 있지만, 털 색상으로 보아 개라고 판단할 수 도 있을 것이다.
 
-![CAT vs. DOG classifier](/assets/batch_normalization/cat_dog_classifier.png)
+![CAT vs. DOG classifier](/assets/materials/20180128/cat_dog_classifier.png)
 이미지 출처: Google
 
 이처럼 트레이닝에 사용한 학습 데이터와 인퍼런스에 사용한 테스트 데이터의 차이가 생기는 것을 `Covariate Shift`라 한다. 도메인 어댑테이션(<a href="http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html">링크</a>)에서는 다음과 같이 설명한다. 
@@ -91,7 +89,7 @@ $$y_{hat} = F_{2}(x)$$
 
 앞에서는 레이어를 기준으로 입력 데이터를 정규화하는 것을 Batch Normalization이라고 했으나, 실제로는 직전 레이어의 activation의 입력값에 BN을 적용한다.
 
-![BN architecture](/assets/batch_normalization/bn_architecture.png)
+![BN architecture](/assets/materials/20180128/bn_architecture.png)
 
 입력값($$x$$)에 대해서는 다음과 같은 방식으로 정규화가 이루어진다. $$x^{(k)}$$는 x의 k번째 차원이다.
 
@@ -107,7 +105,7 @@ $$y^{(k)} = \gamma^{(k)} \hat{x}^{(k)} + \beta^{(k)}$$
 
 평균과 분산을 이용한 정규화 외에 별도의 파라미터를 사용하는 걸까? $$\gamma$$와 $$\beta$$없이 정규화만 하는 BN을 통해 거친 데이터가 sigmoid activation에 전달된다고 생각해보자.
 
-![sigmoid function + normalized input](/assets/batch_normalization/sigmoid_normal.png)
+![sigmoid function + normalized input](/assets/materials/20180128/sigmoid_normal.png)
 
 -5부터 5까지 데이터(x)를 생성한다음, 이를 sigmoid함수에 넣은 결과(y)를 산포도로 뿌리면 위 그래프의 붉은 선을 형성한다. 그리고 오차 역전파시 y의 x에 대한 도함수를 구하면 녹색 분포를 그린다. 원 함수의 기울기가 0인 양 극단은 역전파할때 전달하는 정보가 소실된다. 재밌는 점은 x를 평균과 분산을 이용해 정규하고 그 분포를 뿌리면 아래 푸른색 히스토그램과 같은 모양이 그려진다.
 
@@ -158,13 +156,13 @@ def call(self, inputs, training=None):
 
 cifar10 데이터를 사용해서 다음과 같은 2가지 모델을 만들었다.
 
-![test architecture](/assets/batch_normalization/test_architecture.png)
+![test architecture](/assets/materials/20180128/test_architecture.png)
 
 CONV 레이어 뒤에 들어간 Batch Normalization 레이어말고는 모든 레이어의 규격과 순서가 같다. 
 
 배치 사이즈를 32, epoch을 30으로 설정하고 두 모델의 training, validation 에러가 어떻게 달라지는지 Tensorboard를 통해 살펴보자.
 
-![test result: default-Blue, BN-Red](/assets/batch_normalization/test_result.png)
+![test result: default-Blue, BN-Red](/assets/materials/20180128/test_result.png)
 
 ### Training accuracy & loss
 두 모델 모두 training accuracy는 비슷한 수준으로 수렴했으나, BN 모델(붉은 선)이 같은 시점에서 더 높은 accuracy를 찍었으며 더 빠르게 loss를 낮췄다. 
@@ -174,6 +172,6 @@ Training accuracy는 비슷하게 수렴한데 반해 Validation Accuacy는 BN �
 
 
 ## Reference  
-<a href="https://arxiv.org/pdf/1502.03167.pdf">https://arxiv.org/pdf/1502.03167.pdf</a>  
-<a href="http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html">http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html</a>  
-<a href="https://www.quora.com/Why-do-we-normalize-the-data">https://www.quora.com/Why-do-we-normalize-the-data</a>  
+- <a href="https://arxiv.org/pdf/1502.03167.pdf">https://arxiv.org/pdf/1502.03167.pdf</a>  
+- <a href="http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html">http://sifaka.cs.uiuc.edu/jiang4/domain_adaptation/survey/node8.html</a>  
+- <a href="https://www.quora.com/Why-do-we-normalize-the-data">https://www.quora.com/Why-do-we-normalize-the-data</a>  

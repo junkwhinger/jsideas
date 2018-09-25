@@ -3,8 +3,8 @@ layout:     post
 title:      "OECD Statistics Visualisation"
 date:       2015-07-16 01:30:00
 author:     "Jun"
-categories: "d3.js"
-header-img: "img/post-bg-05.jpg"
+img: 20150719.jpg
+tags: [d3.js, data visualisation]
 ---
 
 <h2 class="section-heading">OECD Monthly Comparative Price Level</h2>
