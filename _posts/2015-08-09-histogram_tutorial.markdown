@@ -2,8 +2,9 @@
 layout: post
 title:  "파이썬 초보 - pandas와 matplotlib을 활용한 간단 분석 part 1"
 date:   2015-08-09 20:34:25
-categories: python
-image: /assets/python_pandas/header.png
+img: 20150811.png
+tags: [python, data analytics]
+
 ---
 
 (이미지 출처: <a href="http://stackoverflow.com/questions/27446455/pandas-subplots-in-a-loop">stackoverflow</a>)
@@ -35,7 +36,7 @@ image: /assets/python_pandas/header.png
 * `touch test.py` - test.py라는 파이썬 스크립트 파일을 만듭니다. finder를 통해 바탕화면에 pandas_test 폴더를 열어보세요. 아무것도 쓰여있지 않은 스크립트 파일이 있을 겁니다.
 * sublime text3를 실행시키고 비어있는 파일을 불러옵니다.
 
-![terminal, finder, sublime text3 화면](/assets/python_pandas/1.png)
+![terminal, finder, sublime text3 화면](/assets/materials/20150811/1.png)
 위에 그림을 보면 terminal 화면에서 `mkdir pandas_test`를 치고 `touch test.py`를 쳤는데, 이러면 이동하기 전 바탕화면에 빈 스크립트 파일을 만들게 됩니다. 즉 잘못친 명령어입니다. 이제 작업 폴더를 만들었으니 가상 개발환경을 만들어봅시다.
 
 2. virtualenv를 사용하여 가상 환경을 만듭시다.
@@ -47,7 +48,7 @@ image: /assets/python_pandas/header.png
 * `pip install ipython` - ipython이라는 파이썬 개발 프로그램을 설치합니다.
 <br>
 오케이! 이제 필요한 프로그램은 설치를 마쳤습니다. 아래 링크에서 분석에 사용할 데이터를 다운받아 `pandas_test` 폴더 안에 넣어주세요.
-[분석 대상 자료 다운받기](/assets/python_pandas/convenient_store.csv)
+[분석 대상 자료 다운받기](/assets/materials/20150811/convenient_store.csv)
 
 분석에 사용할 자료는 [시급으로 본 서울지역 아르바이트 환경][시급으로 본 서울지역 아르바이트 환경] 분석에서 사용했던 자료 중 편의점에 해당하는 데이터입니다.
 
@@ -57,23 +58,23 @@ image: /assets/python_pandas/header.png
 자 이제 파이썬을 만져볼 차례입니다. 기본적인 문법 설명이 필요하시면 <a href="https://www.codecademy.com/tracks/python">codecademy</a>에서 문법 튜토리얼을 마치고 오시는 것을 추천드립니다.
 
 * `ipython` - virtualenv가 활성화된 상태에서 이 커맨드를 입력하여 ipython 환경으로 들어갑니다. 
-![terminal에서 ipython을 실행시 화면](/assets/python_pandas/2.png)
+![terminal에서 ipython을 실행시 화면](/assets/materials/20150811/2.png)
 * `2+3` - 2 더하기 3을 입력해봅니다. 바로 아래 `Out[1]: 5`로 결과값이 출력됩니다.
 * `import pandas as pd` - 바로 pandas 라이브러리를 불러와봅시다. 앞으로 칠 일이 종종 있으니 간단히 pd라는 볆명을 붙여줍니다.
 * `data = pd.read_csv('convenient_store.csv')` - 위에서 다운받은 `convenient_store.csv`라는 파일을 불러와서 data라는 변수에 할당합니다. 만약 위의 파일이 최초에 만든 `pandas_test`라는 폴더에 있지 않은 경우 오류 메시지가 뜰테니 꼭 확인하세요!
 * `data.head()` - 불러온 데이터의 첫 4개 행을 프린트합니다. 10개 행을 원하면 10을 괄호안에 넣으면 됩니다. `data.head(10)`
 * `data.info()` - 불러온 데이터의 특징을 확인해봅니다. 
-![불러온 데이터의 특징과 형태](/assets/python_pandas/3.png)
+![불러온 데이터의 특징과 형태](/assets/materials/20150811/3.png)
 먼저 `<class 'pandas.core.frame.DataFrame'>`은 변수로 지정한 `data`의 클래스, 즉 형태를 의미합니다. 앞서 `pd.read_csv()`라는 함수를 써서 csv파일을 읽어왔기 때문에 바로 pandas의 DataFrame으로 형태가 변환되었습니다. 그아래를 보면 `177 entries`라는 부분이 있는데 이는 데이터의 레코드 수가 177개라는 것을 의미하고요, `Data columns` 밑에 나오는 7개 컬럼은 데이터의 열을 의미합니다. area는 구+동명, company는 회사명 등등을 의미하고, object와 int64는 해당 컬럼의 데이터 성격을 의미합니다. 어떤 데이터인지 찍어볼까요?
 
 * `data.area` - 전체 데이터에서 area 컬럼에 해당하는 것을 출력해봅니다. 용산구 문배동, 은평구 대조동.. 등 지역명이 나오네요. 마찬가지로 `data.company`, `data.hourly_wage`로 다른 컬럼의 값을 확인할 수 있습니다. 연속형 숫자로 입력된 값은 int64로, 그 이외에는 object로 표현되어 있습니다.
 * `data.describe()` - describe() 함수는 전체 혹은 int로 구성된 특정 컬럼 데이터의 빈도, 평균, 편차, 최소값, 25%, 50%, 75%, 최대값을 자동으로 뽑아줍니다. 이 경우 연속형 숫자 컬럼인 `hourly_wage`와 `outlier`의 숫자 분포를 뽑아주네요 (outlier 컬럼의 경우, 박스플롯을 기준으로 outlier인 경우 1을, 아닌 경우 0으로 표시된 범주형 데이터입니다.) `hourly_wage`에 대한 분포를 뽑고 싶은 경우 `data.hourly_wage.describe()`를 입력하면 되겠죠?
 * `data[data.hourly_wage > 6000]` - 이번에는 필터를 걸어보겠습니다. 전체 데이터를 대상으로 시급이 6000원 이상인 항목을 프린트해봅니다.
 * `data[(data.area1 == '마포구') & (data.hourly_wage > 6000)]` - 이중으로 필터를 넣어봤습니다. `&`는 and, `|`는 or를 의미합니다. 여기서는 마포구에 있으면서 시급이 6천원보다 큰 데이터를 뽑아봤습니다. 마포구 동교동 세븐일레븐 1건이 나옵니다.
-![데이터 기준을 활용한 필터링](/assets/python_pandas/4.png)
+![데이터 기준을 활용한 필터링](/assets/materials/20150811/4.png)
 * `cu = data[data.company.str.contains('CU')]` - 데이터에서 회사 컬럼에 `CU`라는 명칭이 들어간 경우 (예: CU 한남리첸시아점) 이를 따로 서브셋으로 따로 추려 cu라는 변수에 할당합니다. 위에서의 필터링과 약간 형태가 다른데 결국 같은 논리입니다.
 * `cu` - 잘 뽑혔는지 확인해봅시다.
-![특정 문자열 포함 기준으로 서브셋 출력](/assets/python_pandas/5.png)
+![특정 문자열 포함 기준으로 서브셋 출력](/assets/materials/20150811/5.png)
 
 다음 <a href="http://jsideas.net/python/2015/08/11/histogram_tutorial_part2.html">part2</a>에서는 위의 명령어들을 적절히 활용하여 스크립트를 짜보고 이를 ipython에서 불러와 실행시켜보겠습니다. 또 matplotlib 라이브러리를 활용하여 몇가지 히스토그램과 박스플롯을 짜보겠습니다.
 

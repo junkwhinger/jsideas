@@ -3,17 +3,10 @@ layout:     post
 title:      "Self Attention: 이름 분류기"
 date:       2018-09-01 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/selfattention/variants_of_junsik.png
+img: 20180901.png
+tags: [python, deep learning, nlp]
+math: true
 ---
-
-
-
-# Self Attention: 이름 분류기
-
-
-
-## Intro
 
 교환학생 시절 영국에서 새로 사귄 친구들에게 'Junsik'은 쉽지 않은 발음이었다. 'sik'이 'sick'처럼 들리기도 했고 기억하기도 쉽지 않은듯해 'Junsik'을 줄인 'June'을 쓰기로 했다. 그 이름이 사실 여자 이름이라는 건 몇달이 지난 후 현지 친구를 통해 알게 되었다. 그 날 이후 e를 빼고 'Jun'을 쓰고 있다.
 
@@ -27,11 +20,12 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-## Dataset
+# Dataset
 
-구글에 "Baby Names"로 검색하면 성별로 인기있는 영문 이름을 제공하는 사이트를 여럿 찾을 수 있다. 이 중 하나를 `selenium` 과 `BeautifulSoup`을 사용해 크롤링하여 남아 이름 15,546건, 여아 이름 21,798건을 얻었다. 내가 크롤링한 사이트에서는 이름이 속한 언어권(Origin) 정보도 제공했다. 언어권에 따라 패턴이 달라질 수 있으므로, `성별`과 `언어권`을 기준으로 training / validation set을 만들었다.
+구글에 "Baby Names"로 검색하면 성별로 인기있는 영문 이름을 제공하는 사이트를 여럿 찾을 수 있다. 이 중 하나를 `selenium` 과 `BeautifulSoup`을 사용해 크롤링하여 남아 이름 15,546건, 여아 이름 21,798건을 얻었다. 내가 크롤링한 사이트에서는 이름이 속한 언어권(Origin) 정보도 제공했다. 
+언어권에 따라 패턴이 달라질 수 있으므로, `성별`과 `언어권`을 기준으로 training / validation set을 만들었다.
 
-### example
+## example
 
 | babyname | sex  | origin |
 | -------- | ---- | ------ |
@@ -42,11 +36,11 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-### Exploration
+## Exploration
 
 성별에 따라 이름은 어떤 특징을 가지고 있을까?
 
-#### 가장 많이 사용된 첫번째 글자은?
+### 가장 많이 사용된 첫번째 글자은?
 
 | Rank | Total               | Girl               | Boy                 |
 | ---- | ------------------- | ------------------ | ------------------- |
@@ -59,8 +53,7 @@ image: /assets/selfattention/variants_of_junsik.png
 성별에 관계없이 A가 1등이라는게 의외였다. 남아 이름에서는 'B'가 눈에 띈다.
 
 
-
-#### 가장 많이 사용된 첫 2개 글자 조합은?
+### 가장 많이 사용된 첫 2개 글자 조합은?
 
 | Rank | Total               | Girl              | Boy               |
 | ---- | ------------------- | ----------------- | ----------------- |
@@ -76,7 +69,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-#### 성별에 따라 가장 차이가 많이 나는 첫 2개 이니셜 조합은?
+### 성별에 따라 가장 차이가 많이 나는 첫 2개 이니셜 조합은?
 
 | Rank | first_two_letters | Girl_ratio | Boy_ratio | Absolute Difference |
 | ---- | ----------------- | ---------- | --------- | ------------------- |
@@ -95,7 +88,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-####  가장 많이 사용되는 마지막 글자는?
+###  가장 많이 사용되는 마지막 글자는?
 
 | Rank | Total                | Girl                 | Boy                 |
 | ---- | -------------------- | -------------------- | ------------------- |
@@ -109,7 +102,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-#### 성별에 따라 가장 차이가 많이 나는 마지막 글자 조합은?
+### 성별에 따라 가장 차이가 많이 나는 마지막 글자 조합은?
 
 | Rank | last_letter | Girl_ratio | Boy_ratio | Absolute Difference |
 | ---- | ----------- | ---------- | --------- | ------------------- |
@@ -128,7 +121,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-#### 그럼 마지막 두 글자는?
+### 그럼 마지막 두 글자는?
 
 | Rank | Total               | Girl                 | Boy               |
 | ---- | ------------------- | -------------------- | ----------------- |
@@ -142,7 +135,7 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-#### 성별에 따른 차이는?
+### 성별에 따른 차이는?
 
 | Rank | last_letter | Girl_ratio | Boy_ratio | Absolute Difference |
 | ---- | ----------- | ---------- | --------- | ------------------- |
@@ -165,23 +158,24 @@ image: /assets/selfattention/variants_of_junsik.png
 
 
 
-## Model
+# Model
 
 일반적인 텍스트 분류 모델에서는 LSTM이나 CNN 레이어를 통해 데이터에서 패턴을 추출한다. 그리고 이를 단층 혹은 다층으로 구성된 Fully Connected Layer에 통과시켜 각 레이블에 해당할 확률값을 얻는다.
 
-![basic_lstm_classifier](/assets/selfattention/basic_lstm_classifier.png) 
+![basic_lstm_classifier](/assets/materials/20180901/basic_lstm_classifier.png) 
 
 BiLSTM 모델은 이름을 분류하는 목적은 달성했지만 이름의 어떤 부분에 근거했는지는 말해주지 않는다. Local Interpretable Model-Agnostic Explanations (LIME) 방법을 사용해 글자를 하나씩 빼가면서 어떤 글자가 결과에 가장 큰 영향을 주었는지 판단하는 방법을 쓸 수도 있긴 하지만, 모델 자체는 답을 가지고 있지 않다.
 
 
 
-### A Structure Self-Attentive Sentence Embedding
+## A Structure Self-Attentive Sentence Embedding
 
 2017년 3월 발표된 A Structured Self-Attentive Sentence Embedding은 Self-Attention을 통해 이 문제를 해결한다. 이 논문에서 제안한 방식은 BiLSTM이나 CNN 레이어를 통과한 feature를 다음과 같은 방식으로 처리한다.
 
-![self_attention](/assets/selfattention/self_attention.png)
+![self_attention](/assets/materials/20180901/self_attention.png)
 
-BiLSTM 레이어를 통해 얻은 feature를 2개의 FC 레이어에 통과시켜 n_token x hops 크기를 가진 매트릭스 형태의 Attention을 얻는다. 이때 W_s1의 `da`와 W_s2의 `hops`는 하이퍼파라미터로 적절한 값을 선택해 입력한다. 입력 텍스트를 하나의 벡터로 임베딩했던 기존의 Attention 메커니즘과 달리 본 논문에서 제안한 Attention은 매트릭스 형태를 띈다. 이러한 임베딩 추출 방식을 통해 다음과 같은 효과를 기대할 수 있다.
+BiLSTM 레이어를 통해 얻은 feature를 2개의 FC 레이어에 통과시켜 n_token x hops 크기를 가진 매트릭스 형태의 Attention을 얻는다. 이때 W_s1의 `da`와 W_s2의 `hops`는 하이퍼파라미터로 적절한 값을 선택해 입력한다. 
+입력 텍스트를 하나의 벡터로 임베딩했던 기존의 Attention 메커니즘과 달리 본 논문에서 제안한 Attention은 매트릭스 형태를 띈다. 이러한 임베딩 추출 방식을 통해 다음과 같은 효과를 기대할 수 있다.
 
 - 문장이 가진 여러 측면의 특성을 다수의 벡터로 표현할 수 있다. 매트릭스의 개별 row가 개별 특성에 대응된다. hop의 수를 늘리면 그만큼 row의 수 역시 늘어난다.
 - 분류 대상 문장 외에 별도의 인풋이 없더라도 Attention을 얻을 수 있다.
@@ -199,9 +193,10 @@ BiLSTM 이후에 처리 방식은 다음과 같다.
 
 
 
-### loss function
+## loss function
 
-분류 문제에서는 보통 `nn.CrossEntropyLoss`를 사용해 예측값과 타켓 레이블간의 오차를 구한다. 논문에서는 여기에 `Penalization Term`이라는 부가적인 loss를 제안한다. 위에서 도출한 Attention은 matrix의 형태로, 각 row vector는 모델이 집중하는 부분을 의미한다. 만약 이들 벡터가 모두 문장이 특정 부분에만 집중적으로 높은 값을 가지게 되면 (그곳만 바라보게 되면) 굳이 vector가 아닌 matrix로 표현하는 의미가 없어진다. 따라서 row들이 서로 다른 곳을 바라보도록 가이딩을 해주는 역할을 `Penalization Term`이 수행한다.
+분류 문제에서는 보통 `nn.CrossEntropyLoss`를 사용해 예측값과 타켓 레이블간의 오차를 구한다. 논문에서는 여기에 `Penalization Term`이라는 부가적인 loss를 제안한다. 위에서 도출한 Attention은 matrix의 형태로, 각 row vector는 모델이 집중하는 부분을 의미한다. 
+만약 이들 벡터가 모두 문장이 특정 부분에만 집중적으로 높은 값을 가지게 되면 (그곳만 바라보게 되면) 굳이 vector가 아닌 matrix로 표현하는 의미가 없어진다. 따라서 row들이 서로 다른 곳을 바라보도록 가이딩을 해주는 역할을 `Penalization Term`이 수행한다.
 
 $ P = ||(AA^T - I )||_F^2$
 
@@ -209,9 +204,9 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 
 
-## Experiment
+# Experiment
 
-### Training Setting
+## Training Setting
 
 논문에서는 문장의 감성을 분류하거나 작성자의 연령을 맞추는 사례에 Self Attention을 적용했다. 문장을 단어 단위로 자른 후, 단어를 Word Embedding을 통해 숫자로 치환했다. 그리고 이를 네트워크에 통과시켜 분류확률과 어텐션 등을 구했다.
 
@@ -246,7 +241,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 
 
-### Model Performance
+## Model Performance
 
 분류 성능 비교를 위해 논문의 베이스라인 모델 중 하나인 BiLSTM + MaxPooling 모델을 만들었다. Self Attention 모델과 같은 하이퍼파라미터를 사용했다 (사용하지 않는 레이어 제외).
 
@@ -268,25 +263,26 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 
 
-## Visualizing Self Attention
+# Visualizing Self Attention
 
-### Attention Heatmap
+## Attention Heatmap
 
 모델은 이름의 어떤 부분을 보고 판단을 내렸을까? Self Attention은 `hops`갯수의 row vector들로 구성된 matrix이며, 각 vector의 합은 1이 되도록 softmax를 취했다. 이름 텍스트를 전처리하여 모델에 집어넣고 뽑은 Attention을 시각화해보았다.
 
-![attention_heatmap](/assets/selfattention/attention_heatmap.png)
+![attention_heatmap](/assets/materials/20180901/attention_heatmap.png)
 
-히트맵을 뿌려보면 위와 같이 각 어텐션 벡터(y축)가 이름의 특정 글자들에만 반응하고 있는 것을 볼 수 있다. loss에 더해준 Penalization Term이 가이딩해준 효과로 보인다. 하이퍼파라미터를 튜닝할 때 `hops`를 5개가 아닌 30개로 늘려서도 해보았는데 이때는 거의 모든 글자에 어텐션이 할당되는 결과를 낳았다. 분류 성능에는 차이가 없었으나 해석이 더 어려워졌다. 데이터셋의 형태에 따라 hops의 크기를 적절하게 선택하는 것이 중요해보인다.
+히트맵을 뿌려보면 위와 같이 각 어텐션 벡터(y축)가 이름의 특정 글자들에만 반응하고 있는 것을 볼 수 있다. loss에 더해준 Penalization Term이 가이딩해준 효과로 보인다. 하이퍼파라미터를 튜닝할 때 `hops`를 5개가 아닌 30개로 늘려서도 해보았는데 이때는 거의 모든 글자에 어텐션이 할당되는 결과를 낳았다. 
+분류 성능에는 차이가 없었으나 해석이 더 어려워졌다. 데이터셋의 형태에 따라 hops의 크기를 적절하게 선택하는 것이 중요해보인다.
 
 
 
-### Attention on Names
+## Attention on Names
 
 매트릭스를 바로 시각화하는 것보다 깔끔하게 정리해서 이름위에 뿌리는 것이 여러모로 더 보기가 좋다. 논문에서 제안한 방식대로 각 row를 글자 축을 기준으로 모두 합한 다음 softmax를 취해 하나의 벡터로 만든다음 뿌려보자.
 
 먼저 유명한 이름들부터 해보자. 해리포터의 주요 인물들이다.
 
-![harrypotter](/assets/selfattention/harrypotter.png)
+![harrypotter](/assets/materials/20180901/harrypotter.png)
 
 대부분 어텐션이 끝에 몰려있는 가운데, Harry, Hermione와 Albus, Draco는 조금 다른 양상을 보인다. 언어학자는 아니지만 대략 공감이 가는 해석이라고 생각한다.
 
@@ -294,7 +290,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 다음은 마블 시네마틱 유니버스의 캐릭터들이다.
 
-![mcu](/assets/selfattention/mcu.png)
+![mcu](/assets/materials/20180901/mcu.png)
 
 해리포터는 다 맞췄으나 Tony, Loki를 여자로, Pepper를 남자로 분류했다. 흠터레스팅.. 페퍼는 끝의 'er'이 여자 이름에 거의 없기 때문이 아닐까 싶다.
 
@@ -302,29 +298,27 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 그럼 이름의 끝부분을 조금씩 변경해보면 어떤 결과가 나올까?
 
-![variants_of_cat](/assets/selfattention/variants_of_cat.png)
+![variants_of_cat](/assets/materials/20180901/variants_of_cat.png)
 
 `Cat`도 여성일 확률이 높았지만, 이후에 `ne`, `na`를 붙임에 따라 분류 확률이 거의 100%에 근접하게 올라가는 것을 확인할 수 있었다.
 
-![variants_of_chris](/assets/selfattention/variants_of_chris.png)
+![variants_of_chris](/assets/materials/20180901/variants_of_chris.png)
 
  
 
 모델은 `Chris`와 `Christina`를 여자로 분류했다. 그러나 끝에 `o`를 붙여 우리 형을 만들자 매우 높은 확률로 남자로 분류했다.  `Christian`을 여자로 분류한 점이 조금 아쉽다.  
 
 
-
 일부 잘못 판단한 경우가 있긴 했지만 어느정도 괜찮은 성능을 보인다. 데이터셋에 없는 전혀 다른 언어권에도 이 모델이 잘 동작할까? 해외 아기 이름을 크롤링해서인지 데이터셋에는 아시안 언어권의 이름이 서구권에 비해 상대적으로 적었고 한국어권 이름은 아예 없었다. 한글 이름을 넣어보자. 회사 동료들의 이름을 랜덤으로 소환했다.
 
- 
 
-![koreanboys](/assets/selfattention/koreanboys.png)
+![koreanboys](/assets/materials/20180901/koreanboys.png)
 
 남자는 올패스.
 
 
 
-![koreangirls](/assets/selfattention/koreangirls.png)
+![koreangirls](/assets/materials/20180901/koreangirls.png)
 
 여자는 모두 틀렸다. 모델이 한국어 이름의 엔딩을 남성적으로 판단한 것으로 보인다.
 
@@ -332,13 +326,12 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 마지막으로 내 이름은 어떨까?
 
-![variants_of_junsik](/assets/selfattention/variants_of_junsik.png)
+![variants_of_junsik](/assets/materials/20180901/variants_of_junsik.png)
 
 아쉽게도 Jun을 여자로 분류하긴 했으나 June보다는 확률이 좀 떨어졌다. 뉴럴 네트워크에게도 June은 여자 이름처럼 들렸나보다.
 
 
-
-### On Embedding Space
+## On Embedding Space
 
 모델의 forward propagation step을 살펴보면, 추출한 Attention을 LSTM의 출력에 곱해 Sentence Embedding(내 실험에서는 Name Embedding)을 얻는다. 이 Embedding을 텍스트 인풋의 수치적 표현이라고 생각한다면, 이 역시 연속적 평면에 시각화할 수 있을 것이다. MNIST 데이터를 2차원 평면에 늘어놓았을때 같은 레이블끼리 뭉친것처럼, 이름들도 그 특성에 따라 뭉쳐있을까?
 
@@ -346,7 +339,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 먼저 성별에 따라 살펴보자.
 
-![bySex](/assets/selfattention/bySex.png)
+![bySex](/assets/materials/20180901/bySex.png)
 
 재밌는 결과가 나왔다. 남아 이름들은 우상단으로, 여아 이름들은 좌하단에 몰려있는 경향을 보인다. 자세히 들여다보면 이름의 끝부분끼리 몰려있다. 먼 좌하단은 Mia, Sophia, Olivia, Victoria들이 있고, 먼 우상단에는 Nicholas, Thomas, Lucas가 뭉쳐있다. 성별이 다르지만 끝부분이 유사한 Scarlett, Wyatt, Robert, Margaret도 서로 근접해 위치한다.
 
@@ -354,7 +347,7 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 혹 이름이 속한 문화권이 그 이름의 끝부분을 결정짓는걸까? 이름의 문화권을 기준으로 살펴보자.
 
-![byOrigin](/assets/selfattention/byOrigin.png)
+![byOrigin](/assets/materials/20180901/byOrigin.png)
 
 
 
@@ -364,25 +357,26 @@ $A$는 앞에서 구한 Attention으로 그 자신의 역행렬과 곱을 한 �
 
 남자들만-
 
-![boysByOrigin](/assets/selfattention/boysByOrigin.png)
+![boysByOrigin](/assets/materials/20180901/boysByOrigin.png)
 
 
 
 여자들만-
 
-![girlsByOrigin](/assets/selfattention/girlsByOrigin.png)
+![girlsByOrigin](/assets/materials/20180901/girlsByOrigin.png)
 
 
 
 
 
-### Matrix Computation: Emilia - Emily + Lucy?
+## Matrix Computation: Emilia - Emily + Lucy?
 
-King - Man + Woman = Queen은 Word Embedding의 멋진 사례 중 하나로 빠짐없이 등장한다. 왕에서 남자라는 성을 제거하면 권력이 남고, 그 권력을 여자라는 성에 더하면 여왕이 된다. 관념적으로도 말이 되고 간단한 사칙연산으로도 말이 된다. 뉴럴 네트워크를 통해 얻은 숫자 뭉치가 우리가 가진 관념적인 정보를 담고 있음을 보여주는 멋진 결과다.
+King - Man + Woman = Queen은 Word Embedding의 멋진 사례 중 하나로 빠짐없이 등장한다. 왕에서 남자라는 성을 제거하면 권력이 남고, 그 권력을 여자라는 성에 더하면 여왕이 된다. 
+관념적으로도 말이 되고 간단한 사칙연산으로도 말이 된다. 뉴럴 네트워크를 통해 얻은 숫자 뭉치가 우리가 가진 관념적인 정보를 담고 있음을 보여주는 멋진 결과다.
 
-![king_to_queen](/assets/selfattention/king_to_queen.jpeg)
+![king_to_queen](/assets/materials/20180901/king_to_queen.jpeg)
 
-source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-using-word-embedding-and-convolutional-neural-networks-on-keras-163197aef623  
+source: <a href="https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-using-word-embedding-and-convolutional-neural-networks-on-keras-163197aef623">medium.com/@thoszymkowiak</a>
 
 
 
@@ -390,42 +384,43 @@ source: https://medium.com/@thoszymkowiak/how-to-implement-sentiment-analysis-us
 
 
 
-먼저 Training과 Validation 데이터셋을 모두 모델에 넣어 이름의 임베딩을 얻었다. 각 임베딩은 `hops`x`hidden_dim * 2`크기의 매트릭스 형태로 내 실험에서는 5x600 크기였다. 이름 3개를 고른 후 element-wise로 - + 연산을 수행하여 query matrix를 만든다. 그리고 이 query matrix와 모든 embedding matrix간의 matrix euclidean distance를 구하고, distance가 가장 낮은 5개를 출력해보았다.
+먼저 Training과 Validation 데이터셋을 모두 모델에 넣어 이름의 임베딩을 얻었다. 
+각 임베딩은 `hops`x`hidden_dim * 2`크기의 매트릭스 형태로 내 실험에서는 5x600 크기였다. 이름 3개를 고른 후 element-wise로 - + 연산을 수행하여 query matrix를 만든다. 
+그리고 이 query matrix와 모든 embedding matrix간의 matrix euclidean distance를 구하고, distance가 가장 낮은 5개를 출력해보았다.
 
 
 
 1) Emilia - Emily  + Lucy = Lucia!
 
-![emily](/assets/selfattention/emily.png)
+![emily](/assets/materials/20180901/emily.png)
 
 Emilia에서 Emily를 빼면 ~ia가 남고 거기에 Lucy를 더하면 Lucia가 될거라고 생각했는데 실제로 됐다!
 
-
-
 2) Susie - Susanne + Roxie = Roxie!
 
-![susie](/assets/selfattention/susie.png)
+![susie](/assets/materials/20180901/susie.png)
 
 3) Christina - Christine + Austine = Austina!
 
-![christina](/assets/selfattention/christina.png)
+![christina](/assets/materials/20180901/christina.png)
 
 예상과 같은 결과가 나오긴 하지만 King - Man + Woman = Queen 만큼 어떤 추상적인 의미를 조작했다고 보기는 어렵다. 예를 들어 "Paul"에서 "John"을 뺀 다음 "Hank"를 더하면 어떨까?
 
 4) Paul - John + Hank = ?
 
-![paul](/assets/selfattention/paul.png)
+![paul](/assets/materials/20180901/paul.png)
 
  "Bank"라는 결과를 얻을 수 있지만 어떤 로직이나 의미가 느껴지지 않는다.
 
 
 
-## Outro
+# Outro
 
-이번 포스팅에서는 LSTM + Self Attention 모델을 사용해 남아 / 여아 이름을 분류하는 모델을 만들고, Attention을 통해 뉴럴 네트워크가 이름의 어떤 부분에 집중했는지 시각화해보았다. 뉴럴 네트워크가 집중했던 흔적은 보통 이름의 끝 부분에 남겨져 있었다. 같은 Jun이라도 e가 붙으면 여자가 되고 sik이 붙으면 남자가 되었다. 분석 전에 내가 어렴풋이 생각했던 가설과 비슷해 놀라웠다. 또 2차원 공간에 뿌려진 이름들이 성별이나 문화권에 따라 끼리끼리 모이는 점도 흥미로웠다. 해석가능한 딥러닝은 내가 생각하는 방식을 되돌아보는 재미가 있다.
+이번 포스팅에서는 LSTM + Self Attention 모델을 사용해 남아 / 여아 이름을 분류하는 모델을 만들고, Attention을 통해 뉴럴 네트워크가 이름의 어떤 부분에 집중했는지 시각화해보았다. 뉴럴 네트워크가 집중했던 흔적은 보통 이름의 끝 부분에 남겨져 있었다. 같은 Jun이라도 e가 붙으면 여자가 되고 sik이 붙으면 남자가 되었다. 
+분석 전에 내가 어렴풋이 생각했던 가설과 비슷해 놀라웠다. 또 2차원 공간에 뿌려진 이름들이 성별이나 문화권에 따라 끼리끼리 모이는 점도 흥미로웠다. 해석가능한 딥러닝은 내가 생각하는 방식을 되돌아보는 재미가 있다.
 
 
 
-## Reference
-<a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>  
-<a href="https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding">An open-source implementation of the paper 'A Structured Self-Attentive Sentence Embedding' published by IBM and MILA.</a>
+# Reference
+- <a href="https://arxiv.org/pdf/1703.03130.pdf">A STRUCTURED SELF-ATTENTIVE SENTENCE EMBEDDING</a>  
+- <a href="https://github.com/ExplorerFreda/Structured-Self-Attentive-Sentence-Embedding">An open-source implementation of the paper 'A Structured Self-Attentive Sentence Embedding' published by IBM and MILA.</a>

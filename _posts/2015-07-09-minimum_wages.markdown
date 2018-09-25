@@ -3,8 +3,7 @@ layout:     post
 title:      "Minimum Wage and Big Mac"
 date:       2015-07-09 20:30:00
 author:     "Jun"
-categories: "python"
-header-img: "img/post-bg-05.jpg"
+tags: [d3.js, data visualisation]
 ---
 
 <h2 class="section-heading">Minimum Wage and Big Mac</h2>

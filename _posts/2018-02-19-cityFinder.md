@@ -3,23 +3,25 @@ layout:     post
 title:      "Which Continent Does Pyeongchang Belong To?"
 date:       2018-02-19 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/cityFinder/worldmap.jpg
+img: 20180219.png
+tags: [python, deep learning, nlp]
+
 ---
-
-
-## Intro
 
 A couple of months ago, I found an abandoned world map in my new office space, and put it on the wall.
 
-![World Map](/assets/cityFinder/worldmap.jpg)
+![World Map](/assets/materials/20180219/worldmap.jpg)
 
-One day I stumbled upon an interesting idea when looking at the atlas. The names of the cities are similar to each other when they are geographically close to each other. For example, Stratford, Wilford, and Bradford are in England, Europe. Pyeongchang, Pyongyang are in the Korean peninsula, Asia. 
-![pyeongchang](/assets/cityFinder/pyeongchang.png)
+One day I stumbled upon an interesting idea when looking at the atlas. 
+The names of the cities are similar to each other when they are geographically close to each other. 
+For example, Stratford, Wilford, and Bradford are in England, Europe. 
+Pyeongchang, Pyongyang are in the Korean peninsula, Asia. 
+![pyeongchang](/assets/materials/20180219/pyeongchang.png)
 
-On hearing Pyeongchang and Pyongyang, one could think that they are in the same area without any difficulties. Like this poor pilot (http://www.telegraph.co.uk/news/2017/04/02/airport-mix-up-sees-winter-olympics-delegation-land-pyongyang/).
+On hearing Pyeongchang and Pyongyang, one could think that they are in the same area without any difficulties.
+Like this poor pilot (Source: <a href="http://www.telegraph.co.uk/news/2017/04/02/airport-mix-up-sees-winter-olympics-delegation-land-pyongyang/">telegraph.co.uk</a>).
 
-![poor pilot](/assets/cityFinder/poor_pilot.png)
+![poor pilot](/assets/materials/20180219/poor_pilot.png)
 
 If we can tell where the cities are just by hearing their names, can we train a machine to do that too?
 
@@ -29,9 +31,12 @@ If we can tell where the cities are just by hearing their names, can we train a 
 
 To train a complicated Deep Learning model, one would need a lot of data. The more, the merrier! 
 
-Wikipedia provides a list of cities with 100,000+ residents for free, but it wasn't enough. I found a free source that contains as many as 10,000 cities. As it didn't have the continent label I needed, I preprocessed it a little bit to get the dataset I wanted.
+Wikipedia provides a list of cities with 100,000+ residents for free, but it wasn't enough. 
+I found a free source that contains as many as 10,000 cities. 
+As it didn't have the continent label I needed, I preprocessed it a little bit to get the dataset I wanted.
 
-You can download it from <a href="https://github.com/junkwhinger/city_finder">my GitHub repo</a>. It looks like the following table, and it has 7,221 cities and their corresponding country and continent information.
+You can download it from <a href="https://github.com/junkwhinger/city_finder">my GitHub repo</a>. 
+It looks like the following table, and it has 7,221 cities and their corresponding country and continent information.
 
 
 {% highlight python %}
@@ -104,11 +109,12 @@ raw_df.head()
 </table>
 </div>
 
-
+<br>
 
 ## Approach
 
-The goal is to find and optimize a function that maps the city names to their continents. It is a simple text-classification problem. I used PyTorch which I've heard a lot about recently. 
+The goal is to find and optimize a function that maps the city names to their continents. 
+It is a simple text-classification problem. I used PyTorch which I've heard a lot about recently. 
 
 Here's how I designed the process.  
 
@@ -127,9 +133,11 @@ run training
 ### 5. Evaluate
 compare model performance on test set
 
+<br>
 
 ## 1. Prepare Dataset
-`sklearn`'s `train_test_split` really comes in handy when chopping the dataset nicely. I made a function named `prepare_dataset` to split the raw dataset into train, validation, and test set, and to save them in the target directory.
+`sklearn`'s `train_test_split` really comes in handy when chopping the dataset nicely. 
+I made a function named `prepare_dataset` to split the raw dataset into train, validation, and test set, and to save them in the target directory.
 
 
 {% highlight python %}
@@ -166,23 +174,31 @@ def prepare_dataset(path, target_dir):
 prepare_dataset('city_continent.csv', 'dataset')
 {% endhighlight %}
 
+<br>
+
 ## 2. Define Vocabulary
 
-When building a text-based deep learning model, it's cumbersome to transform text into vectors. We would have to make a word or character set and make a dictionary that maps a word to an integer. And you would want to give space to `<unk>` in case the model stumbles upon an unseen character.
+When building a text-based deep learning model, it's cumbersome to transform text into vectors. 
+We would have to make a word or character set and make a dictionary that maps a word to an integer. 
+And you would want to give space to `<unk>` in case the model stumbles upon an unseen character.
 
-Luckily a group of kind-minded geniuses made a publicly available tool for it, and its name is `torchtext`<a href="https://github.com/pytorch/text">(GitHub)</a>. It is a fantastic tool that enables quick and easy vocab-construction. 
+Luckily a group of kind-minded geniuses made a publicly available tool for it, and its name is `torchtext`<a href="https://github.com/pytorch/text">(GitHub)</a>. 
+It is a fantastic tool that enables quick and easy vocab-construction. 
 
 
 {% highlight python %}
 from torchtext import data
 {% endhighlight %}
 
-First, we need to define the text and label columns. `CITY` is a column that has city name text. Because it is a sequential data type, I give it `sequential=True`. Sequence processing is easily done just by passing the tokenizer function I defined below.
+First, we need to define the text and label columns. `CITY` is a column that has city name text. 
+Because it is a sequential data type, I give it `sequential=True`. 
+Sequence processing is easily done just by passing the tokenizer function I defined below.
 
 The column `CONTINENT` is a categorical data type, yet it is not a numerical datatype yet. So I pass `use_vocab=True` for it.
 
 
 {% highlight python %}
+
 ## City name tokenizer
 ## 'Seoul' -> ['S', 'e', 'o', 'u', 'l']
 def tokenizer(text):
@@ -200,7 +216,8 @@ CITY = data.Field(sequential=True, pad_first=True, tokenize=tokenizer)
 CONTINENT = data.Field(sequential=False, use_vocab=True)
 {% endhighlight %}
 
-`data.TabularDataset.splits` is a super conveninent function that loads the preprocessed datasets I splited above. `CITY` and `CONTINENT` fields are passed into the function with the actual column name.
+`data.TabularDataset.splits` is a super conveninent function that loads the preprocessed datasets I splited above. 
+`CITY` and `CONTINENT` fields are passed into the function with the actual column name.
 
 
 {% highlight python %}
@@ -227,9 +244,6 @@ CITY.vocab
 >>
 >>    AttributeError: 'Field' object has no attribute 'vocab'
 {% endhighlight %}
-
-
-    
 
 
 
@@ -270,7 +284,8 @@ CONTINENT.vocab.freqs
 
 
 
-Let's turn the loaded datasets into generators which are handy when training a neural network. `data.BucketIterator.splits` uses `sort_key` to group city names that are of similar lengths, which minimizes the number of paddings.
+Let's turn the loaded datasets into generators which are handy when training a neural network. 
+`data.BucketIterator.splits` uses `sort_key` to group city names that are of similar lengths, which minimizes the number of paddings.
 
 
 {% highlight python %}
@@ -311,16 +326,14 @@ CONTINENT.vocab.itos[sample.continent[0].data.numpy()[0]]
 
 {% endhighlight %}
 
-
-
-
-
-
+<br>
 
 ## 3. Define LSTM Models
-A lot of tutorial codes that I referenced use Class to define their own neural network in PyTorch. I found this approach a little bit confusing at first because I was quite happy with Keras sequential but it has kind of grown on me, and I like how I can generate multiple models just by tweaking the parameters.
+A lot of tutorial codes that I referenced use Class to define their own neural network in PyTorch. 
+I found this approach a little bit confusing at first because I was quite happy with Keras sequential but it has kind of grown on me, and I like how I can generate multiple models just by tweaking the parameters.
 
-`ParameterGrid` from `sklearn` is a handy tool for building a parameter grid. Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in the fully connected layer at the end, and whether the LSTM is bidirectional. 
+`ParameterGrid` from `sklearn` is a handy tool for building a parameter grid. 
+Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in the fully connected layer at the end, and whether the LSTM is bidirectional. 
 
 
 {% highlight python %}
@@ -457,10 +470,11 @@ print("Number of parameters to train: {}".format(nb_trainable_params))
 >>    Number of parameters to train: 168606
 {% endhighlight %}
 
-
+<br>
 
 ## 4. Train
-Although it doesn't take a long time to train a model thanks to the petit dataset, 24 models could be quite hefty for my cpu. To hasten the training process I ran the following code in GPU environment on FloydHub.
+Although it doesn't take a long time to train a model thanks to the petit dataset, 24 models could be quite hefty for my cpu. 
+To hasten the training process I ran the following code in GPU environment on FloydHub.
 
 
 {% highlight python %}
@@ -469,6 +483,7 @@ from torch import optim
 import torch.nn.functional as F
 
 out_dir = os.path.abspath(os.path.join(os.path.curdir, "result_dir"))
+
 
 ## make checkpoint directory if it doesn't exist    
 if not os.path.exists(out_dir):
@@ -676,6 +691,8 @@ for idx, pg in enumerate(param_grids):
 
 Each model roughly took 1 ~ 2 minutes in GPU environment.
 
+<br>
+
 ## 5. Performance Evaluation
 Time to choose the best performing model. In the training process above, my 24 LSTMModels left their own best records and checkpoints. Here are the top 5 models that showed the highest accuracy and f1-score on the test dataset.
 
@@ -744,6 +761,7 @@ by_accuracy['rank'] = by_accuracy.index + 1
 by_accuracy.head()
 {% endhighlight %}
 
+<br>
 
 ### top 5 models by test accuracy
 
@@ -832,6 +850,7 @@ by_f1['rank'] = by_f1.index + 1
 by_f1.head()
 {% endhighlight %}
 
+<br>
 
 ### top 5 models by test f1-score
 
@@ -937,7 +956,7 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/cityFinder/output_65_0.png)
+![png](/assets/materials/20180219/output_65_0.png)
 
 
 pg_17 has three bidirectional layers with lstm dropout 0.5 and fc dropout 0.5.
@@ -1010,7 +1029,7 @@ visualise_checkpoint(17, 12)
 
 
 
-![png](/assets/cityFinder/output_70_1.png)
+![png](/assets/materials/20180219/output_70_1.png)
 
 
 pg_0 is terribly overfitted to the training dataset. It's training accuracy and f1-score nearly reaches 1 after 18th epoch.
@@ -1025,8 +1044,9 @@ visualise_checkpoint(0, 7)
 
 
 
-![png](/assets/cityFinder/output_71_1.png)
+![png](/assets/materials/20180219/output_71_1.png)
 
+<br>
 
 ## Inference Test & Confusion Matrix
 Test f1-score is a great measurement, but I need to go deeper to see the strengths and weaknesses of the models I've trained. As stated above, this dataset is more or less imbalanced. Spitting out 'Asia' at any given city name would result in higher than 1/6 accuracy. Are the models trained properly? 
@@ -1546,10 +1566,12 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/cityFinder/output_87_0.png)
+![png](/assets/materials/20180219/output_87_0.png)
 
 
 The model's prediction power is pretty good with Asian cities. It might imply that the Asian city names are named quite differently from the cities in other continents. It could be far-fetched, but I think the world history during the Great Expansion might have a plausible answer to this phenomenon. 
+
+<br>
 
 ## Would Ensemble improve performance?
 I used simple voting mechanism by which the label that is chosen the most gets to be the output of the ensemble model.
@@ -1758,8 +1780,9 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/cityFinder/output_102_0.png)
+![png](/assets/materials/20180219/output_102_0.png)
 
+<br>
 
 ### Single vs. Ensemble
 Let's compare the heatmaps side by side.
@@ -1783,8 +1806,9 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/cityFinder/output_104_0.png)
+![png](/assets/materials/20180219/output_104_0.png)
 
+<br>
 
 ### Single vs. Ensemble (Normalised)
 The Ensemble model is better at Asian and North American cities, but not at African, European, and Oceanian cities.
@@ -1808,8 +1832,9 @@ plt.show()
 {% endhighlight %}
 
 
-![png](/assets/cityFinder/output_106_0.png)
+![png](/assets/materials/20180219/output_106_0.png)
 
+<br>
 
 ### Inference with Ensemble model
 I used the simple voting rule for choosing the prediction label.
@@ -1883,12 +1908,15 @@ print("{} models predicted {} to be in {}.".format(cnt, target, prediction))
 {% endhighlight %}
 
 Sometimes it's not the number of models but the quality of their performance.
-The ensemble model failed to make a difference given cities in the UK. Perhaps mixing models that are strong in each continent categories would produce better results.
+The ensemble model failed to make a difference given cities in the UK. 
+Perhaps mixing models that are strong in each continent categories would produce better results.
 
+<br>
 
 ## 6. GAME!
 
-So now that I have a deep learning algorithm that predicts its continent given a name of a city, it would be of great fun to play a game against this AI!! Sounds super nerdy. The function `run_test_single` and `run_test_ensemble` randomly choose a record from the test dataset and return a machine-predicted label.
+So now that I have a deep learning algorithm that predicts its continent given a name of a city, it would be of great fun to play a game against this AI!! 
+Sounds super nerdy. The function `run_test_single` and `run_test_ensemble` randomly choose a record from the test dataset and return a machine-predicted label.
 
 
 {% highlight python %}
@@ -1948,7 +1976,8 @@ run_test_ensemble()
 {% endhighlight %}
     
 
-Making a web game with AWS Lambda or EC2 would be great, but it's too much for me to build everything on my own. To see how fun it is to play this game, I ran the above function 10 times and see if my parents-in-law, my wife and myself could beat the model!
+Making a web game with AWS Lambda or EC2 would be great, but it's too much for me to build everything on my own. 
+To see how fun it is to play this game, I ran the above function 10 times and see if my parents-in-law, my wife and myself could beat the model!
 
 The results are..
 
@@ -1974,7 +2003,8 @@ Here's my score table. I mean.. where the hell is Tom Price? Tom Price is a city
 |    | Total Score           | 2  | 5  |
 
 
+<br>
+
 
 ## Reference
-
-https://github.com/clairett/pytorch-sentiment-classification
+- https://github.com/clairett/pytorch-sentiment-classification

@@ -3,8 +3,8 @@ layout:     post
 title:      "MERS Crisis in South Korea"
 date:       2015-06-02 21:00:00
 author:     "Jun"
-categories: "d3.js"
-header-img: "img/post-bg-05.jpg"
+tags: [d3.js, data visualisation]
+
 ---
 
 <h2 class="section-heading">MERS Crisis in South Korea</h2>

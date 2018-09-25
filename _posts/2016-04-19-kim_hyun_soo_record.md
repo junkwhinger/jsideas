@@ -3,7 +3,9 @@ layout: post
 title:  "김현수의 레그킥: 데이터 비교 분석"
 date:   2016-04-19 10:34:25
 categories: python
-image: /assets/2016-04-19-kim_hyun_soo_record_files/header.jpg
+img: 20160419.jpg
+tags: [python, data analytics]
+
 --- 
 # 레그킥은 정말 장타력을 희생하고 정확도를 높였나
 (주의: 본 분석은 방법 및 해석에 오류가 있을 수 있습니다. 오류에 대한 피드백은 언제든 환영입니다! junsik.whang@gmail.com으로 연락바랍니다!) 
@@ -18,7 +20,7 @@ dex.html?cat=view&art_id=201604151411003&sec_id=510301" target="_blank">박병�
 초반에 부진했을때 미국 블리처리포트에서 토텝과 레그킥를 문제로 지적했다 한다.</a> KBO보다 구속이 빠른 메이저리그에서 타격
 타이밍을 놓치는 원인으로 레그킥을 지목했다. 
 
-![강정호의 레그킥!! 출처: spotvnews](/assets/2016-04-19-kim_hyun_soo_record_files/kang_leg.jpg) 
+![강정호의 레그킥!! 출처: spotvnews](/assets/materials/20160419/kang_leg.jpg) 
  
 재밌는 점은 박병호와 이대호는 레그킥을 여전히 쓰고 있으며 최근 타격감이 좋다. 특히 박병호는 벌써 시즌 3호 홈런까지 기록했다. 반면 2015
 시즌부터 메이저리그 조언을 받아들여 레그킥을 자제해온 김현수는 벤치워머 신세다. 기사에서는 "김현수는... 바뀐 타격 자세에 적응 기간을
@@ -264,7 +266,7 @@ plt.show()
 {% endhighlight %}
 
  
-![김현수 데이터 비교](/assets/2016-04-19-kim_hyun_soo_record_files/2016-04-19-kim_hyun_soo_record_15_0.png) 
+![김현수 데이터 비교](/assets/materials/20160419/2016-04-19-kim_hyun_soo_record_15_0.png) 
 
  
 대충 트렌드는 보이지만, 각 기록의 기준점이 달라 잘 안보인다. 비교를 위해 각 항목별로 높은 값을 1로 표준화하여 비교해보자 
@@ -304,7 +306,7 @@ plt.show()
 {% endhighlight %}
 
  
-![김현수 데이터 비교2](/assets/2016-04-19-kim_hyun_soo_record_files/2016-04-19-kim_hyun_soo_record_21_0.png) 
+![김현수 데이터 비교2](/assets/materials/20160419/2016-04-19-kim_hyun_soo_record_21_0.png) 
 
  
 해놓고 나니 별로 이쁘지는 않다. 겹쳐서 레전드를 지웠는데, 여튼 파란색이 14시즌, 15년이 붉은색이다. 장타율과 출류율을 보면 모두 15년도
@@ -615,5 +617,5 @@ pvalue가 0.98이므로 신뢰수준 95%를 만족시키지 못하므로 null hy
 정보 전달을 하지 못한 점은 아쉽다. 
 
 김현수 화이팅!
-![김현수 출처: mlbpark](/assets/2016-04-19-kim_hyun_soo_record_files/kim_smile.jpg) 
+![김현수 출처: mlbpark](/assets/materials/20160419/kim_smile.jpg) 
 

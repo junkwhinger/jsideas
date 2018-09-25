@@ -3,27 +3,28 @@ layout:     post
 title:      "Dynamic Time Warping: BitCoin"
 date:       2018-02-04 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/bitcoin/hyman_minsky_bubble.png
+img: 20180204.png
+tags: [python, data analytics]
 ---
 
-# Dynamic Time Warping with BitCoin
-
-## BitCoin
-비트코인이 난리다. 1코인당 2천만원을 넘긴 2017년에는 벼락부자 스토리가 들리더니, 2018년 2월 들어 800만원까지 폭락했다. 이더리움 등 나머지 코인도 비슷한 폭락세를 그리거나 거래소에서 사라지는 경우도 발생하고 있다.
+비트코인이 난리다. 1코인당 2천만원을 넘긴 2017년에는 벼락부자 스토리가 들리더니, 2018년 2월 들어 800만원까지 폭락했다. 
+이더리움 등 나머지 코인도 비슷한 폭락세를 그리거나 거래소에서 사라지는 경우도 발생하고 있다.
 
 비트코인이 떡상하거나 떡락할때마다 뉴스나 커뮤니티에 등장하는 차트가 있다.
 
-![Hyman Minsky Bubble Chart](/assets/bitcoin/hyman_minsky_bubble.png)
+![Hyman Minsky Bubble Chart](/assets/materials/20180204/hyman_minsky_bubble.png)
 
 
 흔히 '하이먼 민스키 차트'라고 부르는 이 차트는 버블이 만들어지고 터지기까지의 그 일대기를 일반화해서 보여준다. 버블이 터지면서 급작스럽게 자산 가치가 폭락하는 시점을 'Minsky Moment'라 한다.
 
-변동성이 하도 크다보니 가격 대폭락이 민스키 모먼트인지 아니면 그 중간에 잠시 쉬어가는 곳인지 판단이 잘 서지 않는다. 그러다보니 비트코인이 떨어질때나 다시 오를때나 하이먼 민스키 차트가 등장하며 그 현상을 서포트하는 증거로 쓰인다. (이제 폭락 vs. 아직 버블은 멀었다)
+변동성이 하도 크다보니 가격 대폭락이 민스키 모먼트인지 아니면 그 중간에 잠시 쉬어가는 곳인지 판단이 잘 서지 않는다. 
+그러다보니 비트코인이 떨어질때나 다시 오를때나 하이먼 민스키 차트가 등장하며 그 현상을 서포트하는 증거로 쓰인다. (이제 폭락 vs. 아직 버블은 멀었다)
 
-경제학자 하이먼 민스키는 생전에 그리 유명한 학자는 아니었다고 한다. 2007년 서브 프라임 모기지 버블이 터지면서 미디어가 민스키의 경제 공황 이론에 주목했다한다[2]. 이제는 그 이름이 2018년 대한민국 인터넷 판을 뜨겁게 달구고 있으니 흐뭇하실지 아닐지 모르겠다.
+경제학자 하이먼 민스키는 생전에 그리 유명한 학자는 아니었다고 한다. 2007년 서브 프라임 모기지 버블이 터지면서 미디어가 민스키의 경제 공황 이론에 주목했다한다[2]. 
+이제는 그 이름이 2018년 대한민국 인터넷 판을 뜨겁게 달구고 있으니 흐뭇하실지 아닐지 모르겠다.
 
-![Hyman Minsky](/assets/bitcoin/hyman.jpg)
+![Hyman Minsky](/assets/materials/20180204/hyman.jpg)
+
 
 
 어쨌든 GPU를 쓰기만 할 뿐 NVIDIA 주식을 살 생각을 전혀 못하는 나는 이번에도 비트코인의 파도를 그저 바라만 보았고, 보다보니 공부나 할 겸 Dynamic Time Warping을 적용해보기로 했다.
@@ -83,7 +84,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_3_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_3_0.png)
 
 
 그래프를 보면 정말 비트코인 가격의 흐름이 하이먼 민스키 차트와 비슷하게 보인다! 다만 초반의 긴 보합세로 인해서 비트코인은 우측으로 심하게 쏠려있다.
@@ -106,14 +107,13 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_5_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_5_0.png)
 
 
 
 {% highlight python %}
 np.corrcoef([a, b])
 {% endhighlight %}
-
 
 
 
@@ -124,7 +124,8 @@ np.corrcoef([a, b])
 
 샘플로 만들어본 a와 b는 육안으로 봐도 매우 상관성이 높아보이고, numpy.corrcoef로 뽑아봐도 지표가 0.999로 매우 높은 양의 상관관계를 가진다.
 
-그런데 이 방식은 내가 준비한 비트코인 데이터에 바로 쓰지 못한다. numpy.corrcoef는 두 시계열 데이터의 길이가 같아야 하는데, 비트코인은 약 1800개, 하이먼민스키는 70여개 데이터포인트로 그 차이가 매우 심하다.
+그런데 이 방식은 내가 준비한 비트코인 데이터에 바로 쓰지 못한다. 
+numpy.corrcoef는 두 시계열 데이터의 길이가 같아야 하는데, 비트코인은 약 1800개, 하이먼민스키는 70여개 데이터포인트로 그 차이가 매우 심하다.
 
 그럼 하이먼민스키를 길게 늘려서 비교하면 되지 않을까? 인덱스를 길쭉하게 뜯어놓는 방식으로 민스키 데이터 포인트를 늘린 다음, numpy.interp를 사용해서 linear interpolation으로 중간을 메워보자[4].
 
@@ -168,7 +169,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_11_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_11_0.png)
 
 
 길이가 같아졌으니 np.corrcoef를 돌려볼 수 있다.
@@ -178,9 +179,6 @@ plt.show()
 np.corrcoef([bitcoin_df.Close, stretched])
 {% endhighlight %}
 
-
-
-
     array([[ 1.       , -0.2074127],
            [-0.2074127,  1.       ]])
 
@@ -188,13 +186,15 @@ np.corrcoef([bitcoin_df.Close, stretched])
 
 corrcoef값은 -0.206으로 상관성이 거의 없다고 나온다. y축을 sklearn의 MinMaxScaler를 사용해 0과 1 사이로 맞추고 돌려도 결과는 같게 나온다. 왜 그런걸까?
 
-사실 우리가 이 두 차트를 보고 비슷하다고 느끼는 것은 데이터 포인트가 정확히 일치하거나 같은 시점에 그 성장폭이 같아서가 아니다. 두 차트 모두 길고 지루한 성장기와 급격한 폭발과 떡락이라는 특징을 가지고 있다. 즉 시간 스케일에 관계없이 두 시퀀스간의 유사성을 파악해야 한다. 이때 쓸수 있는 도구가 바로 'Dynamic Time Warping'이다.
+사실 우리가 이 두 차트를 보고 비슷하다고 느끼는 것은 데이터 포인트가 정확히 일치하거나 같은 시점에 그 성장폭이 같아서가 아니다. 
+두 차트 모두 길고 지루한 성장기와 급격한 폭발과 떡락이라는 특징을 가지고 있다. 즉 시간 스케일에 관계없이 두 시퀀스간의 유사성을 파악해야 한다. 이때 쓸수 있는 도구가 바로 'Dynamic Time Warping'이다.
 
 ## Dynamic Time Warping
 
-용어 이름에 '다이나믹'이라는 표현이 들어가면 난이도가 급상승하는 느낌이다. Dynamic Time Warping은 음성 인식(automatic speech recognition)에서 사용되던 기법으로, 두 시퀀스간의 최적의 정렬(alignment)를 구하는데 사용한다. 그 이름에서 드러나듯, 시계열 데이터의 '시간'을 왜곡하는 기법으로, 시퀀스의 길이나 속도에 관계없이 사용할 수 있는 장점이 있다.
+용어 이름에 '다이나믹'이라는 표현이 들어가면 난이도가 급상승하는 느낌이다. Dynamic Time Warping은 음성 인식(automatic speech recognition)에서 사용되던 기법으로, 두 시퀀스간의 최적의 정렬(alignment)를 구하는데 사용한다. 
+그 이름에서 드러나듯, 시계열 데이터의 '시간'을 왜곡하는 기법으로, 시퀀스의 길이나 속도에 관계없이 사용할 수 있는 장점이 있다.
 
-![Dynamic Time Warping](/assets/bitcoin/dtw.png)
+![Dynamic Time Warping](/assets/materials/20180204/dtw.png)
 
 Meinard Müller가 집필한 Information Retrieval for Music and Motion[5]의 챕터 4에서 몇가지 중요 내용을 가져와 정리해둔다.
 
@@ -202,36 +202,42 @@ Meinard Müller가 집필한 Information Retrieval for Music and Motion[5]의 �
 
 시퀀스 X와 Y가 있다고 하자. 이 둘을 x와 y축에 늘어놓고 데이터 포인트간의 거리(유클리디언 거리같은)를 구하면 그 값은 어떤 매트릭스가 된다.
 
-![Cost Matrix and optimal Path](/assets/bitcoin/cost_matrix.png)
+![Cost Matrix and optimal Path](/assets/materials/20180204/cost_matrix.png)
 
-그 매트릭스를 히트맵으로 표현하면 위 그림처럼, 두 데이터 포인트간 거리가 짧은 곳은 어둡게, 거리가 먼 곳은 흰색으로 표현된다. DTW는 저 코스트 매트릭스상의 좌하단에서 우상단까지 가는 최적의 경로를 찾는 문제를 푼다.
+그 매트릭스를 히트맵으로 표현하면 위 그림처럼, 두 데이터 포인트간 거리가 짧은 곳은 어둡게, 거리가 먼 곳은 흰색으로 표현된다. 
+DTW는 저 코스트 매트릭스상의 좌하단에서 우상단까지 가는 최적의 경로를 찾는 문제를 푼다.
 
 ### Contraints
 
 그런데 몇가지 조건이 있다. 
 
-![3 constraints](/assets/bitcoin/constraints.png)
+![3 constraints](/assets/materials/20180204/constraints.png)
 
 1) 두 시퀀스의 처음과 끝은 같아야 한다. 즉 무조건 좌하단에서 시작해서 우하단에서 끝난다.  
 2) x나 y축, 혹은 그 두 축에서 음의 방향으로 이동하지 않는다.  
 3) 이동할때 정해진 스텝사이즈((0,1) or (1,0) or (1,1))만큼 이동한다.  
 
 
-3번 조건은 경우에 따라 경로 검색 효율성을 높이기 위해 바뀌기도 한다. DTW는 결국 X와 Y를 늘어놓고 X의 특정 데이터포인트가 Y의 어떤 데이터포인트에 가장 적합한지를 판정하는 로직이므로, X와 Y의 길이가 늘어나면 늘어날수록 검색 비용이 들어간다.
+3번 조건은 경우에 따라 경로 검색 효율성을 높이기 위해 바뀌기도 한다. 
+DTW는 결국 X와 Y를 늘어놓고 X의 특정 데이터포인트가 Y의 어떤 데이터포인트에 가장 적합한지를 판정하는 로직이므로, X와 Y의 길이가 늘어나면 늘어날수록 검색 비용이 들어간다.
 
 무작정 비교하는 것은 매우 효율이 떨어지고 속도도 느리다. 게다가 전후 경로만 보고 기계적으로 두 시퀀스를 정렬시켜버리는 "pathological alignment"를 피해기 위해 여러 장치를 사용하는데, 이 중 자주 쓰이는 것이 "Sakoe-Chiba Band"와 "Itakura Parallelogram"이다. 
 
-![global constraints](/assets/bitcoin/sakoe.png)
+![global constraints](/assets/materials/20180204/sakoe.png)
 
 
-Sakoe-Chiba Band는 대각선을 기준으로 허용하는 width T를 정해두고, 경로가 이를 벗어나지 않도록 강제한다. Itakura Parallogram은 S를 사용해 경로의 기울기가 1/S ~ S 사이에 위치하도록 하는 장치다. 이러한 기법을 사용하면 서치 스페이스를 크게 줄여 속도와 퀄리티를 개선할 수 있다. 하지만 세번째 그림처럼 옵티멀한 정렬이 강제 범위 밖에 위치할 수도 있다.
+Sakoe-Chiba Band는 대각선을 기준으로 허용하는 width T를 정해두고, 경로가 이를 벗어나지 않도록 강제한다. 
+Itakura Parallogram은 S를 사용해 경로의 기울기가 1/S ~ S 사이에 위치하도록 하는 장치다. 
+이러한 기법을 사용하면 서치 스페이스를 크게 줄여 속도와 퀄리티를 개선할 수 있다. 하지만 세번째 그림처럼 옵티멀한 정렬이 강제 범위 밖에 위치할 수도 있다.
 
 
 ## DTW in Python
 
-그럼 일단 이론은 여기까지 보고, 파이썬으로 어떻게 DTW를 사용할 수 있는지 보자. 예전부터 연구가 많이 이루어진 분야다보니 numpy나  scipy로 구현한 사례를 구글에서 어렵지 않게 찾아볼 수 있고, pip로 설치할 수 있는 라이브러리도 있다. 'python DTW'로 검색하면 'fastdtw'라는 라이브러리가 가장 먼저 나온다.
+그럼 일단 이론은 여기까지 보고, 파이썬으로 어떻게 DTW를 사용할 수 있는지 보자. 예전부터 연구가 많이 이루어진 분야다보니 numpy나  scipy로 구현한 사례를 구글에서 어렵지 않게 찾아볼 수 있고, pip로 설치할 수 있는 라이브러리도 있다. 
+'python DTW'로 검색하면 'fastdtw'라는 라이브러리가 가장 먼저 나온다.
 
-fastdtw는 2007년 나온 'FastDTW: Toward Accurate Dynamic Time Warping in Linear Time and Space' 논문을 구현한 파이썬 라이브러리다. 논문에 의하면 FastDTW는 기존의 DTW에 비해 효율성을 개선하였으며, 기존 추정방식인 Sakoe-Chiba Bands나 Data Abstraction에 비해 더 높은 정확도를 보여준다고 한다.
+fastdtw는 2007년 나온 'FastDTW: Toward Accurate Dynamic Time Warping in Linear Time and Space' 논문을 구현한 파이썬 라이브러리다. 
+논문에 의하면 FastDTW는 기존의 DTW에 비해 효율성을 개선하였으며, 기존 추정방식인 Sakoe-Chiba Bands나 Data Abstraction에 비해 더 높은 정확도를 보여준다고 한다.
 
 fastdtw를 사용해 하이먼 민스키를 비트코인에 맞춰보자.
 비트코인의 종가를 그대로 집어넣으면 하이먼민스키의 y와 스케일이 너무 달라 결과가 제대로 피팅되지 않는다. sklearn의 MinMaxScaler를 사용해 둘다 0과 1 사이로 맞춰준다.
@@ -263,12 +269,13 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_17_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_17_0.png)
 
 
-그럴듯하게 들어맞는 그림이다. 지금 우리가 보는 비트코인 가격의 급락은 Minsky Moment가 정말 맞는걸까? 아직 민스키 그래프만큼 비트코인 가격이 내려오지는 않았으므로 또다른 떡상을 위한 숨고르기일 수도 있겠다(feat. 행복회로)
+그럴듯하게 들어맞는 그림이다. 지금 우리가 보는 비트코인 가격의 급락은 Minsky Moment가 정말 맞는걸까? 
+아직 민스키 그래프만큼 비트코인 가격이 내려오지는 않았으므로 또다른 떡상을 위한 숨고르기일 수도 있겠다(feat. 행복회로)
 
-![행복하다.](/assets/bitcoin/happiness_circuit.gif)
+![행복하다.](/assets/materials/20180204/happiness_circuit.gif)
 
 
 Cost Matrix에서 DTW가 찾은 옵티멀한 패스는 어디였을까?
@@ -285,22 +292,26 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_19_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_19_0.png)
 
 
 앞서 봤던 그래프에서 비트코인은 긴 성장기로 인해 우측으로 그래프 변동이 쏠려있었다. 이를 보정하기 위해 DTW는 Minsky 그래프의 초반 구간을 쭉 늘인 후 뒷부분을 매칭시켰다. 
 
 ## Finding subsequences
 
-비트코인 차트는 하이먼 민스키를 따라가는 것 같으면서도 마지막에 그렇지 않을수도 있다는 일말의 희망을 남긴다. 끝날때까지 끝난게 아닐 수도 있다. 또 하이먼민스키 차트는 다음과 같이 하이먼 민스키의 원래 의도를 공격하기도 한다.
+비트코인 차트는 하이먼 민스키를 따라가는 것 같으면서도 마지막에 그렇지 않을수도 있다는 일말의 희망을 남긴다. 
+끝날때까지 끝난게 아닐 수도 있다. 또 하이먼민스키 차트는 다음과 같이 하이먼 민스키의 원래 의도를 공격하기도 한다.
 
-![하이먼민스키하이먼민스키 by 클리앙](/assets/bitcoin/HymanMinsky_inf.png)
+![하이먼민스키하이먼민스키 by 클리앙](/assets/materials/20180204/HymanMinsky_inf.png)
 
-사실 이게 꽤 그럴듯 한 것이, 1~2년 전에 해외 비트코인 거래소 대표의 자살, 해킹 등 각종 악재가 있었고, 이로 인해 비트코인 가격이 폭락할때마다 민스키 차트가 게시판에 올라왔었다. 일시적인 폭락에도 불구하고 비트코인 가격은 다시 이전 상태를 회복하고 또 다른 고점을 향해 달려갔다. 그렇다면 비트코인 가격의 흐름은 실제로 여러개의 작은 하이먼 민스키 그래프로 구성되어있을까?
+사실 이게 꽤 그럴듯 한 것이, 1~2년 전에 해외 비트코인 거래소 대표의 자살, 해킹 등 각종 악재가 있었고, 이로 인해 비트코인 가격이 폭락할때마다 민스키 차트가 게시판에 올라왔었다. 
+일시적인 폭락에도 불구하고 비트코인 가격은 다시 이전 상태를 회복하고 또 다른 고점을 향해 달려갔다. 그렇다면 비트코인 가격의 흐름은 실제로 여러개의 작은 하이먼 민스키 그래프로 구성되어있을까?
 
 우리가 찾고자 하는 하이먼 민스키 패턴을 'query'로, 탐색하려는 전체 비트코인 그래프를 'database'로 설정한 다음, database를 여러 구간('subsequence')으로 잘게 자르고, 'query'와 'subsequence'간의 distance를 DTW로 산출하는 방식을 사용해보자. 
 
-DTW를 subsequence pattern recognition에 적용한 방식을 찾다보니 ucrdtw[7]를 발견하게 되었는데, 기존 방식들에 비해 속도도 훨씬 빠르다고 한다. 2012년에 SIGKDD 베스트 페이퍼를 받았다고 하니 믿고 써보자. 게다가 친절하게 python으로 만들어둔 라이브러리(https://github.com/klon/ucrdtw)도 있다. 문서화가 잘 안되어있기는 한데, 함수도 하나뿐이고, threshold만 정하면, 해당 query에 일치하는 구간의 index location과 distance를 뽑아준다.
+DTW를 subsequence pattern recognition에 적용한 방식을 찾다보니 ucrdtw[7]를 발견하게 되었는데, 기존 방식들에 비해 속도도 훨씬 빠르다고 한다. 
+2012년에 SIGKDD 베스트 페이퍼를 받았다고 하니 믿고 써보자. 게다가 친절하게 python으로 만들어둔 라이브러리(https://github.com/klon/ucrdtw)도 있다. 
+문서화가 잘 안되어있기는 한데, 함수도 하나뿐이고, threshold만 정하면, 해당 query에 일치하는 구간의 index location과 distance를 뽑아준다.
 
 단, 비교할 subsequence 구간의 길이를 어느정도로 할지 정해줘야 하는 단점이 있는 듯 하다.
 
@@ -358,10 +369,11 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_24_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_24_0.png)
 
 
-시퀀스 추출결과 재밌는 결과가 나온다. 짤방처럼 하이먼 민스키 그래프가 앞뒤로 붙어있지는 않지만, 약 3~6개월 간격으로 반복되는 것처럼 보인다. 마지막 패턴이 12월에 끝나니, 3월~5월 사이에 비트코인을 사면 올라갈까 궁금하다. 어쨌든 실제로 추출한 구간이 얼마나 비슷한지 살펴보자.
+시퀀스 추출결과 재밌는 결과가 나온다. 짤방처럼 하이먼 민스키 그래프가 앞뒤로 붙어있지는 않지만, 약 3~6개월 간격으로 반복되는 것처럼 보인다. 
+마지막 패턴이 12월에 끝나니, 3월~5월 사이에 비트코인을 사면 올라갈까 궁금하다. 어쨌든 실제로 추출한 구간이 얼마나 비슷한지 살펴보자.
 
 
 {% highlight python %}
@@ -383,46 +395,48 @@ for label, data in g:
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_0.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_1.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_1.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_2.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_2.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_3.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_3.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_4.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_4.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_5.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_5.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_6.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_6.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_7.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_7.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_8.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_8.png)
 
 
 
-![](/assets/bitcoin/Coin%20Analysis_27_9.png)
+![](/assets/materials/20180204/Coin%20Analysis_27_9.png)
 
 
-일부 차트는 최종 대폭락 구간이 약간 애매하긴 하지만, 전반적으로 성장->약 정체->급성장->폭락->반등->대폭락의 패턴을 보인다. 2016년 11월과 2017년 1월 차트는 각각 700->1100->750, 900->1300->950 정도로 급격하게 오르내린다. 전형적인 하이먼 민스키 패턴으로, 당시에는 이제 비트코인은 끝났다고 생각하지 않았을까. 하지만 그 이후로 비트코인은 랠리를 거쳐 2017년 12월 2천만원대를 찍었다.
+일부 차트는 최종 대폭락 구간이 약간 애매하긴 하지만, 전반적으로 성장->약 정체->급성장->폭락->반등->대폭락의 패턴을 보인다. 
+2016년 11월과 2017년 1월 차트는 각각 700->1100->750, 900->1300->950 정도로 급격하게 오르내린다. 전형적인 하이먼 민스키 패턴으로, 당시에는 이제 비트코인은 끝났다고 생각하지 않았을까. 
+하지만 그 이후로 비트코인은 랠리를 거쳐 2017년 12월 2천만원대를 찍었다.
 
 또 한가지 재미있는 것은 요새 이슈가 되고 있는 2017년 11월 ~ 2월 구간이 민스키 시퀀스로 추출되지 않았다는 점이다. 해당 시점의 그래프를 찍어보면 다음과 같다.
 
@@ -436,7 +450,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_29_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_29_0.png)
 
 
 하이먼 민스키 그래프와는 다르게 최고점 이후 2번 이상 하강-반등하다보니 민스키 그래프와 distance가 벌어졌던 모양이다.
@@ -444,7 +458,8 @@ plt.show()
 
 ### Bitcoin vs. Hyman Minsky
 
-비트코인 가격은 전체적으로도, 국소적으로도 하이먼 민스키 패턴을 보인다. 지금이야 가격이 크게 올랐다는 것을 알지만, 과거의 어느 시점에는 곧 반등할지 아니면 영원히 고점을 회복하지 못할지 알 수 없다. 하이먼 민스키 차트와의 가까운 거리가 고점 후 폭락 패턴을 의미하는 것이라면, 반대로 먼 거리는 매수 포인트를 의미하는 것은 아닐까? 
+비트코인 가격은 전체적으로도, 국소적으로도 하이먼 민스키 패턴을 보인다. 지금이야 가격이 크게 올랐다는 것을 알지만, 과거의 어느 시점에는 곧 반등할지 아니면 영원히 고점을 회복하지 못할지 알 수 없다. 
+하이먼 민스키 차트와의 가까운 거리가 고점 후 폭락 패턴을 의미하는 것이라면, 반대로 먼 거리는 매수 포인트를 의미하는 것은 아닐까? 
 
 2014년부터 하루씩 데이터를 누적해서 하이먼 민스키 패턴과의 거리를 구해보았다. gif로 만들기에는 장수가 너무 많아 동영상으로 편집해봤는데 그 흐름이 재밌다.
 
@@ -452,11 +467,13 @@ plt.show()
 " target="_blank"><img src="http://img.youtube.com/vi/BH1nWg3hPTQ/0.jpg" 
 alt="bitcoin vs. Hyman Minsky" width="480" height="360" border="10" /></a>
 
-앞 파트에서 뽑아본 여러 민스키 시퀀스와 달리, 시작부터 누적해서 본 차트에서는 크게 2개의 민스키 패턴이 나온다. 2014년 초반에 크게 디스턴스가 10정도까지 내려왔다가 다시 가격이 올라가면서 거리가 멀어지고 2017년 급등->급락을 겪으며 30대 언저리로 내려온다. 더 내려올진 모르겠지만 디스턴스가 올라가는 시점부터 비트코인을 사서 내려올때쯤 팔았다면 무릎에서 사서 어깨에서 파는 결과를 얻었을지도 모르겠다. 
+앞 파트에서 뽑아본 여러 민스키 시퀀스와 달리, 시작부터 누적해서 본 차트에서는 크게 2개의 민스키 패턴이 나온다. 2014년 초반에 크게 디스턴스가 10정도까지 내려왔다가 다시 가격이 올라가면서 거리가 멀어지고 2017년 급등->급락을 겪으며 30대 언저리로 내려온다. 
+더 내려올진 모르겠지만 디스턴스가 올라가는 시점부터 비트코인을 사서 내려올때쯤 팔았다면 무릎에서 사서 어깨에서 파는 결과를 얻었을지도 모르겠다. 
 
 
 ## 그래서 저점은 어디인가?
-실존하는 회사의 자산가치에 연동되어 있는 주식과 달리 비트코인은 그 가치를 보증하는 것이 없다. 그래서 본질적 가치에 기반한 저점을 산출하는 것은 의미가 없지 않나 싶다. 비트코인이 앞으로 하이먼민스키 차트와 비슷한 패턴으로 이동한다면, 대략 기다려야할 가격대를 알 수 있지 않을까?
+실존하는 회사의 자산가치에 연동되어 있는 주식과 달리 비트코인은 그 가치를 보증하는 것이 없다. 
+그래서 본질적 가치에 기반한 저점을 산출하는 것은 의미가 없지 않나 싶다. 비트코인이 앞으로 하이먼민스키 차트와 비슷한 패턴으로 이동한다면, 대략 기다려야할 가격대를 알 수 있지 않을까?
 
 
 {% highlight python %}
@@ -475,19 +492,21 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_32_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_32_0.png)
 
 
 눈대중으로 저점은 약 200달러 언저리에 위치한다고 볼 수 있겠다. 200달러에 사서 반등의 기회를 노려 2000달러에 팔면 10배의 차익을 거둘 수 있으니, 아직 기회는 남은 셈이다.(미침)
 
-![행복하다.](/assets/bitcoin/happiness_circuit.gif)
+![행복하다.](/assets/materials/20180204/happiness_circuit.gif)
 
 
 
 
 ## 회로에는 여전히 99개의 코인이 남아있다.
 
-비트코인만이 유일한 암호화폐는 아니다. 개중에는 하이먼 민스키 패턴을 보이지 않는 것도 있을 것이며, 아직 떡상의 패턴을 보이지 않았다면 대박의 기회는 남아있다! coinmarketcap.com에서 나머지 데이터도 긁어와서 테스트해보자. BeatifulSoup을 사용해 간단한 크롤러를 만든 후, 첫 페이지에 올라온 100개의 주요 코인 데이터를 받아와 csv로 저장한다. 해당 코드는 `coin_crawler.py`에 구현해두었다.
+비트코인만이 유일한 암호화폐는 아니다. 개중에는 하이먼 민스키 패턴을 보이지 않는 것도 있을 것이며, 아직 떡상의 패턴을 보이지 않았다면 대박의 기회는 남아있다! 
+coinmarketcap.com에서 나머지 데이터도 긁어와서 테스트해보자. BeatifulSoup을 사용해 간단한 크롤러를 만든 후, 첫 페이지에 올라온 100개의 주요 코인 데이터를 받아와 csv로 저장한다. 
+해당 코드는 `coin_crawler.py`에 구현해두었다.
 
 
 {% highlight python %}
@@ -642,7 +661,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_41_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_41_0.png)
 
 
 ### 정규화한 가격 비교
@@ -663,7 +682,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_43_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_43_0.png)
 
 
 
@@ -677,7 +696,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_44_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_44_0.png)
 
 
 
@@ -691,7 +710,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_45_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_45_0.png)
 
 
 ### 하이먼 민스키 테스트
@@ -725,7 +744,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_49_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_49_0.png)
 
 
 distance가 34 정도인 bitcoin은 중간 정도에 위치해있다. distance가 작거나 큰 5개의 차트를 살펴보자.
@@ -757,7 +776,7 @@ plt.show()
 {% endhighlight %}
 
 
-![](/assets/bitcoin/Coin%20Analysis_53_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_53_0.png)
 
 
 ### Coins far from Hyman Minsky
@@ -784,17 +803,22 @@ for idx, cur in enumerate(high_dist5):
 plt.show()
 {% endhighlight %}
 
-![](/assets/bitcoin/Coin%20Analysis_55_0.png)
+![](/assets/materials/20180204/Coin%20Analysis_55_0.png)
 
+<br>
 
 ## Outro
 
-Dynamic Time Warping을 사용해서 비트코인을 저점을 찾거나 투자할만한 코인을 발견하지는 못했지만, 암호화폐의 가격이 대략적으로 하이먼 민스키 패턴과 비슷하다는 점, 그리고 국소적으로도 하이먼 민스키 패턴을 발견할 수 있었던 점은 즐거운 지적 유희였다. 이래서 돈을 못버나보다 ㅠ
+Dynamic Time Warping을 사용해서 비트코인을 저점을 찾거나 투자할만한 코인을 발견하지는 못했지만, 암호화폐의 가격이 대략적으로 하이먼 민스키 패턴과 비슷하다는 점, 
+그리고 국소적으로도 하이먼 민스키 패턴을 발견할 수 있었던 점은 즐거운 지적 유희였다. 이래서 돈을 못버나보다 ㅠ
 
 분석 및 크롤링 코드는 <a href="https://github.com/junkwhinger/bitcoin">https://github.com/junkwhinger/bitcoin</a>에서 참고할 수 있다.
 
+<br>
+
 ## Reference 
-[1] https://www.reuters.com/article/us-china-congress-debt-minskymoment/china-central-bank-warns-against-minsky-moment-due-to-excessive-optimism-idUSKBN1CO0D6
+[1] <a href="https://www.reuters.com/article/us-china-congress-debt-minskymoment/china-central-bank-warns-against-minsky-moment-due-to-excessive-optimism-idUSKBN1CO0D6
+">reuters.com</a>  
 
 [2] https://www.economist.com/news/economics-brief/21702740-second-article-our-series-seminal-economic-ideas-looks-hyman-minskys
 

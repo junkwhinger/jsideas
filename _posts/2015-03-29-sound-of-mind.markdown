@@ -3,8 +3,8 @@ layout:     post
 title:      "Sound of Mind"
 date:       2015-03-29 18:50:00
 author:     "Jun"
-categories: "Python"
-header-img: "img/post-bg-05.jpg"
+tags: [python, web crawling]
+
 ---
 
 <h2 class="section-heading">Sound of Mind - rating change in time</h2>
@@ -12,7 +12,7 @@ header-img: "img/post-bg-05.jpg"
 <p>It’s been a long time since I last wrote a posting.
 To brush up on python and R, I worked on a tiny project that was to crawl episode and ratings data of a famous webtoon, <a href="http://comic.naver.com/webtoon/list.nhn?titleId=20853" target="_blank">Sound of Mind</a>. Using the default ‘plot’ in R, I drew the following chart which shows two darkest times in which the ratings significantly dropped.</p>
 
-![ms_image](/assets/ms_Rplot.png)
+![ms_image](/assets/materials/20150330/ms_Rplot.png)
 
 {% highlight python %}
 

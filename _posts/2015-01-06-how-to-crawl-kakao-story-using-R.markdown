@@ -3,8 +3,9 @@ layout:     post
 title:      "How to crawl Kakao Story using R"
 date:       2015-01-06 22:10:00
 author:     "Jun"
-categories: "R"
 header-img: "img/post-bg-05.jpg"
+tags: [r, web crawling]
+
 ---
 <h2 class="section-heading">How to crawl Kakao Story using R</h2>
 

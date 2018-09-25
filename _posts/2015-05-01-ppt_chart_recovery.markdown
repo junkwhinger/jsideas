@@ -5,6 +5,7 @@ date:       2015-05-01 23:50:00
 author:     "Jun"
 categories: "R"
 header-img: "img/post-bg-05.jpg"
+tags: [r]
 ---
 
 <h2 class="section-heading">How to recover data from disconnected ppt charts</h2>
@@ -16,30 +17,30 @@ header-img: "img/post-bg-05.jpg"
 <p>This guy’s blog explains the solution well, but I thought I could do something with R. So here’s what I’ve come up with. If you have R installed in your mac, you can easily do it.</p>
 
 <p>1. let’s get the ingredients ready.</p>
-![pic1](/assets/ppt_recovery/pic1.png)
+![pic1](/assets/materials/20150502/pic1.png)
 <p>Here I have a ppt file with 4 different types of charts; a line chart, a pie chart, a bar chart and a group bar chart.</p>
 
 <p>2. save the ppt file, and change it file type from pptx to zip.</p>
-![pic2](/assets/ppt_recovery/pic2.png)
+![pic2](/assets/materials/20150502/pic2.png)
 <p>It sounds pretty weird, but your computer will allow that to happen.</p>
 
 <p>3. unzip the newly modified zip file.</p>
-![pic3](/assets/ppt_recovery/pic3.png)
+![pic3](/assets/materials/20150502/pic3.png)
 <p>In the folder, you’ll see a bunch of folders and files.. and among them, you’ll find [charts] folder inside [ppt] folder. That’s where our charts are. 4 xml files there!</p>
 
 <p>4. put them in a folder with ppt_chart_recovery_f.R (again, you can download it from <a href="https://github.com/junkwhinger/ppt_chart_recovery">here</a>). Make sure you have no other xml files in the folder, as my R script is designed to parse all the xml files it can find in its folder. Like this.</p>
-![pic4](/assets/ppt_recovery/pic4.png)
+![pic4](/assets/materials/20150502/pic4.png)
 
 <p>5. open terminal and go to the test folder. as my [test] folder is in the [desktop] folder, I just need to type “cd desktop/test"</p>
 
 <p>6. run the r code to get the result. type “r” to activate r, and type “source(“ppt_chart_recovery_f.R”). Within a few seconds, the job is done.</p>
-![pic5](/assets/ppt_recovery/pic5.png)
+![pic5](/assets/materials/20150502/pic5.png)
 <p>It shows some messages that go “Namespace prefix c…” but you can ignore it.</p>
 
 <p>7. check out the results.</p>
-![pic6](/assets/ppt_recovery/pic6.png)
+![pic6](/assets/materials/20150502/pic6.png)
 <p>Voila! four new csv files! click and hit space to check out what they look like.</p>
-![pic7](/assets/ppt_recovery/pic7.png)
+![pic7](/assets/materials/20150502/pic7.png)
 <p>Job done!</p>
 
 {% highlight r %}

@@ -2,8 +2,9 @@
 layout: post
 title:  "파이썬 초보 - pandas와 matplotlib을 활용한 간단 분석 part 2"
 date:   2015-08-10 20:34:25
-categories: python
-image: /assets/python_pandas/header.png
+img: 20150811.png
+tags: [python, data analytics]
+
 ---
 
 (이미지 출처: <a href="http://stackoverflow.com/questions/27446455/pandas-subplots-in-a-loop">stackoverflow</a>)
@@ -29,17 +30,17 @@ def more_than_6000(x):
 * `data['more_than_6000'] = data.hourly_wage.map(lambda x: more_than_6000(x))`
 앞서 정의한 함수를 사용하여 새로운 컬럼을 뽑았습니다. 약간 식이 복잡한데, 큰 틀은 위에서 문자열을 넣었던 방식과 동일합니다. `map` 함수는 그 안의 시급 데이터를 하나하나 선택하며 원하는 함수를 쓸 수 있도록 해주는데, 여기서는 `lambda x`라는 anonymous function(이름 없는 함수)를 써서 각 시급 데이터에 `more_than_6000` 함수를 적용했습니다. `시급 컬럼의 각 데이터를 돌아가며 함수를 쓸껀데, 그 함수는 6000보다 크면 1이고 아니면 0이다`라는 문장이 있다면 `함수를 쓸껀데, 그 함수는..` 부분이 람다 오퍼레이터가 수행하는 부분입니다. (설명이 야매라 죄송합니다 ㅠ) 여튼 결과가 잘 나왔는지 확인해봅시다. `data[data.more_than_6000 == 1].describe()`
 
-![람다 오퍼레이터 적용 결과](/assets/python_pandas/6.png)
+![람다 오퍼레이터 적용 결과](/assets/materials/20150811/6.png)
 
 min값이 6100원인걸 보면 정상적으로 잘 뽑혔네요!
 
 * 마지막으로 `구`과 `6000원 이상` 시급을 새로운 데이터 프레임에 넣어 봅시다. `data2 = data[data.more_than_6000 == 1][['area1', 'hourly_wage']]`를 실행합시다. `data2`는 전체 데이터에서 6000원이 넘는 시급을 가진 행을 추출한 후, 그 행의 구(`area1`)과 시급(`hourly_wage`)를 추린 서브 셋입니다.
 
-![서브셋의 info](/assets/python_pandas/7.png)
+![서브셋의 info](/assets/materials/20150811/7.png)
 
 * `data2.to_csv('data2.csv', index=False)`를 실행하여 csv 데이터로 뽑습니다. 여기서 index=False는 pandas DataFrame이 자동으로 부여하는 행번호를 출력하지 않겠다는 의미입니다. 잘 뽑혔는지 확인해봅시다.
 
-![csv로 출력](/assets/python_pandas/8.png)
+![csv로 출력](/assets/materials/20150811/8.png)
 
 정상적으로 잘 뽑혔네요.
 
@@ -95,7 +96,7 @@ data2.to_csv('data2.csv', index=False)
 
 ipython 환경에서 나오는 방법은 `control + D`를 눌러 y를 치면 됩니다. 다시 가상환경으로 돌아와서 `python test.py`를 실행해 방금 짠 스크립트를 돌려봅시다. 
 
-![터미널에서 파이썬 스크립트 돌리기](/assets/python_pandas/10.png)
+![터미널에서 파이썬 스크립트 돌리기](/assets/materials/20150811/10.png)
 
 오류 없이 잘 돌아갑니다. 이번에는 같은 코드를 ipython 환경에서 돌려봅시다. ipython 환경에서 돌리는 장점 중 하나는 코드를 돌렸을 때 그 안에서 정의한 변수를 계속 활용할 수 있다는 점입니다. 
 
@@ -103,7 +104,7 @@ ipython 환경에서 나오는 방법은 `control + D`를 눌러 y를 치면 됩
 * `%run test.py` - 터미널과 달리 스크립트 파일을 돌릴때는 %run을 치고 파일명을 쳐줍니다.
 * `data.head()`
 
-![ipython에서 파이썬 스크립트 돌리기](/assets/python_pandas/11.png)
+![ipython에서 파이썬 스크립트 돌리기](/assets/materials/20150811/11.png)
 
 역시 잘 돌아갔습니다. ipython에 데이터를 올려놨으니 이제 시각화를 돌려봅시다.
 
@@ -115,31 +116,31 @@ ipython 환경에서 나오는 방법은 `control + D`를 눌러 y를 치면 됩
 * `data.hourly_wage.hist(bins=10)` - 먼저 히스토그램을 그려봅시다. 전체 편의점 데이터의 시급을 히스토그램으로 그리는데, 구간은 10개 구간으로 정하겠습니다. 이 명령어를 입력하면 `<matplotlib.axes._subplots.AxesSubplot at 0x1111dfc10>` 이런 결과를 뱉는데, matplotlib 플롯을 만들어놨다는 얘깁니다. 
 * `plt.show()`를 돌려 그래프를 뽑아봅시다.
 
-![matplotlib 히스토그램](/assets/python_pandas/12.png)
+![matplotlib 히스토그램](/assets/materials/20150811/12.png)
 
 잘 뽑혔습니다. 위에 명령어에서 bins 값을 조정하거나, 조금 더 나아가서 여기서 다루지 않는 numpy의 linspace 함수를 쓰면 최소값, 최대값, 구간 수를 정해 더 정확한 구간을 가진 히스토그램을 뽑을 수 있습니다. `plot.show`를 치면 새로운 창이 열리면서 그래프가 뜨는데, 이 그래프 창을 꺼야만 ipython에서 다시 입력이 가능해집니다.
 
 * `data.boxplot(column='hourly_wage')` - 이번에는 같은 데이터를 박스플롯으로 표현해봅시다. `plt.show()`를 입력해 시각화된 차트를 띄웁니다.
 
-![matplotlib 박스플롯](/assets/python_pandas/13.png)
+![matplotlib 박스플롯](/assets/materials/20150811/13.png)
 
 * `data.boxplot(column='hourly_wage', by='name')` - 이번에는 회사별로 박스플롯을 돌려봅시다. 데이터에 `name`이라는 컬럼에 회사명이 표시되어있습니다. 이를 `by='name'`이라는 부분에 집어넣어 옵션으로 지정해주면 간단하게 박스플롯 3개가 한번에 그려집니다.
 
-![회사별 박스플롯](/assets/python_pandas/14.png)
+![회사별 박스플롯](/assets/materials/20150811/14.png)
 
 * `data.boxplot(column='hourly_wage', by='area1')` - 같은 방식으로 구별 히스토그램을 뽑을 수 있습니다.
 
-![회사별 박스플롯](/assets/python_pandas/15.png)
+![회사별 박스플롯](/assets/materials/20150811/15.png)
 
 그런데 ipython에서 한글을 제대로 인식하지 못했네요 ㅠㅠ 내장된 폰트가 한글을 인식하지 못했기 때문인데 이 경우 한글 폰트를 지정해주면 됩니다. `plt.show()`를 치기 전에 `matplotlib.rc('font',family='AppleGothic')`으로 폰트를 지정해주면..
 
-![회사별 박스플롯(한글 수정)](/assets/python_pandas/16.png)
+![회사별 박스플롯(한글 수정)](/assets/materials/20150811/16.png)
 
 정상적으로 수정되어 박스플롯이 출력됩니다.
 
 * 이번에는 구별로 회사를 나누어 박스플롯으로 출력하는데, 세로가 아닌 가로로 플롯을 그려봅시다. `data.boxplot(column='hourly_wage', by=['area1', 'name'], vert=False)`를 찍고, 폰트 지정을 해준 후 그래프를 출력합니다. `vert=False`는 박스플롯을 가로로 그리는 옵션입니다.
 
-![구별 회사별 박스플롯](/assets/python_pandas/17.png)
+![구별 회사별 박스플롯](/assets/materials/20150811/17.png)
 
 <hr />
  

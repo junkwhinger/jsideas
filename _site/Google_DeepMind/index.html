@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Lee Sedol vs. AlphaGo: full data - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Lee Sedol vs. AlphaGo: full data" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/Google_DeepMind/" property="og:url">
+  
+  
+    <meta content="2016-03-16T21:34:25+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20160323.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="data visualisation" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Lee Sedol vs. AlphaGo: full data">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/Google_DeepMind/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20160323.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20160323.png alt="Lee Sedol vs. AlphaGo: full data">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Lee Sedol vs. AlphaGo: full data</h1>
+        <div class="page-date"><span>2016, Mar 16&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="thinking-time---full-match-visualisation">Thinking Time - Full Match Visualisation</h2>
+<p>Hit the buttons to navigate through the games.
+Click on the circles to further investigate thinking time details.</p>
+
+<div class="chart"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+<style>
+  /*css*/
+
+  .main_chart_title {
+    margin-left: 40px;
+    font: 30px helvetica;
+  }
+
+  .button_container {
+    margin-left: 40px;
+    margin-top: 10px;
+  }
+
+  .btn {
+    margin-right: 5px;
+  }
+
+  div.chart {
+  font: 10px sans-serif;
+  }
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 1.5px;
+  }
+
+  .line#AlphaGo {
+    stroke: #bf812d;
+  }
+
+  circle#AlphaGo {
+    fill: #8c510a;
+  }
+
+  .line#Lee_Sedol {
+    stroke: #35978f;
+  }
+
+  circle#Lee_Sedol {
+    fill: #01665e;
+  }
+
+  rect#Lee_Sedol {
+    fill: #01665e;
+  }
+
+  rect#AlphaGo {
+    fill: #8c510a;
+  }
+
+  circle.annotation {
+    fill: none;
+    stroke: red;
+  }
+
+  .d3-tip {
+      font: 10px sans-serif;
+      line-height: 1.5;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 2px;
+  }
+
+    .d3-tip:after {
+      box-sizing: border-box;
+      display: inline;
+      font: 10px sans-serif;
+      width: 100%;
+      line-height: 1;
+      color: rgba(0, 0, 0, 0.8);
+      content: "\25BC";
+      position: absolute;
+      text-align: center;
+  }
+
+    .d3-tip.n:after {
+      margin: -1px 0 0 0;
+      top: 100%;
+      left: 0;
+  }
+
+  .ending {
+    margin-left: 40px;
+    font: 10px helvetica;
+  }
+
+
+
+
+</style>
+
+<script type="text/javascript">
+    function draw(data) {
+      var games = d3.nest()
+                  .key(function(d) { return d.game; })
+                  .entries(who = data);
+
+      var game1 = games[0].values
+      
+      var current_game = d3.max(game1, function(k) {return k.game});
+    
+      var margin = {top: 10, right: 60, bottom: 24, left: 60, middle: 28},
+          width = 960 - margin.left - margin.right,
+          height = 500 - margin.top - margin.bottom;
+
+      var x = d3.scale.linear()
+                .range([0, width]);
+
+      var y = d3.scale.linear()
+                .range([height, 0]);
+
+      var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d) {
+            var time = d.thinking_time * 60;
+            var minute = Math.floor(time / 60);
+            var second = Math.ceil(time - minute * 60);
+            var output = minute + "m " + second + "s";
+            var game = d.game;
+            var black_dict = {1:'Lee_Sedol', 2:'AlphaGo', 3:'Lee_Sedol', 4:'AlphaGo', 5:'Lee_Sedol'};
+
+            var current_black = black_dict[game];
+
+            if (d.player === current_black) {
+              var ply = d.turn_index * 2 - 1;
+              console.log('smae')
+              return "<strong>" + d.player + "</strong>" + "<br>" + d.turn_index + "th move" +  "<br>" + ply + "th move of the game" + "<br>" + output;
+            } else {
+              var ply = d.turn_index * 2;
+              return "<strong>" + d.player + "</strong>" + "<br>" + d.turn_index + "th move" +  "<br>" + ply + "th move of the game" + "<br>" + output;
+            };
+
+            
+          })
+          .attr("fill", "grey");
+
+      var players,
+          player;
+
+      var xAxis = d3.svg.axis()
+                    .scale(x)
+                    .orient("bottom")
+                    .ticks(20);
+
+      var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+
+      var line = d3.svg.line()
+                   .x(function(d) { return x(d.turn_index); })
+                   .y(function(d) { return y(d.thinking_time); });
+
+      var max_turn = d3.max(game1, function(d) {return d.turn_index});
+      var max_time = d3.max(game1, function(d) {return d.thinking_time});
+
+      x.domain([0, max_turn]);
+      y.domain([0, max_time]);
+
+      var chart_title = d3.select("div.chart").append("h2")
+                          .attr("class", "main_chart_title")
+                          .text("Lee Sedol vs. AlphaGo: Game 1 (AlphaGo won)")
+
+      var next_prev = ['Previous', 'Next']
+      var arrow_buttons = d3.select("div.chart").append("div")
+                      .attr("class", "button_container")
+                      .selectAll("div")
+                      .data(next_prev)
+                      .enter()
+                      .append("div")
+                      .attr("class", "btn btn-default")
+                      .attr("id", function(d){return d;})
+                      .text(function(d) {
+                        return d;
+                      })
+
+      var game_num = ['G1','G2','G3','G4','G5']
+      var game_buttons = d3.select("div.chart").append("div")
+                      .attr("class", "button_container")
+                      .selectAll("div")
+                      .data(game_num)
+                      .enter()
+                      .append("div")
+                      .attr("class", "btn game_btn")
+                      .attr("id", function(d) {return d;})
+                      .text(function(d) {
+                        return d;
+                      })
+
+
+      var svg = d3.select("div.chart").append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      svg.call(tip);
+
+      svg.append("g")
+         .attr("class", "x axis")
+         .attr("transform", "translate(0," + height + ")")
+         .call(xAxis)
+        .append("text")
+          .attr("x", width + 52)
+          .attr("y", 5)
+          .style("text-anchor", "end")
+          .text("Turn Index");
+
+      svg.append("g")
+         .attr("class", "y axis")
+         .call(yAxis)
+       .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", ".71em")
+         .style("text-anchor", "end")
+         .text("Thinking Time in Minutes");
+
+      var players_list = ['Lee_Sedol', 'AlphaGo'];
+      
+      var legend = svg.selectAll('.player')
+                      .data(players_list)
+                      .enter()
+                      .append("g")
+                      .attr("class", "player");
+
+      legend.append("rect")
+            .attr("id", function(d){return d;})
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("x", width - 40)
+            .attr("y", function(d,i) { return i*20;})
+            .attr("fill", "black")
+
+      legend.append("text")
+            .attr("x", width - 20)
+            .style("font-size", "12px")
+            .attr("y", function(d,i) { return i*20 + 12;})
+            .text(function(d) {return d;})
+
+
+
+      players = d3.nest()
+                  .key(function(d) { return d.player; })
+                  .entries(game1);
+
+      players.forEach(function(d, i) {
+
+        
+        id_var = d.key
+
+          svg.append("path")
+              .attr("id", id_var)
+              .attr("class", "line")
+              .attr("d", line(d.values));
+
+        var dots = svg.selectAll("dot")
+          .attr("id", id_var + "_group")
+          .data(d.values)
+        .enter().append("circle")
+          .attr("id", id_var)
+          .attr("r", 3)
+          .attr("cx", function(d) { return x(d.turn_index); })
+          .attr("cy", function(d) { return y(d.thinking_time); })
+          .on('mouseover', tip.show)
+          .on('mouseout', tip.hide);
+      });
+
+      d3.select("#G1").style("background", "black")
+                        .style("color", "white")
+
+      arrow_buttons.on("click", function(d) {
+                  var direction = this.id;
+
+                  if (direction === "Next") {
+                    if (current_game !== 5) {
+                      var next_game = current_game + 1;
+                      console.log(current_game)
+                      console.log(next_game)
+                      d3.selectAll(".game_btn")
+                        .transition()
+                        .duration(500)
+                        .style("background", "white")
+                        .style("color", "black")
+
+                      d3.select("#" + "G" + next_game)
+                        .transition()
+                        .duration(500)
+                        .style("background", "black")
+                        .style("color", "white")
+
+
+
+                    render(next_game)
+
+                    current_game = current_game + 1
+                    }
+
+                  } else {
+                    if (current_game !== 1) {
+                      var prev_game = current_game - 1;
+                      console.log(current_game)
+                      console.log(next_game)
+                      d3.selectAll(".game_btn")
+                        .transition()
+                        .duration(500)
+                        .style("background", "white")
+                        .style("color", "black")
+
+                      d3.select("#" + "G" + prev_game)
+                        .transition()
+                        .duration(500)
+                        .style("background", "black")
+                        .style("color", "white")
+
+
+
+                    render(prev_game)
+
+                    current_game = current_game - 1
+                    }
+
+                  };
+
+      });
+
+      game_buttons.on("click", function(d) {
+
+                  var game_num = d.substring(1);
+
+                      d3.selectAll(".game_btn")
+                        .transition()
+                        .duration(500)
+                        .style("background", "white")
+                        .style("color", "black")
+
+                      d3.select("#" + d)
+                        .transition()
+                        .duration(500)
+                        .style("background", "black")
+                        .style("color", "white")
+
+
+
+                    render(game_num)
+
+
+      });
+
+      function render(game_number) {
+
+        var this_game = games[game_number - 1].values
+
+        var current_game = d3.max(this_game, function(k) {return k.game});
+
+        var winner_dict = {1:'AlphaGo', 2:'AlphaGo', 3:'AlphaGo', 4:'Lee_Sedol', 5:'AlphaGo'}
+
+        var current_winner = winner_dict[game_number]
+
+        var max_turn = d3.max(this_game, function(d) {return d.turn_index});
+        var max_time = d3.max(this_game, function(d) {return d.thinking_time});
+
+        x.domain([0, max_turn]);
+        y.domain([0, max_time]);
+
+        if (game_number == 4) {
+          d3.select(".main_chart_title")
+          .text("Lee Sedol vs. AlphaGo: Game " + current_game + " (" + current_winner + " won! yeeasssssh!)");
+
+          svg.append("circle")
+            .attr("class", "annotation")
+            .attr("id", "g4")
+            .attr("r", 5)
+            .attr("cx", 364)
+            .attr("cy", 276);
+
+          svg.append("text")
+            .attr("class", "annotation")
+            .attr("id", "g4")
+            .attr("x", 368)
+            .attr("y", 272)
+            .text("Lee Sedol's brilliant attack")
+
+          svg.append("circle")
+            .attr("class", "annotation")
+            .attr("id", "g4")
+            .attr("r", 5)
+            .attr("cx", 410)
+            .attr("cy", 415);
+
+          svg.append("text")
+            .attr("class", "annotation")
+            .attr("id", "g4")
+            .attr("x", 410)
+            .attr("y", 400)
+            .text("Consistent mistakes by AlphaGo")
+
+        } else {
+
+          svg.selectAll(".annotation").remove()
+          d3.select(".main_chart_title")
+          .text("Lee Sedol vs. AlphaGo: Game " + current_game + " (" + current_winner + " won)");
+        }
+
+        
+        players = d3.nest()
+                  .key(function(d) { return d.player; })
+                  .entries(this_game);
+
+        players.forEach(function(d, i) {
+
+          id_var = d.key
+
+          d3.select(".line#" + id_var)
+            .transition()
+            .duration(500)
+            .attr("d", line(d.values));
+
+          var n_dots = svg.selectAll('circle#' + id_var)
+                          .data(d.values)
+
+          n_dots.transition()
+            .duration(500)
+            .attr("cx", function(d) { return x(d.turn_index); })
+            .attr("cy", function(d) { return y(d.thinking_time); });
+
+          n_dots.enter().append("circle")
+            .attr("id", id_var)
+            .attr("r", 3)
+            .attr("cx", function(d) { return x(d.turn_index); })
+            .attr("cy", function(d) { return y(d.thinking_time); });
+
+          n_dots.exit().remove();
+
+          svg.selectAll(".axis.x")
+             .transition()
+             .duration(500)
+             .call(xAxis);
+
+          svg.selectAll(".axis.y")
+             .transition()
+             .duration(500)
+             .call(yAxis);
+
+      });
+    }
+
+     
+    }
+</script>
+
+<p class="ending">made by <a target="_blank" href="http://jsideas.net">junkwhinger</a></p>
+
+<script type="text/javascript">
+
+  d3.csv("/assets/materials/20160316//games.csv", function(d){
+      d.turn_index = +d.turn_index;
+      d.thinking_time = +d.thinking_time / 60;
+      d.game = +d.game;
+      return d;
+    }, draw)
+
+</script>
+
+<hr />
+
+<h2 id="a-few-more-data-visualisations-with-python">A few more data visualisations with python</h2>
+<p><br /></p>
+<h3 id="game-1">Game 1</h3>
+<p><img src="/assets/materials/20160316//g1_edited.png" alt="Game 1" /></p>
+
+<h3 id="game-2">Game 2</h3>
+<p><img src="/assets/materials/20160316//g2_edited.png" alt="Game 2" /></p>
+
+<h3 id="game-3">Game 3</h3>
+<p><img src="/assets/materials/20160316//g3_edited.png" alt="Game 3" /></p>
+
+<h3 id="game-4">Game 4</h3>
+<p><img src="/assets/materials/20160316//g4_edited.png" alt="Game 4" /></p>
+
+<h3 id="game-5">Game 5</h3>
+<p><img src="/assets/materials/20160316//g5_edited.png" alt="Game 5" /></p>
+
+<h3 id="thinking-time-distribution">Thinking Time Distribution</h3>
+<p><img src="/assets/materials/20160316//KDE_total.png" alt="KDE plot" /></p>
+
+<h3 id="thinking-time-distribution-lee-sedol">Thinking Time Distribution: Lee Sedol</h3>
+<p><img src="/assets/materials/20160316//KDE_lee.png" alt="KDE plot" /></p>
+
+<h3 id="thinking-time-distribution-alphago">Thinking Time Distribution: AlphaGo</h3>
+<p><img src="/assets/materials/20160316//KDE_alpha.png" alt="KDE plot" /></p>
+
+<h3 id="thinking-time-remaining">Thinking Time Remaining</h3>
+<p><img src="/assets/materials/20160316//total_remaining_edited.png" alt="Point plot" /></p>
+
+<h3 id="thinking-time-remaining-each-game">Thinking Time Remaining: Each Game</h3>
+<p><img src="/assets/materials/20160316//separate_remaining.png" alt="KDE plot" /></p>
+
+<hr />
+
+<h2 id="raw-data">Raw Data</h2>
+<p>full data available on <a target="_blank" href="https://github.com/junkwhinger/AlphaGo_raw">GitHub</a>.</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Lee Sedol vs. AlphaGo: full data&url=http://localhost:4000/Google_DeepMind/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/Google_DeepMind/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/Google_DeepMind/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#data visualisation" class="tag">&#35; data visualisation</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

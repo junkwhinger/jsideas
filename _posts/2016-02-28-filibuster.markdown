@@ -2,8 +2,8 @@
 layout: post
 title:  "2016년 테러방지법 반대 필리버스터 참여의원 현황"
 date:   2016-02-28 00:34:25
-categories: d3
-image: /assets/population_cliff/header.png
+img: 20160228.jpg
+tags: [d3.js, data visualisation]
 ---
 
 ## 필리버스터 참여의원 및 발언시간 정리

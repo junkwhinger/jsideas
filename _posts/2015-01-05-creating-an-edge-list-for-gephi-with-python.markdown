@@ -3,8 +3,7 @@ layout:     post
 title:      "Creating an edge list for Gephi with Python"
 date:       2015-01-05 22:10:00
 author:     "Jun"
-categories: "Python"
-header-img: "img/post-bg-05.jpg"
+tags: [python, network analysis]
 ---
 <h2 class="section-heading">Creating an edge list for Gephi with Python</h2>
 

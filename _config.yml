@@ -1,60 +1,34 @@
-# Build settings
+title: jsideas
+description: > # this means to ignore newlines until "baseurl:"
+  a novice's journey into data science
+permalink: ':title/'
+baseurl:  # the subpath of your site, e.g. /blog
+url: "http://jsideas.net" # the base hostname & protocol for your site, e.g. http://example.com
+# site-twitter: https://twitter.com/junsik_whang
+
+# Author Settings
+author: Junsik Hwang # add your name
+author-img: author.jpg # add your photo
+about-author: I do data analytics and modelling for a living and for fun # add description
+social-twitter: junsik_whang
+social-github: junkwhinger # add your Github handle
+social-linkedin: jswhang # add your Linkedin handle
+social-email: junsik.whang@gmail.com # add your Email address
+
+# Disqus
+discus-identifier: jsideas # add your discus identifier
+
+# Tracker
+analytics: # Google Analytics
+
+# Build Settings
 markdown: kramdown
-kramdown:
-  math_engine: mathjax
-highlighter: rouge
-gems:
-  - jemoji
+plugins:
+  - jekyll-sitemap
   - jekyll-paginate
-  - jekyll-giphy
-  - kramdown
+  - jemoji
 
-# Site settings
-title: "jsideas"
-description: > # this means to ignore newlines until "email:"
-   a novice's journey into data science
+paginate: 8
+paginate_path: "/page/:num"
 
-email: junsik.whang@gmail.com
-#blog logo
-logo: "/assets/images/df_logo.jpg"
-# blog cover
-cover: "/assets/images/cA4aKEIPQrerBnp1yGHv_IMG_9534-3-2.jpg"
-
-name: 'Junsik Whang'
-author: 'Junsik Whang'
-author_image: "/assets/images/author.jpg"
-
-paginate:	5
-
-url: "http://jsideas.net" # the base hostname & protocol for your site
-baseurl: 
-
-# social icons and sharing options
-social:
-  - icon:	twitter
-    url:	https://twitter.com/junsik_whang
-    desc: Follow me on twitter
-    share_url: http://twitter.com/share
-    share_title: ?text=
-    share_link: "&amp;url="
-
-#  - icon:	facebook
-#    url:	https://facebook.com/???
-#    desc: Connect with me facebook
-#    share_url: https://www.facebook.com/sharer.php
-#    share_title: ?t=
-#    share_link: "&amp;u="
-
-  - icon:	github
-    url:	https://github.com/junkwhinger
-    desc:	Fork me on github
-    share_url:
-    share_title:
-    share_link:
-
-#  - icon:	google-plus
-#    url:	https://google.com/???
-#    desc:	Add me on google+
-#    share_url:
-#    share_title:
-#    share_link:
+exclude: ["node_modules", "gulpfile.js", "package.json", "yarn.lock"]

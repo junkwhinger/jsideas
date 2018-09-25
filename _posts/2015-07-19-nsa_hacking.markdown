@@ -2,8 +2,8 @@
 layout: post
 title:  "국정원 해킹 사건 - 언론사 대응 비교"
 date:   2015-07-19 03:34:25
-categories: d3.js
-image: /assets/nsa_header.jpg
+tags: [d3.js, data visualisation]
+
 ---
 
 <h2>국정원 해킹 사건 - 언론사 대응 비교</h2>

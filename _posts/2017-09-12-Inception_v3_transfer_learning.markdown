@@ -3,8 +3,8 @@ layout:     post
 title:      "Inception V3: Transfer Learning"
 date:       2017-09-12 00:00:00
 author:     "Jun"
-categories: "Python"
-image: /assets/inception_v3/Header.png
+img: 20170912.png
+tags: [python, deep learning, image]
 ---
 
 ## Inception v3를 활용한 Transfer Learning
@@ -16,7 +16,7 @@ image: /assets/inception_v3/Header.png
 
 Inception 구조는 2014년 구글에서 펴낸 Going deeper with convolutions, Szegedy et al. (2014) 논문에 나오는 CNN 구조로, GoogleLeNet에 사용되어 그해 이미지넷 대회에서 VGG 모델을 누르고 우승한다. 기존의 CNN 모델들이 인풋 이미지에 같은 크기의 Convolution 필터를 하나씩 계속 덧대는 구조라면, Inception은 한번에 여러 크기의 필터를 동시에 사용한다. 덕분에 (상대적으로) 간단한 VGG 모델에 비해 Inception 구조는 직관적으로 잘 와닿지 않는 느낌이었다. 이미지를 처리할 때 여러 크기의 필터를 복합적으로 사용해 이미지의 특징을 더 잘 잡아낸다고 개념적으로 이해하고 있다.
 
-![Inception 모듈 구조(https://adeshpande3.github.io/assets/GoogLeNet3.png)](/assets/inception_v3/inception_module.png)
+![Inception 모듈 구조(https://adeshpande3.github.io/assets/GoogLeNet3.png)](/assets/materials/20170912/inception_module.png)
 
 여튼 <a href="http://nicolovaligi.com/history-inception-deep-learning-architecture.html">Short history of the Inception deep learning architecture</a>에 의하면, 구글에서 2015년에 다시 한번 Rethinking the inception architecture for computer vision, Szegedy et al. (2015) 이라는 논문을 낸다. 여기서 2014년 논문에서 구현한 Inception v1을 개량하고 v2를 거쳐 기존 GoogleLeNet의 성능을 압도하는 v3를 만들어낸다. 3x3보다 큰 필터는 그보다 더 작은 필터 여러개로 더 효율적으로 표현할 수 있으며, 심지어 7x7 필터는 1x7과 7x1 컨볼루션 레이어로 대체하는 것을 제안한다.
 
@@ -741,7 +741,7 @@ plt.show()
 ```
 
 
-![에폭에 따른 정확도 차트](/assets/inception_v3/retrain_36_0.png)
+![에폭에 따른 정확도 차트](/assets/materials/20170912/retrain_36_0.png)
 
 <hr>
 
@@ -804,7 +804,7 @@ def run_inference_on_image(imagePath):
 
 
 
-![라이브 테스트1: chartreux](/assets/inception_v3/test_chartreux.jpg)
+![라이브 테스트1: chartreux](/assets/materials/20170912/test_chartreux.jpg)
 
 ```python
 run_inference_on_image('tmp/test_chartreux.jpg')
@@ -823,7 +823,7 @@ run_inference_on_image('tmp/test_chartreux.jpg')
 
 
 이번에는 우리집 러시안 블루도 잘 분류하는지 살펴보았다. 러시안 블루는 애초 분류 레이블에 없지만, 외형적으로 가장 유사한 샤트룩스가 선택된 것으로 보아 학습이 꽤 잘되었다고 평가할 수 있겠다. 또, 아이폰에서 바로 찍은 큰 JPG을 모델이 집어넣고 돌렸는데 바로 잘 돌아가는 것으로 보아.. 라이브 환경에 돌아가는 모델 구현에 참고할 만한 점이 많은 코드라 하겠다.
-![라이브 테스트2: russian blue](/assets/inception_v3/test_russian_blue.jpg)
+![라이브 테스트2: russian blue](/assets/materials/20170912/test_russian_blue.jpg)
 
 
 ```python

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>How to crawl Kakao Story using R - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="How to crawl Kakao Story using R" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/how-to-crawl-kakao-story-using-R/" property="og:url">
+  
+  
+    <meta content="2015-01-07T07:10:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/author.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="r" property="article:tag">
+    
+    <meta content="web crawling" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="How to crawl Kakao Story using R">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/how-to-crawl-kakao-story-using-R/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/author.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2018 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">How to crawl Kakao Story using R</h1>
+        <div class="page-date"><span>2015, Jan 07&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 class="section-heading">How to crawl Kakao Story using R</h2>
+
+<p><a href="https://story.kakao.com">Kakao Story</a> is a social networking service provided by DaumKakao, and it's been loved by many young Korean people. It has its own dev centre and open APIs, but as I'm not skilled enough to use them, I used R and an html file to crawl data from it. It's really simple and primitive, so if you are already fully familiar with crawling data from Kakao Story, this posting wouldn't be much of a help.</p>
+
+<p>The basic idea is to download a html file and parse it with R. It's really important to have a closer look at the html tag structure and check where your data lies.</p>
+
+<p> Here's how I did.<br /> 
+  1. Ready the file<br />
+Go to the page you want to crawl. And copy and save the div you want to crawl, and save it as an html file.<br />
+<br />
+
+2. Read in the file on RStudio.<br />
+&gt; library("XML") // importing XML library to use "htmlParse".
+&gt; doc &lt;- readLines(“html_file.html")<br />
+You’ll see an Warning message like ‘incomplete final line found..” but it’s okay.<br />
+<br />
+
+3. parse the doc. If in Korean, encode with UTF-8<br />
+&gt; doc_2 &lt;- htmlParse(doc, encoding="UTF-8")<br />
+<br />
+
+4. find the div class or id names that you want to crawl.<br />
+For example, likeCount is in the div class called “_likeCount”.<br />
+<br />
+
+5. crawl using CSS library.<br />
+&gt; install.packages(“CSS”)<br />
+&gt; library(“CSS”)<br />
+&gt; likeCounts &lt;- cssApply(doc_2, “._likeCount”, cssCharacter)<br />
+You have to put a period(“.”) before the div name. If it’s a string of characters you are going to crawl then the third parameter is “cssCharacter”. Find more about this <a href="http://cran.r-project.org/web/packages/CSS/vignettes/CSS.pdf">here</a>. This CSS library is awesome to say the least.<br />
+Crawl other info by using the same method.<br />
+like.. &gt; urls &lt;- cssApply(doc, ".player&gt;a", cssLink)<br />
+<br />
+
+6. if the data you’re crawling is missing at some points, then it’s better to use cssApplyInNodeSet to put NAs to make a complete set with other data.<br />
+<br />
+
+7. use cbind command to make a matrix<br />
+&gt; my_matrix &lt;- cbind(dates, likeCounts, contents)<br />
+<br />
+
+8. export to Excel<br />
+To do so, download “xlsx” library and load it.<br />
+I tried “write.csv” command, but for some encoding issues occurred and Excel couldn’t load the file properly.<br />
+&gt; install.packages(“xlsx”)<br />
+&gt; library(“xlsx”)<br />
+&gt; write.xlsx(my_matrix, “name_of_your_file.xlsx”)<br />
+<br />
+
+9. Go to Excel and open it!<br />
+Voila! It’s done!<br /></p>
+
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=How to crawl Kakao Story using R&url=http://localhost:4000/how-to-crawl-kakao-story-using-R/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/how-to-crawl-kakao-story-using-R/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/how-to-crawl-kakao-story-using-R/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#r" class="tag">&#35; r</a>
+          
+            <a href="/tags#web crawling" class="tag">&#35; web crawling</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>
