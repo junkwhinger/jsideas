@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Visualising Monte Carlo Approximation"
-date:       2018-09-10 10:00:00
+date:       2018-11-07 10:00:00
 author:     "Jun"
 img: 20181107.jpg
 tags: [python, Deep Reinforcement Learning]
