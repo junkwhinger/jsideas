@@ -135,7 +135,7 @@ env.reset()
 
 위로 1칸만 올라간다음, 11칸을 직진하고 다시 1칸을 내려오면 된다. 
 
-<img src='/assets/materials/20181118/cliff_human_approach.png' width=400px>
+<img src='/assets/materials/20181118/cliff_human_approach.png' >
 
 개/고양이 분류하는 딥러닝처럼 사람에게 쉬운 문제가 컴퓨터에게는 매우 어려울 수 있다.
 
@@ -157,7 +157,7 @@ env.reset()
 
 이렇듯 우리는 다음 action을 선택할 때 가장 value가 높은 쪽을 선택한다. 
 
-<img src='/assets/materials/20181118/cliff_first_move.jpg' width=400px>
+<img src='/assets/materials/20181118/cliff_first_move.jpg' >
 
 
 ## agent를 움직여보자.
@@ -241,7 +241,7 @@ agent는 env안에서 state를 파악하고, action을 실행하여, action에 �
 - agent의 action에 따라 새로운 state 정보 $S_{t+1}$이 agent에게 전달된다.
 
 
-<img src='/assets/materials/20181118/env_agent_interaction.jpg' width=400px>
+<img src='/assets/materials/20181118/env_agent_interaction.jpg' >
 
 env가 리셋된 후 첫 스타팅에서는 리워드 정보가 없다.
 
@@ -256,7 +256,7 @@ env가 리셋된 후 첫 스타팅에서는 리워드 정보가 없다.
 
 
 
-<img src='/assets/materials/20181118/first_move.jpg' width=200px>
+<img src='/assets/materials/20181118/first_move.jpg' >
 
 스타팅에서 갈 수 있는 다음 state는 바로 위와 오른쪽이었다.   
 
@@ -566,19 +566,19 @@ Cliff Walking 문제를 다음과 같이 간단히 바꾸어본다.
 
 이는 아래 그림과 같다.
 
-<img src='/assets/materials/20181118/simple_pic1.jpg' width=400px>
+<img src='/assets/materials/20181118/simple_pic1.jpg' >
 
 여기서 우리는 마지막 state에 도달했을때 얻는 value를 확실히 안다. 마지막 state에 도달하면 아무 reward를 받지 않고 이후에 받을 reward도 없으므로 이때의 value는 0이다.
 
 이 간단한 문제에서 s2는 s1에서부터 이동하므로, s1의 value는 역산하여 구할 수 있다.
 $v_{\pi}(s1) = -1 + 0 = -1$
 
-<img src='/assets/materials/20181118/simple_pic2.jpg' width=400px>
+<img src='/assets/materials/20181118/simple_pic2.jpg' >
 
 또 s1의 value를 앎으로써 s0의 value도 알 수 있다. 
 $v_{\pi}(s1) = -1 + -1 = -2$
 
-<img src='/assets/materials/20181118/simple_pic3.jpg' width=400px>
+<img src='/assets/materials/20181118/simple_pic3.jpg' >
 
 즉 $v_{\pi}(s)$는 바로 다음에 얻게 될 immediate reward와 다음 state의 value와 같다.
 
@@ -916,7 +916,7 @@ episode의 순번을 N, 각 순번의 에피소드에서 s, a 페어에 해당�
 
 아래 그림에서 Q의 값은 어떻게 될까?
 
-<img src='/assets/materials/20181118/incremental_mean.jpg' width=400px>
+<img src='/assets/materials/20181118/incremental_mean.jpg' >
 
 MC는 에피소드가 갱신될때마다, 해당 state action 페어가 가진 G값들의 평균을 내어 Q를 업데이트한다. 즉, 첫번째 episode의 G가 2인 상황에서 G값으로 8이 들어온다면, (2+8) /2로 Q의 값을 5로 업데이트한다.
 
