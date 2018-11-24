@@ -3,7 +3,6 @@ layout:     post
 title:      "Review: Issues in Using Function Approximation for Reinforcement Learning"
 date:       2018-11-24 00:00:00
 author:     "Jun"
-img: 20181124.jpg
 tags: [python, Deep Reinforcement Learning]
 ---
 
