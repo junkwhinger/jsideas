@@ -1868,7 +1868,7 @@ $p(Kati) = p(K) * p(a\|K) * p(t\|Ka) * p(i\|Kat) * p(eos\|Karis)$
 컴퓨터가 계산하기 곤란한 정도로 소숫점이 많아지면 후보간의 비교가 어려워진다.  
 따라서 이를 쉽게 하기 위해 전체에 log를 씌우면, 앞뒤 확률간의 곱이 앞뒤 확률의 log의 합으로 표현할 수 있게 된다.
 
-$\log(p(Kati)) = \log(p(K)) + \log(p(a|K)) + \log(p(t|Ka)) + \log(p(i|Kat)) + \log(p(eos|Karis))$
+$\log(p(Kati)) = \log(p(K)) + \log(p(a\|K)) + \log(p(t\|Ka)) + \log(p(i\|Kat)) + \log(p(eos\|Karis))$
 
 
 
