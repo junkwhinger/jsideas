@@ -1860,7 +1860,7 @@ K=1이면 위에서 본 greedy한 생성방식과 일치하게 된다. K를 높�
 확률이 높음은 어떻게 계산해야 할까? 여기서는 그 다음 글자의 확률을 보는 것이 아니라, 갱신된 prime의 생성 확률을 봐야한다.
 
 "K"를 prime으로 넣어 "Karis"를 얻었다고 하자. Karis가 생성될 확률은 (문화권과 성별 변수를 잠시 제외하면)
-$p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
+$p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(eos|Karis)$
 라 할 수 있다. 
 
 그래서 매 스텝마다 새로 나오는 확률값을 기존 확률값에 계속 재귀적으로 곱해주면 된다.  
@@ -1868,7 +1868,7 @@ $p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
 컴퓨터가 계산하기 곤란한 정도로 소숫점이 많아지면 후보간의 비교가 어려워진다.  
 따라서 이를 쉽게 하기 위해 전체에 log를 씌우면, 앞뒤 확률간의 곱이 앞뒤 확률의 log의 합으로 표현할 수 있게 된다.
 
-$\log(p(Karis)) = \log(p(K)) + \log(p(a|K)) + \log(p(r|Ka)) + \log(p(i|Kar)) + \log(p(s|Kari)) + \log(p(<eos>|Karis))$
+$\log(p(Karis)) = \log(p(K)) + \log(p(a|K)) + \log(p(r|Ka)) + \log(p(i|Kar)) + \log(p(s|Kari)) + \log(p(eos|Karis))$
 
 
 
