@@ -175,8 +175,8 @@
 
 <p>하이먼 민스키 데이터는 차트 이미지를 <a href="https://automeris.io/WebPlotDigitizer/">WebPlotDigitizer</a>라는 툴에 집어넣어 데이터 포인트를 추출했다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 일단 필요한 라이브러리를 불러온다.</span>
-<span class="kn">import</span> <span class="nn">coin_crawler</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">## 일단 필요한 라이브러리를 불러온다.
+</span><span class="kn">import</span> <span class="nn">coin_crawler</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
@@ -195,9 +195,9 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span></code></pre></figure>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 비트코인 데이터와 하이먼 민스키 데이터를 불러와</span>
-<span class="c">## 비트코인 종가와 민스키 그래프를 그린다.</span>
-<span class="n">bitcoin_path</span> <span class="o">=</span> <span class="s">'dataset/bitcoin.csv'</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">## 비트코인 데이터와 하이먼 민스키 데이터를 불러와
+## 비트코인 종가와 민스키 그래프를 그린다.
+</span><span class="n">bitcoin_path</span> <span class="o">=</span> <span class="s">'dataset/bitcoin.csv'</span>
 <span class="n">minsky_path</span> <span class="o">=</span> <span class="s">'HymanMinsky.csv'</span>
 
 <span class="n">bitcoin_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">bitcoin_path</span><span class="p">)</span>
@@ -220,8 +220,8 @@
 
 <p>여기서 어떻게 두 시계열의 유사성을 비교할 수 있을까? 가장 쉬운 방법은 time series 데이터간에 correlation을 구하는 방법이 되겠다. [3]의 조언을 따라 numpy의 corrcoef함수를 써보자!</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## 함수 테스트</span>
-
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">## 함수 테스트
+</span>
 <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">104</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 
@@ -353,7 +353,7 @@ Itakura Parallogram은 S를 사용해 경로의 기울기가 1/S ~ S 사이에 �
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">minsky_df</span><span class="o">.</span><span class="n">adj_y</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">path</span><span class="p">]],</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'HymanMinsky Model'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin vs. Hyman Minsky Model | distance: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"BitCoin vs. Hyman Minsky Model | distance: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">3</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">"time steps"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"normalized price"</span><span class="p">)</span>
 
@@ -404,19 +404,19 @@ Itakura Parallogram은 S를 사용해 경로의 기울기가 1/S ~ S 사이에 �
 
     <span class="k">def</span> <span class="nf">run_ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
         
-        <span class="c">## 최초 300개 데이터 포인트 정도만 스캔한다.</span>
-        <span class="n">loc</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">_ucrdtw</span><span class="o">.</span><span class="n">ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span> <span class="n">query</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="c1">## 최초 300개 데이터 포인트 정도만 스캔한다.
+</span>        <span class="n">loc</span><span class="p">,</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">_ucrdtw</span><span class="o">.</span><span class="n">ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">Close</span><span class="o">.</span><span class="n">values</span><span class="p">[:</span><span class="mi">300</span><span class="p">],</span> <span class="n">query</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
         
-        <span class="c">## distance가 5 이하인 경우에만 일치하는 시퀀스로 판정한다.</span>
-        <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="c1">## distance가 5 이하인 경우에만 일치하는 시퀀스로 판정한다.
+</span>        <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
             <span class="n">tdata</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:</span><span class="n">loc</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
             <span class="n">tdata</span><span class="p">[</span><span class="s">'startDate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">tdata</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tdata</span><span class="p">)</span>
             
         <span class="n">loc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
-        <span class="c">## 스캔할 데이터 포인트가 30개 이상이면 시퀀스 탐색을 지속한다.</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="c1">## 스캔할 데이터 포인트가 30개 이상이면 시퀀스 탐색을 지속한다.
+</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">:</span>
             <span class="n">run_ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">loc</span><span class="p">:],</span> <span class="n">query</span><span class="p">)</span>
             
     <span class="n">run_ucrdtw</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>     
@@ -543,8 +543,8 @@ coinmarketcap.com에서 나머지 데이터도 긁어와서 테스트해보자. 
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">cur</span> <span class="ow">in</span> <span class="n">currencies</span><span class="p">:</span>
     <span class="n">currency</span> <span class="o">=</span> <span class="n">coin_crawler</span><span class="o">.</span><span class="n">currency</span><span class="p">(</span><span class="n">cur</span><span class="p">)</span>
-    <span class="n">currency</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">"dataset/{}.csv"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Done: currency {} -&gt; csv"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span></code></pre></figure>
+    <span class="n">currency</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">"dataset/{}.csv"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Done: currency {} -&gt; csv"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cur</span><span class="p">))</span></code></pre></figure>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Done: currency bitcoin -&gt; csv
 Done: currency ethereum -&gt; csv

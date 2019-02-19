@@ -196,8 +196,8 @@
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">9</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">15</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="mi">7</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## the first derivative</span>
-<span class="n">yfirst</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## the first derivative
+</span><span class="n">yfirst</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">yfirst</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -207,8 +207,8 @@
   </blockquote>
 </blockquote>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## the second derivative</span>
-<span class="n">ysecond</span> <span class="o">=</span> <span class="n">yfirst</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## the second derivative
+</span><span class="n">ysecond</span> <span class="o">=</span> <span class="n">yfirst</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">ysecond</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -218,12 +218,12 @@
   </blockquote>
 </blockquote>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## input x range</span>
-<span class="n">test_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## input x range
+</span><span class="n">test_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## corresponding y, first_derivative, second_derivative</span>
-<span class="n">test_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">v</span><span class="p">})</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">test_x</span><span class="p">]</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## corresponding y, first_derivative, second_derivative
+</span><span class="n">test_y</span> <span class="o">=</span> <span class="p">[</span><span class="n">y</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">v</span><span class="p">})</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">test_x</span><span class="p">]</span>
 <span class="n">test_y_f</span> <span class="o">=</span> <span class="p">[</span><span class="n">yfirst</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">v</span><span class="p">})</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">test_x</span><span class="p">]</span>
 <span class="n">test_y_s</span> <span class="o">=</span> <span class="p">[</span><span class="n">ysecond</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="n">v</span><span class="p">})</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">test_x</span><span class="p">]</span>
 </code></pre></div></div>

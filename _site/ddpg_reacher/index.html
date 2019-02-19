@@ -183,21 +183,21 @@ These numbers are ranged between -1 and 1.</p>
 <span class="n">brain_name</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">brain_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">brain</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">brains</span><span class="p">[</span><span class="n">brain_name</span><span class="p">]</span>
 
-<span class="c"># reset the environment</span>
-<span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
+<span class="c1"># reset the environment
+</span><span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
 
-<span class="c"># number of agents</span>
-<span class="n">num_agents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">env_info</span><span class="o">.</span><span class="n">agents</span><span class="p">)</span>
+<span class="c1"># number of agents
+</span><span class="n">num_agents</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">env_info</span><span class="o">.</span><span class="n">agents</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="s">'Number of agents:'</span><span class="p">,</span> <span class="n">num_agents</span><span class="p">)</span>
 
-<span class="c"># size of each action</span>
-<span class="n">action_size</span> <span class="o">=</span> <span class="n">brain</span><span class="o">.</span><span class="n">vector_action_space_size</span>
+<span class="c1"># size of each action
+</span><span class="n">action_size</span> <span class="o">=</span> <span class="n">brain</span><span class="o">.</span><span class="n">vector_action_space_size</span>
 <span class="k">print</span><span class="p">(</span><span class="s">'Size of each action:'</span><span class="p">,</span> <span class="n">action_size</span><span class="p">)</span>
 
-<span class="c"># examine the state space </span>
-<span class="n">states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
+<span class="c1"># examine the state space 
+</span><span class="n">states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
 <span class="n">state_size</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="k">print</span><span class="p">(</span><span class="s">'There are {} agents. Each observes a state with length: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">state_size</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'There are {} agents. Each observes a state with length: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">states</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">state_size</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="s">'The state for the first agent looks like:'</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </code></pre></div></div>
 
@@ -406,13 +406,13 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
 
 <p><img src="../assets/materials/20190202/actor_critic_update.png" width="800px" /></p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ornstein-Uhlenbeck process implementation from ShangtongZhang</span>
-<span class="k">class</span> <span class="nc">RandomProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Ornstein-Uhlenbeck process implementation from ShangtongZhang
+</span><span class="k">class</span> <span class="nc">RandomProcess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">reset_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <span class="k">class</span> <span class="nc">OrnsteinUhlenbeckProcess</span><span class="p">(</span><span class="n">RandomProcess</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">theta</span><span class="o">=.</span><span class="mi">15</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="mf">.15</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         
@@ -489,8 +489,8 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
         <span class="bp">self</span><span class="o">.</span><span class="n">state_size</span> <span class="o">=</span> <span class="n">state_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">action_size</span> <span class="o">=</span> <span class="n">action_size</span>
         
-        <span class="c"># hyper-paramters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_size</span> <span class="o">=</span> <span class="n">buffer_size</span>
+        <span class="c1"># hyper-paramters
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_size</span> <span class="o">=</span> <span class="n">buffer_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
@@ -499,8 +499,8 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
         <span class="bp">self</span><span class="o">.</span><span class="n">weight_decay</span> <span class="o">=</span> <span class="n">weight_decay</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span> <span class="o">=</span> <span class="n">checkpoint_folder</span>
         
-        <span class="c"># local and target actors and critics</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span>
+        <span class="c1"># local and target actors and critics
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actor_target</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actor_local_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_actor</span><span class="p">)</span>
         
@@ -508,11 +508,11 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_target</span> <span class="o">=</span> <span class="n">Critic</span><span class="p">(</span><span class="n">state_size</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_local_optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lr_critic</span><span class="p">)</span>
         
-        <span class="c"># Ornstein-Uhlenbeck noise process</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">noise</span> <span class="o">=</span> <span class="n">OrnsteinUhlenbeckProcess</span><span class="p">((</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">action_size</span><span class="p">),</span> <span class="n">random_seed</span><span class="p">)</span>
+        <span class="c1"># Ornstein-Uhlenbeck noise process
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">noise</span> <span class="o">=</span> <span class="n">OrnsteinUhlenbeckProcess</span><span class="p">((</span><span class="n">n_agents</span><span class="p">,</span> <span class="n">action_size</span><span class="p">),</span> <span class="n">random_seed</span><span class="p">)</span>
         
-        <span class="c"># Replay Buffer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">ReplayBuffer</span><span class="p">(</span><span class="n">random_seed</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="c1"># Replay Buffer
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="n">ReplayBuffer</span><span class="p">(</span><span class="n">random_seed</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">action_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
         
         
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span><span class="p">):</span>
@@ -522,17 +522,17 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
         3. learn from those samples
         """</span>
         
-        <span class="c">#1</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">):</span>
+        <span class="c1">#1
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_agents</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">action</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">reward</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">next_state</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">done</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
             
         
-        <span class="c">#2</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
+        <span class="c1">#2
+</span>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
             <span class="n">samples_drawn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
             
-            <span class="c">#3</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">samples_drawn</span><span class="p">)</span>
+            <span class="c1">#3
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span><span class="n">samples_drawn</span><span class="p">)</span>
             
     <span class="k">def</span> <span class="nf">act</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="n">state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DEVICE</span><span class="p">)</span>
@@ -553,51 +553,51 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
         
         <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">dones</span> <span class="o">=</span> <span class="n">experiences</span>
         
-        <span class="c"># update critic</span>
-        <span class="c">#1. use actor_target to predict the next actions for the next states</span>
-        <span class="n">predicted_next_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor_target</span><span class="p">(</span><span class="n">next_states</span><span class="p">)</span>
+        <span class="c1"># update critic
+</span>        <span class="c1">#1. use actor_target to predict the next actions for the next states
+</span>        <span class="n">predicted_next_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor_target</span><span class="p">(</span><span class="n">next_states</span><span class="p">)</span>
         
-        <span class="c">#2. use critic_target to estimate the value of the predicted next actions</span>
-        <span class="n">estimated_values_of_predicted_next_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_target</span><span class="p">(</span><span class="n">next_states</span><span class="p">,</span> <span class="n">predicted_next_actions</span><span class="p">)</span>
+        <span class="c1">#2. use critic_target to estimate the value of the predicted next actions
+</span>        <span class="n">estimated_values_of_predicted_next_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_target</span><span class="p">(</span><span class="n">next_states</span><span class="p">,</span> <span class="n">predicted_next_actions</span><span class="p">)</span>
         
-        <span class="c">#3. calculate Q targets with the immediate reward and discounted value of #2</span>
-        <span class="c">#if the next state is done, discounted #2 is 0</span>
-        <span class="n">Q_targets</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">estimated_values_of_predicted_next_actions</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">dones</span><span class="p">))</span>
+        <span class="c1">#3. calculate Q targets with the immediate reward and discounted value of #2
+</span>        <span class="c1">#if the next state is done, discounted #2 is 0
+</span>        <span class="n">Q_targets</span> <span class="o">=</span> <span class="n">rewards</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">estimated_values_of_predicted_next_actions</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">dones</span><span class="p">))</span>
         
-        <span class="c">#4. use critic_local to estimate Q expected from states and actions of the sample experience</span>
-        <span class="n">Q_expected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
+        <span class="c1">#4. use critic_local to estimate Q expected from states and actions of the sample experience
+</span>        <span class="n">Q_expected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
         
-        <span class="c">#5. calculate MSE loss between Q expected and Q targets</span>
-        <span class="c">#Q_targets based on critic_target, Q_expected based on critic_local</span>
-        <span class="n">critic_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">Q_expected</span><span class="p">,</span> <span class="n">Q_targets</span><span class="p">)</span>
+        <span class="c1">#5. calculate MSE loss between Q expected and Q targets
+</span>        <span class="c1">#Q_targets based on critic_target, Q_expected based on critic_local
+</span>        <span class="n">critic_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">Q_expected</span><span class="p">,</span> <span class="n">Q_targets</span><span class="p">)</span>
         
-        <span class="c">#6. minimise #5 using optimizer and backward to update critic_local</span>
-        <span class="c">#that is learning the value of current state and action</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">critic_local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1">#6. minimise #5 using optimizer and backward to update critic_local
+</span>        <span class="c1">#that is learning the value of current state and action
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">critic_local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">critic_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">critic_local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         
         
         
-        <span class="c"># update actor</span>
-        <span class="c">#1 use actor_local to predict the next action without Ornstein-Uhlenbeck noise</span>
-        <span class="c">#this shows actor_local's current progress</span>
-        <span class="n">predicted_actions_wo_noise</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+        <span class="c1"># update actor
+</span>        <span class="c1">#1 use actor_local to predict the next action without Ornstein-Uhlenbeck noise
+</span>        <span class="c1">#this shows actor_local's current progress
+</span>        <span class="n">predicted_actions_wo_noise</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
         
-        <span class="c">#2 use critic_local to estimate the value of actor_local's predicted actions</span>
-        <span class="c">#take mean of the values of (states, actions)</span>
-        <span class="n">estimated_value_of_predicted_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">predicted_actions_wo_noise</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="c1">#2 use critic_local to estimate the value of actor_local's predicted actions
+</span>        <span class="c1">#take mean of the values of (states, actions)
+</span>        <span class="n">estimated_value_of_predicted_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">predicted_actions_wo_noise</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         
-        <span class="c">#3 loss is the minus of #2 as we use gradient descient to maximize the estimated value</span>
-        <span class="n">actor_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">estimated_value_of_predicted_actions</span>
+        <span class="c1">#3 loss is the minus of #2 as we use gradient descient to maximize the estimated value
+</span>        <span class="n">actor_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">estimated_value_of_predicted_actions</span>
         
-        <span class="c">#4 minimize #3 to update actor_local</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">actor_local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1">#4 minimize #3 to update actor_local
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">actor_local_optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">actor_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actor_local_optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
         
-        <span class="c"># update target network using soft update</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">soft_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_target</span><span class="p">)</span>
+        <span class="c1"># update target network using soft update
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">soft_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">critic_target</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">soft_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actor_target</span><span class="p">)</span>
         
         
@@ -610,73 +610,73 @@ The state for the first agent looks like: [ 0.00000000e+00 -4.00000000e+00  0.00
     <span class="k">def</span> <span class="nf">save_checkpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">suffix</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span><span class="p">)</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span> <span class="o">+</span> <span class="s">'/actor_{}.pth'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">suffix</span><span class="p">)))</span>
-        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span> <span class="o">+</span> <span class="s">'/critic_{}.pth'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">suffix</span><span class="p">)))</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actor_local</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span> <span class="o">+</span> <span class="s">'/actor_{}.pth'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">suffix</span><span class="p">)))</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">critic_local</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint_folder</span> <span class="o">+</span> <span class="s">'/critic_{}.pth'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">suffix</span><span class="p">)))</span>
 </code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ddpg_train</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">n_agents</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">len_scores</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     
-    <span class="c">#base_score</span>
-    <span class="n">base_score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#base_score
+</span>    <span class="n">base_score</span> <span class="o">=</span> <span class="mi">0</span>
     
-    <span class="c">#score logging</span>
-    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#score logging
+</span>    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">scores_window</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">len_scores</span><span class="p">)</span>
     
-    <span class="c">#for every episode</span>
-    <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">):</span>
+    <span class="c1">#for every episode
+</span>    <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">):</span>
         
-        <span class="c">#reset env</span>
-        <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
+        <span class="c1">#reset env
+</span>        <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
         
-        <span class="c">#get states</span>
-        <span class="n">states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
+        <span class="c1">#get states
+</span>        <span class="n">states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
         
-        <span class="c">#reset agent</span>
-        <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="c1">#reset agent
+</span>        <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         
-        <span class="c">#reset score</span>
-        <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_agents</span><span class="p">)</span>
+        <span class="c1">#reset score
+</span>        <span class="n">score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_agents</span><span class="p">)</span>
         
-        <span class="c">#run until game ends</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="c1">#run until game ends
+</span>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             
-            <span class="c"># decide actions for the current state</span>
-            <span class="n">actions</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+            <span class="c1"># decide actions for the current state
+</span>            <span class="n">actions</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
             
-            <span class="c"># execute actions</span>
-            <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">actions</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
+            <span class="c1"># execute actions
+</span>            <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">actions</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>
             
-            <span class="c"># get next_states, rewards, dones</span>
-            <span class="n">next_states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
+            <span class="c1"># get next_states, rewards, dones
+</span>            <span class="n">next_states</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span>
             <span class="n">rewards</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">rewards</span>
             <span class="n">dones</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">local_done</span>
             
-            <span class="c"># learn the agent</span>
-            <span class="n">agent</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">dones</span><span class="p">)</span>
+            <span class="c1"># learn the agent
+</span>            <span class="n">agent</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span><span class="p">,</span> <span class="n">next_states</span><span class="p">,</span> <span class="n">dones</span><span class="p">)</span>
             
-            <span class="c"># update score</span>
-            <span class="n">score</span> <span class="o">+=</span> <span class="n">rewards</span>
+            <span class="c1"># update score
+</span>            <span class="n">score</span> <span class="o">+=</span> <span class="n">rewards</span>
             
-            <span class="c"># update current states with the next_states</span>
-            <span class="n">states</span> <span class="o">=</span> <span class="n">next_states</span>
+            <span class="c1"># update current states with the next_states
+</span>            <span class="n">states</span> <span class="o">=</span> <span class="n">next_states</span>
             
-            <span class="c"># if any of the agents are done, break</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">any</span><span class="p">(</span><span class="n">dones</span><span class="p">):</span>
+            <span class="c1"># if any of the agents are done, break
+</span>            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">any</span><span class="p">(</span><span class="n">dones</span><span class="p">):</span>
                 <span class="k">break</span>
                 
         <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
         <span class="n">scores_window</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
         
-        <span class="c"># save actor and critic checkpoints</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">base_score</span><span class="p">:</span>
-            <span class="n">agent</span><span class="o">.</span><span class="n">save_checkpoints</span><span class="p">(</span><span class="s">"score{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">))))</span>
+        <span class="c1"># save actor and critic checkpoints
+</span>        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">base_score</span><span class="p">:</span>
+            <span class="n">agent</span><span class="o">.</span><span class="n">save_checkpoints</span><span class="p">(</span><span class="s">"score{}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">))))</span>
             <span class="n">base_score</span> <span class="o">+=</span> <span class="mi">10</span>
         
-        <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\r</span><span class="s">Episode: </span><span class="se">\t</span><span class="s">{} </span><span class="se">\t</span><span class="s">Score: </span><span class="se">\t</span><span class="s">{:.2f} </span><span class="se">\t</span><span class="s">Average Score: </span><span class="se">\t</span><span class="s">{:.2f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">score</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>  
+        <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\r</span><span class="s">Episode: </span><span class="se">\t</span><span class="s">{} </span><span class="se">\t</span><span class="s">Score: </span><span class="se">\t</span><span class="s">{:.2f} </span><span class="se">\t</span><span class="s">Average Score: </span><span class="se">\t</span><span class="s">{:.2f}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">score</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>  
         
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">30.0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Environment solved in {:d} episodes!</span><span class="se">\t</span><span class="s">Average Score: {:.2f}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">Environment solved in {:d} episodes!</span><span class="se">\t</span><span class="s">Average Score: {:.2f}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">scores_window</span><span class="p">)))</span>
             <span class="n">agent</span><span class="o">.</span><span class="n">save_checkpoints</span><span class="p">(</span><span class="s">"solved"</span><span class="p">)</span>
             <span class="k">break</span>
             

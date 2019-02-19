@@ -307,8 +307,8 @@
 <h3 id="자동-feature-selection-extratreeclassifier">자동 Feature Selection (ExtraTreeClassifier)</h3>
 <p>모델에 대한 피쳐의 중요도를 계산하여 선택하는 방법도 있습니다. 여기에서는 sklearn의 ExtraTreeClassifier에 test 셋을 제외한 데이터를 집어넣고 모델을 피팅한 후에 feature_importance를 기준으로 상위 12개의 피쳐를 뽑았습니다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#feature selection</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">ExtraTreesClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#feature selection
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">ExtraTreesClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">min_samples_split</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20161001/overlog_feature_importance.png" alt="ExtraTreeClassifier를 이용한 Feature Selection" /></p>
@@ -352,31 +352,31 @@
 <p>예를 들어 1번 프로세스를 보면..</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">minmax_logistic</span><span class="p">(</span><span class="n">X_training</span><span class="p">,</span> <span class="n">y_training</span><span class="p">):</span>
-    <span class="c">## scaler, selectKbest, logistic 모형 설정</span>
-    <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1">## scaler, selectKbest, logistic 모형 설정
+</span>    <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">(</span><span class="n">feature_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">select</span> <span class="o">=</span> <span class="n">feature_selection</span><span class="o">.</span><span class="n">SelectKBest</span><span class="p">()</span>
     <span class="n">logistic_fit</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
 
-    <span class="c">## 설정한 순서를 pipeline_object에 할당</span>
-    <span class="n">pipeline_object</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'scaler'</span><span class="p">,</span> <span class="n">scaler</span><span class="p">),</span> 
+    <span class="c1">## 설정한 순서를 pipeline_object에 할당
+</span>    <span class="n">pipeline_object</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'scaler'</span><span class="p">,</span> <span class="n">scaler</span><span class="p">),</span> 
                                 <span class="p">(</span><span class="s">'feature_selection'</span><span class="p">,</span> <span class="n">select</span><span class="p">),</span> 
                                 <span class="p">(</span><span class="s">'model'</span><span class="p">,</span> <span class="n">logistic_fit</span><span class="p">)])</span>
     
-    <span class="c">## 각 순서별로 튜닝하고 싶은 파라미터와 파라미터 집단 설정</span>
-    <span class="n">tuned_parameters</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'feature_selection__k'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
+    <span class="c1">## 각 순서별로 튜닝하고 싶은 파라미터와 파라미터 집단 설정
+</span>    <span class="n">tuned_parameters</span> <span class="o">=</span> <span class="p">[{</span><span class="s">'feature_selection__k'</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span>
                         <span class="s">'model__C'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span>
                     <span class="s">'model__penalty'</span><span class="p">:</span> <span class="p">[</span><span class="s">'l1'</span><span class="p">,</span><span class="s">'l2'</span><span class="p">]}]</span>
 
-    <span class="c">## GridSearchCV에 파이프라인과 파라미터 전달. roc_auc 점수로 최적 모델 선정.</span>
-    <span class="n">cv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline_object</span><span class="p">,</span> 
+    <span class="c1">## GridSearchCV에 파이프라인과 파라미터 전달. roc_auc 점수로 최적 모델 선정.
+</span>    <span class="n">cv</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipeline_object</span><span class="p">,</span> 
                       <span class="n">param_grid</span><span class="o">=</span><span class="n">tuned_parameters</span><span class="p">,</span> 
                       <span class="n">scoring</span> <span class="o">=</span> <span class="s">'roc_auc'</span><span class="p">)</span>
     
-    <span class="c">## training set으로 GridSearchCV 학습</span>
-    <span class="n">cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_training</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y_training</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="c1">## training set으로 GridSearchCV 학습
+</span>    <span class="n">cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_training</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">y_training</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     
-    <span class="c">## 최고 AUC 점수 출력</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Best AUC score: "</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
+    <span class="c1">## 최고 AUC 점수 출력
+</span>    <span class="k">print</span><span class="p">(</span><span class="s">"Best AUC score: "</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">best_score_</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cv</span>
 
 <span class="n">cv_log</span> <span class="o">=</span> <span class="n">minmax_logistic</span><span class="p">(</span><span class="n">X_training</span><span class="p">[</span><span class="n">feature_list</span><span class="p">],</span> <span class="n">y_training</span><span class="p">)</span></code></pre></figure>
@@ -414,18 +414,18 @@
 
 <span class="k">def</span> <span class="nf">tf_iteration</span><span class="p">():</span>
 
-    <span class="c">## 학습횟수마다 주기적으로 validation set에 대한 성능을 평가하고 리스트에 저장합니다.</span>
-    <span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">## 학습횟수마다 주기적으로 validation set에 대한 성능을 평가하고 리스트에 저장합니다.
+</span>    <span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="c">## 수동피쳐셋 10개를 활용하고, 은닉층은 4층으로 각 층마다 12개, 20개, 15개, 12개의 노드를 배치합니다.</span>
-    <span class="n">feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">real_valued_column</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">10</span><span class="p">)]</span>
+    <span class="c1">## 수동피쳐셋 10개를 활용하고, 은닉층은 4층으로 각 층마다 12개, 20개, 15개, 12개의 노드를 배치합니다.
+</span>    <span class="n">feature_columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">real_valued_column</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">10</span><span class="p">)]</span>
     <span class="n">classifier</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">learn</span><span class="o">.</span><span class="n">DNNClassifier</span><span class="p">(</span><span class="n">feature_columns</span><span class="o">=</span><span class="n">feature_columns</span><span class="p">,</span>
                                             <span class="n">hidden_units</span><span class="o">=</span><span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
                                             <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                             <span class="n">model_dir</span><span class="o">=</span><span class="s">"/tmp/newd_30"</span><span class="p">)</span>
 
-    <span class="c">## 한번 돌때마다 2000번씩 학습하며 이를 50번 반복하여 auc 점수가 가장 높은 포인트를 찾습니다.</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
+    <span class="c1">## 한번 돌때마다 2000번씩 학습하며 이를 50번 반복하여 auc 점수가 가장 높은 포인트를 찾습니다.
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">):</span>
         <span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_train</span><span class="p">[</span><span class="n">feature_list_new</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">[</span><span class="s">'user_class'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
 
         <span class="n">y_prediction</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_validation</span><span class="p">[</span><span class="n">feature_list_new</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
