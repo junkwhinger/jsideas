@@ -167,8 +167,8 @@ more concise) from my previous ipython notebook uploaded <a href="https://github
 
 <p><strong>In [115]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#loading libraries</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#loading libraries
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
@@ -176,8 +176,8 @@ more concise) from my previous ipython notebook uploaded <a href="https://github
 
 <p><strong>In [117]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#custom function to calculte timespent in seconds</span>
-<span class="k">def</span> <span class="nf">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#custom function to calculte timespent in seconds
+</span><span class="k">def</span> <span class="nf">time_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">":"</span><span class="p">)</span>
     <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -187,8 +187,8 @@ more concise) from my previous ipython notebook uploaded <a href="https://github
 
 <p><strong>In [119]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#custom function to read and preprocess raw data files</span>
-<span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#custom function to read and preprocess raw data files
+</span><span class="k">def</span> <span class="nf">preprocessing</span><span class="p">(</span><span class="n">raw_data</span><span class="p">):</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">raw_data</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="s">'turn_index'</span><span class="p">)</span>
     <span class="n">df_alpha</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">AlphaGo</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
     <span class="n">df_lee</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Lee_Sedol</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
@@ -225,8 +225,8 @@ more concise) from my previous ipython notebook uploaded <a href="https://github
 
 <p><strong>In [120]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#file paths</span>
-<span class="n">file1</span> <span class="o">=</span> <span class="s">'/users/jun/python/alphago/first_game.csv'</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#file paths
+</span><span class="n">file1</span> <span class="o">=</span> <span class="s">'/users/jun/python/alphago/first_game.csv'</span>
 <span class="n">file2</span> <span class="o">=</span> <span class="s">'/users/jun/python/alphago/second_game.csv'</span>
 <span class="n">file3</span> <span class="o">=</span> <span class="s">'/users/jun/python/alphago/third_game.csv'</span>
 <span class="n">file4</span> <span class="o">=</span> <span class="s">'/users/jun/python/alphago/fourth_game.csv'</span>
@@ -234,8 +234,8 @@ more concise) from my previous ipython notebook uploaded <a href="https://github
 
 <p><strong>In [121]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#preprocessing in one go!</span>
-<span class="n">g1</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#preprocessing in one go!
+</span><span class="n">g1</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
 <span class="n">g2</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 <span class="n">g3</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file3</span><span class="p">)</span>
 <span class="n">g4</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="p">(</span><span class="n">file4</span><span class="p">)</span>
@@ -301,32 +301,32 @@ their Levenshtein distance is 2.</p>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
 
-    <span class="c"># So now we have len(source) &gt;= len(target).</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="c1"># So now we have len(source) &gt;= len(target).
+</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
-    <span class="c"># We call tuple() to force strings to be used as sequences</span>
-    <span class="c"># ('c', 'a', 't', 's') - numpy uses them as values by default.</span>
-    <span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
+    <span class="c1"># We call tuple() to force strings to be used as sequences
+</span>    <span class="c1"># ('c', 'a', 't', 's') - numpy uses them as values by default.
+</span>    <span class="n">source</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
     <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">target</span><span class="p">))</span>
 
-    <span class="c"># We use a dynamic programming algorithm, but with the</span>
-    <span class="c"># added optimization that we only need the last two rows</span>
-    <span class="c"># of the matrix.</span>
-    <span class="n">previous_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># We use a dynamic programming algorithm, but with the
+</span>    <span class="c1"># added optimization that we only need the last two rows
+</span>    <span class="c1"># of the matrix.
+</span>    <span class="n">previous_row</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">target</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">source</span><span class="p">:</span>
-        <span class="c"># Insertion (target grows longer than source):</span>
-        <span class="n">current_row</span> <span class="o">=</span> <span class="n">previous_row</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># Insertion (target grows longer than source):
+</span>        <span class="n">current_row</span> <span class="o">=</span> <span class="n">previous_row</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="c"># Substitution or matching:</span>
-        <span class="c"># Target and source items are aligned, and either</span>
-        <span class="c"># are different (cost of 1), or are the same (cost of 0).</span>
-        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
+        <span class="c1"># Substitution or matching:
+</span>        <span class="c1"># Target and source items are aligned, and either
+</span>        <span class="c1"># are different (cost of 1), or are the same (cost of 0).
+</span>        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
                 <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">previous_row</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">target</span> <span class="o">!=</span> <span class="n">s</span><span class="p">))</span>
 
-        <span class="c"># Deletion (target grows shorter than source):</span>
-        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
+        <span class="c1"># Deletion (target grows shorter than source):
+</span>        <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span>
                 <span class="n">current_row</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
                 <span class="n">current_row</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -339,7 +339,7 @@ their Levenshtein distance is 2.</p>
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">first_word</span> <span class="o">=</span> <span class="s">'Dorian'</span>
 <span class="n">second_word</span> <span class="o">=</span> <span class="s">'Durians'</span>
 <span class="n">l</span> <span class="o">=</span> <span class="n">levenshtein</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">second_word</span><span class="p">)</span>
-<span class="k">print</span> <span class="p">(</span><span class="s">"Levenshtein distance between {} and {} is {}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">second_word</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span></code></pre></figure>
+<span class="k">print</span> <span class="p">(</span><span class="s">"Levenshtein distance between {} and {} is {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">first_word</span><span class="p">,</span> <span class="n">second_word</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span></code></pre></figure>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Levenshtein distance between Dorian and Durians is 2.
 </code></pre></div></div>
@@ -394,12 +394,12 @@ dramatic. The longer the logs are, the more likely they become heterogeneous.</p
     <span class="n">maxval</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">array_A</span><span class="o">.</span><span class="nb">max</span><span class="p">(),</span> <span class="n">array_B</span><span class="o">.</span><span class="nb">max</span><span class="p">())</span>
             
     <span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-    <span class="n">ax1_title</span> <span class="o">=</span> <span class="s">'AlphaGo: leven distance / string length: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
-    <span class="n">ax2_title</span> <span class="o">=</span> <span class="s">'Lee Sedol: leven distance / string length: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">ax1_title</span> <span class="o">=</span> <span class="s">'AlphaGo: leven distance / string length: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+    <span class="n">ax2_title</span> <span class="o">=</span> <span class="s">'Lee Sedol: leven distance / string length: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
 
-    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_A</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
     
-    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_B</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">array_B</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">maxval</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu'</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s">'Game 1'</span><span class="p">,</span><span class="s">'Game 2'</span><span class="p">,</span><span class="s">'Game 3'</span><span class="p">,</span><span class="s">'Game 4'</span><span class="p">,</span><span class="s">'Game 5'</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
     <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ax1_title</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
     <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ax2_title</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.08</span><span class="p">)</span>
        
@@ -423,8 +423,8 @@ game number 5.</p>
 
 <p><strong>In [251]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#Here we go. Full string comparison. The bluer the cell is, the higher the distance is.</span>
-<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="s">'full'</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#Here we go. Full string comparison. The bluer the cell is, the higher the distance is.
+</span><span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="s">'full'</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20160707/distance_analysis_26_0.png" alt="string length: full" /></p>
 
@@ -435,29 +435,29 @@ time log. Let’s focus on the very first 10 strings.</p>
 
 <p><strong>In [256]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#Let's focus on the very first 10 strings. Lee Sedol's style still varies, while AlphaGo keeps its style.</span>
-<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#Let's focus on the very first 10 strings. Lee Sedol's style still varies, while AlphaGo keeps its style.
+</span><span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20160707/distance_analysis_28_0.png" alt="string length: 10" /></p>
 
 <p><strong>In [253]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#string length 30. </span>
-<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#string length 30. 
+</span><span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20160707/distance_analysis_29_0.png" alt="string length: 30" /></p>
 
 <p><strong>In [254]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#string length 60.</span>
-<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#string length 60.
+</span><span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20160707/distance_analysis_30_0.png" alt="string length: 60" /></p>
 
 <p><strong>In [255]:</strong></p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">#string length 90.</span>
-<span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">#string length 90.
+</span><span class="n">levheatmap</span><span class="p">(</span><span class="n">list_A</span><span class="p">,</span> <span class="n">list_L</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span></code></pre></figure>
 
 <p><img src="/assets/materials/20160707/distance_analysis_31_0.png" alt="string length: 90" /></p>
 

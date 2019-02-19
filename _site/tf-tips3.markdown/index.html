@@ -171,12 +171,12 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">build_cnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">):</span>
     
-    <span class="c">## define input</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="c1">## define input
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
     <span class="n">y_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
-    <span class="c">## weight and bias variables</span>
-    <span class="k">def</span> <span class="nf">weight_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+    <span class="c1">## weight and bias variables
+</span>    <span class="k">def</span> <span class="nf">weight_variable</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
         <span class="n">initial</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">stddev</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
 
@@ -184,16 +184,16 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
         <span class="n">initial</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
     
-    <span class="c">## define conv and max_pool</span>
-    <span class="k">def</span> <span class="nf">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
+    <span class="c1">## define conv and max_pool
+</span>    <span class="k">def</span> <span class="nf">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s">'SAME'</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">max_pool_2x2</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">max_pool</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">padding</span><span class="o">=</span><span class="s">'SAME'</span><span class="p">)</span>
 
-    <span class="c">## define operation</span>
-    <span class="c">### conv1: depth 32</span>
-    <span class="n">W_conv1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">])</span>
+    <span class="c1">## define operation
+</span>    <span class="c1">### conv1: depth 32
+</span>    <span class="n">W_conv1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">32</span><span class="p">])</span>
     <span class="n">b_conv1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">32</span><span class="p">])</span>
 
     <span class="n">x_image</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -202,8 +202,8 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
     <span class="n">h_pool1</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv1</span><span class="p">)</span>
     <span class="n">layer1</span> <span class="o">=</span> <span class="n">h_pool1</span>
     
-    <span class="c">### conv1: depth 64</span>
-    <span class="n">W_conv2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">])</span>
+    <span class="c1">### conv1: depth 64
+</span>    <span class="n">W_conv2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">])</span>
     <span class="n">b_conv2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">64</span><span class="p">])</span>
 
     <span class="n">conv2</span> <span class="o">=</span> <span class="n">conv2d</span><span class="p">(</span><span class="n">layer1</span><span class="p">,</span> <span class="n">W_conv2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_conv2</span>
@@ -211,36 +211,36 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
     <span class="n">h_pool2</span> <span class="o">=</span> <span class="n">max_pool_2x2</span><span class="p">(</span><span class="n">h_conv2</span><span class="p">)</span>
     <span class="n">layer2</span> <span class="o">=</span> <span class="n">h_pool2</span>
     
-    <span class="c">### fc1: 1024</span>
-    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+    <span class="c1">### fc1: 1024
+</span>    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
     <span class="n">b_fc1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">])</span>
     <span class="n">layer2_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">layer2</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="o">*</span><span class="mi">7</span><span class="o">*</span><span class="mi">64</span><span class="p">])</span>
     <span class="n">matmul_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer2_matrix</span><span class="p">,</span> <span class="n">W_fc1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc1</span>
     <span class="n">h_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">matmul_fc1</span><span class="p">)</span>
     <span class="n">layer3</span> <span class="o">=</span> <span class="n">h_fc1</span>
 
-    <span class="c">### dropout on fc1</span>
-    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="c1">### dropout on fc1
+</span>    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">layer3_drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">layer3</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
 
-    <span class="c">### fc2: 10</span>
-    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="c1">### fc2: 10
+</span>    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">b_fc2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
     <span class="n">matmul_fc2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer3_drop</span><span class="p">,</span> <span class="n">W_fc2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc2</span>
     <span class="n">y_conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">matmul_fc2</span><span class="p">)</span>
     <span class="n">layer4</span> <span class="o">=</span> <span class="n">y_conv</span>
     
-    <span class="c">### cross_entropy and train_step</span>
-    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
+    <span class="c1">### cross_entropy and train_step
+</span>    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     <span class="n">train_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     
-    <span class="c">### prediction and accruacy</span>
-    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1">### prediction and accruacy
+</span>    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
     
-    <span class="c">### graph nodes</span>
-    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
+    <span class="c1">### graph nodes
+</span>    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
     <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'Graph'</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
     <span class="n">local_dict</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">local_dict</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">export_nodes</span><span class="p">])</span>
@@ -248,15 +248,15 @@ Extracting MNIST_data/t10k-labels-idx1-ubyte.gz
     <span class="k">return</span> <span class="n">graph</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## hyperparams</span>
-<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## hyperparams
+</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">epochs</span> <span class="o">=</span> <span class="mi">2000</span>
 <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-4</span>
 <span class="n">keep_prob</span> <span class="o">=</span> <span class="mf">0.5</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## run operation</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## run operation
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
 <span class="n">cnn_train_cost</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">cnn_val_acc</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -346,41 +346,41 @@ test_accuracy 0.9771
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">build_dnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">):</span>
     
-    <span class="c">## define input</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
+    <span class="c1">## define input
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
     <span class="n">y_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 
     
-    <span class="c">### fc1: 1024</span>
-    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
+    <span class="c1">### fc1: 1024
+</span>    <span class="n">W_fc1</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1024</span><span class="p">])</span>
     <span class="n">b_fc1</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">])</span>
     <span class="n">layer2_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">])</span>
     <span class="n">matmul_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer2_matrix</span><span class="p">,</span> <span class="n">W_fc1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc1</span>
     <span class="n">h_fc1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">matmul_fc1</span><span class="p">)</span>
     <span class="n">layer3</span> <span class="o">=</span> <span class="n">h_fc1</span>
 
-    <span class="c">### dropout on fc1</span>
-    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="c1">### dropout on fc1
+</span>    <span class="n">keep_prob</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">layer3_drop</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">layer3</span><span class="p">,</span> <span class="n">keep_prob</span><span class="p">)</span>
 
-    <span class="c">### fc2: 10</span>
-    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="c1">### fc2: 10
+</span>    <span class="n">W_fc2</span> <span class="o">=</span> <span class="n">weight_variable</span><span class="p">([</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
     <span class="n">b_fc2</span> <span class="o">=</span> <span class="n">bias_variable</span><span class="p">([</span><span class="mi">10</span><span class="p">])</span>
     <span class="n">matmul_fc2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer3_drop</span><span class="p">,</span> <span class="n">W_fc2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_fc2</span>
     <span class="n">y_conv</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">matmul_fc2</span><span class="p">)</span>
     <span class="n">layer4</span> <span class="o">=</span> <span class="n">y_conv</span>
     
-    <span class="c">### cross_entropy and train_step</span>
-    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
+    <span class="c1">### cross_entropy and train_step
+</span>    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y_</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">layer4</span><span class="p">)</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     <span class="n">train_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
     
-    <span class="c">### prediction and accruacy</span>
-    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1">### prediction and accruacy
+</span>    <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">layer4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">accuracy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
     
-    <span class="c">### graph nodes</span>
-    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
+    <span class="c1">### graph nodes
+</span>    <span class="n">export_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="s">'x'</span><span class="p">,</span> <span class="s">'y_'</span><span class="p">,</span> <span class="s">'keep_prob'</span><span class="p">,</span> <span class="s">'cost'</span><span class="p">,</span> <span class="s">'correct_prediction'</span><span class="p">,</span> <span class="s">'accuracy'</span><span class="p">,</span> <span class="s">'train_step'</span><span class="p">]</span>
     <span class="n">Graph</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">'Graph'</span><span class="p">,</span> <span class="n">export_nodes</span><span class="p">)</span>
     <span class="n">local_dict</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span>
     <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">local_dict</span><span class="p">[</span><span class="n">each</span><span class="p">]</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">export_nodes</span><span class="p">])</span>
@@ -388,8 +388,8 @@ test_accuracy 0.9771
     <span class="k">return</span> <span class="n">graph</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## run operation</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">build_dnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## run operation
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">build_dnn</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
 <span class="n">dnn_train_cost</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">dnn_val_acc</span> <span class="o">=</span> <span class="p">[]</span>
 

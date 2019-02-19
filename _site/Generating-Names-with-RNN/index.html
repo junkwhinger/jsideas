@@ -386,8 +386,8 @@ Name: babyname, dtype: int64
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torchtext</span> <span class="kn">import</span> <span class="n">data</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="n">device</span> <span class="o">=</span> <span class="s">"cuda:0"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span> <span class="c"># gpu 사용불가시 cpu로 학습 설정</span>
-</code></pre></div></div>
+<span class="n">device</span> <span class="o">=</span> <span class="s">"cuda:0"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span> <span class="c1"># gpu 사용불가시 cpu로 학습 설정
+</span></code></pre></div></div>
 
 <h3 id="글자---숫자로-어떻게">글자 -&gt; 숫자로. 어떻게?</h3>
 
@@ -440,15 +440,15 @@ Name: babyname, dtype: int64
     <span class="s">"""
     TorchText의 Field에 사용할 one-hot Encoder 함수
     """</span>
-    <span class="c"># alist = [2, 1, 1]</span>
-    <span class="c"># _tensor = [[1, 0, 0]]</span>
-    <span class="n">_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">alist</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># alist = [2, 1, 1]
+</span>    <span class="c1"># _tensor = [[1, 0, 0]]
+</span>    <span class="n">_tensor</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">alist</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c"># _onehot = [[0, 0], [0, 0], [0, 0]]</span>
-    <span class="n">_onehot</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">alist</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="nb">float</span><span class="p">)</span>
+    <span class="c1"># _onehot = [[0, 0], [0, 0], [0, 0]]
+</span>    <span class="n">_onehot</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">alist</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="nb">float</span><span class="p">)</span>
 
-    <span class="c"># _onehot = [[0, 1], [1, 0], [1, 0]]</span>
-    <span class="n">_onehot</span><span class="o">.</span><span class="n">scatter_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># _onehot = [[0, 1], [1, 0], [1, 0]]
+</span>    <span class="n">_onehot</span><span class="o">.</span><span class="n">scatter_</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">_onehot</span>
 </code></pre></div></div>
 
@@ -499,7 +499,7 @@ Name: babyname, dtype: int64
         """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_ds</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">TabularDataset</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="s">'train/train_dataset.csv'</span><span class="p">,</span>
-            <span class="n">validation</span><span class="o">=</span><span class="s">'val/val_dataset.csv'</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
+            <span class="n">validation</span><span class="o">=</span><span class="s">'val/val_dataset.csv'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
             <span class="n">fields</span><span class="o">=</span><span class="p">[(</span><span class="s">'babyname'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BABYNAME</span><span class="p">),</span> <span class="p">(</span><span class="s">'sex'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">SEX</span><span class="p">),</span> <span class="p">(</span><span class="s">'origin'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ORIGIN</span><span class="p">)]</span>
         <span class="p">)</span>
         
@@ -534,8 +534,8 @@ Name: babyname, dtype: int64
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vocab built
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 테스트해보자.</span>
-<span class="n">sample</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data_loader</span><span class="o">.</span><span class="n">train_iter</span><span class="p">))</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 테스트해보자.
+</span><span class="n">sample</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">data_loader</span><span class="o">.</span><span class="n">train_iter</span><span class="p">))</span>
 <span class="n">sex</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span>
 <span class="n">origin</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span>
 </code></pre></div></div>
@@ -664,9 +664,9 @@ Name: babyname, dtype: int64
 <p>t번째 글자의 정답은 t+1번째 글자가 되므로, input을 하나씩 오른쪽으로 이동시킨 것이 target이 된다고 생각하면 된다.
 즉 이름의 마지막 글자는 input이 될 수 없고, 이름의 맨 첫자는 target이 될 수 없다. 이를 2번째 차원에서 간단히 조작한 것이 inputs와 targets가 된다.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inputs</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c">#처음부터 마지막 직전까지</span>
-<span class="n">targets</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="c">#둘째부터 마지막까지</span>
-</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inputs</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1">#처음부터 마지막 직전까지
+</span><span class="n">targets</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="c1">#둘째부터 마지막까지
+</span></code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">inputs</span>
 </code></pre></div></div>
@@ -742,14 +742,14 @@ Name: babyname, dtype: int64
 
 <span class="n">embedding_layer</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">num_embeddings</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="c"># input 에서 첫 글자를 선택해 레이어에 집어넣는다.</span>
-<span class="n">sample_input</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="c1"># input 에서 첫 글자를 선택해 레이어에 집어넣는다.
+</span><span class="n">sample_input</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="k">print</span><span class="p">(</span><span class="s">"sample_input:"</span><span class="p">,</span> <span class="n">sample_input</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
 
 <span class="n">embed_output</span> <span class="o">=</span> <span class="n">embedding_layer</span><span class="p">(</span><span class="n">inputs</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
 
-<span class="c"># 16 이름의 첫 글자가 100차원의 어떤 숫자로 표현되었다.</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"embed_output"</span><span class="p">,</span> <span class="n">embed_output</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+<span class="c1"># 16 이름의 첫 글자가 100차원의 어떤 숫자로 표현되었다.
+</span><span class="k">print</span><span class="p">(</span><span class="s">"embed_output"</span><span class="p">,</span> <span class="n">embed_output</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sample_input: torch.Size([16])
@@ -814,7 +814,7 @@ sex:  torch.Size([16, 2])
 
 <p>RNN은 $t$시점의 입력값 $x_t$와 $t-1$시점까지의 히스토리 $h_{t-1}$를 입력으로 받는다.</p>
 
-<p>그리고 이들을 각각 $W_ih$와 $W_hh$에 dot product 연산을 하고 바이어스 텀인 $b_ih$와 $b_hh$를 더해준다.
+<p>그리고 이들을 각각 $W_{ih}$와 $W_{hh}$에 dot product 연산을 하고 바이어스 텀인 $b_{ih}$와 $b_{hh}$를 더해준다.
 이들은 RNN의 파라미터다. 학습이 진행됨에 따라 $x_t$와 $h_{t-1}$를 가공해 적절하게 $h_t$를 출력하는 방법을 배우게 된다.</p>
 
 <p>입력과 파라미터간의 연산은 최종적으로 tanh activation function을 거친 후 $h_t$가 된다.
@@ -1366,9 +1366,9 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
     모델을 저장합니다.
     베스트 모델인 경우 카피본을 하나 더 만듭니다.
     """</span>
-    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">'e{:02d}.pth.tar'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="s">'e{:02d}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">"Checkpoint Directory does not exist! Making directory {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Checkpoint Directory does not exist! Making directory {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">))</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s">"Checkpoint Directory exists!"</span><span class="p">)</span>
@@ -1382,7 +1382,7 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
     저장된 모델 파라미터를 불러와 업데이트합니다.
     """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="p">(</span><span class="s">"File doesn't exist {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="p">(</span><span class="s">"File doesn't exist {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">))</span>
     <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
     <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
 
@@ -1396,8 +1396,8 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
     dictionary를 json 파일로 저장한다.
     """</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_path</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="c"># We need to convert the values to float for json (it doesn't accept np.array, np.float, )</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="c1"># We need to convert the values to float for json (it doesn't accept np.array, np.float, )
+</span>        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -1443,7 +1443,7 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
 
     <span class="n">metric_watcher</span><span class="o">.</span><span class="n">calculate_metric</span><span class="p">()</span>
-    <span class="n">metrics_string</span> <span class="o">=</span> <span class="s">"loss: {:05.3f}, acc: {:05.3f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">metrics_string</span> <span class="o">=</span> <span class="s">"loss: {:05.3f}, acc: {:05.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span>
         <span class="n">metric_watcher</span><span class="o">.</span><span class="n">average_loss</span><span class="p">,</span>
         <span class="n">metric_watcher</span><span class="o">.</span><span class="n">accuracy</span>
     <span class="p">)</span>
@@ -1458,11 +1458,11 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
   
     <span class="n">metric_watcher</span> <span class="o">=</span> <span class="n">MetricCalculator</span><span class="p">()</span>
 
-    <span class="c"># set model to evaluation mode</span>
-    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="c1"># set model to evaluation mode
+</span>    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
 
-    <span class="c"># compute metrics over the dataset</span>
-    <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_iterator</span><span class="p">):</span>
+    <span class="c1"># compute metrics over the dataset
+</span>    <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data_iterator</span><span class="p">):</span>
         <span class="n">inputs</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">targets</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">babyname</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
         <span class="n">sex</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="nb">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
@@ -1481,11 +1481,11 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
 
     <span class="n">metric_watcher</span><span class="o">.</span><span class="n">calculate_metric</span><span class="p">()</span>
 
-    <span class="c"># compute mean of all metrics in summary</span>
-    <span class="c"># metrics_mean = {metric: np.nanmean([x[metric] for x in summ]) for metric in summ[0]}</span>
-    <span class="c"># metrics_string = " ; ".join("{}: {:05.3f}".format(k, v) for k, v in metrics_mean.items())</span>
-    <span class="n">metric_watcher</span><span class="o">.</span><span class="n">calculate_metric</span><span class="p">()</span>
-    <span class="n">metrics_string</span> <span class="o">=</span> <span class="s">"loss: {:05.3f}, acc: {:05.3f}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="c1"># compute mean of all metrics in summary
+</span>    <span class="c1"># metrics_mean = {metric: np.nanmean([x[metric] for x in summ]) for metric in summ[0]}
+</span>    <span class="c1"># metrics_string = " ; ".join("{}: {:05.3f}".format(k, v) for k, v in metrics_mean.items())
+</span>    <span class="n">metric_watcher</span><span class="o">.</span><span class="n">calculate_metric</span><span class="p">()</span>
+    <span class="n">metrics_string</span> <span class="o">=</span> <span class="s">"loss: {:05.3f}, acc: {:05.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span>
         <span class="n">metric_watcher</span><span class="o">.</span><span class="n">average_loss</span><span class="p">,</span>
         <span class="n">metric_watcher</span><span class="o">.</span><span class="n">accuracy</span>
     <span class="p">)</span>
@@ -1505,10 +1505,10 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
     num_epochs만큼 학습과 검증을 하는 함수.
     """</span>
 
-    <span class="c"># if restore_file is given, load the checkpoint</span>
-    <span class="k">if</span> <span class="n">restore_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="c1"># if restore_file is given, load the checkpoint
+</span>    <span class="k">if</span> <span class="n">restore_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">restore_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">model_dir</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">restore_file</span> <span class="o">+</span> <span class="s">'.pth.tar'</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">"Restoring parameters from {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">restore_path</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Restoring parameters from {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">restore_path</span><span class="p">))</span>
         <span class="n">load_checkpoint</span><span class="p">(</span><span class="n">restore_path</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
 
 
@@ -1516,18 +1516,18 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
 
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
 
-        <span class="k">print</span><span class="p">(</span><span class="s">"Epoch {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Epoch {}/{}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">))</span>
 
-        <span class="c"># compute number of batches in one epoch</span>
-        <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data_iter</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">examples</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1"># compute number of batches in one epoch
+</span>        <span class="n">num_steps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data_iter</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">examples</span><span class="p">)</span> <span class="o">//</span> <span class="n">batch_size</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">train_data_iter</span><span class="p">,</span> <span class="n">num_steps</span><span class="p">)</span>
 
         <span class="n">val_metrics</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">train_data_iter</span><span class="p">)</span>
         <span class="n">val_acc</span> <span class="o">=</span> <span class="n">val_metrics</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]</span>
         <span class="n">is_best</span> <span class="o">=</span> <span class="n">val_acc</span> <span class="o">&gt;</span> <span class="n">best_val_acc</span>
 
-        <span class="c"># Save weights</span>
-        <span class="n">save_checkpoint</span><span class="p">({</span><span class="s">'epoch'</span><span class="p">:</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+        <span class="c1"># Save weights
+</span>        <span class="n">save_checkpoint</span><span class="p">({</span><span class="s">'epoch'</span><span class="p">:</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
                                <span class="s">'state_dict'</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
                                <span class="s">'optim_dict'</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()},</span>
                               <span class="n">is_best</span><span class="o">=</span><span class="n">is_best</span><span class="p">,</span>
@@ -1556,8 +1556,8 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
 <span class="kn">import</span> <span class="nn">json</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># hyper parameters</span>
-<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># hyper parameters
+</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">1e-3</span>
 <span class="n">weight_decay</span> <span class="o">=</span> <span class="mf">1e-3</span>
 <span class="n">model_dir</span> <span class="o">=</span> <span class="s">"saved"</span>
 <span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">3</span>
@@ -1565,21 +1565,21 @@ logit값을 에러 함수인 <a href="https://pytorch.org/docs/stable/nn.html#to
 <span class="n">train_iter</span> <span class="o">=</span> <span class="n">data_loader</span><span class="o">.</span><span class="n">train_iter</span>
 <span class="n">val_iter</span> <span class="o">=</span> <span class="n">data_loader</span><span class="o">.</span><span class="n">val_iter</span>
 
-<span class="c"># model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="c1"># model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">Net</span><span class="p">(</span><span class="n">vocab_size</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">nb_sex</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nb_origin</span><span class="o">=</span><span class="mi">51</span><span class="p">,</span>
                  <span class="n">lstm_nb_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lstm_hidden_dim</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
                 <span class="n">fc_out</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">dropout_p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
            <span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-<span class="c"># load optimizer</span>
-<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
+<span class="c1"># load optimizer
+</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="n">weight_decay</span><span class="p">)</span>
 
-<span class="c"># define loss function</span>
-<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">loss_fn</span>
+<span class="c1"># define loss function
+</span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">loss_fn</span>
 
-<span class="c"># Train the model</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"-- start training for {} epoch(s)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">))</span>
+<span class="c1"># Train the model
+</span><span class="k">print</span><span class="p">(</span><span class="s">"-- start training for {} epoch(s)"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">))</span>
 <span class="n">train_and_evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">,</span> <span class="n">num_epochs</span><span class="p">)</span>
 </code></pre></div></div>
 
@@ -1646,11 +1646,11 @@ Checkpoint Directory exists!
     <span class="n">prime_tensor</span> <span class="o">=</span> <span class="n">data_loader</span><span class="o">.</span><span class="n">BABYNAME</span><span class="o">.</span><span class="n">process</span><span class="p">([</span><span class="n">prime</span><span class="p">])[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="n">bsz</span><span class="p">,</span> <span class="n">prime_tensor_length</span> <span class="o">=</span> <span class="n">prime_tensor</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
 
-    <span class="c"># 인풋을 모델에 넣어 출력합니다.</span>
-    <span class="n">net</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="c1"># 인풋을 모델에 넣어 출력합니다.
+</span>    <span class="n">net</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
-        <span class="c"># batch_size = 1</span>
-        <span class="n">hidden</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># batch_size = 1
+</span>        <span class="n">hidden</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">prime_tensor_length</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -1707,10 +1707,10 @@ Checkpoint Directory exists!
 generated_name:  Kati
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">Karis</code>라는 이름이 생성되었다. 
-하지만 같은 함수를 몇번을 다시 돌려봐도 <code class="highlighter-rouge">Ke</code>로 시작하는 다른 이름을 얻을 수 없다.</p>
+<p><code class="highlighter-rouge">Kati</code>라는 이름이 생성되었다. 
+하지만 같은 함수를 몇번을 다시 돌려봐도 <code class="highlighter-rouge">Ka</code>로 시작하는 다른 이름을 얻을 수 없다.</p>
 
-<p>그 이유는 명확하다. <code class="highlighter-rouge">Ke</code> 다음에 오는 문자를 확률이 가장 높은 글자를 선택했기 때문이다.<br />
+<p>그 이유는 명확하다. <code class="highlighter-rouge">Ka</code> 다음에 오는 문자를 확률이 가장 높은 글자를 선택했기 때문이다.<br />
 그리고 모델이 바뀌지 않는 한 그 확률값은 모델을 몇번을 다시 돌려도 같은 값이 출력된다.</p>
 
 <p>즉, 이와 같은 방식으로 이름을 생성하면 다양한 이름을 생성하기 어렵다.<br />
@@ -1756,27 +1756,16 @@ K=1이면 위에서 본 greedy한 생성방식과 일치하게 된다. K를 높�
 
 <p>확률이 높음은 어떻게 계산해야 할까? 여기서는 그 다음 글자의 확률을 보는 것이 아니라, 갱신된 prime의 생성 확률을 봐야한다.</p>
 
-<p>“K”를 prime으로 넣어 “Karis”를 얻었다고 하자. Karis가 생성될 확률은 (문화권과 성별 변수를 잠시 제외하면)
-$p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
-라 할 수 있다.</eos></p>
+<p>“K”를 prime으로 넣어 “Kati”를 얻었다고 하자. Kati 생성될 확률은 (문화권과 성별 변수를 잠시 제외하면)
+$p(Kati) = p(K) * p(a|K) * p(t|Ka) * p(i|Kat) * p(eos|Kati)$
+라 할 수 있다.</p>
 
 <p>그래서 매 스텝마다 새로 나오는 확률값을 기존 확률값에 계속 재귀적으로 곱해주면 된다.<br />
 그런데 문제는, 확률값은 0에서 1 사이의 숫자인데다 작은 경우가 많아서, 이를 계속 곱해주다보면 소숫점이 굉장히 길어지는 문제가 있다.<br />
 컴퓨터가 계산하기 곤란한 정도로 소숫점이 많아지면 후보간의 비교가 어려워진다.<br />
 따라서 이를 쉽게 하기 위해 전체에 log를 씌우면, 앞뒤 확률간의 곱이 앞뒤 확률의 log의 합으로 표현할 수 있게 된다.</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td>$\log(p(Karis)) = \log(p(K)) + \log(p(a</td>
-      <td>K)) + \log(p(r</td>
-      <td>Ka)) + \log(p(i</td>
-      <td>Kar)) + \log(p(s</td>
-      <td>Kari)) + \log(p(<eos></eos></td>
-      <td>Karis))$</td>
-    </tr>
-  </tbody>
-</table>
+<p>$\log(p(Kati)) = \log(p(K)) + \log(p(a|K)) + \log(p(t|Ka)) + \log(p(i|Kat)) + \log(p(eos|Kati))$</p>
 
 <h4 id="길이에-따른-확률-보정">길이에 따른 확률 보정</h4>
 
@@ -1803,8 +1792,8 @@ $p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
     <span class="k">return</span> <span class="n">_tmp_basket</span>
 
 <span class="k">def</span> <span class="nf">beam_search</span><span class="p">(</span><span class="n">data_loader</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">beam_width</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">prime</span><span class="p">,</span> <span class="n">sex</span><span class="p">,</span> <span class="n">origin</span><span class="p">):</span>
-    <span class="c"># print("Sampling a {} {} name beginning with {}..".format(origin, sex, prime))</span>
-
+    <span class="c1"># print("Sampling a {} {} name beginning with {}..".format(origin, sex, prime))
+</span>
     <span class="n">beam_basket</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="n">beam_basket</span><span class="p">[</span><span class="n">prime</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
@@ -1813,21 +1802,21 @@ $p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
     <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
         <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="c"># 바스켓을 청소합니다.</span>
-        <span class="n">beam_basket</span> <span class="o">=</span> <span class="n">clean_beam_basket</span><span class="p">(</span><span class="n">beam_basket</span><span class="p">,</span> <span class="n">beam_width</span><span class="p">)</span>
+        <span class="c1"># 바스켓을 청소합니다.
+</span>        <span class="n">beam_basket</span> <span class="o">=</span> <span class="n">clean_beam_basket</span><span class="p">(</span><span class="n">beam_basket</span><span class="p">,</span> <span class="n">beam_width</span><span class="p">)</span>
 
-        <span class="c"># 만약 바스켓에 모든 아이템이 &lt;eos&gt;가 있으면 루프를 멈춘다.</span>
-        <span class="n">eos_cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># 만약 바스켓에 모든 아이템이 &lt;eos&gt;가 있으면 루프를 멈춘다.
+</span>        <span class="n">eos_cnt</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">beam_basket</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="s">"&lt;eos&gt;"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
                 <span class="n">eos_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">eos_cnt</span> <span class="o">==</span> <span class="n">beam_width</span><span class="p">:</span>
-            <span class="c"># print("all items have &lt;eos&gt;")</span>
-            <span class="k">break</span>
+            <span class="c1"># print("all items have &lt;eos&gt;")
+</span>            <span class="k">break</span>
 
-        <span class="c"># 모든 key를 돌면서</span>
-        <span class="c">## &lt;eos&gt;가 없는 경우 inference한다.</span>
-        <span class="n">new_entries</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># 모든 key를 돌면서
+</span>        <span class="c1">## &lt;eos&gt;가 없는 경우 inference한다.
+</span>        <span class="n">new_entries</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">to_remove</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">beam_basket</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="k">if</span> <span class="s">"&lt;eos&gt;"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
@@ -1840,12 +1829,12 @@ $p(Karis) = p(K) * p(a|K) * p(r|Ka) * p(i|Kar) * p(s|Kari) * p(<eos>|Karis)$
                     <span class="n">new_entries</span><span class="p">[</span><span class="n">new_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">normalized_probability</span>
                 <span class="n">to_remove</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
     
-        <span class="c"># 그리고 기존 key를 beam_basket에서 지운다.</span>
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
+        <span class="c1"># 그리고 기존 key를 beam_basket에서 지운다.
+</span>        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">to_remove</span><span class="p">:</span>
             <span class="n">beam_basket</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 
-        <span class="c"># 새로운 키를 바스켓에 채워넣는다.</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># 새로운 키를 바스켓에 채워넣는다.
+</span>        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">new_entries</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">beam_basket</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
     <span class="n">final_list</span> <span class="o">=</span> <span class="p">[]</span>

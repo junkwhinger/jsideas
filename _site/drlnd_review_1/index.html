@@ -224,22 +224,22 @@
 
 <p><code class="highlighter-rouge">env</code> 변수에 할당한 환경에서 몇가지 정보를 뽑아보자.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 환경의 크기</span>
-<span class="n">env</span><span class="o">.</span><span class="n">shape</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 환경의 크기
+</span><span class="n">env</span><span class="o">.</span><span class="n">shape</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(4, 12)
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 에이전트가 취할 수 있는 가짓수</span>
-<span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 에이전트가 취할 수 있는 가짓수
+</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>4
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 스타팅 셀 (36번째 셀)</span>
-<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 스타팅 셀 (36번째 셀)
+</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>36
@@ -281,8 +281,8 @@
 
 <p>Cliff Walking 문제에서 가장 처음 시작하는 지점은 36번째 셀이다.</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 스타팅 state</span>
-<span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 스타팅 state
+</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>36
@@ -514,30 +514,30 @@ $\pi : S \times A \rightarrow [0, 1]$</p>
     
     <span class="n">MAX_EPISODE_LENGTH</span> <span class="o">=</span> <span class="mi">30</span>
     
-    <span class="c"># value를 쌓을 score를 정의한다.</span>
-    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># value를 쌓을 score를 정의한다.
+</span>    <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
     
-    <span class="c"># state를 리셋하고 스타팅 state를 얻는다.</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="c1"># state를 리셋하고 스타팅 state를 얻는다.
+</span>    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
     
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_EPISODE_LENGTH</span><span class="p">):</span>
         
-        <span class="c"># 주어진 state에서 policyFunction을 따르는 action의 확률값을 얻는다.</span>
-        <span class="n">policy</span> <span class="o">=</span> <span class="n">policyFunction</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="c1"># 주어진 state에서 policyFunction을 따르는 action의 확률값을 얻는다.
+</span>        <span class="n">policy</span> <span class="o">=</span> <span class="n">policyFunction</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
         
-        <span class="c"># action의 확률값을 사용해 action을 선택한다.</span>
-        <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
+        <span class="c1"># action의 확률값을 사용해 action을 선택한다.
+</span>        <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
     
-        <span class="c"># action을 실행하여 다음 state, reword, done 여부를 얻는다.</span>
-        <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="c1"># action을 실행하여 다음 state, reword, done 여부를 얻는다.
+</span>        <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
         
-        <span class="c"># 현재 score에 reward를 더해 업데이트한다.</span>
-        <span class="n">score</span> <span class="o">+=</span> <span class="n">reward</span>
+        <span class="c1"># 현재 score에 reward를 더해 업데이트한다.
+</span>        <span class="n">score</span> <span class="o">+=</span> <span class="n">reward</span>
         
-        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s"> v: {} | s: {} | a: {} | r: {} | next s: {} | done: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">int2action</span><span class="p">[</span><span class="n">action</span><span class="p">],</span> <span class="n">reward</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">done</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s"> v: {} | s: {} | a: {} | r: {} | next s: {} | done: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">int2action</span><span class="p">[</span><span class="n">action</span><span class="p">],</span> <span class="n">reward</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">done</span><span class="p">))</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">done</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="n">MAX_EPISODE_LENGTH</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">"simulation finished with value = {}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"simulation finished with value = {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">score</span><span class="p">))</span>
             <span class="k">break</span>
             
         <span class="k">else</span><span class="p">:</span>
@@ -833,21 +833,21 @@ $v_{\pi}(s1) = -1 + -1 = -2$</p>
     <span class="k">return</span> <span class="n">record</span>
 </code></pre></div></div>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># policy = random_policy(env)</span>
-
-<span class="c"># generate_episode(policy, env)</span>
-</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># policy = random_policy(env)
+</span>
+<span class="c1"># generate_episode(policy, env)
+</span></code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">mc_prediction</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
     
-    <span class="c"># Q table</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+    <span class="c1"># Q table
+</span>    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
     
-    <span class="c"># s, a 발생횟수</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+    <span class="c1"># s, a 발생횟수
+</span>    <span class="n">N</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
     
-    <span class="c"># return sum</span>
-    <span class="n">return_sum</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
+    <span class="c1"># return sum
+</span>    <span class="n">return_sum</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">))</span>
     
     <span class="n">NUMBER_OF_EPISODES</span> <span class="o">=</span> <span class="mi">500</span>
     
@@ -865,7 +865,7 @@ $v_{\pi}(s1) = -1 + -1 = -2$</p>
             <span class="n">N</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>
             <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">return_sum</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">/</span> <span class="n">N</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span>
         
-        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">episode {} done with value(s_0): {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span> <span class="o">*</span> <span class="n">discounts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">episode {} done with value(s_0): {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">rewards</span> <span class="o">*</span> <span class="n">discounts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
     
     <span class="n">policy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
@@ -1033,8 +1033,8 @@ $\alpha$를 크게 가져가면 업데이트 보폭이 커지므로 학습은 �
 
 
 <span class="k">def</span> <span class="nf">update_Q</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
-    <span class="c"># Q &lt;- Q + alpha(G-Q)</span>
-
+    <span class="c1"># Q &lt;- Q + alpha(G-Q)
+</span>
     <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">rewards</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">episode</span><span class="p">)</span>
     <span class="n">discounts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">gamma</span> <span class="o">**</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rewards</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">states</span><span class="p">):</span>
@@ -1051,8 +1051,8 @@ $\alpha$를 크게 가져가면 업데이트 보폭이 커지므로 학습은 �
     
     <span class="n">nA</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span>
     
-    <span class="c"># Q table</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nA</span><span class="p">))</span>
+    <span class="c1"># Q table
+</span>    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nA</span><span class="p">))</span>
     
     <span class="n">epsilon_decay_angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps_min</span> <span class="o">-</span> <span class="n">eps_start</span><span class="p">)</span> <span class="o">/</span> <span class="n">eps_decay_duration</span>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">eps_start</span>
@@ -1060,7 +1060,7 @@ $\alpha$를 크게 가져가면 업데이트 보폭이 커지므로 학습은 �
     <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="n">i_episode</span> <span class="o">%</span> <span class="mi">1000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
         
         <span class="n">epsilon</span> <span class="o">+=</span> <span class="n">epsilon_decay_angle</span>
@@ -1118,8 +1118,8 @@ Sarsa는 state, action, reward, state, action의 연속 시퀀스에서 따온 �
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">def</span> <span class="nf">update_Q</span><span class="p">(</span><span class="n">Qsa</span><span class="p">,</span> <span class="n">Qsa_next</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
-    <span class="c"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qsa_next - Qsa)</span>
-    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qsa_next</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
+    <span class="c1"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qsa_next - Qsa)
+</span>    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qsa_next</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Qsa</span>
 
 <span class="k">def</span> <span class="nf">sarsa</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">eps_start</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps_min</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">eps_decay_duration</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
@@ -1130,18 +1130,18 @@ Sarsa는 state, action, reward, state, action의 연속 시퀀스에서 따온 �
     <span class="n">tmp_scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">PLOT_EVERY</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">num_episodes</span><span class="p">)</span>
     
-    <span class="c">#init Q</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
+    <span class="c1">#init Q
+</span>    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
     
     <span class="n">epsilon_decay_angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps_min</span> <span class="o">-</span> <span class="n">eps_start</span><span class="p">)</span> <span class="o">/</span> <span class="n">eps_decay_duration</span>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">eps_start</span>
     
     
-    <span class="c"># loop over ep</span>
-    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># loop over ep
+</span>    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="n">i_episode</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>   
         
         <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1149,8 +1149,8 @@ Sarsa는 state, action, reward, state, action의 연속 시퀀스에서 따온 �
         <span class="n">epsilon</span> <span class="o">+=</span> <span class="n">epsilon_decay_angle</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
         
-        <span class="c"># init state</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="c1"># init state
+</span>        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         
         <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
@@ -1168,12 +1168,12 @@ Sarsa는 state, action, reward, state, action의 연속 시퀀스에서 따온 �
                 <span class="k">break</span>
             <span class="k">else</span><span class="p">:</span>
                 
-                <span class="c"># next action</span>
-                <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
+                <span class="c1"># next action
+</span>                <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
                 <span class="n">next_action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
                 
-                <span class="c"># update Q</span>
-                <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">][</span><span class="n">next_action</span><span class="p">],</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+                <span class="c1"># update Q
+</span>                <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">][</span><span class="n">next_action</span><span class="p">],</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
                 
                 <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
                 <span class="n">action</span> <span class="o">=</span> <span class="n">next_action</span>
@@ -1185,10 +1185,10 @@ Sarsa는 state, action, reward, state, action의 연속 시퀀스에서 따온 �
     
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_episodes</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Episode Number'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
     
     <span class="n">policy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">policy</span><span class="p">,</span> <span class="n">Q</span>
@@ -1224,8 +1224,8 @@ Sarsamax는 Q-learning이라고도 한다.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">def</span> <span class="nf">update_Q</span><span class="p">(</span><span class="n">Qsa</span><span class="p">,</span> <span class="n">Qs_max</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
-    <span class="c"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qs_max - Qsa)</span>
-    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qs_max</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
+    <span class="c1"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qs_max - Qsa)
+</span>    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qs_max</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Qsa</span>
 
 <span class="k">def</span> <span class="nf">sarsamax</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">eps_start</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps_min</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">eps_decay_duration</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
@@ -1236,18 +1236,18 @@ Sarsamax는 Q-learning이라고도 한다.</p>
     <span class="n">tmp_scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">PLOT_EVERY</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">num_episodes</span><span class="p">)</span>
     
-    <span class="c">#init Q</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
+    <span class="c1">#init Q
+</span>    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
     
     <span class="n">epsilon_decay_angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps_min</span> <span class="o">-</span> <span class="n">eps_start</span><span class="p">)</span> <span class="o">/</span> <span class="n">eps_decay_duration</span>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">eps_start</span>
     
     
-    <span class="c"># loop over ep</span>
-    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># loop over ep
+</span>    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="n">i_episode</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>   
         
         <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1255,15 +1255,15 @@ Sarsamax는 Q-learning이라고도 한다.</p>
         <span class="n">epsilon</span> <span class="o">+=</span> <span class="n">epsilon_decay_angle</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
         
-        <span class="c"># init state</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="c1"># init state
+</span>        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         
         <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
         
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_EPISODE_LENGTH</span><span class="p">):</span>
             
-            <span class="c">#sarsamx에서는 action이 for loop 안으로 들어온다.</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
+            <span class="c1">#sarsamx에서는 action이 for loop 안으로 들어온다.
+</span>            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">policy</span><span class="p">)</span>
         
             <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
             
@@ -1277,8 +1277,8 @@ Sarsamax는 Q-learning이라고도 한다.</p>
             
             <span class="k">else</span><span class="p">:</span>
                 
-                <span class="c"># update Q</span>
-                <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">]</span><span class="o">.</span><span class="nb">max</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+                <span class="c1"># update Q
+</span>                <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">],</span> <span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">]</span><span class="o">.</span><span class="nb">max</span><span class="p">(),</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
                 
                 <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
                 
@@ -1289,10 +1289,10 @@ Sarsamax는 Q-learning이라고도 한다.</p>
     
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_episodes</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Episode Number'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
     
     <span class="n">policy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">policy</span><span class="p">,</span> <span class="n">Q</span>
@@ -1333,8 +1333,8 @@ Episode 10000/10000
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
 <span class="k">def</span> <span class="nf">update_Q</span><span class="p">(</span><span class="n">Qsa</span><span class="p">,</span> <span class="n">Qs_expected</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
-    <span class="c"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qs_max - Qsa)</span>
-    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qs_expected</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
+    <span class="c1"># Q[s, a] = Q[s, a] + a * (r_1 + gamma * Qs_max - Qsa)
+</span>    <span class="n">Qsa</span> <span class="o">=</span> <span class="n">Qsa</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">Qs_expected</span> <span class="o">-</span> <span class="n">Qsa</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Qsa</span>
 
 <span class="k">def</span> <span class="nf">expectedsarsa</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">eps_start</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">eps_min</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">eps_decay_duration</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
@@ -1345,18 +1345,18 @@ Episode 10000/10000
     <span class="n">tmp_scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">PLOT_EVERY</span><span class="p">)</span>
     <span class="n">scores</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">num_episodes</span><span class="p">)</span>
     
-    <span class="c">#init Q</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
+    <span class="c1">#init Q
+</span>    <span class="n">Q</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">))</span>
     
     <span class="n">epsilon_decay_angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">eps_min</span> <span class="o">-</span> <span class="n">eps_start</span><span class="p">)</span> <span class="o">/</span> <span class="n">eps_decay_duration</span>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="n">eps_start</span>
     
     
-    <span class="c"># loop over ep</span>
-    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># loop over ep
+</span>    <span class="k">for</span> <span class="n">i_episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="n">i_episode</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\r</span><span class="s">Episode {}/{}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i_episode</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>   
         
         <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1364,8 +1364,8 @@ Episode 10000/10000
         <span class="n">epsilon</span> <span class="o">+=</span> <span class="n">epsilon_decay_angle</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eps_min</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
         
-        <span class="c"># init state</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="c1"># init state
+</span>        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         
         <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
         
@@ -1385,8 +1385,8 @@ Episode 10000/10000
             
             <span class="k">else</span><span class="p">:</span>
                 
-                <span class="c"># update Q</span>
-                <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
+                <span class="c1"># update Q
+</span>                <span class="n">policy</span> <span class="o">=</span> <span class="n">get_probs</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">],</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">nA</span><span class="p">)</span>
                 <span class="n">expected_Qs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">Q</span><span class="p">[</span><span class="n">next_state</span><span class="p">])</span>
                 <span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_Q</span><span class="p">(</span><span class="n">Q</span><span class="p">[</span><span class="n">state</span><span class="p">][</span><span class="n">action</span><span class="p">],</span> <span class="n">expected_Qs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
                 
@@ -1399,10 +1399,10 @@ Episode 10000/10000
     
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">num_episodes</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span><span class="n">endpoint</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">scores</span><span class="p">))</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Episode Number'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Average Reward (Over Next {:d} Episodes)'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">))</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Best Average Reward over {:d} Episodes: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">PLOT_EVERY</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
     
     <span class="n">policy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">policy</span><span class="p">,</span> <span class="n">Q</span>

@@ -205,8 +205,8 @@
 
 <p>아나콘다를 통해 파이썬을 설치하면 과학계산을 위한 기본적인 라이브러리가 다 설치된다고 하지만 아닌 경우 아래와 같은 명령어를 터미널에서 돌리면 됩니다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span> <span class="c">#numpy 라이브러리 설치</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">pandas</span> <span class="c">#pandas 라이브러리 설치</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">conda</span> <span class="n">install</span> <span class="n">numpy</span> <span class="c1">#numpy 라이브러리 설치
+</span><span class="n">conda</span> <span class="n">install</span> <span class="n">pandas</span> <span class="c1">#pandas 라이브러리 설치</span></code></pre></figure>
 
 <p><br />
 ###3. ipython 실행하고 콘솔 열기</p>
@@ -221,10 +221,10 @@
 
 <p>일단 JSON 파일을 읽어오기 위한 json, 그리고 분석을 위해 numpy, pandas를 import합니다.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">json</span> <span class="c">#json 라이브러리 불러오기</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c">#numpy를 불러와서 np로 이름붙임(기니까)</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c">#pandas 불러오기</span>
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span> <span class="c">#pandas 세부 모듈을 더 쉽게 불러오기</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">json</span> <span class="c1">#json 라이브러리 불러오기
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c1">#numpy를 불러와서 np로 이름붙임(기니까)
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c1">#pandas 불러오기
+</span><span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span><span class="p">,</span> <span class="n">Series</span> <span class="c1">#pandas 세부 모듈을 더 쉽게 불러오기</span></code></pre></figure>
 
 <p><br /></p>
 
@@ -236,10 +236,10 @@
 <p><br /></p>
 
 <p>###3. DataFrame으로 저장하기<br /></p>
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">landmark_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'result'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'landmark'</span><span class="p">]</span> <span class="c">#json파일에서 랜드마크 데이터가 있는 곳을 찾아 내려갑니다.</span>
-<span class="n">ldf</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">landmark_data</span><span class="p">)</span> <span class="c">#pandas의 DataFrame 형태로 dict를 불러와서 ldf로 저장합니다.</span>
-<span class="n">ldf_T</span> <span class="o">=</span> <span class="n">ldf</span><span class="o">.</span><span class="n">T</span> <span class="c">#ldf는 columns가 랜드마크로 되어있으므로, 이를 index로 돌리기 위해 trasnpose를 합니다.</span>
-<span class="n">ldf_T</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c">#뽑은 데이터의 상위 5개 row를 확인합니다.</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">landmark_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'result'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'landmark'</span><span class="p">]</span> <span class="c1">#json파일에서 랜드마크 데이터가 있는 곳을 찾아 내려갑니다.
+</span><span class="n">ldf</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">landmark_data</span><span class="p">)</span> <span class="c1">#pandas의 DataFrame 형태로 dict를 불러와서 ldf로 저장합니다.
+</span><span class="n">ldf_T</span> <span class="o">=</span> <span class="n">ldf</span><span class="o">.</span><span class="n">T</span> <span class="c1">#ldf는 columns가 랜드마크로 되어있으므로, 이를 index로 돌리기 위해 trasnpose를 합니다.
+</span><span class="n">ldf_T</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1">#뽑은 데이터의 상위 5개 row를 확인합니다.</span></code></pre></figure>
 
 <p><img src="/assets/materials/20151026/img5.png" alt="ldf_T 상위 5개 row" /></p>
 
@@ -248,34 +248,34 @@
 <p>###1. angle 함수 정의하기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="n">topPoint</span><span class="p">,</span> <span class="n">midPoint</span><span class="p">,</span> <span class="n">botPoint</span><span class="p">):</span>
-	<span class="n">topLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c">#기울기1 구하기</span>
-	<span class="n">botLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c">#기울기2 구하기</span>
-	<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">topLineSlope</span> <span class="o">-</span> <span class="n">botLineSlope</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">topLineSlope</span> <span class="o">*</span> <span class="n">botLineSlope</span><span class="p">)</span> <span class="c">#x 구하기</span>
-	<span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c">#x의 arctan값 구하기 / 구하면 radian값이 나옵니다.</span>
-	<span class="n">angle_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="c">#radian값을 degree값으로 바꿔줍니다.</span>
-	<span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span> <span class="c">#교차각이 2개 나오므로, 90도보다 작은 각이 나오면 180도에서 이를 뺀 각을 교차각 최종값으로 정의합니다.</span>
-		<span class="n">angle_result</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">angle_deg</span>
+	<span class="n">topLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">topPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기1 구하기
+</span>	<span class="n">botLineSlope</span> <span class="o">=</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">midPoint</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">botPoint</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="c1">#기울기2 구하기
+</span>	<span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">topLineSlope</span> <span class="o">-</span> <span class="n">botLineSlope</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">topLineSlope</span> <span class="o">*</span> <span class="n">botLineSlope</span><span class="p">)</span> <span class="c1">#x 구하기
+</span>	<span class="n">angle_rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">#x의 arctan값 구하기 / 구하면 radian값이 나옵니다.
+</span>	<span class="n">angle_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">angle_rad</span><span class="p">)</span> <span class="c1">#radian값을 degree값으로 바꿔줍니다.
+</span>	<span class="k">if</span> <span class="n">angle_deg</span> <span class="o">&lt;</span> <span class="mi">90</span><span class="p">:</span> <span class="c1">#교차각이 2개 나오므로, 90도보다 작은 각이 나오면 180도에서 이를 뺀 각을 교차각 최종값으로 정의합니다.
+</span>		<span class="n">angle_result</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">-</span> <span class="n">angle_deg</span>
 	<span class="k">else</span><span class="p">:</span>
 		<span class="n">angle_result</span> <span class="o">=</span> <span class="n">angle_deg</span>
-	<span class="k">return</span> <span class="n">angle_result</span> <span class="c">#함수의 리턴값을 정의합니다.</span></code></pre></figure>
+	<span class="k">return</span> <span class="n">angle_result</span> <span class="c1">#함수의 리턴값을 정의합니다.</span></code></pre></figure>
 
 <p><br /></p>
 
 <p>###2. 양측 턱의 평균값 함수의 정의하기</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">avg__angle</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-	<span class="c">#6개의 점을 잡아줍니다. </span>
-	<span class="c">#left1은 왼편 눈 근처 턱 끝, left9은 턱 중심점 왼편의 턱 끝입니다.</span>
-	<span class="c">#여기서는 편의를 위해 1, 5, 9점을 잡았지만,</span>
-	<span class="c">#얼마든지 값을 변경하여 원하는 각도를 잴 수 있습니다.</span>
-	<span class="n">l_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_left1'</span><span class="p">]</span>
+	<span class="c1">#6개의 점을 잡아줍니다. 
+</span>	<span class="c1">#left1은 왼편 눈 근처 턱 끝, left9은 턱 중심점 왼편의 턱 끝입니다.
+</span>	<span class="c1">#여기서는 편의를 위해 1, 5, 9점을 잡았지만,
+</span>	<span class="c1">#얼마든지 값을 변경하여 원하는 각도를 잴 수 있습니다.
+</span>	<span class="n">l_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_left1'</span><span class="p">]</span>
 	<span class="n">l_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_left5'</span><span class="p">]</span>
 	<span class="n">l_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_left9'</span><span class="p">]</span>
 	<span class="n">r_pt1</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_right1'</span><span class="p">]</span>
 	<span class="n">r_pt2</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_right5'</span><span class="p">]</span>
 	<span class="n">r_pt3</span> <span class="o">=</span> <span class="n">df_loc</span><span class="p">[</span><span class="s">'contour_right9'</span><span class="p">]</span>
-	<span class="c">#위에서 정의한 함수를 불러옵니다.</span>
-	<span class="n">l_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">l_pt1</span><span class="p">,</span> <span class="n">l_pt2</span><span class="p">,</span> <span class="n">l_pt3</span><span class="p">)</span>
+	<span class="c1">#위에서 정의한 함수를 불러옵니다.
+</span>	<span class="n">l_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">l_pt1</span><span class="p">,</span> <span class="n">l_pt2</span><span class="p">,</span> <span class="n">l_pt3</span><span class="p">)</span>
 	<span class="n">r_angle</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">r_pt1</span><span class="p">,</span> <span class="n">r_pt2</span><span class="p">,</span> <span class="n">r_pt3</span><span class="p">)</span>
 	<span class="k">print</span> <span class="p">(</span><span class="s">"왼쪽 턱 각도: </span><span class="si">%</span><span class="s">f | 오른쪽 턱 각도: </span><span class="si">%</span><span class="s">f"</span> <span class="o">%</span><span class="p">(</span><span class="n">l_angle</span><span class="p">,</span> <span class="n">r_angle</span><span class="p">))</span>
 	<span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_angle</span> <span class="o">+</span> <span class="n">r_angle</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
