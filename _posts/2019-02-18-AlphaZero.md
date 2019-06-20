@@ -283,7 +283,7 @@ MCTS를 요약하자면 다음과 같다.
 
 다음 액션의 확률을 학습하는 Expert Policy는 MCTS의 Exploration을 가이딩하는데 사용한다. MCTS와 AlphaZero를 비교하면..
 
-- MCTS: $U = V + \frac{\sqrt{N_{tot}}}{1+N}​$
+- MCTS: $U = V + \frac{\sqrt{N_{tot}}}{1+N}$
 - AlphaZerop: $U = V + c \pi_\theta(a_t \|(-1)^ts_t)\frac{\sqrt{N_{tot}}}{1+N}$
 
 Exploration을 관장하는 두번째 텀에 Expert Policy가 들어간다. 즉, 낮은 방문 횟수 외에도 Expert Policy가 출력하는 해당 action의 확률이 높다면 해당 액션을 선택하게 된다.
@@ -405,23 +405,23 @@ MCTS 실행 - 수 선택의 과정을 게임 결과$z$가 나올때까지 반복
 
 Expert Critic이 매 스텝 추정한 $V_\theta$ 는 Self Play를 통해 도달한 실제값 $z$ 에 비교할 수 있다. 파라미터 $\theta$를 학습해 $z$ 에 가까운 $V_\theta$ 를 출력하게 된다면, 끝까지 수를 두지 않고도 미래의 결과에 기반해 현재 state의 가치를 정확하게 측정하게 된다.
 
-Expert Policy는 state $s​$ 에서 취할 수 있는 action $a​$ 의 확률 $\pi_\theta(a_t\|(-1)^ts_t)​$을 리턴한다. MCTS도 탐색을 거쳐 각 action을 선택할 확률 $p_a^{(t)}​$ 를 출력한다. Policy의 추론 확률이 MCTS의 결과와 비슷해진다면, policy가 MCTS에 더 정확한 가이딩을 줄 수 있게 된다.
+Expert Policy는 state $s$ 에서 취할 수 있는 action $a$ 의 확률 $\pi_\theta(a_t\|(-1)^ts_t)$을 리턴한다. MCTS도 탐색을 거쳐 각 action을 선택할 확률 $p_a^{(t)}$ 를 출력한다. Policy의 추론 확률이 MCTS의 결과와 비슷해진다면, policy가 MCTS에 더 정확한 가이딩을 줄 수 있게 된다.
 
 종합하자면, AlphaZero의 학습 목표는 Expert Critic의 $V_\theta$ 와 실제 결과 $z$ 간의 오차가 작도록, Expert Policy $\pi_\theta((-1)^ts_t)$와 $p_a^{(t)}$ 간의 분포 차가 작아지도록 하는 것이다. 즉 Loss function은 다음과 같다.
 
-$$L(\theta) = \Sigma_t \bigg\{ \color{red}{[v_\theta((-1)^ts_t) - (-1)^tz]^2} \color{blue}{ - \Sigma_a p_a^{(t)} \log \pi_\theta((-1)^ts_t)}  \bigg\} ​$$
+$$L(\theta) = \Sigma_t \bigg\{ \color{red}{[v_\theta((-1)^ts_t) - (-1)^tz]^2} \color{blue}{ - \Sigma_a p_a^{(t)} \log \pi_\theta((-1)^ts_t)}  \bigg\} $$
 
 즉, 매 시점별로 <span style="color:red">Expert Critic의 출력과 실제값간의 MSE Loss</span>와 <span style="color:blue">Expert Policy의 확률과 MCTS 확률간의 Cross Entropy</span> 를 모두 더한 것이 AlphaZero의 Loss가 된다.
 
 논문에서는 여기에 L2 Regularisation인 $c \left\| \theta \right\|^2$ 를 더한다. $c$ 는 Regularisation의 강도를 조절하는 하이퍼 파라미터다. TicTacToe 구현에서는 이 대신에 constant term $\Sigma_t \Sigma_a p_a^{(t)} \log p_a^{(t)}$ 를 더해 $v_\theta^{(t)} = z$ 이고 $p_a^{(t)} = \pi_\theta(a\|s_t)$ 일 때 Loss가 완전히 0이 되도록 처리했다.
 
-$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} \log \pi_\theta((-1)^ts_t)  \bigg\} - \Sigma_t \Sigma_a p_a^{(t)} \log p_a^{(t)} ​$$ 
+$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} \log \pi_\theta((-1)^ts_t)  \bigg\} - \Sigma_t \Sigma_a p_a^{(t)} \log p_a^{(t)} $$ 
 
 $$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} \log \pi_\theta((-1)^ts_t) - p_a^{(t)} \log p_a^{(t)} \bigg\}$$ 
 
-$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} (\log \pi_\theta((-1)^ts_t) -  \log p_a^{(t)}) \bigg\}​$$ 
+$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} (\log \pi_\theta((-1)^ts_t) -  \log p_a^{(t)}) \bigg\}$$ 
 
-$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} \log \frac{\pi_\theta((-1)^ts_t)}{p_a^{(t)}}  \bigg\}​$$
+$$L(\theta) = \Sigma_t \bigg\{[v_\theta((-1)^ts_t) - (-1)^tz]^2 - \Sigma_a p_a^{(t)} \log \frac{\pi_\theta((-1)^ts_t)}{p_a^{(t)}}  \bigg\}$$
 
 두 확률이 서로 일치하면 $log1=0$이 되어 Cross Entropy Term도 0이 된다.
 
