@@ -166,12 +166,12 @@
 <span class="c1">// ...
 </span>
 <span class="c1">// 빼낸 초중종성 각각에 대해서 앞서 지정한 획수 사전에서 획수를 찾는다.
-</span><span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">char_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_dict</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">}</span></code></pre></figure>
+</span><span class="k">val</span> <span class="nv">res</span> <span class="k">=</span> <span class="nv">char_list</span><span class="o">.</span><span class="py">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="nv">stroke_dict</span><span class="o">.</span><span class="py">getOrElse</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">}</span></code></pre></figure>
 
 <p>이렇게 작업한 코드를 하나로 합쳐서 함수화시켜봤다.</p>
 
-<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-      <span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="nv">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
         <span class="k">case</span> <span class="sc">'ㅇ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
         <span class="k">case</span> <span class="sc">'ㄱ'</span> <span class="o">|</span> <span class="sc">'ㄴ'</span> <span class="o">|</span> <span class="sc">'ㅅ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
         <span class="k">case</span> <span class="sc">'ㄷ'</span> <span class="o">|</span> <span class="sc">'ㅈ'</span> <span class="o">|</span> <span class="sc">'ㅋ'</span> <span class="o">|</span> <span class="sc">'ㅎ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
@@ -200,7 +200,7 @@
 
 <span class="c1">// ...
 </span>
-<span class="k">val</span> <span class="n">total_stroke</span> <span class="k">=</span> <span class="n">parsed_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="n">sum</span></code></pre></figure>
+<span class="k">val</span> <span class="nv">total_stroke</span> <span class="k">=</span> <span class="nv">parsed_list</span><span class="o">.</span><span class="py">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="py">sum</span></code></pre></figure>
 
 <p>stroke_finder라는 함수를 만들고, 한글 문자열 하나를 받아 사전에서 찾은 후 횟수를 반환하도록 처리했다. 위에서는 한줄 한줄 새 문자열-획수 페어를 넣어 코드가 길어졌지만, 아래에서는 match-case를 통해서 길이를 훅 단축시킬 수 있었다. 또 위에서는 뽑은 획수 벡터를 리스트화시켜서 sum을 구했었는데 아래에서는 바로 sum을 구할 수 있어 더 간단해보인다.</p>
 
@@ -209,24 +209,24 @@
 <p>전 버전에서는 이름 2개를 엇갈리게 겹치기 위해서 빈 리스트 버퍼를 만든 다음, 하나씩 더하는 식으로 작업했다.</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">var</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ListBuffer</span><span class="o">[</span><span class="kt">Int</span><span class="o">]()</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
-    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res1</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res2</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res1</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res2</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res1</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="nf">res2</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
 
     <span class="c1">// 만든 리스트 버퍼를 리스트로 변환합니다.
-</span>    <span class="k">val</span> <span class="n">final_seq</span> <span class="k">=</span> <span class="n">num_seq</span><span class="o">.</span><span class="n">toList</span></code></pre></figure>
+</span>    <span class="k">val</span> <span class="nv">final_seq</span> <span class="k">=</span> <span class="nv">num_seq</span><span class="o">.</span><span class="py">toList</span></code></pre></figure>
 
 <p>개인적인 습관이 묻어나오는 부분이다. 어떤 리스트나 데이터컬럼이 있을때 보통 공 리스트나 벡터를 만들고, 리스트 안에 item을 하나씩 돌면서 연산을 한 후 공 리스트에 더하는 방식을 많이 사용했었다. Scala의 ListBuffer로 그 방식을 비슷하게 구현했는데, 뭔가 Scala스럽지 않은 느낌이다.</p>
 
 <figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// 이름의 획수를 각각 계산한다.
-</span><span class="k">val</span> <span class="n">a_res</span> <span class="k">=</span> <span class="n">name1</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
-<span class="k">val</span> <span class="n">b_res</span> <span class="k">=</span> <span class="n">name2</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+</span><span class="k">val</span> <span class="nv">a_res</span> <span class="k">=</span> <span class="nv">name1</span><span class="o">.</span><span class="py">toList</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="k">val</span> <span class="nv">b_res</span> <span class="k">=</span> <span class="nv">name2</span><span class="o">.</span><span class="py">toList</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
 
 <span class="c1">// 리스트를 엇갈리게 겹쳐서 하나의 리스트로 만든다
-</span><span class="k">val</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span></code></pre></figure>
+</span><span class="k">val</span> <span class="nv">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="py">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nv">t</span><span class="o">.</span><span class="py">_1</span><span class="o">,</span> <span class="nv">t</span><span class="o">.</span><span class="py">_2</span><span class="o">))</span></code></pre></figure>
 
 <p>이렇게 하면 변형가능한 변수를 만들 필요도 없이 한줄이면 처리가 끝난다. zip으로 (A1, B1), (A2, B2), (A3, B3) 형태로 만든 후, flatmap으로 풀어버리면 [A1, B1, A2, B2, A3, B3]로 쉽게 변형이 가능하다.</p>
 
@@ -243,11 +243,11 @@
 <span class="k">import</span> <span class="nn">com.twitter.penguin.korean.util.Hangul</span>
 
 <span class="k">object</span> <span class="nc">name_chemistry</span> <span class="o">{</span>
-  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
 
     <span class="c1">// 획을 받아서 그에 해당하는 획수를 찾아 반환한다.
-</span>    <span class="k">def</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-      <span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
+</span>    <span class="k">def</span> <span class="nf">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="nv">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
         <span class="k">case</span> <span class="sc">'ㅇ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
         <span class="k">case</span> <span class="sc">'ㄱ'</span> <span class="o">|</span> <span class="sc">'ㄴ'</span> <span class="o">|</span> <span class="sc">'ㅅ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
         <span class="k">case</span> <span class="sc">'ㄷ'</span> <span class="o">|</span> <span class="sc">'ㅈ'</span> <span class="o">|</span> <span class="sc">'ㅋ'</span> <span class="o">|</span> <span class="sc">'ㅎ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
@@ -277,52 +277,52 @@
     <span class="c1">// '황' 들어오면
 </span>    <span class="c1">// 'ㅎ', 'ㅘ', 'ㅇ' 으로 짤른 다음
 </span>    <span class="c1">// 각각에 대해서 획수 계산해서 더한다음 값을 내보낸다.
-</span>    <span class="k">def</span> <span class="n">stroke_counter</span> <span class="o">(</span><span class="n">a_char</span><span class="k">:</span><span class="kt">Char</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
-      <span class="k">val</span> <span class="n">parsed_hangul</span> <span class="k">=</span> <span class="nc">Hangul</span><span class="o">.</span><span class="n">decomposeHangul</span><span class="o">(</span><span class="n">a_char</span><span class="o">)</span>
+</span>    <span class="k">def</span> <span class="nf">stroke_counter</span> <span class="o">(</span><span class="n">a_char</span><span class="k">:</span><span class="kt">Char</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="nv">parsed_hangul</span> <span class="k">=</span> <span class="nv">Hangul</span><span class="o">.</span><span class="py">decomposeHangul</span><span class="o">(</span><span class="n">a_char</span><span class="o">)</span>
 
-      <span class="k">val</span> <span class="n">parsed_list</span> <span class="k">=</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">onset</span> <span class="o">::</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">vowel</span> <span class="o">::</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">coda</span> <span class="o">::</span> <span class="nc">Nil</span>
+      <span class="k">val</span> <span class="nv">parsed_list</span> <span class="k">=</span> <span class="nv">parsed_hangul</span><span class="o">.</span><span class="py">onset</span> <span class="o">::</span> <span class="nv">parsed_hangul</span><span class="o">.</span><span class="py">vowel</span> <span class="o">::</span> <span class="nv">parsed_hangul</span><span class="o">.</span><span class="py">coda</span> <span class="o">::</span> <span class="nc">Nil</span>
 
-      <span class="k">val</span> <span class="n">total_stroke</span> <span class="k">=</span> <span class="n">parsed_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="n">sum</span>
+      <span class="k">val</span> <span class="nv">total_stroke</span> <span class="k">=</span> <span class="nv">parsed_list</span><span class="o">.</span><span class="py">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="py">sum</span>
 
       <span class="k">return</span> <span class="n">total_stroke</span>
     <span class="o">}</span>
 
     <span class="c1">// 획수를 담은 리스트가 2개 들어오면
 </span>    <span class="c1">// 리스트를 엇갈리게 합친 후에 궁합 점수를 계산해서 궁합 점수를 산출한다
-</span>    <span class="k">def</span> <span class="n">chemistry_calculator</span> <span class="o">(</span><span class="n">name1</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">name2</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+</span>    <span class="k">def</span> <span class="nf">chemistry_calculator</span> <span class="o">(</span><span class="n">name1</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">name2</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
 
-      <span class="k">val</span> <span class="n">a_res</span> <span class="k">=</span> <span class="n">name1</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
-      <span class="k">val</span> <span class="n">b_res</span> <span class="k">=</span> <span class="n">name2</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+      <span class="k">val</span> <span class="nv">a_res</span> <span class="k">=</span> <span class="nv">name1</span><span class="o">.</span><span class="py">toList</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+      <span class="k">val</span> <span class="nv">b_res</span> <span class="k">=</span> <span class="nv">name2</span><span class="o">.</span><span class="py">toList</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="nf">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
 
 
       <span class="c1">// 리스트를 엇갈리게 겹쳐서 하나의 리스트로 만든다
-</span>      <span class="k">val</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span>
+</span>      <span class="k">val</span> <span class="nv">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="py">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="nv">t</span><span class="o">.</span><span class="py">_1</span><span class="o">,</span> <span class="nv">t</span><span class="o">.</span><span class="py">_2</span><span class="o">))</span>
 
       <span class="c1">// 맨 앞부터 2개씩 더한 값의 1의 자리를 취하여
 </span>      <span class="c1">// 다음으로 넘기고 남은 숫자가 2개가 될때까지 동일한 연산을 수행한다.
 </span>      <span class="c1">// 연산이 종료되면 정수 2개를 가진 리스트를 반환한다.
-</span>      <span class="k">def</span> <span class="n">chemistry_main_function</span> <span class="o">(</span><span class="n">sequence</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+</span>      <span class="k">def</span> <span class="nf">chemistry_main_function</span> <span class="o">(</span><span class="n">sequence</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
 
-        <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">sliding</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">sum</span><span class="o">).</span><span class="n">toList</span>
-        <span class="k">val</span> <span class="n">result2</span> <span class="k">=</span> <span class="n">result</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">)</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">result2</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nv">sequence</span><span class="o">.</span><span class="py">sliding</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">sum</span><span class="o">).</span><span class="py">toList</span>
+        <span class="k">val</span> <span class="nv">result2</span> <span class="k">=</span> <span class="nv">result</span><span class="o">.</span><span class="py">map</span><span class="o">(</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">)</span>
+        <span class="nf">if</span> <span class="o">(</span><span class="nv">result2</span><span class="o">.</span><span class="py">length</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
           <span class="k">return</span> <span class="n">result2</span>
         <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-          <span class="n">chemistry_main_function</span><span class="o">(</span><span class="n">result2</span><span class="o">)</span>
+          <span class="nf">chemistry_main_function</span><span class="o">(</span><span class="n">result2</span><span class="o">)</span>
         <span class="o">}</span>
       <span class="o">}</span>
 
       <span class="c1">// 정수 2개를 조합하여 최종 궁합 점수를 산출하여 반환한다.
-</span>      <span class="k">val</span> <span class="n">final_result_list</span> <span class="k">=</span> <span class="n">chemistry_main_function</span><span class="o">(</span><span class="n">num_seq</span><span class="o">)</span>
-      <span class="k">val</span> <span class="n">final_result</span> <span class="k">=</span> <span class="n">final_result_list</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">final_result_list</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</span>      <span class="k">val</span> <span class="nv">final_result_list</span> <span class="k">=</span> <span class="nf">chemistry_main_function</span><span class="o">(</span><span class="n">num_seq</span><span class="o">)</span>
+      <span class="k">val</span> <span class="nv">final_result</span> <span class="k">=</span> <span class="nf">final_result_list</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="nf">final_result_list</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
       <span class="k">return</span> <span class="n">final_result</span>
     <span class="o">}</span>
 
     <span class="c1">// test case
-</span>    <span class="k">val</span> <span class="n">a_name</span> <span class="k">=</span> <span class="s">"박근혜"</span>
-    <span class="k">val</span> <span class="n">b_name</span> <span class="k">=</span> <span class="s">"최순실"</span>
-    <span class="k">val</span> <span class="n">chem_result</span> <span class="k">=</span> <span class="n">chemistry_calculator</span><span class="o">(</span><span class="n">a_name</span><span class="o">,</span> <span class="n">b_name</span><span class="o">)</span>
-    <span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">"궁합결과($a_name - $b_name): $chem_result"</span><span class="o">)</span>
+</span>    <span class="k">val</span> <span class="nv">a_name</span> <span class="k">=</span> <span class="s">"박근혜"</span>
+    <span class="k">val</span> <span class="nv">b_name</span> <span class="k">=</span> <span class="s">"최순실"</span>
+    <span class="k">val</span> <span class="nv">chem_result</span> <span class="k">=</span> <span class="nf">chemistry_calculator</span><span class="o">(</span><span class="n">a_name</span><span class="o">,</span> <span class="n">b_name</span><span class="o">)</span>
+    <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"궁합결과($a_name - $b_name): $chem_result"</span><span class="o">)</span>
   <span class="o">}</span>
 <span class="o">}</span></code></pre></figure>
 
