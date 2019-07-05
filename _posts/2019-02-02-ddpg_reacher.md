@@ -130,7 +130,7 @@ DDPG combines actor-critic architecture with insights from DQN.
     - Set $y_i = r_i + \gamma Q^\prime(s_{i+1}, \mu^\prime(s_{i+1}\|\theta^{\mu^\prime}) \| \theta^{Q^\prime})$
     - Update critic by minimising the loss: $L = \frac{1}{N} \Sigma_i(y_i - Q(s_i, a_i \| \theta^Q))^2$
     - Update the actor policy using the sampled policy gradient:
-    $$\triangledown_{\theta^\mu}J \approx \frac{1}{N} \Sigma_i \triangledown_a Q(s, a\|\theta^Q)\|_{s=s_i, a=\mu(s_i}\triangledown_{\theta^\mu}\mu(s\|\theta^\mu)\|_{s_i}$$
+    $$\triangledown_{\theta^\mu}J \approx \frac{1}{N} \Sigma_i \triangledown_a Q(s, a\|\theta^Q)\|_{s=s_i, a=\mu(s_i)}\triangledown_{\theta^\mu}\mu(s\|\theta^\mu)\|_{s_i}$$
     - Update the target networks:
     $$\theta^{Q^\prime} \leftarrow \tau \theta^Q + (1 - \tau)\theta^{Q^\prime}$$
     $$\theta^{\mu^\prime} \leftarrow \tau \theta^\mu + (1 - \tau)\theta^{\mu^\prime}$$
