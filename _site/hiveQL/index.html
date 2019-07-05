@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>HiveQL - Useful Tips - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="HiveQL - Useful Tips" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/hiveQL/" property="og:url">
+  
+  
+    <meta content="2016-01-14T07:34:25+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/author.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="sql" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="HiveQL - Useful Tips">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/hiveQL/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/author.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">HiveQL - Useful Tips</h1>
+        <div class="page-date"><span>2016, Jan 14&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <p>파이썬과 더불어 회사 업무를 처리하는데 있어 SQL의 도움을 많이 받는다. 대용량의 데이터가 저장된 시스템에서 원하는 정보를 가져와 가공하는데 정말 좋다. 작년 8월부터 초보적인 Select * From을 쳐가면서 데이터를 뽑기 시작했는데, 모르는 부분을 구글링하다보니 내가 쓰는 SQL은 HiveQL로 MySQL이나 Oracle SQL과는 조금 다른 부분이 있다는 걸 알게 되었다. 언어 자체가 크게 다른 것은 아니고 사투리 정도의 차이가 있는 듯 한데 MySQL에서 지원하는 기능이 HiveQL에서는 돌아가지 않거나, 업무적으로 유용하게 쓰는 함수가 있어 기록을 남겨두고자 한다.</p>
+
+<p>##1. collect_list</p>
+
+<p>컬럼에 있는 값, 특히 string을 하나로 묶는데 유용하게 사용할 수 있다. 예를 들어 다음과 같은 테이블이 있다고 하자.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">item</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">bread</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">milk</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">beer</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">kate</td>
+    <td class="tg-yw4l">book</td>
+  </tr>
+</table>
+
+<p><br /></p>
+
+<p>마트에서 고객이 물품을 구매한 샘플 데이터셋이다. 날짜와, 고객명, 구매물품으로 되어있다. 장바구니 분석을 하기 위해서 각각의 고객이 구매한 제품의 리스트를 얻고 싶다. 이 상황에서 유용하게 쓸 수 있는 함수가 <code class="highlighter-rouge">collect_list</code>다. 말그대로 아이템을 가져다가 리스트로 전환해주는데, 비슷한 <code class="highlighter-rouge">collect_set</code>은 중복을 제외한 셋을 반환한다. 중복 허용 여부에 따라 맞는 함수를 사용하면 된다. 분석요건에 따라서 다음과 같은 쿼리를 구성할 수 있다.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="n">date</span><span class="p">,</span> <span class="n">customer</span><span class="p">,</span> <span class="n">COLLECT_LIST</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">AS</span> <span class="n">item_list</span>
+<span class="k">FROM</span> <span class="n">sample_dataset</span>
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">date</span><span class="p">,</span> <span class="n">customer</span></code></pre></figure>
+
+<p>이를 통해 각 날짜별로 각 고객이 구매한 아이템 목록을 얻을 수 있다.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">item_list</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">bread, beer</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">milk</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">kate</td>
+    <td class="tg-yw4l">book</td>
+  </tr>
+</table>
+
+<hr />
+
+<p>##2. datediff
+날짜간 일수 차이를 되돌려주는 함수가 <code class="highlighter-rouge">datediff</code>다. MySQL나 HiveQL에서 공통적으로 사용되는 녀석인데 약간의 차이가 또 있다. 예를 들어 다음과 같은 테이블이 있다고 하자.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14 12:00:00</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14 14:00:10</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+</table>
+
+<p><br /></p>
+
+<p>다시 마트에 존이라는 사람이 언제 입장하고 퇴장했는지를 기록한 테이블이다. 첫번째 행은 입장시간을 두번째 행을 퇴장시간이라고 한다. MySQL에서는 <code class="highlighter-rouge">datediff</code>와 비슷하게 시간차를 계산해주는 <code class="highlighter-rouge">timediff</code> 함수로 이를 손쉽게 처리할 수 있다. 그러나 HiveQL은 이 기능을 지원하지 않는 듯 하다.. (있으면 알려주세요..)</p>
+
+<p>대신 이를 우회해서 처리할 수 있는 방법이 있다. 바로 스트링으로 된 시간을 <code class="highlighter-rouge">unix_timestamp</code>로 변환해서 차이를 계산하는 방식이다. 다음과 같이 계산하면 된다.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">UNIX_TIMESTAMP</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+<span class="k">FROM</span> <span class="n">sample_dataset</span></code></pre></figure>
+
+<p>이렇게 실행하면 144894…같은 긴 숫자가 나온다. 이 숫자는 단위가 <code class="highlighter-rouge">초</code>이므로 뒤의 시간에서 앞의 시간을 빼주면 된다. 단 HiveQL에서 빼는 연산을 수행하기 위해서는 <code class="highlighter-rouge">lead</code>나 <code class="highlighter-rouge">lag</code>를 사용하여 같은 row상에 데이터가 존재하도록 변형을 해줘야 한다.</p>
+
+<hr />
+
+<p>##3. Lead, Lag</p>
+
+<p>바로 앞에서 date를 unix_timestamp로 전환하는데 성공했다. 그럼 이 두가지 시간의 차를 어떻게 HiveQL에서 구할 수 있을까. <code class="highlighter-rouge">lead</code>와 <code class="highlighter-rouge">lag</code>를 써야 한다. <code class="highlighter-rouge">lead</code>는 간단히 말해서 앞으로 땡겨오는 것이고 <code class="highlighter-rouge">lag</code>는 뒤로 한칸씩 미는 방식이다. 다음과 같은 조금 더 복잡한 예시를 보자.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">unix_timestamp</th>
+    <th class="tg-yw4l">area</th>
+    <th class="tg-yw4l">customer</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">100</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">101</td>
+    <td class="tg-yw4l">grocery</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">110</td>
+    <td class="tg-yw4l">clothes</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">201</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">mark</td>
+  </tr>
+</table>
+
+<p><br /></p>
+
+<p><code class="highlighter-rouge">unix_timestamp</code>를 간소화시킨 형태의 컬럼과 고객이 2명이 있다고 하자. 대형 백화점에서 마트안에서 food와 grocery와 clothes 섹션에 입장한 시간이 각 행의 정보라고 하자. 그러면 John이라는 고객이 food라는 공간에 머문 시간은 입장 시간인 100에서 grocery에 입장한 시간이 101의 차이, 즉 1초가 된다. (물론 일반적으론 1초만 머물진 않겠지만 예시이므로.) 이 때 HiveQL에서 연산을 해주려면 같은 행에 시작시간과 끝시간이 존재해야 한다. 그 다음에 있는 레코드에서 정보를 가져와 하나씩 올리는 것이므로, <code class="highlighter-rouge">lead</code>를 사용하기로 한다. 그런데 단순히 올리는 것이 아니라 고객에 따라 분류를 해줘야 한다. 만약 고객으로 group by를 하지 않고 <code class="highlighter-rouge">lead</code>를 쓴다면, mark의 시작시간이 john의 clothes 시간의 종료시간이 되어버린다.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span><span class="p">,</span> <span class="n">LEAD</span><span class="p">(</span><span class="n">unix_timestamp</span><span class="p">)</span> <span class="n">OVER</span> <span class="p">(</span><span class="n">PARTITION</span> <span class="k">BY</span> <span class="n">customer</span> <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">unix_timestamp</span><span class="p">)</span> <span class="k">AS</span> <span class="n">next_unix_timestamp</span>
+<span class="k">FROM</span> <span class="n">sample_dataset</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">PARTITION BY</code>는 <code class="highlighter-rouge">LEAD</code>가 적용될 파티션을 정의한다. 그리고 리드를 하기 전에 <code class="highlighter-rouge">unix_timestamp</code>로 정렬을 해준다. 그리고 이름을 <code class="highlighter-rouge">next_unix_timestamp</code>로 정해준다.
+그러면 다음과 같은 테이블이 생성된다.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-031e">unix_timestamp</th>
+    <th class="tg-yw4l">area</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">next_unix_timestamp</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">100</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">101</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">101</td>
+    <td class="tg-yw4l">grocery</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">110</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">110</td>
+    <td class="tg-yw4l">clothes</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">null</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">201</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">null</td>
+  </tr>
+</table>
+
+<p><br /></p>
+
+<p>앞서 설명했던 바와 같이 하나씩 올라와서 <code class="highlighter-rouge">next_unix_timestamp</code>로 저장되었다. 3번째와 4번째 열에는 null값이 주어지는데, 단순히 <code class="highlighter-rouge">lead</code>로 끌어올 값이 없기 때문이다. 이제 바로 sql에서 쉽게 <code class="highlighter-rouge">next_unix_timestamp</code>에서 <code class="highlighter-rouge">unix_timestamp</code>를 빼주면 된다. <code class="highlighter-rouge">lag</code>는 <code class="highlighter-rouge">lead</code>의 반대로 적용된다.</p>
+
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=HiveQL - Useful Tips&url=http://localhost:4000/hiveQL/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/hiveQL/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/hiveQL/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#sql" class="tag">&#35; sql</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

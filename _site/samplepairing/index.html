@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>SamplePairing on Small Dataset - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="SamplePairing on Small Dataset" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/samplepairing/" property="og:url">
+  
+  
+    <meta content="2019-07-05T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20190705.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="Deep Learning" property="article:tag">
+    
+    <meta content="Image Augmentation" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="SamplePairing on Small Dataset">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/samplepairing/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20190705.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20190705.png alt="SamplePairing on Small Dataset">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">SamplePairing on Small Dataset</h1>
+        <div class="page-date"><span>2019, Jul 05&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="intro">Intro</h2>
+
+<p>It’s hard to find image classifiers that do not employ Image Augmentation techniques. We can instantly explode the size of our dataset by flipping, rotating and changing colour intensity in our data loaders. Not only Image Augmentation free us from “is my dataset big enough?” it also gives a significant performance boost to the model performance.</p>
+
+<p>There have been numerous ingenious papers on arXiv introducing novel Image Augmentation techniques. The one that recently drew my attention is <a href="https://arxiv.org/pdf/1801.02929.pdf">Data Augmentation by Pairing Samples for Images Classification”  </a> published by Hiroshi Inoue. This paper introduces a method called “SamplePairing”.</p>
+
+<p><br /></p>
+
+<h2 id="sample-pairing">Sample Pairing</h2>
+
+<p>As its name suggests, Sample Pairing pairs a couple of sample images and feeds it to the model.</p>
+
+<p><img src="../assets/materials/20190705/cifar10_mixed.png" alt="cifar10_mixed" /></p>
+
+<p>Sample Pairing takes the most naive approach of blending two images; taking an average of two images. And it only uses the first label and discards the second. It’s so easy to implement. Here’s my implementation in Pytorch.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SamplePairing</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_data_dir</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_data_dir</span> <span class="o">=</span> <span class="n">train_data_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
+
+    <span class="k">def</span> <span class="nf">load_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dataset_train_raw</span> <span class="o">=</span> <span class="n">vdatasets</span><span class="o">.</span><span class="n">ImageFolder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_data_dir</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dataset_train_raw</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="n">toss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">toss</span><span class="p">:</span>
+            <span class="n">img_a_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+            <span class="c1"># pick one image from the pool
+</span>            <span class="n">img_b</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">)</span>
+            <span class="n">img_b_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img_b</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">197</span><span class="p">,</span> <span class="mi">197</span><span class="p">)))</span>
+
+            <span class="c1"># mix two images
+</span>            <span class="n">mean_img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">img_a_array</span><span class="p">,</span> <span class="n">img_b_array</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">mean_img</span><span class="p">))</span>
+            
+            <span class="c1"># could have used PIL.Image.blend
+</span>
+        <span class="k">return</span> <span class="n">img</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="performance-boost">Performance Boost</h3>
+
+<p><img src="../assets/materials/20190705/paper_results.png" alt="" /></p>
+
+<p>The author of the paper ran the above experiments with CIFAR-10 and ImageNet dataset. We can see two interesting points.</p>
+
+<ol>
+  <li>The training and validation error soars when SamplePairing is enabled.</li>
+  <li>During the fine-tuning stage, the validation error of “with SamplePairing” outperforms the one without it.</li>
+</ol>
+
+<p><br /></p>
+
+<h3 id="why-does-it-work">Why does it work?</h3>
+
+<p>SamplePairing introduces training goal related noises. The model is given a label “frog” with a weird image of a frog being overlapped by a horse. SamplePairing does not even use a weighted average that could provide more hints about the correct image. Simple averaging shows superior performance compared to other weighted average settings in the author’s experiment.</p>
+
+<p>In my view, SamplePairing functions as a strong regularizer that prevents the model from overfitting. SamplePairing’s disruption to the training is much more severe than other regularization methods like L2-norm, as it gives wrong information to the model. If SamplePairing is turned on for the entire training period, the model will never be able to gain decent performance.</p>
+
+<p>For this reason, the author suggests the following training schedule (CIFAR-10).</p>
+
+<ul>
+  <li>Start training without SamplePairing (default augmentation) for 100 epochs.</li>
+  <li>Enable SamplePairing for the next 700 epochs.
+    <ul>
+      <li>Turn SamplePairing ON for 8 epochs and OFF for 2 epochs</li>
+    </ul>
+  </li>
+  <li>Disable SamplePairing for the next 200 epochs (finetuning stage)</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="highly-effective-on-small-datasets">Highly effective on small datasets</h3>
+
+<p>The author carried out an interesting side experiment to see how SamplePairing works on small datasets. He reduced the number of data points per class and measured the errors reduced by SamplePairing.</p>
+
+<p><img src="../assets/materials/20190705/paper_results_reduced.png" alt="" /></p>
+
+<p>This interesting experiment result led me to try SamplePairing on my tiny <code class="highlighter-rouge">PredFaces</code> dataset that has around 400 to 500 images of 5 politicians.</p>
+
+<p><br /></p>
+
+<h2 id="dataset">Dataset</h2>
+
+<p><code class="highlighter-rouge">PredFaces</code> dataset is a collection of the faces of 5 famous politicians in South Korea who ran for president back in 2017. I crawled their images from Google and cropped faces into squares.</p>
+
+<p><img src="../assets/materials/20190705/photos.png" alt="5 politicians" /></p>
+
+<p>If you’re interested in the current affairs, you can easily tell who won the election.</p>
+
+<p>My <code class="highlighter-rouge">predfaces</code> dataset has less than 600 photos per person. The number gets even smaller after splitting them into train, validation and test dataset.</p>
+
+<ul>
+  <li>train: 1,477</li>
+  <li>valid: 184</li>
+  <li>test: 154</li>
+</ul>
+
+<p>All classes have roughly the same number of images. You can download the dataset from this <a href="https://www.floydhub.com/junkwhinger/datasets/predfaces">repo</a> on Floydhub.</p>
+
+<p><br /></p>
+
+<p>SamplePairing transforms the faces as follows:</p>
+
+<ul>
+  <li>when the classes of the two images are the same
+    <ul>
+      <li><img src="../assets/materials/20190705/mixed_same.png" alt="" /></li>
+    </ul>
+  </li>
+  <li>when the two come from the different labels
+    <ul>
+      <li><img src="../assets/materials/20190705/mixed_different1.png" alt="" /></li>
+      <li><img src="../assets/materials/20190705/mixed_different2.png" alt="" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="experiment-details">Experiment Details</h2>
+
+<p>Here’s my experiment setting.</p>
+
+<h3 id="model">Model</h3>
+
+<p>Transfer learning is a way to go when your dataset is so small, but you want to get decent performance. I downloaded the pre-trained ResNet50 from torchvision and replaced the classifier with 1x1 conv and an average pooling layer</p>
+
+<ul>
+  <li>pretrained feature extractor of ResNet50 (up to the 4th residual block) + 1x1 conv + average pooling</li>
+</ul>
+
+<p>By doing so, I can use Class Activation Mapping to see where my model looks on a given image. This CAM-enabled model architecture is introduced by <a href="https://arxiv.org/abs/1804.06962">Adversarial Complementary Learning for Weakly Supervised Object Localization</a>. It’s such a good read.</p>
+
+<p><br /></p>
+
+<h3 id="hyper-parameters-for-baseline">Hyper-parameters for baseline</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tag</span><span class="pi">:</span> <span class="s">experiments/baseline_fh</span>
+<span class="na">data_path</span><span class="pi">:</span> <span class="s">/input</span>
+<span class="na">epochs</span><span class="pi">:</span> <span class="s">100</span>
+<span class="na">batch</span><span class="pi">:</span> <span class="s">128</span>
+<span class="na">optimizer</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">sgd</span>
+  <span class="na">lr</span><span class="pi">:</span> <span class="s">0.01</span>
+  <span class="na">momentum</span><span class="pi">:</span> <span class="s">0.9</span>
+  <span class="na">weight_decay</span><span class="pi">:</span> <span class="s">0.001</span>
+<span class="na">samplepairing</span><span class="pi">:</span>
+  <span class="na">use</span><span class="pi">:</span> <span class="s">False</span>
+</code></pre></div></div>
+
+<p>Everything including the number of epochs, batch size and type of optimizer stays the same, apart from <code class="highlighter-rouge">samplepairing</code> part.</p>
+
+<p>My training schedule is as follows:</p>
+
+<ul>
+  <li>start training without SamplePairing</li>
+  <li>enable SamplePairing from epoch 10</li>
+  <li>turn SamplePairing on for 8 epochs and off for the next 2</li>
+  <li>disable SamplePairing from epoch 90</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="hyper-parameters-for-samplepairing">Hyper-parameters for SamplePairing</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tag</span><span class="pi">:</span> <span class="s">experiments/samplepairing_fh</span>
+<span class="na">data_path</span><span class="pi">:</span> <span class="s">/input</span>
+<span class="na">epochs</span><span class="pi">:</span> <span class="s">100</span>
+<span class="na">batch</span><span class="pi">:</span> <span class="s">128</span>
+<span class="na">optimizer</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">sgd</span>
+  <span class="na">lr</span><span class="pi">:</span> <span class="s">0.01</span>
+  <span class="na">momentum</span><span class="pi">:</span> <span class="s">0.9</span>
+  <span class="na">weight_decay</span><span class="pi">:</span> <span class="s">0.001</span>
+<span class="na">samplepairing</span><span class="pi">:</span>
+  <span class="na">use</span><span class="pi">:</span> <span class="s">True</span>
+  <span class="na">start_from</span><span class="pi">:</span> <span class="s">10</span>
+  <span class="na">on_off_period</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">8</span><span class="pi">,</span> <span class="nv">2</span><span class="pi">]</span>
+  <span class="na">finetuning_epoch</span><span class="pi">:</span> <span class="s">90</span>
+  <span class="na">p</span><span class="pi">:</span> <span class="s">1</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="hyper-parameters-for-randomsamplepairing">Hyper-parameters for RandomSamplePairing</h3>
+
+<p>Setting up the experiment, I got curious about how stochasticity would affect SamplePairing. What if an image has <code class="highlighter-rouge">p</code> chance to avoid SamplePairing? Would it lead to a better or worse result? I set the <code class="highlighter-rouge">p</code> as 0.5.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">tag</span><span class="pi">:</span> <span class="s">experiments/randomsamplepairing_fh</span>
+<span class="na">data_path</span><span class="pi">:</span> <span class="s">/input</span>
+<span class="na">epochs</span><span class="pi">:</span> <span class="s">100</span>
+<span class="na">batch</span><span class="pi">:</span> <span class="s">128</span>
+<span class="na">optimizer</span><span class="pi">:</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">sgd</span>
+  <span class="na">lr</span><span class="pi">:</span> <span class="s">0.01</span>
+  <span class="na">momentum</span><span class="pi">:</span> <span class="s">0.9</span>
+  <span class="na">weight_decay</span><span class="pi">:</span> <span class="s">0.001</span>
+<span class="na">samplepairing</span><span class="pi">:</span>
+  <span class="na">use</span><span class="pi">:</span> <span class="s">True</span>
+  <span class="na">start_from</span><span class="pi">:</span> <span class="s">10</span>
+  <span class="na">on_off_period</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">8</span><span class="pi">,</span> <span class="nv">2</span><span class="pi">]</span>
+  <span class="na">finetuning_epoch</span><span class="pi">:</span> <span class="s">90</span>
+  <span class="na">p</span><span class="pi">:</span> <span class="s">0.5</span>
+</code></pre></div></div>
+
+<p><br /></p>
+
+<h3 id="experiment-metrics">Experiment Metrics</h3>
+
+<p>I saved the best models from the above three variants in terms of <code class="highlighter-rouge">validation loss</code>. Because the validation dataset has a mere 184 images, the variants would record the same <code class="highlighter-rouge">validation error rate</code> when their <code class="highlighter-rouge">validation loss</code> differ.</p>
+
+<p><br /></p>
+
+<h2 id="result">Result</h2>
+
+<h3 id="train--validation-loss-">Train &amp; Validation Loss <img src="../assets/materials/20190705/byDataset.png" alt="byDataset" /></h3>
+
+<p><img src="../assets/materials/20190705/validation_loss.png" alt="validation_loss" /></p>
+
+<ul>
+  <li>The use of SamplePairing causes training and validation error to fluctuate during the training.</li>
+  <li>The fluctuation of the metrics is more severe with SamplePairing than RandomSamplePairing that turns off Image-level SamplePairing with 50% chance.</li>
+  <li>The final validation errors of SamplePairing and RandomSamplePairing are lower than the one of baseline.</li>
+  <li>The gaps between training and validation error reduced with SamplePairing, which proves that SamplePairing works as a regularizer that prevents overfitting.</li>
+  <li>The fluctuating patterns became stable a lot faster compared to the experiment results in the paper. The small size of <code class="highlighter-rouge">PredFaces</code> dataset might have caused this difference.</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="test-error-and-loss">Test Error and Loss</h3>
+
+<p><img src="../assets/materials/20190705/test_comparison.png" alt="test_comparison" /></p>
+
+<ul>
+  <li>Sample Pairing recorded the same Test Error (3.8%) as the baseline but lower Test Loss.</li>
+  <li>Random Sample Pairing recorded the best Test Error (2.2%) and Test Loss (0.06466)</li>
+</ul>
+
+<p><br /></p>
+
+<h3 id="cam-visualization">CAM Visualization</h3>
+
+<p>As we’ve witnessed in my experiment, SamplePairing contributes to better classification performance. But does it truly enhances the way the model classifies faces? To see how it affects the inner workings of the classifier, I used Class Activation Mapping that gives me some hints as to where the model looks.</p>
+
+<p>The first row has 5 images from the test set with their labels. The second row shows the predicted labels and their corresponding probabilities predicted by the baseline model. The heatmap shows the image regions that the model maximally responded for its prediction results. For example, The baseline model thought the photo of <code class="highlighter-rouge">moon</code> was <code class="highlighter-rouge">hong</code>’s going by the glasses.</p>
+
+<p>The third row and the fourth are from SamplePairing and Random SamplePairing, respectively.</p>
+
+<p><img src="../assets/materials/20190705/cam_visualisation.png" alt="cam_visualisation" /></p>
+
+<ul>
+  <li>As found in the previous validation loss comparison, SamplePariing and Random SamplePairing make fewer classification errors than the baseline more. The baseline misclassified <code class="highlighter-rouge">ahn</code>, <code class="highlighter-rouge">moon</code> and <code class="highlighter-rouge">sim</code>’s photos.</li>
+  <li>From the heatmap, we can safely conclude that the model behaves as expected. The difference between SamplePairing and the baseline is not dramatic, but in some cases like <code class="highlighter-rouge">hong</code> and <code class="highlighter-rouge">you</code> SamplePairing generates more complete heatmaps.</li>
+</ul>
+
+<p><br /></p>
+
+<h2 id="outro">Outro</h2>
+
+<p>In this blog post, I explained how SamplePairing works and what it does to the model performance. As the author argued in the paper, SamplePairing helps reduce the final validation and test error, and it works fantastic with small datasets!</p>
+
+<p>You can find the full training code on <a href="https://github.com/junkwhinger/SamplePairing">my github repository</a>.</p>
+
+<p><br /></p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li><a href="https://arxiv.org/pdf/1801.02929.pdf">Data Augmentation by Pairing Samples for Images Classification</a></li>
+  <li><a href="https://arxiv.org/abs/1804.06962">Adversarial Complementary Learning for Weakly Supervised Object Localization</a></li>
+</ul>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=SamplePairing on Small Dataset&url=http://localhost:4000/samplepairing/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/samplepairing/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/samplepairing/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#Deep Learning" class="tag">&#35; Deep Learning</a>
+          
+            <a href="/tags#Image Augmentation" class="tag">&#35; Image Augmentation</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

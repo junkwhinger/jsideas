@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Inception V3: Transfer Learning - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Inception V3: Transfer Learning" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/Inception_v3_transfer_learning/" property="og:url">
+  
+  
+    <meta content="2017-09-12T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20170912.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="deep learning" property="article:tag">
+    
+    <meta content="image" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Inception V3: Transfer Learning">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/Inception_v3_transfer_learning/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20170912.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20170912.png alt="Inception V3: Transfer Learning">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Inception V3: Transfer Learning</h1>
+        <div class="page-date"><span>2017, Sep 12&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="inception-v3를-활용한-transfer-learning">Inception v3를 활용한 Transfer Learning</h2>
+<p><br /></p>
+
+<h3 id="transfer-learning-inception-v3">Transfer Learning: Inception v3</h3>
+<p>요새 패스트캠퍼스에서 딥러닝 영상인식 수업을 듣고 있다. 두번째 강의에서 구글이 만든 Inception v3 모델을 사용한 Transfer Learning 코드를 살펴보았는데, 복습도 할겸 일부 코드를 들고와서 Jupyter notebook용으로 옮겨보았다. <br />
+(원본 코드: <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/examples/image_retraining/retrain.py">링크</a>)</p>
+
+<p>Inception 구조는 2014년 구글에서 펴낸 Going deeper with convolutions, Szegedy et al. (2014) 논문에 나오는 CNN 구조로, GoogleLeNet에 사용되어 그해 이미지넷 대회에서 VGG 모델을 누르고 우승한다. 기존의 CNN 모델들이 인풋 이미지에 같은 크기의 Convolution 필터를 하나씩 계속 덧대는 구조라면, Inception은 한번에 여러 크기의 필터를 동시에 사용한다. 덕분에 (상대적으로) 간단한 VGG 모델에 비해 Inception 구조는 직관적으로 잘 와닿지 않는 느낌이었다. 이미지를 처리할 때 여러 크기의 필터를 복합적으로 사용해 이미지의 특징을 더 잘 잡아낸다고 개념적으로 이해하고 있다.</p>
+
+<p><img src="/assets/materials/20170912/inception_module.png" alt="Inception 모듈 구조(https://adeshpande3.github.io/assets/GoogLeNet3.png)" /></p>
+
+<p>여튼 <a href="http://nicolovaligi.com/history-inception-deep-learning-architecture.html">Short history of the Inception deep learning architecture</a>에 의하면, 구글에서 2015년에 다시 한번 Rethinking the inception architecture for computer vision, Szegedy et al. (2015) 이라는 논문을 낸다. 여기서 2014년 논문에서 구현한 Inception v1을 개량하고 v2를 거쳐 기존 GoogleLeNet의 성능을 압도하는 v3를 만들어낸다. 3x3보다 큰 필터는 그보다 더 작은 필터 여러개로 더 효율적으로 표현할 수 있으며, 심지어 7x7 필터는 1x7과 7x1 컨볼루션 레이어로 대체하는 것을 제안한다.</p>
+
+<p>2016년에는 v4, Inception-ResNet까지 확장된 논문이 나오는데, 일단 이 포스팅은 v3에 관한 것이니 여기까지만 하도록 한다..</p>
+
+<h3 id="라이브러리-임포트">라이브러리 임포트</h3>
+<p>일단 필요한 필요한 라이브러리를 불러온다. tqdm과 같은 라이브러리는 원문 코드에는 사용되지 않았다.<br />
+또 원문 코드는 터미널 환경에서 유저가 하이퍼파라미터를 설정하도록 FLAGS를 사용했는데, 노트북 환경에서는 이를 제외하였다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">six.moves</span> <span class="kn">import</span> <span class="n">urllib</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="kn">from</span> <span class="nn">tensorflow.python.framework</span> <span class="kn">import</span> <span class="n">graph_util</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.framework</span> <span class="kn">import</span> <span class="n">tensor_shape</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.platform</span> <span class="kn">import</span> <span class="n">gfile</span>
+<span class="kn">from</span> <span class="nn">tensorflow.python.util</span> <span class="kn">import</span> <span class="n">compat</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="하이퍼파라미터-설정-일부">하이퍼파라미터 설정 (일부)</h3>
+<p>모델 경로, 보틀넥 텐서 등 일부 하이퍼파라미터를 설정한다. 이 코드에서는 보틀넥(Bottleneck)이라는 게 등장하는데, 이는 이미지가 v3를 거쳐 나온 일종의 중간결과라고 생각하면 된다. Transfer Learning에서는 Inception이나 VGG같은 이미 검증된 모델의 네트워크 파라미터를 그대로 사용하고 끝단의 classifier만 학습한다. 그러므로 (당연히) 이미지를 고정된 네트워크에 넣어 텐서로 변환하는 <code class="highlighter-rouge">전처리</code>과정을 매번 에폭을 돌 때마다 반복할 이유가 전혀 없다. 그래서 본 코드에서는 이를 보틀넥에 저장하는데, 그 텐서의 크기가 2048이 된다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">DATA_URL</span> <span class="o">=</span> <span class="s">'http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz'</span>
+<span class="n">BOTTLENECK_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'pool_3/_reshape:0'</span>
+<span class="n">BOTTLENECK_TENSOR_SIZE</span> <span class="o">=</span> <span class="mi">2048</span>
+<span class="n">MODEL_INPUT_WIDTH</span> <span class="o">=</span> <span class="mi">299</span>
+<span class="n">MODEL_INPUT_HEIGHT</span> <span class="o">=</span> <span class="mi">299</span>
+<span class="n">MODEL_INPUT_DEPTH</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">JPEG_DATA_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'DecodeJpeg/contents:0'</span>
+<span class="n">RESIZED_INPUT_TENSOR_NAME</span> <span class="o">=</span> <span class="s">'ResizeBilinear:0'</span>
+<span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="mi">27</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="데이터-전처리">데이터 전처리</h3>
+<p>이미지 전처리에 사용되는 함수가 엄청 많다. 보틀넥을 만들고 관리하고 불러오는 잡다한 함수가 서로 꼬리를 물고 얽혀있다.</p>
+<ul>
+  <li><code class="highlighter-rouge">def create_image_lists</code> - 이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다.</li>
+  <li><code class="highlighter-rouge">class TqdmUpTo</code> - 파일 다운로드할 때 예쁜 프로그레스바 띄워주는 도구</li>
+  <li><code class="highlighter-rouge">def maybe_download_and_extract</code> - Inception 그래프가 없다면 다운로드받는다.</li>
+  <li><code class="highlighter-rouge">def create_inception_graph</code> - 파일에서 텐서플로우 그래프를 읽어 리턴한다.</li>
+  <li><code class="highlighter-rouge">def should_distort_images</code> - 이미지 처리시에 좌우 변환 등 왜곡을 줄지 결정한다.</li>
+  <li><code class="highlighter-rouge">def ensure_dir_exists</code> - 디렉토리 경로가 있는지 체크하고 없으면 만든다.</li>
+  <li><code class="highlighter-rouge">def cache_bottlenecks</code> - 만든 보틀넥을 임시 저장한다.</li>
+  <li><code class="highlighter-rouge">def get_or_create_bottleneck</code> - 보틀넥을 만든다.</li>
+  <li><code class="highlighter-rouge">def get_bottleneck_path</code> - 만든 보틀넥 파일의 저장경로를 가져온다.</li>
+  <li><code class="highlighter-rouge">def create_bottleneck_file</code> - 보틀넥을 파일에 저장한다.</li>
+  <li><code class="highlighter-rouge">def run_bottleneck_on_image</code> - 이미지에서 보틀넥을 추출한다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_image_lists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">testing_percentage</span><span class="p">,</span> <span class="n">validation_percentage</span><span class="p">):</span>
+    <span class="s">"""이미지 디렉토리에서 인풋 데이터를 찾아 데이터로 변환한다"""</span>
+    
+    <span class="c1">## image_dir가 존재하지 않는다면 오류 출력
+</span>    <span class="k">if</span> <span class="ow">not</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Image directory '"</span> <span class="o">+</span> <span class="n">image_dir</span> <span class="o">+</span> <span class="s">"' not found."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="c1">### image_dir 내 하위 디렉토리(label)를 가져온다 
+</span>    <span class="n">sub_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Walk</span><span class="p">(</span><span class="n">image_dir</span><span class="p">)]</span>
+    
+    <span class="n">is_root_dir</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">for</span> <span class="n">sub_dir</span> <span class="ow">in</span> <span class="n">sub_dirs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_root_dir</span><span class="p">:</span>
+            <span class="n">is_root_dir</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">continue</span>
+        <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s">'jpg'</span><span class="p">,</span> <span class="s">'jpeg'</span><span class="p">,</span> <span class="s">'JPG'</span><span class="p">,</span> <span class="s">'JPEG'</span><span class="p">]</span>
+        
+        <span class="n">file_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">sub_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dir_name</span> <span class="o">==</span> <span class="n">image_dir</span><span class="p">:</span>
+            <span class="k">continue</span>
+            
+        <span class="k">print</span><span class="p">(</span><span class="s">"Looking for images in '"</span> <span class="o">+</span> <span class="n">dir_name</span> <span class="o">+</span> <span class="s">"'"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="n">extensions</span><span class="p">:</span>
+            <span class="n">file_glob</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">,</span> <span class="s">'*.'</span> <span class="o">+</span> <span class="n">extension</span><span class="p">)</span>
+            <span class="n">file_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">gfile</span><span class="o">.</span><span class="n">Glob</span><span class="p">(</span><span class="n">file_glob</span><span class="p">))</span>
+        
+        <span class="c1">## 파일이 없거나 데이터가 작으면 예외 처리
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'No files found'</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"WARNING: Folder has less than 20 images, which may cause issues."</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"WARNING: Folder {} has more than {} images. Some images will never be selected"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">))</span>
+        <span class="n">label_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'[^a-z0-9]+'</span><span class="p">,</span> <span class="s">' '</span><span class="p">,</span> <span class="n">dir_name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        
+        <span class="c1">## 트레이닝 / 밸리데이션 / 테스트셋으로 나눈다.
+</span>        <span class="n">training_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">testing_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">validation_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">:</span>
+            <span class="n">base_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+            
+            <span class="n">hash_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r'_nohash_.*$'</span><span class="p">,</span> <span class="s">''</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="n">hash_name_hashed</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">compat</span><span class="o">.</span><span class="n">as_bytes</span><span class="p">(</span><span class="n">hash_name</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+            <span class="n">percentage_hash</span> <span class="o">=</span> <span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">hash_name_hashed</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span>
+                              <span class="p">(</span><span class="mf">100.0</span> <span class="o">/</span> <span class="n">MAX_NUM_IMAGES_PER_CLASS</span><span class="p">))</span>
+            
+            <span class="k">if</span> <span class="n">percentage_hash</span> <span class="o">&lt;</span> <span class="n">validation_percentage</span><span class="p">:</span>
+                <span class="n">validation_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">percentage_hash</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">testing_percentage</span> <span class="o">+</span> <span class="n">validation_percentage</span><span class="p">):</span>
+                <span class="n">testing_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">training_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base_name</span><span class="p">)</span>
+        
+        <span class="n">result</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">'dir'</span><span class="p">:</span> <span class="n">dir_name</span><span class="p">,</span>
+            <span class="s">'training'</span><span class="p">:</span> <span class="n">training_images</span><span class="p">,</span>
+            <span class="s">'testing'</span><span class="p">:</span> <span class="n">testing_images</span><span class="p">,</span>
+            <span class="s">'validation'</span><span class="p">:</span> <span class="n">validation_images</span><span class="p">,</span>
+        <span class="p">}</span>
+        
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## 데이터를 다운로드받을 때 사용할 Tqdm 클래스를 정의한다.
+</span><span class="k">class</span> <span class="nc">TqdmUpTo</span><span class="p">(</span><span class="n">tqdm</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tsize</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total</span> <span class="o">=</span> <span class="n">tsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">bsize</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">maybe_download_and_extract</span><span class="p">():</span>
+    <span class="n">dest_directory</span> <span class="o">=</span> <span class="n">model_dir</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">)</span>
+    
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">DATA_URL</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        
+        <span class="k">print</span><span class="p">(</span><span class="s">"그래프 파일이 없습니다. 다운로드를 시작합니다."</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="n">TqdmUpTo</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="s">'B'</span><span class="p">,</span> <span class="n">unit_scale</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">miniters</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="n">DATA_URL</span><span class="p">)</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+            <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">DATA_URL</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">t</span><span class="o">.</span><span class="n">update_to</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        
+        <span class="n">statinfo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"다운로드 완료: "</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">statinfo</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span> <span class="s">'bytes.'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"그래프 파일이 이미 존재합니다."</span><span class="p">)</span>
+    <span class="n">tarfile</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">'r:gz'</span><span class="p">)</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">dest_directory</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_inception_graph</span><span class="p">():</span>
+    <span class="s">"""
+    저장된 GraphDef 파일에서 그래프를 만들고
+    Graph 오브젝트를 리턴한다.
+    """</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span><span class="o">.</span><span class="n">as_default</span><span class="p">()</span> <span class="k">as</span> <span class="n">graph</span><span class="p">:</span>
+        <span class="n">model_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_dir</span><span class="p">,</span> <span class="s">'classify_image_graph_def.pb'</span><span class="p">)</span>
+    
+        <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">model_filename</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">graph_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+            <span class="n">graph_def</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resized_input_tensor</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">import_graph_def</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">return_elements</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">BOTTLENECK_TENSOR_NAME</span><span class="p">,</span> <span class="n">JPEG_DATA_TENSOR_NAME</span><span class="p">,</span> <span class="n">RESIZED_INPUT_TENSOR_NAME</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resized_input_tensor</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">should_distort_images</span><span class="p">(</span><span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">):</span>
+    <span class="s">"""이미지 데이터에 변화를 줄지 결정한다."""</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">flip_left_right</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_crop</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_scale</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">random_brightness</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensure_dir_exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cache_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">how_many_bottlenecks</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">bottleneck_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">label_lists</span> <span class="ow">in</span> <span class="n">image_lists</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="p">[</span><span class="s">'training'</span><span class="p">,</span> <span class="s">'testing'</span><span class="p">,</span> <span class="s">'validation'</span><span class="p">]:</span>
+            <span class="n">category_list</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">unused_base_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">category_list</span><span class="p">):</span>
+                <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> \
+                                         <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+                <span class="n">how_many_bottlenecks</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">how_many_bottlenecks</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">'{} bottleneck files created'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">how_many_bottlenecks</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> \
+                             <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">label_lists</span> <span class="o">=</span> <span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
+    <span class="n">sub_dir</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="s">'dir'</span><span class="p">]</span>
+    <span class="n">sub_dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">sub_dir</span><span class="p">)</span>
+    <span class="n">ensure_dir_exists</span><span class="p">(</span><span class="n">sub_dir_path</span><span class="p">)</span>
+    <span class="n">bottleneck_path</span> <span class="o">=</span> <span class="n">get_bottleneck_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                                    <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">):</span>
+        <span class="n">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                               <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                               <span class="n">bottleneck_tensor</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+        <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    
+    <span class="n">did_hit_error</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)]</span>
+    <span class="k">except</span> <span class="nb">ValueError</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Invalid float found, recreating bottleneck'</span><span class="p">)</span>
+        <span class="n">did_hit_error</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">did_hit_error</span><span class="p">:</span>
+        <span class="n">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span>
+                               <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                               <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+            <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="c1"># Allow exceptions to propagate here, since they shouldn't happen after a
+</span>        <span class="c1"># fresh creation
+</span>        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">bottleneck_values</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_bottleneck_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span> <span class="o">+</span> <span class="s">'.txt'</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    
+    <span class="k">if</span> <span class="n">label_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">image_lists</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Label does not exist </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">label_name</span><span class="p">)</span>
+    <span class="n">label_lists</span> <span class="o">=</span> <span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">label_lists</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Category does not exist </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    <span class="n">category_list</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">category_list</span><span class="p">:</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'Label </span><span class="si">%</span><span class="s">s has no images in the category </span><span class="si">%</span><span class="s">s.'</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+        
+    <span class="n">mod_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">category_list</span><span class="p">)</span>
+    <span class="n">base_name</span> <span class="o">=</span> <span class="n">category_list</span><span class="p">[</span><span class="n">mod_index</span><span class="p">]</span>
+    <span class="n">sub_dir</span> <span class="o">=</span> <span class="n">label_lists</span><span class="p">[</span><span class="s">'dir'</span><span class="p">]</span>
+    <span class="n">full_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">sub_dir</span><span class="p">,</span> <span class="n">base_name</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">full_path</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_bottleneck_file</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                          <span class="n">category</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'보틀넥 파일 생성 시작 - {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">))</span>
+    <span class="n">image_path</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">image_path</span><span class="p">):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fata</span><span class="p">(</span><span class="s">'File does nto exist </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="n">image_path</span><span class="p">)</span>
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">run_bottleneck_on_image</span><span class="p">(</span>
+            <span class="n">sess</span><span class="p">,</span> <span class="n">image_data</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="s">'파일 처리 중 에러 발생: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="n">image_path</span><span class="p">)</span>
+        
+    <span class="n">bottleneck_string</span> <span class="o">=</span> <span class="s">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">bottleneck_values</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">bottleneck_path</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">bottleneck_file</span><span class="p">:</span>
+        <span class="n">bottleneck_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bottleneck_string</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_bottleneck_on_image</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_data</span><span class="p">,</span> <span class="n">image_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="p">{</span><span class="n">image_data_tensor</span><span class="p">:</span> <span class="n">image_data</span><span class="p">})</span>
+    <span class="n">bottleneck_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">bottleneck_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bottleneck_values</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="transfer-learning">Transfer Learning</h3>
+<p>이제 비로소 모델에 마지막 classifer를 붙이는 작업을 한다.</p>
+<ul>
+  <li><code class="highlighter-rouge">def add_final_training_ops</code> - 마지막 레이어를 정의하고 loss과 optimizer를 정의한다.</li>
+  <li><code class="highlighter-rouge">def add_evaluation_step</code> - 성능 평가를 위한 지표 (accuracy)를 정의한다.</li>
+  <li><code class="highlighter-rouge">def get_random_cached_bottlenecks</code> - 랜덤 혹은 전체 보틀넥을 가져와 모델에 집어넣는다.</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_final_training_ops</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">final_tensor_name</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'input'</span><span class="p">):</span>
+        <span class="n">bottleneck_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder_with_default</span><span class="p">(</span>
+            <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">BOTTLENECK_TENSOR_SIZE</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">'BottleneckInputPlaceholder'</span><span class="p">)</span>
+        
+        <span class="n">ground_truth_input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="n">class_count</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s">'GroundTruthInput'</span><span class="p">)</span>
+        
+    <span class="n">layer_name</span> <span class="o">=</span> <span class="s">'final_training_ops'</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="n">layer_name</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'weights'</span><span class="p">):</span>
+            <span class="n">initial_value</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="n">BOTTLENECK_TENSOR_SIZE</span><span class="p">,</span> <span class="n">class_count</span><span class="p">],</span> <span class="n">stddev</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+            
+            <span class="n">layer_weights</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">initial_value</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'final_weight'</span><span class="p">)</span>
+        
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'biases'</span><span class="p">):</span>
+            <span class="n">layer_biases</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">class_count</span><span class="p">]),</span> <span class="n">name</span><span class="o">=</span><span class="s">'final_biases'</span><span class="p">)</span>
+            
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'Wx_plus_b'</span><span class="p">):</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">bottleneck_input</span><span class="p">,</span> <span class="n">layer_weights</span><span class="p">)</span> <span class="o">+</span> <span class="n">layer_biases</span>
+            
+    <span class="n">final_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">final_tensor_name</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'cross_entropy'</span><span class="p">):</span>
+        <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax_cross_entropy_with_logits</span><span class="p">(</span>
+            <span class="n">labels</span><span class="o">=</span><span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'total'</span><span class="p">):</span>
+            <span class="n">cross_entropy_mean</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">cross_entropy</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'train'</span><span class="p">):</span>
+        <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+        <span class="n">train_step</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="n">cross_entropy_mean</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="n">cross_entropy_mean</span><span class="p">,</span> <span class="n">bottleneck_input</span><span class="p">,</span> <span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">final_tensor</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">add_evaluation_step</span><span class="p">(</span><span class="n">result_tensor</span><span class="p">,</span> <span class="n">ground_truth_tensor</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'correct_prediction'</span><span class="p">):</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">result_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">correct_prediction</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span>
+                <span class="n">prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ground_truth_tensor</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">name_scope</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">):</span>
+            <span class="n">evaluation_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">correct_prediction</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_random_cached_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">how_many</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                                 <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">):</span>
+    <span class="n">class_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">bottlenecks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ground_truths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">how_many</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># 샘플링한 보틀넥을 가져온다.
+</span>        <span class="k">for</span> <span class="n">unused_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">how_many</span><span class="p">):</span>
+            <span class="n">label_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">class_count</span><span class="p">)</span>
+            <span class="n">label_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">label_index</span><span class="p">]</span>
+            <span class="n">image_index</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">MAX_NUM_IMAGES_PER_CLASS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">image_name</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">image_index</span><span class="p">,</span>
+                                      <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+            <span class="n">bottleneck</span> <span class="o">=</span> <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span>
+                                                <span class="n">image_index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span>
+                                                <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                                                <span class="n">bottleneck_tensor</span><span class="p">)</span>
+            <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">ground_truth</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">bottlenecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottleneck</span><span class="p">)</span>
+            <span class="n">ground_truths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">)</span>
+            <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 보틀넥을 모두 가져온다.
+</span>        <span class="k">for</span> <span class="n">label_index</span><span class="p">,</span> <span class="n">label_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">image_index</span><span class="p">,</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_lists</span><span class="p">[</span><span class="n">label_name</span><span class="p">][</span><span class="n">category</span><span class="p">]):</span>
+                <span class="n">image_name</span> <span class="o">=</span> <span class="n">get_image_path</span><span class="p">(</span><span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span> <span class="n">image_index</span><span class="p">,</span>
+                                            <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">)</span>
+                <span class="n">bottleneck</span> <span class="o">=</span> <span class="n">get_or_create_bottleneck</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">label_name</span><span class="p">,</span>
+                                                      <span class="n">image_index</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span>
+                                                      <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span>
+                                                      <span class="n">bottleneck_tensor</span><span class="p">)</span>
+                <span class="n">ground_truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">class_count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+                <span class="n">ground_truth</span><span class="p">[</span><span class="n">label_index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">bottlenecks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bottleneck</span><span class="p">)</span>
+                <span class="n">ground_truths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">)</span>
+                <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bottlenecks</span><span class="p">,</span> <span class="n">ground_truths</span><span class="p">,</span> <span class="n">filenames</span>
+
+
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="하이퍼파라미터-설정-모델-관련">하이퍼파라미터 설정 (모델 관련)</h3>
+<p>파일 경로 및 모델 구현에 필요한 일부 파라미터를 설정한다. 테스트에 사용할 데이터로, 패스트캠퍼스 강의에서 제공한 3가지 종류의 고양이 이미지를 사용해보았다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_dir</span> <span class="o">=</span> <span class="s">'cat_photos'</span>
+<span class="n">output_graph</span> <span class="o">=</span> <span class="s">'/tmp/output_graph.pb'</span>
+<span class="n">output_labels</span> <span class="o">=</span> <span class="s">'/tmp/output_labels.txt'</span>
+<span class="n">summaries_dir</span> <span class="o">=</span> <span class="s">'/tmp/retrain_logs'</span>
+<span class="n">how_many_training_steps</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">testing_percentage</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">validation_percentage</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">eval_step_interval</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">train_batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">validation_batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">print_misclassified_test_images</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">model_dir</span> <span class="o">=</span> <span class="s">'/tmp/imagenet'</span>
+<span class="n">bottleneck_dir</span> <span class="o">=</span> <span class="s">'/tmp/bottleneck'</span>
+<span class="n">final_tensor_name</span> <span class="o">=</span> <span class="s">'final_result'</span>
+<span class="n">flip_left_right</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">random_crop</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">random_scale</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">random_brightness</span> <span class="o">=</span> <span class="mi">0</span> 
+<span class="n">log_frequency</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">log_device_placement</span> <span class="o">=</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="모델-다운로드-및-준비">모델 다운로드 및 준비</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## inception_v3를 다운받아 압축을 푼다.
+</span><span class="n">maybe_download_and_extract</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>그래프 파일이 이미 존재합니다.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## 그래프와 보틀넥 텐서, 이미지데이터 텐서, 리사이즈 이미지 텐서를 불러온다.
+</span><span class="n">graph</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">resize_image_tensor</span> <span class="o">=</span> <span class="p">(</span><span class="n">create_inception_graph</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## 재학습할 폴더를 가져와서 레이블화한다.
+</span><span class="n">image_lists</span> <span class="o">=</span> <span class="n">create_image_lists</span><span class="p">(</span><span class="n">image_dir</span><span class="p">,</span> <span class="n">testing_percentage</span><span class="p">,</span> <span class="n">validation_percentage</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Looking for images in 'chartreux'
+Looking for images in 'persian'
+Looking for images in 'ragdoll'
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">class_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">class_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'이미지가 해당 경로에 없습니다: '</span> <span class="o">+</span> <span class="n">image_dir</span><span class="p">)</span>
+    
+<span class="k">elif</span> <span class="n">class_count</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'해당 경로에 클래스가 1개만 발견되었습니다: '</span> <span class="o">+</span> <span class="n">image_dir</span> <span class="o">+</span> <span class="s">' - 분류를 위해 2개 이상의 클래스가 필요합니다.'</span><span class="p">)</span>
+    
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"클래스가 2개 이상 있습니다. 학습을 시작합니다."</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>클래스가 2개 이상 있습니다. 학습을 시작합니다.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## Image distortion // 현재 설정: False
+</span><span class="n">do_distort_images</span> <span class="o">=</span> <span class="n">should_distort_images</span><span class="p">(</span><span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">)</span>
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="모델-학습-시작">모델 학습 시작</h3>
+<p>텐서플로우 세션을 열고, 보틀넥 파일을 가져오고, Inception_v3 끝에 학습시킬 마지막 classifier 레이어를 붙인다.<br />
+이후 에폭을 돌면서 이미지를 넣어 Training / Validation Accuracy를 산출한다.<br />
+학습이 완료되면 테스트셋 이미지를 넣어 최종 테스트셋 정확도를 평가한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">acc_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">graph</span><span class="p">)</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">do_distort_images</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">distorted_jpeg_data_tensor</span><span class="p">,</span> <span class="n">distorted_image_tensor</span><span class="p">)</span> <span class="o">=</span> <span class="n">add_input_distortion</span><span class="p">(</span>
+            <span class="n">flip_left_right</span><span class="p">,</span> <span class="n">random_crop</span><span class="p">,</span> <span class="n">random_scale</span><span class="p">,</span> <span class="n">random_brightness</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cache_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+    
+    <span class="c1">## 네트워크의 끝에 우리가 원하는 분류 레이어를 붙인다.
+</span>    <span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="n">cross_entropy</span><span class="p">,</span> <span class="n">bottleneck_input</span><span class="p">,</span> 
+     <span class="n">ground_truth_input</span><span class="p">,</span> <span class="n">final_tensor</span><span class="p">)</span> <span class="o">=</span> <span class="n">add_final_training_ops</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> 
+                                                                <span class="n">final_tensor_name</span><span class="p">,</span> 
+                                                                <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        
+    <span class="c1">## 정확도 평가를 위한 새로운 오퍼레이션
+</span>    <span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">add_evaluation_step</span><span class="p">(</span><span class="n">final_tensor</span><span class="p">,</span> <span class="n">ground_truth_input</span><span class="p">)</span>
+    
+    <span class="c1">## 가중치 초기화
+</span>    <span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">init</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">how_many_training_steps</span><span class="p">):</span>
+        
+        <span class="c1">## 보틀넥과 정답지를 준비한다.
+</span>        <span class="k">if</span> <span class="n">do_distort_images</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">train_bottlenecks</span><span class="p">,</span> <span class="n">train_ground_truth</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_random_distorted_bottlenecks</span><span class="p">(</span>
+                <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="s">'training'</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span> <span class="n">distorted_jpeg_data_tensor</span><span class="p">,</span>
+                <span class="n">distorted_image_tensor</span><span class="p">,</span> <span class="n">resized_image_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">train_bottlenecks</span><span class="p">,</span> <span class="n">train_ground_truth</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span>
+                <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">train_batch_size</span><span class="p">,</span> <span class="s">'training'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span> <span class="n">image_dir</span><span class="p">,</span>
+                <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">)</span>
+        
+        
+        <span class="c1">## 보틀넥과 정답지를 모델에 집어넣어 학습시킨다.
+</span>        <span class="n">_</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">train_step</span><span class="p">],</span>
+            <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">train_bottlenecks</span><span class="p">,</span>
+                      <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">train_ground_truth</span><span class="p">})</span>
+    
+        <span class="c1">## 특정 구간마다 트레이닝 정확도와 cross entropy 로그, 밸리데이션 정확도를 출력한다.
+</span>        <span class="n">is_last_step</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">how_many_training_steps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">eval_step_interval</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">is_last_step</span><span class="p">:</span>
+            <span class="n">train_accuracy</span><span class="p">,</span> <span class="n">cross_entropy_value</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">evaluation_step</span><span class="p">,</span> <span class="n">cross_entropy</span><span class="p">],</span>
+                <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">train_bottlenecks</span><span class="p">,</span>
+                            <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">train_ground_truth</span><span class="p">})</span>
+            
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Train accuracy = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%%</span><span class="s">'</span><span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span> <span class="n">train_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Cross entropy = </span><span class="si">%</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span> <span class="n">cross_entropy_value</span><span class="p">))</span>
+            
+            <span class="n">validation_bottlenecks</span><span class="p">,</span> <span class="n">validation_ground_truth</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span>
+                    <span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">validation_batch_size</span><span class="p">,</span> <span class="s">'validation'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span>
+                    <span class="n">image_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">))</span>
+            
+            <span class="n">validation_accuracy</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">evaluation_step</span><span class="p">,</span>
+                <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">validation_bottlenecks</span><span class="p">,</span>
+                            <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">validation_ground_truth</span><span class="p">})</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s: Step </span><span class="si">%</span><span class="s">d: Validation accuracy = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%% </span><span class="s">(N=</span><span class="si">%</span><span class="s">d)'</span><span class="o">%</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span> <span class="n">i</span><span class="p">,</span>
+                                                                       <span class="n">validation_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> 
+                                                                       <span class="nb">len</span><span class="p">(</span><span class="n">validation_bottlenecks</span><span class="p">)))</span>
+            
+            <span class="c1">## 시각화를 위해 로그를 한벌 더 저장한다.
+</span>            <span class="n">acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">"epoch"</span><span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s">"train_accuracy"</span><span class="p">:</span> <span class="n">train_accuracy</span><span class="p">,</span> <span class="s">"validation_accuracy"</span><span class="p">:</span> <span class="n">validation_accuracy</span><span class="p">})</span>
+    
+    <span class="c1">## 테스트셋에 사용할 보틀넥과 정답지를 가져온다.
+</span>    <span class="n">test_bottlenecks</span><span class="p">,</span> <span class="n">test_ground_truth</span><span class="p">,</span> <span class="n">test_filenames</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">get_random_cached_bottlenecks</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">image_lists</span><span class="p">,</span> <span class="n">test_batch_size</span><span class="p">,</span> <span class="s">'testing'</span><span class="p">,</span> <span class="n">bottleneck_dir</span><span class="p">,</span>
+                                     <span class="n">image_dir</span><span class="p">,</span> <span class="n">jpeg_data_tensor</span><span class="p">,</span> <span class="n">bottleneck_tensor</span><span class="p">))</span>
+    
+    <span class="c1">## 테스트셋 정확도와 예측 분류값을 가져온다.
+</span>    <span class="n">test_accuracy</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">evaluation_step</span><span class="p">,</span> <span class="n">prediction</span><span class="p">],</span> 
+        <span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">bottleneck_input</span><span class="p">:</span> <span class="n">test_bottlenecks</span><span class="p">,</span>
+                  <span class="n">ground_truth_input</span><span class="p">:</span> <span class="n">test_ground_truth</span><span class="p">})</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'최종 학습 정확도 = </span><span class="si">%.1</span><span class="s">f</span><span class="si">%% </span><span class="s">(N=</span><span class="si">%</span><span class="s">d)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">test_accuracy</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_bottlenecks</span><span class="p">)))</span>
+    
+    <span class="n">output_graph_def</span> <span class="o">=</span> <span class="n">graph_util</span><span class="o">.</span><span class="n">convert_variables_to_constants</span><span class="p">(</span>
+        <span class="n">sess</span><span class="p">,</span> <span class="n">graph</span><span class="o">.</span><span class="n">as_graph_def</span><span class="p">(),</span> <span class="p">[</span><span class="n">final_tensor_name</span><span class="p">])</span>
+    <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">output_graph</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output_graph_def</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span>
+    <span class="k">with</span> <span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">output_labels</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">image_lists</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-09-12 22:57:31.651697: Step 0: Train accuracy = 90.0%
+2017-09-12 22:57:31.651842: Step 0: Cross entropy = 0.971989
+2017-09-12 22:57:31.728077: Step 0: Validation accuracy = 50.0% (N=100)
+2017-09-12 22:57:32.482163: Step 10: Train accuracy = 97.0%
+2017-09-12 22:57:32.482298: Step 10: Cross entropy = 0.531070
+2017-09-12 22:57:32.557460: Step 10: Validation accuracy = 69.0% (N=100)
+2017-09-12 22:57:33.302371: Step 20: Train accuracy = 98.0%
+2017-09-12 22:57:33.302512: Step 20: Cross entropy = 0.378725
+2017-09-12 22:57:33.373815: Step 20: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:34.101410: Step 30: Train accuracy = 98.0%
+2017-09-12 22:57:34.101545: Step 30: Cross entropy = 0.314494
+2017-09-12 22:57:34.173382: Step 30: Validation accuracy = 92.0% (N=100)
+2017-09-12 22:57:34.913235: Step 40: Train accuracy = 99.0%
+2017-09-12 22:57:34.913372: Step 40: Cross entropy = 0.230641
+2017-09-12 22:57:34.985273: Step 40: Validation accuracy = 96.0% (N=100)
+2017-09-12 22:57:35.723743: Step 50: Train accuracy = 99.0%
+2017-09-12 22:57:35.723963: Step 50: Cross entropy = 0.220344
+2017-09-12 22:57:35.795600: Step 50: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:36.530771: Step 60: Train accuracy = 99.0%
+2017-09-12 22:57:36.530906: Step 60: Cross entropy = 0.187575
+2017-09-12 22:57:36.602992: Step 60: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:37.342191: Step 70: Train accuracy = 100.0%
+2017-09-12 22:57:37.342325: Step 70: Cross entropy = 0.172496
+2017-09-12 22:57:37.415287: Step 70: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:38.148254: Step 80: Train accuracy = 100.0%
+2017-09-12 22:57:38.148388: Step 80: Cross entropy = 0.166109
+2017-09-12 22:57:38.220542: Step 80: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:38.949337: Step 90: Train accuracy = 98.0%
+2017-09-12 22:57:38.949470: Step 90: Cross entropy = 0.150583
+2017-09-12 22:57:39.020142: Step 90: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:39.763395: Step 100: Train accuracy = 99.0%
+2017-09-12 22:57:39.763533: Step 100: Cross entropy = 0.121292
+2017-09-12 22:57:39.835280: Step 100: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:40.562501: Step 110: Train accuracy = 96.0%
+2017-09-12 22:57:40.562636: Step 110: Cross entropy = 0.157512
+2017-09-12 22:57:40.633806: Step 110: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:41.378612: Step 120: Train accuracy = 98.0%
+2017-09-12 22:57:41.378750: Step 120: Cross entropy = 0.112991
+2017-09-12 22:57:41.455019: Step 120: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:42.182392: Step 130: Train accuracy = 99.0%
+2017-09-12 22:57:42.182529: Step 130: Cross entropy = 0.107235
+2017-09-12 22:57:42.254900: Step 130: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:42.986459: Step 140: Train accuracy = 100.0%
+2017-09-12 22:57:42.986595: Step 140: Cross entropy = 0.102031
+2017-09-12 22:57:43.058726: Step 140: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:43.786503: Step 150: Train accuracy = 98.0%
+2017-09-12 22:57:43.786641: Step 150: Cross entropy = 0.106734
+2017-09-12 22:57:43.858639: Step 150: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:44.587175: Step 160: Train accuracy = 99.0%
+2017-09-12 22:57:44.587308: Step 160: Cross entropy = 0.101420
+2017-09-12 22:57:44.662408: Step 160: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:45.409826: Step 170: Train accuracy = 97.0%
+2017-09-12 22:57:45.409960: Step 170: Cross entropy = 0.115423
+2017-09-12 22:57:45.482110: Step 170: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:46.211915: Step 180: Train accuracy = 99.0%
+2017-09-12 22:57:46.212053: Step 180: Cross entropy = 0.074815
+2017-09-12 22:57:46.283751: Step 180: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:47.015308: Step 190: Train accuracy = 100.0%
+2017-09-12 22:57:47.015443: Step 190: Cross entropy = 0.071336
+2017-09-12 22:57:47.087443: Step 190: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:47.820748: Step 200: Train accuracy = 100.0%
+2017-09-12 22:57:47.820886: Step 200: Cross entropy = 0.067409
+2017-09-12 22:57:47.891961: Step 200: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:48.625402: Step 210: Train accuracy = 100.0%
+2017-09-12 22:57:48.625540: Step 210: Cross entropy = 0.062077
+2017-09-12 22:57:48.697570: Step 210: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:49.427996: Step 220: Train accuracy = 100.0%
+2017-09-12 22:57:49.428132: Step 220: Cross entropy = 0.078230
+2017-09-12 22:57:49.505181: Step 220: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:50.232927: Step 230: Train accuracy = 100.0%
+2017-09-12 22:57:50.233061: Step 230: Cross entropy = 0.068900
+2017-09-12 22:57:50.304175: Step 230: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:51.033848: Step 240: Train accuracy = 100.0%
+2017-09-12 22:57:51.033982: Step 240: Cross entropy = 0.077747
+2017-09-12 22:57:51.105312: Step 240: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:51.838966: Step 250: Train accuracy = 100.0%
+2017-09-12 22:57:51.839107: Step 250: Cross entropy = 0.052831
+2017-09-12 22:57:51.910628: Step 250: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:52.646291: Step 260: Train accuracy = 100.0%
+2017-09-12 22:57:52.646428: Step 260: Cross entropy = 0.064428
+2017-09-12 22:57:52.717543: Step 260: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:53.451311: Step 270: Train accuracy = 100.0%
+2017-09-12 22:57:53.451445: Step 270: Cross entropy = 0.050011
+2017-09-12 22:57:53.525890: Step 270: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:54.267649: Step 280: Train accuracy = 100.0%
+2017-09-12 22:57:54.267786: Step 280: Cross entropy = 0.056949
+2017-09-12 22:57:54.340720: Step 280: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:55.068551: Step 290: Train accuracy = 100.0%
+2017-09-12 22:57:55.068688: Step 290: Cross entropy = 0.060681
+2017-09-12 22:57:55.140574: Step 290: Validation accuracy = 100.0% (N=100)
+2017-09-12 22:57:55.797798: Step 299: Train accuracy = 100.0%
+2017-09-12 22:57:55.797934: Step 299: Cross entropy = 0.046153
+2017-09-12 22:57:55.870064: Step 299: Validation accuracy = 100.0% (N=100)
+최종 학습 정확도 = 100.0% (N=10)
+INFO:tensorflow:Froze 2 variables.
+Converted 2 variables to const ops.
+</code></pre></div></div>
+
+<hr />
+
+<h3 id="정확도-시각화">정확도 시각화</h3>
+<p>중간에 따로 저장한 트레이닝과 벨리데이션 정확도가 에폭에 따라 얼마나 개선되는지 살펴보았다.<br />
+몇 에폭 지나지 않아 밸리데이션 정확도가 1을 찍는 것으로 보아 학습이 빠르게 잘 되었으며, 굳이 1000번 돌리지 않고 약 300번 정도에서 끊었다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">acc_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">acc_list</span><span class="p">)</span>
+<span class="n">acc_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">acc_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20170912/retrain_36_0.png" alt="에폭에 따른 정확도 차트" /></p>
+
+<hr />
+
+<h3 id="추론">추론</h3>
+<p>마지막 레이어까지 모두 학습이 끝났다. 이제는 새로운 이미지를 잘 분류하는지 라이브에 태워본다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">imagePath</span> <span class="o">=</span> <span class="s">'tmp/test_chartreux.jpg'</span>                                      
+<span class="n">modelFullPath</span> <span class="o">=</span> <span class="s">'/tmp/output_graph.pb'</span>                                    
+<span class="n">labelsFullPath</span> <span class="o">=</span> <span class="s">'/tmp/output_labels.txt'</span>                                 
+
+
+<span class="k">def</span> <span class="nf">create_graph</span><span class="p">():</span>
+    <span class="s">"""저장된(saved) GraphDef 파일로부터 graph를 생성하고 saver를 반환한다."""</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">modelFullPath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">graph_def</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">GraphDef</span><span class="p">()</span>
+        <span class="n">graph_def</span><span class="o">.</span><span class="n">ParseFromString</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">import_graph_def</span><span class="p">(</span><span class="n">graph_def</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">''</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">run_inference_on_image</span><span class="p">(</span><span class="n">imagePath</span><span class="p">):</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">Exists</span><span class="p">(</span><span class="n">imagePath</span><span class="p">):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">fatal</span><span class="p">(</span><span class="s">'파일이 존재하지 않습니다: </span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="n">imagePath</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">answer</span>
+
+    <span class="n">image_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gfile</span><span class="o">.</span><span class="n">FastGFile</span><span class="p">(</span><span class="n">imagePath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="c1"># 저장된(saved) GraphDef 파일로부터 graph를 생성한다.
+</span>    <span class="n">create_graph</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+
+        <span class="c1">## 학습이 끝난 마지막 소프트맥스 텐서를 가져온다.
+</span>        <span class="n">softmax_tensor</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_tensor_by_name</span><span class="p">(</span><span class="s">'final_result:0'</span><span class="p">)</span>
+        <span class="c1">## 이미지 데이터를 네트워크 맨 앞에 넣어 분류를 실행한다.
+</span>        <span class="n">predictions</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">softmax_tensor</span><span class="p">,</span>
+                               <span class="p">{</span><span class="s">'DecodeJpeg/contents:0'</span><span class="p">:</span> <span class="n">image_data</span><span class="p">})</span>
+        <span class="c1">## [[]]로 중첩된 어레이가 떨어지는데 np.squeeze로 하나의 어레이로 만든다.
+</span>        <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+        
+        <span class="c1">## 가장 높은 확률 값을 가진 5개를 선택한다. 여기서는 클래스가 3개 뿐이라 3개만 출력된다.
+</span>        <span class="n">top_k</span> <span class="o">=</span> <span class="n">predictions</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="mi">5</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">top_k</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">labelsFullPath</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="n">top_k</span><span class="p">:</span>
+            <span class="n">human_string</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s (score = </span><span class="si">%.5</span><span class="s">f)'</span> <span class="o">%</span> <span class="p">(</span><span class="n">human_string</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">top_k</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">answer</span>
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20170912/test_chartreux.jpg" alt="라이브 테스트1: chartreux" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">run_inference_on_image</span><span class="p">(</span><span class="s">'tmp/test_chartreux.jpg'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0 2 1]
+b'chartreux\n' (score = 0.99032)
+b'ragdoll\n' (score = 0.00569)
+b'persian\n' (score = 0.00399)
+
+
+
+
+
+"b'chartreux\\n'"
+</code></pre></div></div>
+
+<p>이번에는 우리집 러시안 블루도 잘 분류하는지 살펴보았다. 러시안 블루는 애초 분류 레이블에 없지만, 외형적으로 가장 유사한 샤트룩스가 선택된 것으로 보아 학습이 꽤 잘되었다고 평가할 수 있겠다. 또, 아이폰에서 바로 찍은 큰 JPG을 모델이 집어넣고 돌렸는데 바로 잘 돌아가는 것으로 보아.. 라이브 환경에 돌아가는 모델 구현에 참고할 만한 점이 많은 코드라 하겠다.
+<img src="/assets/materials/20170912/test_russian_blue.jpg" alt="라이브 테스트2: russian blue" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">run_inference_on_image</span><span class="p">(</span><span class="s">'tmp/test_russian_blue.jpg'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[0 2 1]
+b'chartreux\n' (score = 0.94632)
+b'ragdoll\n' (score = 0.03988)
+b'persian\n' (score = 0.01380)
+
+
+
+
+
+"b'chartreux\\n'"
+</code></pre></div></div>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Inception V3: Transfer Learning&url=http://localhost:4000/Inception_v3_transfer_learning/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/Inception_v3_transfer_learning/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/Inception_v3_transfer_learning/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#deep learning" class="tag">&#35; deep learning</a>
+          
+            <a href="/tags#image" class="tag">&#35; image</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

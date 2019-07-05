@@ -1,0 +1,15 @@
+
+.node {
+  stroke: #fff;
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.node_id {
+  stroke: black;
+  stroke-width: 0.8px;
+  font: 9px helvetica;
+}

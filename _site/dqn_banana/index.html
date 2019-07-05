@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>RL Project: Banana - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="RL Project: Banana" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/dqn_banana/" property="og:url">
+  
+  
+    <meta content="2018-12-19T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20181219.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="Deep Reinforcement Learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="RL Project: Banana">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/dqn_banana/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20181219.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20181219.jpg alt="RL Project: Banana">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">RL Project: Banana</h1>
+        <div class="page-date"><span>2018, Dec 19&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h1 id="project-1-navigation">Project 1. Navigation</h1>
+
+<p>In this project, I trained an agent to collect yellow bananas and avoid blue bananas using Deep Q Network algorithms.</p>
+
+<p><br /></p>
+
+<h2 id="problem-definition">Problem Definition</h2>
+
+<h3 id="environment">Environment</h3>
+<p>The given environment is a flat 3d space where yellow and blue bananas drop from above randomly.
+<img src="../assets/materials/20181219/env.png" alt="" /></p>
+
+<h3 id="state">State</h3>
+<p>The agent understands the given environment through 37 numbers that represent the agent’s velocity and the relative locations of objects that are ahead of it.</p>
+
+<h3 id="action">Action</h3>
+<p>The agent can move forward, backward, to the left or the right.</p>
+
+<h3 id="reward">Reward</h3>
+<p>The agent gets +1 for getting a single yellow banana and -1 for a blue one.</p>
+
+<h3 id="completion-target">Completion Target</h3>
+<p>The agent is considered to be trained successfully when it gets an average score of +13 over 100 episodes in a row.</p>
+
+<h2 id="algorithms">Algorithms</h2>
+
+<p>To train a successful agent I used the following techniques.</p>
+
+<h3 id="dqn">DQN</h3>
+<p>Deep Q Network is a combination of Q learning and non-linear function approximator powered by deep neural network. To avoid unstable training and divergence of using non-linear function approximator, DQN utilizes fixed Q target and experience replay buffer. DQN uses two neural network that have an identical network structure. A local network is used to predict the target Q value which, in turn, gets evaluated by a target network. Fixing the parameters of the target network and update them less frequently than the local network enables stable convergence of DQN agent. Experience Replay Buffer, inspired by how we remind of memories of the past when learning something, stores agent’s trajectories and samples them for training the two networks. Thanks to the replay buffer the training becomes much easier and more effective by breaking correlations between adjacent trajectories.</p>
+
+<h3 id="ddqn">DDQN</h3>
+<p>In DQN we use a target network for setting a training target. Because this target is generated via function approximation, its quality can be questionable especially in the early training. To enhance the robustness of the training target, Double DQN decouples selection from evaluation 
+Double DQN enhances robustness of DQN by decoupling selection and evaluation. The agent chooses a greedy action using the local network (selection) before estimating its value through the target network.</p>
+
+<h3 id="prioritized-experience-replay">Prioritized Experience Replay</h3>
+<p>How Experience Replay Buffer in DQN generates random trajectory follows a uniform random distribution. Prioritized Experience Replay is devised to pay more attention to memories that are rarer and of greater lessons. Samples drawn from the buffer are fed into the DQN algorithm before getting priorities based on the magnitude of TD error $delta$. There are two additional hyperparameters $\alpha$ and $\beta$ for controlling how much Prioritized Experience Replay affects the sampling distribution and network parameter updates.</p>
+
+<h3 id="dueling-network">Dueling Network</h3>
+<p>Dueling Network comes in handy especially when choosing an action is not always meaningful for given states. It utilises two streams so that it can separate state value estimations from action value estimations internally.</p>
+
+<h2 id="experiment-design">Experiment Design</h2>
+
+<p>I have decided to tune the following hyper-parameters:</p>
+<ul>
+  <li>is_duelingNetwork: whether to use a simple DNN or a dueling network</li>
+  <li>use_per: whether to use Prioritized Experience Replay or Experience Replay Buffer</li>
+  <li>use_ddqn: whether to use DQN or Double DQN for learning</li>
+</ul>
+
+<p>The other hyper-parameters are fixed as follows:</p>
+<ul>
+  <li>network_layers: state_size - 64 - 64 - action_size (simple DNN)</li>
+  <li>buffer_size: 100000</li>
+  <li>batch_Size: 64,</li>
+  <li>gamma: 0.99</li>
+  <li>tau: 1e-3 (for soft update)</li>
+  <li>lr: 0.0005</li>
+  <li>update_every: 4 (for the target network)</li>
+  <li>n_episodes: 2000</li>
+  <li>eps_start: 1.0 (epsilon for exploration)</li>
+  <li>eps_end: 0.01 (minimum epsilon value)</li>
+  <li>eps_decay: 0.995</li>
+</ul>
+
+<h2 id="experiment-result">Experiment Result</h2>
+<p>I ran the following experiments to find the best performing agent</p>
+<ul>
+  <li>dqn_netA_er (DQN + Experience Replay)</li>
+  <li>dqn_netA_per (DQN + Prioritized Experience Replay)</li>
+  <li>ddqn_netA_er (DDQN + Experience Replay)</li>
+  <li>ddqn_dn_netA_er (DDQN + DuelingNetwork + Experience Replay)</li>
+  <li>ddqn_dn_netA_per (DDQN + DuelingNetwork + Prioritized Experience Replay)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score_paths</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">"experiments/*/*.pkl"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">exp_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">score_paths</span><span class="p">:</span>
+    <span class="n">exp_name</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">"/"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">score_data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">exp_dict</span><span class="p">[</span><span class="n">exp_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">score_data</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">score_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">exp_dict</span><span class="p">)</span>
+<span class="n">score_df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">"# episodes"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">"average score"</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"DQN training in Banana Navigation"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="../assets/materials/20181219/report_7_0.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">score_df</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ddqn_dn_netA_er     27.0
+ddqn_dn_netA_per    25.0
+ddqn_netA_er        27.0
+dqn_netA_er         27.0
+dqn_netA_per        26.0
+dtype: float64
+</code></pre></div></div>
+
+<h2 id="experiment-evaluation">Experiment Evaluation</h2>
+
+<p>All of the 5 experiments successfully solved the task by acquiring scores of 25.0 to 27.0 which is much higher than the project guideline 13.0. Much to my disappointment Prioritized Experience Replay failed to enhance the training performance. The agents with basic Experience Replay reached higher scores faster than the others with PER. Plus the gap between DDQN and DQN does not appear to be noticable. I presume that the complexity of the problem environment was easy enough for the vanilla DQN to solve. DDQN might show some more drastic performance enhancement when solving pixel2action problems.</p>
+
+<h2 id="ideas-for-future-work">Ideas for Future Work</h2>
+<ul>
+  <li>
+    <p>Prioritized Experience Replay
+I’m not 100% sure about my implementation of Prioritized Experience Replay. My implementation might have some glitches that led to the slightly unsatisfying training performance compared to Experience Replay. I might try implementing PER using sumtree.</p>
+  </li>
+  <li>
+    <p>RAINBOW and distributed learning
+In the course material I read some information about distributed learning and RAINBOW that combines all of the techniques since the birth of DQN. I wonder how much of an improvement distributed learning would achieve.</p>
+  </li>
+  <li>
+    <p>pixel2action
+A simple DNN would not be complex enough to process raw pixel information in the given 3d environment. Using CNN to train an agent would be an interesting project to spend the winter.</p>
+  </li>
+</ul>
+
+<h2 id="let-the-agent-roll">Let the agent roll</h2>
+<p>I picked DDQN + Experience Replay as my best agent to play Banana Navigation task. Here’s how it plays.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">unityagents</span> <span class="kn">import</span> <span class="n">UnityEnvironment</span>
+
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">net</span><span class="p">,</span> <span class="n">agent</span>
+<span class="kn">import</span> <span class="nn">utils</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">params_dir</span> <span class="o">=</span> <span class="s">"ddqn_netA_er"</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">Params</span><span class="p">(</span><span class="n">params_dir</span><span class="p">)</span>
+<span class="n">params</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s">"cpu"</span><span class="p">)</span>
+<span class="n">params</span><span class="o">.</span><span class="n">model_pt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">"experiments/{}/model.pt"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">params_dir</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">net</span><span class="o">.</span><span class="n">dqn_network</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="n">ckpt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_checkpoint</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">model_pt</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dqn_network(
+  (network_front): Sequential(
+    (0): Linear(in_features=37, out_features=64, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=64, out_features=64, bias=True)
+    (3): ReLU()
+  )
+  (network_back): ModuleList(
+    (0): Linear(in_features=64, out_features=4, bias=True)
+  )
+)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">trained_agent</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">DDQNAgent</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">env</span> <span class="o">=</span> <span class="n">UnityEnvironment</span><span class="p">(</span><span class="n">file_name</span><span class="o">=</span><span class="s">"Banana.app"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>INFO:unityagents:
+'Academy' started successfully!
+Unity Academy name: Academy
+        Number of Brains: 1
+        Number of External Brains : 1
+        Lesson number : 0
+        Reset Parameters :
+        
+Unity brain name: BananaBrain
+        Number of Visual Observations (per agent): 0
+        Vector Observation space type: continuous
+        Vector Observation space size (per agent): 37
+        Number of stacked Vector Observation: 1
+        Vector Action space type: discrete
+        Vector Action space size (per agent): 4
+        Vector Action descriptions: , , , 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">brain_name</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">brain_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">brain</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">brains</span><span class="p">[</span><span class="n">brain_name</span><span class="p">]</span>
+
+<span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span> <span class="c1"># reset the environment
+</span><span class="n">state</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>            <span class="c1"># get the current state
+</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>                                          <span class="c1"># initialize the score
+</span><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">trained_agent</span><span class="o">.</span><span class="n">act</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>        <span class="c1"># select an action
+</span>    <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>        <span class="c1"># send the action to the environment
+</span>    <span class="n">next_state</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   <span class="c1"># get the next state
+</span>    <span class="n">reward</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                   <span class="c1"># get the reward
+</span>    <span class="n">done</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">local_done</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                  <span class="c1"># see if episode has finished
+</span>    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>                                <span class="c1"># update the score
+</span>    <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>                             <span class="c1"># roll over the state to next time step
+</span>    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>                                       <span class="c1"># exit loop if episode finished
+</span>        <span class="k">break</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Score: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reward: 0.0
+
+Score: 15.0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Counter</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({0.0: 285, 1.0: 15})
+</code></pre></div></div>
+
+<p><img src="../assets/materials/20181219/trained_agent.gif" alt="" /></p>
+
+<h3 id="random-agent">Random Agent</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">train_mode</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span> 
+<span class="n">state</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>            
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">action_size</span><span class="o">=</span> <span class="mi">4</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">action_size</span><span class="p">)</span>        
+    <span class="n">env_info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)[</span><span class="n">brain_name</span><span class="p">]</span>        
+    <span class="n">next_state</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">vector_observations</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>   
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                   
+    <span class="n">done</span> <span class="o">=</span> <span class="n">env_info</span><span class="o">.</span><span class="n">local_done</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                  
+    <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reward</span><span class="p">)</span>                          
+    <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>                             
+    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>                                       
+        <span class="k">break</span>
+    
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Score: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Score: 1.0
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Counter</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({1.0: 2, 0.0: 297, -1.0: 1})
+</code></pre></div></div>
+
+<p><img src="../assets/materials/20181219/random_agent.gif" alt="" /></p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=RL Project: Banana&url=http://localhost:4000/dqn_banana/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/dqn_banana/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/dqn_banana/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#Deep Reinforcement Learning" class="tag">&#35; Deep Reinforcement Learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

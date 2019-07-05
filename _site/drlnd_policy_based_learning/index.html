@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Review: Policy-Based Learning - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Review: Policy-Based Learning" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/drlnd_policy_based_learning/" property="og:url">
+  
+  
+    <meta content="2018-12-30T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20181230.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="Deep Reinforcement Learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Review: Policy-Based Learning">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/drlnd_policy_based_learning/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20181230.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20181230.png alt="Review: Policy-Based Learning">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Review: Policy-Based Learning</h1>
+        <div class="page-date"><span>2018, Dec 30&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="policy-based-learning">Policy-Based Learning</h2>
+
+<p>이전 포스팅에서 Q-Learning을 사용해 Cliff Walking과 Lunar Lander 문제를 풀어봤다. 문제가 간단한 Cliff Walking에서는 Q 테이블을, 상대적으로 복잡도가 높은 Lunar Lander에서는 Neural Network를 이용한 Function Approximation을 사용했다. 두가지 방식 모두 state를 입력받아 취할 수 있는 action의 value를 추정한다. 그리고 $\epsilon-greedy$ 방식을 사용해 점차 greedy action (value가 가장 높은 action)을 선택한다. 이를 Value-Based Learning이라고 한다.</p>
+
+<p><img src="../assets/materials/20181230/vbl_vs_pbl.png" alt="" /></p>
+
+<p>value 추정(1단계)과 action 선택(2단계)을 거치는 Value-Based Learning과 달리, Policy-Based Learning은 state에서 바로 action을 뽑아낸다. Policy-Based Learning의 출력값은 action space의 형태에 따라 달라질 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="outputs-of-policy-based-learning">Outputs of Policy-Based Learning</h3>
+
+<p>Policy-Based Learning은 문제의 Action Space가 discrete한지, continuous한지에 따라 출력의 형태가 조금 달라진다.</p>
+
+<p><img src="../assets/materials/20181230/discrete_vs_cont.png" alt="" /></p>
+
+<p>CartPole처럼 이동방향 좌/우 중 하나를 선택해야 하는 discrete한 action space에서 출력은 액션의 확률값이다. 따라서 Policy Network의 마지막 activation function은 <code class="highlighter-rouge">softmax</code> 를 쓴다.</p>
+
+<p>반대로 MountainCarContinuous v0 문제에서의 action값은 -1부터 +1사이의 값을 가진다. action이 -1에 가까우면 왼쪽 방향으로, +1에 가까우면 오른쪽 방향으로 차를 민다. -1에서 1사이의 값을 출력하기 위해 마지막 activation function으로 <code class="highlighter-rouge">tanh</code> 를 사용한다.</p>
+
+<p>CartPole과 비슷해보이지만, MountainCarContinuous v0에서의 action 값은 방향 뿐 아니라 그 강도도 표현한다. 즉 -1과 -0.5 모두 왼쪽으로 차를 밀지만 -1이 -0.5보다 더 세게 밀어낸다. MountainCarContinuous v0의 env의 step 함수를 보면 알 수 있다. env는 이 action 값을 현재 차의 <code class="highlighter-rouge">power</code>, <code class="highlighter-rouge">position</code> 등의 정보와 결합해 <code class="highlighter-rouge">velocity</code> 를 구하고 이를 통해 차의 정보를 갱신한다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#https://github.com/openai/gym/blob/master/gym/envs/classic_control/continuous_mountain_car.py
+#...
+</span><span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+
+        <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">force</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="n">velocity</span> <span class="o">+=</span> <span class="n">force</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">-</span><span class="mf">0.0025</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">velocity</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_speed</span><span class="p">):</span> <span class="n">velocity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_speed</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">velocity</span> <span class="o">&lt;</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_speed</span><span class="p">):</span> <span class="n">velocity</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">max_speed</span>
+        <span class="n">position</span> <span class="o">+=</span> <span class="n">velocity</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_position</span><span class="p">):</span> <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_position</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_position</span><span class="p">):</span> <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_position</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">position</span><span class="o">==</span><span class="bp">self</span><span class="o">.</span><span class="n">min_position</span> <span class="ow">and</span> <span class="n">velocity</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">):</span> <span class="n">velocity</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1">#...
+</span></code></pre></div></div>
+
+<p><br /></p>
+
+<h2 id="why-policy-based-learning">Why Policy-Based Learning?</h2>
+
+<p>Value-Based Learning(DQN 등)으로도 강화학습 문제를 잘 풀었는데 왜 Policy-Based Learning도 알아야 할까? 그 이유는 크게 3가지가 있다.</p>
+
+<p><br /></p>
+
+<h3 id="1-simplicity">1. Simplicity</h3>
+
+<p>Value-Based Learning에 비해 Policy-Based Learning이 더 간단하기 때문이다. Value-Based Learning은 1) action value 추정 2) action 선택의 2단계를 거치지만, Policy-Based Learning은 한번에 action을 뽑아버린다. 2단계를 1단계로 줄여버리니 더 간단하다고 할 수 있다.</p>
+
+<p>또 Policy-Based Learning은 효용이 적은 데이터를 저장하지 않아도 되는 장점이 있다. 강화학습 문제에서 대부분의 state는 같거나 비슷한 value를 가질 수도 있다. 게임은 처음부터 끝까지 절체절명의 상황만 발생하지 않는다. 환경이 조금 바뀌거나 아무 행동이나 취해도 승패에 영향이 전혀 없는 구간도 존재한다. 이 state-action pair에 대한 값을 모두 따로 따로 추정하고 저장하는 것은 분명 큰 낭비다.</p>
+
+<p>Policy-Based Learning은 state나 state-action pair의 값을 추정하지 않고 바로 action을 결정하므로, 문제 해결에 더 중요한 영향을 주는 복잡한 state에 집중할 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="2-true-stochastic-policies">2. True Stochastic Policies</h3>
+
+<p>Policy-Based Learning의 두번째 장점은 진정한 의미의 Stochastic Policy를 구현한다는데 있다. Policy에는 state에 대한 action을 리턴하는 deterministic policy와 그 액션을 선택할 확률을 리턴하는 stochastic policy가 있다.</p>
+
+<p><img src="../assets/materials/20181230/deterministic_vs_stochastic.png" alt="" /></p>
+
+<p>Value-Based Learning에서는 $\epsilon-greedy$ 방식을 통해 action을 결정한다. $\epsilon$의 확률로 주어진 action 중 하나를 랜덤하게 선택하고, $1-\epsilon$ 의 확률로 value가 가장 높은 greedy action을 선택한다. 학습 초기에는 $\epsilon$ 값을 크게 가져가서 다양한 action을 선택하게끔 하지만(exploration), 점점 $\epsilon$ 을 낮춰가면서 학습한 값에 기초해 판단을 내린다(exploitation). 이렇듯 Value-Based Learning은 확률적(stochastic)으로 action을 선택하지만, 이는 $\epsilon$에 따른 확률적 선택이지, 실제 action의 진짜 확률값을 학습한다고 볼 수는 없다.</p>
+
+<p>반대로 (action space가 discrete한 문제에서) Policy-Based Learning에서는 state를 입력받아 각 action을 선택할 확률을 직접적으로 도출한다. 학습을 통해 Policy Network는 expected return을 최대화하는 방향으로 weight를 조정한다.</p>
+
+<p><br /></p>
+
+<h3 id="3-continuous-action-space">3. Continuous Action Space</h3>
+
+<p>마지막으로 Policy-Based Learning은 Continuous한 Action Space를 가진 문제를 그대로 처리할 수 있다는 장점이 있다.</p>
+
+<p>Value-Based Learning에서 사용한 Q-Learning이나 DQN 알고리즘은 모두 state-action pair의 값을 추정하는 방식으로 작동한다. MountainCarContinuous V0에 DQN을 적용한다고 생각해보면 아구가 안맞는 부분이 생긴다. 이 문제는 action을 -1과 1사이의 실수값으로 받는데 DQN은 각 액션의 값을 리턴하고 이 중 하나를 고른다. 여기서 DQN을 사용하려면 -1~-0.5, -0.5~0, 0~0.5, 0.5~1 같은 식으로 continuous한 action space를 discretise해야만 한다.</p>
+
+<p>이에 반해 Policy-Based Learning은 별도의 변환과정 없이 continuous한 Action 값을 그대로 출력할 수 있다.</p>
+
+<p><br /></p>
+
+<h2 id="policy-based-algorithms">Policy-Based Algorithms</h2>
+
+<p>이전에 살펴본 DQN류의 알고리즘은 Neural Network를 사용해 Q함수를 근사했다. 그리고 Bellman Equation을 사용해 Q함수의 추정값과 타겟값 ($Y_t^{DQN} \doteq R_{t+1} + \gamma max_a Q(S_{t+1}, a; \theta_t^-)$) 간의 차이를 최소화하는 것을 목표로 네트워크의 파라미터를 조정했다.</p>
+
+<p>그런데 Policy-Based Learning은 별도의 타겟값을 목표로 학습하지 않는다. Q Network가 action의 value를 최대한 정확하게 추정하도록 학습한다면, Policy Network는 최적의 policy 자체를 학습하는 것을 목표로 한다. 최적의 policy를 학습했다면, 이를 사용해 agent가 얻는 expected return이 가장 커질 것이다.</p>
+
+<p>agent가 해당 policy를 사용해 얻는 expected return을 $J$라 표현한다면, $J$ 의 값은 사용한 policy의 파라미터 $\theta$에 따라 달라지므로 이를 $J(\theta)$ 로 표현할 수 있다.</p>
+
+<p><img src="../assets/materials/20181230/objective_fn.png" alt="" /></p>
+
+<p>그리고 Loss function을 minimise하는 Value-Based Learning(DQN류)나 일반적인 딥러닝 방법론과 달리 Policy-Based Algorithm은 $J(\theta)$를 maximise하는 것을 목표로 한다. 그래서 gradient를 사용하는 Policy Gradient류의 방법론들은 gradient descent가 아닌 gradient ascent를 사용한다. 자세한 내용은 다음 포스팅에서 알아보자.</p>
+
+<p><br /></p>
+
+<h2 id="non-gradient-policy-based-algorithms">Non-Gradient Policy-Based Algorithms</h2>
+
+<p>policy가 좋은지 나쁜지는 이를 사용하여 얻은 expected return $J(\theta)$가 높아지는지를 보면 된다. gradient를 사용하면 $\theta$ 를 업데이트할 방향을 알 수 있겠으나, gradient 없이도 policy를 개선시킬 수 있는 방법이 여럿 있다.</p>
+
+<p>파라미터  $\theta$ 에 약간씩 변화를 주어 $J(\theta)$ 를 계산한 다음, 이전 값에 비해 개선이 되었다면 점차 나은 policy에 가까워지고 있다고 판단하면 된다. 아래 소개하는 알고리즘들은 이 방식을 사용해 최적의 policy를 학습한다.</p>
+
+<p><img src="../assets/materials/20181230/algorithms.png" alt="" /></p>
+
+<h3 id="1-hill-climbing">1. Hill Climbing</h3>
+
+<p>Hill Climbing은 가장 기본적인 방식으로 약간의 노이즈를 주어 새로운 $\theta^{\prime}$ 을 얻는다. 이를 사용해 얻은 $J(\theta^{\prime})$ 이 기존 $J(\theta)$ 보다 높다면 파라미터를 $\theta^{\prime}$ 으로 업데이트한다.</p>
+
+<h3 id="2-steepest-ascent-hill-climbing">2. Steepest Ascent Hill Climbing</h3>
+
+<p>Hill Climbing은 한번에 한개의 $\theta^{\prime}$ 을 생성하고 비교한다. noise는 랜덤으로 생성되기 때문에 항상 더 나은 방향으로 파라미터가 개선되기 어렵다. 하나 대신 여러개를 생성하고 그 중에서 가장 $J$ 가 높은 파라미터를 선택하면 어떨까? 하는 것이 Steepest Ascent Hill Climbing이다.</p>
+
+<h3 id="3-cross-entropy-method">3. Cross Entropy Method</h3>
+
+<p>Steepest Ascent Hill Climbing이 여러 파라미터 후보 중 $J$가 가장 높은 하나만 선택했다면, Cross Entropy Method는 가장 $J$가 높은 $N$ 개 혹은 $N$ %를 고른 후 이들 파라미터의 평균을 구한다.</p>
+
+<h3 id="4-evolution-strategy">4. Evolution Strategy</h3>
+
+<p>Cross Entropy Method가 가장 나은 파라미터들의 평균을 구했다면, Evolution Strategy는 각 후보의 $J$ 가 전체 $J$의 합에서 차지하는 비율 만큼을 weight로 사용해 파라미터의 weighted sum을 구한다. 즉 $J$ 가 높을수록 새로운 파라미터에 영향을 더 많이 주는 방식이다.</p>
+
+<p><br /></p>
+
+<p>이 외에도 Noise를 뽑는 범위(search radius)를 미리 지정된 스케쥴에 따라 점차 줄여가는 Simulated Annealing이나 더 나은 policy를 얻음에 따라 범위를 줄여가는 Adaptive Noise Scaling 등이 있다.</p>
+
+<p>다음에는 Policy Gradient를 사용한 방법에 대해 알아보자.</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Review: Policy-Based Learning&url=http://localhost:4000/drlnd_policy_based_learning/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/drlnd_policy_based_learning/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/drlnd_policy_based_learning/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#Deep Reinforcement Learning" class="tag">&#35; Deep Reinforcement Learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

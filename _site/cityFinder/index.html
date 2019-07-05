@@ -1,0 +1,2020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Which Continent Does Pyeongchang Belong To? - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Which Continent Does Pyeongchang Belong To?" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/cityFinder/" property="og:url">
+  
+  
+    <meta content="2018-02-19T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20180219.png" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="deep learning" property="article:tag">
+    
+    <meta content="nlp" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Which Continent Does Pyeongchang Belong To?">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/cityFinder/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20180219.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20180219.png alt="Which Continent Does Pyeongchang Belong To?">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Which Continent Does Pyeongchang Belong To?</h1>
+        <div class="page-date"><span>2018, Feb 19&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <p>A couple of months ago, I found an abandoned world map in my new office space, and put it on the wall.</p>
+
+<p><img src="/assets/materials/20180219/worldmap.jpg" alt="World Map" /></p>
+
+<p>One day I stumbled upon an interesting idea when looking at the atlas. 
+The names of the cities are similar to each other when they are geographically close to each other. 
+For example, Stratford, Wilford, and Bradford are in England, Europe. 
+Pyeongchang, Pyongyang are in the Korean peninsula, Asia. 
+<img src="/assets/materials/20180219/pyeongchang.png" alt="pyeongchang" /></p>
+
+<p>On hearing Pyeongchang and Pyongyang, one could think that they are in the same area without any difficulties.
+Like this poor pilot (Source: <a href="http://www.telegraph.co.uk/news/2017/04/02/airport-mix-up-sees-winter-olympics-delegation-land-pyongyang/">telegraph.co.uk</a>).</p>
+
+<p><img src="/assets/materials/20180219/poor_pilot.png" alt="poor pilot" /></p>
+
+<p>If we can tell where the cities are just by hearing their names, can we train a machine to do that too?</p>
+
+<p><br /></p>
+
+<h2 id="dataset">Dataset</h2>
+
+<p>To train a complicated Deep Learning model, one would need a lot of data. The more, the merrier!</p>
+
+<p>Wikipedia provides a list of cities with 100,000+ residents for free, but it wasn’t enough. 
+I found a free source that contains as many as 10,000 cities. 
+As it didn’t have the continent label I needed, I preprocessed it a little bit to get the dataset I wanted.</p>
+
+<p>You can download it from <a href="https://github.com/junkwhinger/city_finder">my GitHub repo</a>. 
+It looks like the following table, and it has 7,221 cities and their corresponding country and continent information.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span>
+
+
+<span class="n">raw_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'city_continent.csv'</span><span class="p">)</span>
+<span class="n">raw_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>city_ascii</th>
+      <th>country</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Qal eh-ye</td>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Chaghcharan</td>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Lashkar Gah</td>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Zaranj</td>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Tarin Kowt</td>
+      <td>Afghanistan</td>
+      <td>Asia</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><br /></p>
+
+<h2 id="approach">Approach</h2>
+
+<p>The goal is to find and optimize a function that maps the city names to their continents. 
+It is a simple text-classification problem. I used PyTorch which I’ve heard a lot about recently.</p>
+
+<p>Here’s how I designed the process.</p>
+
+<h3 id="1-prepare-dataset">1. Prepare Dataset</h3>
+<p>split the dataset into train, validation, and test set.</p>
+
+<h3 id="2-define-vocabulary">2. Define Vocabulary</h3>
+<p>build a vocabulary to encode text into vectors</p>
+
+<h3 id="3-define-lstm-model">3. Define LSTM model</h3>
+<p>uni/bidirectional, number of embeddings, number of hidden units, number of layers, dropout</p>
+
+<h3 id="4-train">4. Train</h3>
+<p>run training</p>
+
+<h3 id="5-evaluate">5. Evaluate</h3>
+<p>compare model performance on test set</p>
+
+<p><br /></p>
+
+<h2 id="1-prepare-dataset-1">1. Prepare Dataset</h2>
+<p><code class="highlighter-rouge">sklearn</code>’s <code class="highlighter-rouge">train_test_split</code> really comes in handy when chopping the dataset nicely. 
+I made a function named <code class="highlighter-rouge">prepare_dataset</code> to split the raw dataset into train, validation, and test set, and to save them in the target directory.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="k">def</span> <span class="nf">prepare_dataset</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)[[</span><span class="s">'city_ascii'</span><span class="p">,</span> <span class="s">'continent'</span><span class="p">]]</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> 
+                                                        <span class="n">df</span><span class="o">.</span><span class="n">continent</span><span class="p">,</span> 
+                                                        <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+                                                        <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> 
+                                                        <span class="n">stratify</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">continent</span><span class="p">)</span>
+
+    <span class="n">X_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> 
+                                                        <span class="n">y_train</span><span class="p">,</span> 
+                                                        <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> 
+                                                        <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> 
+                                                        <span class="n">stratify</span><span class="o">=</span><span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">trainSet</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">valSet</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">testSet</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">target_dir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
+    
+    <span class="n">trainSet</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="s">'_train.csv'</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">valSet</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="s">'_val.csv'</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">testSet</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="s">'_test.csv'</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+
+<span class="n">prepare_dataset</span><span class="p">(</span><span class="s">'city_continent.csv'</span><span class="p">,</span> <span class="s">'dataset'</span><span class="p">)</span></code></pre></figure>
+
+<p><br /></p>
+
+<h2 id="2-define-vocabulary-1">2. Define Vocabulary</h2>
+
+<p>When building a text-based deep learning model, it’s cumbersome to transform text into vectors. 
+We would have to make a word or character set and make a dictionary that maps a word to an integer. 
+And you would want to give space to <code class="highlighter-rouge">&lt;unk&gt;</code> in case the model stumbles upon an unseen character.</p>
+
+<p>Luckily a group of kind-minded geniuses made a publicly available tool for it, and its name is <code class="highlighter-rouge">torchtext</code><a href="https://github.com/pytorch/text">(GitHub)</a>. 
+It is a fantastic tool that enables quick and easy vocab-construction.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">torchtext</span> <span class="kn">import</span> <span class="n">data</span></code></pre></figure>
+
+<p>First, we need to define the text and label columns. <code class="highlighter-rouge">CITY</code> is a column that has city name text. 
+Because it is a sequential data type, I give it <code class="highlighter-rouge">sequential=True</code>. 
+Sequence processing is easily done just by passing the tokenizer function I defined below.</p>
+
+<p>The column <code class="highlighter-rouge">CONTINENT</code> is a categorical data type, yet it is not a numerical datatype yet. So I pass <code class="highlighter-rouge">use_vocab=True</code> for it.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">## City name tokenizer
+## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']
+</span><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="p">(</span><span class="s">"Seoul"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;</span>    <span class="p">[</span><span class="s">'S'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">,</span> <span class="s">'o'</span><span class="p">,</span> <span class="s">'u'</span><span class="p">,</span> <span class="s">'l'</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">CITY</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">pad_first</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+<span class="n">CONTINENT</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_vocab</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">data.TabularDataset.splits</code> is a super conveninent function that loads the preprocessed datasets I splited above. 
+<code class="highlighter-rouge">CITY</code> and <code class="highlighter-rouge">CONTINENT</code> fields are passed into the function with the actual column name.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">TabularDataset</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s">'dataset'</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="s">'_train.csv'</span><span class="p">,</span>
+    <span class="n">validation</span><span class="o">=</span><span class="s">'_val.csv'</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'_test.csv'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[(</span><span class="s">'city_ascii'</span><span class="p">,</span> <span class="n">CITY</span><span class="p">),</span> <span class="p">(</span><span class="s">'continent'</span><span class="p">,</span> <span class="n">CONTINENT</span><span class="p">)]</span>
+<span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">some_field.build_vocab(dataset)</code> literally builds vocab. Before the construction, our data field doesn’t have its vocab.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span>
+
+<span class="o">&gt;&gt;</span>    <span class="o">---------------------------------------------------------------------------</span>
+<span class="o">&gt;&gt;</span>
+<span class="o">&gt;&gt;</span>    <span class="nb">AttributeError</span>                            <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span>
+<span class="o">&gt;&gt;</span>    <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="n">ae92b3eb66a0</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">&gt;&gt;</span>    <span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span>
+<span class="o">&gt;&gt;</span>    
+<span class="o">&gt;&gt;</span>
+<span class="o">&gt;&gt;</span>    <span class="nb">AttributeError</span><span class="p">:</span> <span class="s">'Field'</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">no</span> <span class="n">attribute</span> <span class="s">'vocab'</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">CITY</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">CONTINENT</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span></code></pre></figure>
+
+<p>And now it does. <code class="highlighter-rouge">field.vocab.stoi</code> maps characters to their integers, <code class="highlighter-rouge">field.vocab.itos</code> the other way round.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="s">'A'</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;</span>    <span class="mi">26</span>
+
+
+<span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;</span>    <span class="s">'A'</span>
+
+
+
+<span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">freqs</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">Counter</span><span class="p">({</span><span class="s">'Africa'</span><span class="p">:</span> <span class="mi">1284</span><span class="p">,</span>
+             <span class="s">'Asia'</span><span class="p">:</span> <span class="mi">2334</span><span class="p">,</span>
+             <span class="s">'Europe'</span><span class="p">:</span> <span class="mi">847</span><span class="p">,</span>
+             <span class="s">'North America'</span><span class="p">:</span> <span class="mi">1418</span><span class="p">,</span>
+             <span class="s">'Oceania'</span><span class="p">:</span> <span class="mi">297</span><span class="p">,</span>
+             <span class="s">'South America'</span><span class="p">:</span> <span class="mi">1041</span><span class="p">})</span></code></pre></figure>
+
+<p>Let’s turn the loaded datasets into generators which are handy when training a neural network. 
+<code class="highlighter-rouge">data.BucketIterator.splits</code> uses <code class="highlighter-rouge">sort_key</code> to group city names that are of similar lengths, which minimizes the number of paddings.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">BucketIterator</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span> <span class="n">batch_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">sort_key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">),</span> <span class="n">device</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>Here’s a vectorized city name and continent label a train iterator would deliver to the model.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">sample</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_iter</span><span class="p">))</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="nb">list</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;</span>    <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+
+
+<span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)])</span>
+
+<span class="o">&gt;&gt;</span>    <span class="s">'Kipushi'</span>
+
+
+<span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+
+<span class="o">&gt;&gt;</span>     <span class="mi">3</span>
+<span class="o">&gt;&gt;</span>    <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span> <span class="n">of</span> <span class="n">size</span> <span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span>
+
+<span class="o">&gt;&gt;</span>    <span class="s">'Africa'</span></code></pre></figure>
+
+<p><br /></p>
+
+<h2 id="3-define-lstm-models">3. Define LSTM Models</h2>
+<p>A lot of tutorial codes that I referenced use Class to define their own neural network in PyTorch. 
+I found this approach a little bit confusing at first because I was quite happy with Keras sequential but it has kind of grown on me, and I like how I can generate multiple models just by tweaking the parameters.</p>
+
+<p><code class="highlighter-rouge">ParameterGrid</code> from <code class="highlighter-rouge">sklearn</code> is a handy tool for building a parameter grid. 
+Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in the fully connected layer at the end, and whether the LSTM is bidirectional.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">ParameterGrid</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="p">{</span><span class="s">'BATCH_SIZE'</span><span class="p">:</span> <span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="s">'EMBEDDING_DIM'</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span> <span class="s">'HIDDEN_DIM'</span><span class="p">:</span> <span class="p">[</span><span class="mi">100</span><span class="p">],</span> 
+ <span class="s">'nb_1stm_layers'</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s">'lstm_dropout'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> 
+ <span class="s">'lstm_bidirectional'</span><span class="p">:</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">],</span> <span class="s">'fc_dropout'</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]}</span>
+
+<span class="n">param_grids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">grid</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of LSTM models to generate: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_grids</span><span class="p">)))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">Number</span> <span class="n">of</span> <span class="n">LSTM</span> <span class="n">models</span> <span class="n">to</span> <span class="n">generate</span><span class="p">:</span> <span class="mi">24</span></code></pre></figure>
+
+<p>Building such versatile model taught me some lessons.</p>
+<ul>
+  <li>it’s better to pass <code class="highlighter-rouge">use_gpu</code> to the model because the Variables need <code class="highlighter-rouge">.cuda()</code> to run in the GPU environment.</li>
+  <li>when the LSTM layer is <code class="highlighter-rouge">bidirectional</code> the <code class="highlighter-rouge">hidden_dim</code> in LSTM gets doubled</li>
+  <li>if you want to deactivate <code class="highlighter-rouge">dropout</code>, just pass <code class="highlighter-rouge">0</code> to it.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+
+<span class="n">use_gpu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">LSTMModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">label_size</span><span class="p">,</span>
+                 <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span>
+                 <span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="n">lstm_dropout</span><span class="p">,</span> <span class="n">lstm_bidirectional</span><span class="p">,</span>
+                 <span class="n">fc_dropout</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_size</span> <span class="o">=</span> <span class="n">label_size</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">embedding_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">hidden_dim</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">nb_lstm_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">lstm_dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span> <span class="o">=</span> <span class="n">lstm_bidirectional</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">,</span> 
+                            <span class="n">num_layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> 
+                            <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span><span class="p">,</span>
+                            <span class="n">bidirectional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">fc_dropout</span><span class="p">)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
+                
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">lstm_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span><span class="p">(</span><span class="n">lstm_out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_probs</span></code></pre></figure>
+
+<p>I defined <code class="highlighter-rouge">load_params</code> function that returns a model given a param set.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">modelClass</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">modelClass</span><span class="p">(</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'BATCH_SIZE'</span><span class="p">],</span>
+                  <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="p">),</span>
+                  <span class="n">label_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c1">## b.c of &lt;unk&gt;
+</span>                  <span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'EMBEDDING_DIM'</span><span class="p">],</span>
+                  <span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'HIDDEN_DIM'</span><span class="p">],</span>
+                  <span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'nb_1stm_layers'</span><span class="p">],</span>
+                  <span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'lstm_dropout'</span><span class="p">],</span>
+                  <span class="n">lstm_bidirectional</span><span class="o">=</span><span class="n">pg</span><span class="p">[</span><span class="s">'lstm_bidirectional'</span><span class="p">],</span>
+                  <span class="n">fc_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'fc_dropout'</span><span class="p">],</span>
+                  <span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">a_model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a_model</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">LSTMModel</span> <span class="p">(</span>
+      <span class="p">(</span><span class="n">embeddings</span><span class="p">):</span> <span class="n">Embedding</span><span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+      <span class="p">(</span><span class="n">lstm</span><span class="p">):</span> <span class="n">LSTM</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">bidirectional</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+      <span class="p">(</span><span class="n">hidden2label</span><span class="p">):</span> <span class="n">Linear</span> <span class="p">(</span><span class="mi">200</span> <span class="o">-&gt;</span> <span class="mi">6</span><span class="p">)</span>
+      <span class="p">(</span><span class="n">dropout</span><span class="p">):</span> <span class="n">Dropout</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">nb_trainable_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">param</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">a_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of parameters to train: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">nb_trainable_params</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">Number</span> <span class="n">of</span> <span class="n">parameters</span> <span class="n">to</span> <span class="n">train</span><span class="p">:</span> <span class="mi">168606</span></code></pre></figure>
+
+<p><br /></p>
+
+<h2 id="4-train-1">4. Train</h2>
+<p>Although it doesn’t take a long time to train a model thanks to the petit dataset, 24 models could be quite hefty for my cpu. 
+To hasten the training process I ran the following code in GPU environment on FloydHub.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+
+<span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">"result_dir"</span><span class="p">))</span>
+
+
+<span class="c1">## make checkpoint directory if it doesn't exist    
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/'</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tr</span> <span class="o">==</span> <span class="n">pr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span></code></pre></figure>
+
+<p>f1_score is a useful metric to monitor when the label is not balanced. <code class="highlighter-rouge">Asia</code> is nearly 10 times the size of <code class="highlighter-rouge">Oceania</code>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">freqs</span>
+
+<span class="o">&gt;&gt;</span>     <span class="n">Counter</span><span class="p">({</span><span class="s">'Africa'</span><span class="p">:</span> <span class="mi">1284</span><span class="p">,</span>
+             <span class="s">'Asia'</span><span class="p">:</span> <span class="mi">2334</span><span class="p">,</span>
+             <span class="s">'Europe'</span><span class="p">:</span> <span class="mi">847</span><span class="p">,</span>
+             <span class="s">'North America'</span><span class="p">:</span> <span class="mi">1418</span><span class="p">,</span>
+             <span class="s">'Oceania'</span><span class="p">:</span> <span class="mi">297</span><span class="p">,</span>
+             <span class="s">'South America'</span><span class="p">:</span> <span class="mi">1041</span><span class="p">})</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span>
+<span class="k">def</span> <span class="nf">get_f1</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s">'weighted'</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">train_epoch_progress</code> is for the training dataset, and <code class="highlighter-rouge">evaluate</code> for the validation and test set.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label_field</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1">## train mode
+</span>    
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_iter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)
+</span>        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c1">## .cpu() to get it from gpu env
+</span>        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_iter</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">'Train: loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>    
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">': loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span></code></pre></figure>
+
+<p>Then I ran the models for 25 epochs and saved their best performing model when they beat their own previous records based on validation f1-score.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pg</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">param_grids</span><span class="p">):</span>
+    
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">'** Training pg:{} **'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="c1">## fixed Learning Rate as 0.001
+</span>    <span class="c1">## tried SGD with lr_scheduler
+</span>    <span class="c1">## but it was slower than Adam and showed inferior validation accuracy and f1-score.
+</span>    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+    <span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+    
+    <span class="n">best_val_f1</span> <span class="o">=</span> <span class="mf">0.0</span>
+    
+    <span class="n">record</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        
+        <span class="n">rec_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">train_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">train_f1</span> <span class="o">=</span> <span class="n">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
+                                         <span class="n">train_iter</span><span class="p">,</span> 
+                                         <span class="n">loss_function</span><span class="p">,</span> 
+                                         <span class="n">optimizer</span><span class="p">,</span>
+                                         <span class="n">CITY</span><span class="p">,</span> 
+                                         <span class="n">CONTINENT</span><span class="p">,</span> 
+                                         <span class="n">epoch</span><span class="p">)</span>
+        
+        <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Val'</span><span class="p">)</span>
+        
+        <span class="c1">## when the current validation f1 exceeds the best validation f1 so far,
+</span>        <span class="c1">## replace the best_val_f1 with val_f1
+</span>        <span class="c1">## and best_model with the current model
+</span>        <span class="c1">## and save the epoch, state_dict, and optimizer for the later use.
+</span>        <span class="k">if</span> <span class="n">val_f1</span> <span class="o">&gt;</span> <span class="n">best_val_f1</span><span class="p">:</span>
+        
+            <span class="n">best_val_f1</span> <span class="o">=</span> <span class="n">val_f1</span>
+            <span class="n">best_model</span> <span class="o">=</span> <span class="n">model</span>
+            
+            <span class="n">save_checkpoint</span><span class="p">({</span>
+                <span class="s">'epoch'</span><span class="p">:</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s">'state_dict'</span><span class="p">:</span> <span class="n">best_model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
+                <span class="s">'optimizer'</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+            <span class="p">},</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s">'pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1">## logging for visulisation
+</span>        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'epoch'</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'training_loss'</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_loss</span>
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'training_acc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'train_f1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_f1</span>
+
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'val_loss'</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_loss</span>
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'val_acc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_acc</span>
+        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'test_f1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">val_f1</span>
+
+        <span class="n">record</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rec_dict</span><span class="p">)</span>
+    
+    <span class="n">rec_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    
+    <span class="n">rec_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__record.csv'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="c1"># eval on test
+</span>    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
+    
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">seconds_elapsed</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"pg:{} took {} seconds."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">seconds_elapsed</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    </code></pre></figure>
+
+<p>Each model roughly took 1 ~ 2 minutes in GPU environment.</p>
+
+<p><br /></p>
+
+<h2 id="5-performance-evaluation">5. Performance Evaluation</h2>
+<p>Time to choose the best performing model. In the training process above, my 24 LSTMModels left their own best records and checkpoints. Here are the top 5 models that showed the highest accuracy and f1-score on the test dataset.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="n">checkpoints</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/*.tar'</span><span class="p">)</span></code></pre></figure>
+
+<p>I tweaked the <code class="highlighter-rouge">evaluate</code> function above and added some codes for logging.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">re</span>
+<span class="k">def</span> <span class="nf">evaluate_on_test</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">pg_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'/pg_(.*)__epoch'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'__epoch_(.*).pth'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="n">pg_idx</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span> <span class="s">'cpu'</span><span class="p">})</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+    <span class="n">avg_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'FINAL TEST'</span><span class="p">)</span>
+    
+    <span class="n">rec_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">rec_dict</span><span class="p">[</span><span class="s">'pg'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pg_idx</span>
+    <span class="n">rec_dict</span><span class="p">[</span><span class="s">'epoch'</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch</span>
+    <span class="n">rec_dict</span><span class="p">[</span><span class="s">'test_avg_loss'</span><span class="p">]</span> <span class="o">=</span> <span class="n">avg_loss</span>
+    <span class="n">rec_dict</span><span class="p">[</span><span class="s">'test_acc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">test_acc</span>
+    <span class="n">rec_dict</span><span class="p">[</span><span class="s">'f1_score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1</span>
+    <span class="k">return</span> <span class="n">rec_dict</span></code></pre></figure>
+
+<p>As the final f1-score is the ultimate measuring stick for choosing the best model, I loaded all the checkpoints saved during the training and computed their test loss, accuracy and f1-score.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">rec_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">checkpoints</span><span class="p">:</span>
+    <span class="n">rd</span> <span class="o">=</span> <span class="n">evaluate_on_test</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+    <span class="n">rec_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rd</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;</span>    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_19__epoch_5</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="n">FINAL</span> <span class="n">TEST</span><span class="p">:</span> <span class="n">loss</span> <span class="mf">1.25</span> <span class="o">|</span> <span class="n">acc</span> <span class="mf">52.4</span> <span class="o">|</span> <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="mf">0.503</span>
+    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_8__epoch_1</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="n">FINAL</span> <span class="n">TEST</span><span class="p">:</span> <span class="n">loss</span> <span class="mf">1.36</span> <span class="o">|</span> <span class="n">acc</span> <span class="mf">47.9</span> <span class="o">|</span> <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="mf">0.434</span>
+    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_7__epoch_4</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="n">FINAL</span> <span class="n">TEST</span><span class="p">:</span> <span class="n">loss</span> <span class="mf">1.20</span> <span class="o">|</span> <span class="n">acc</span> <span class="mf">52.4</span> <span class="o">|</span> <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="mf">0.504</span>
+    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_17__epoch_10</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="n">FINAL</span> <span class="n">TEST</span><span class="p">:</span> <span class="n">loss</span> <span class="mf">1.21</span> <span class="o">|</span> <span class="n">acc</span> <span class="mf">55.2</span> <span class="o">|</span> <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="mf">0.536</span>
+    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_11__epoch_2</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="n">FINAL</span> <span class="n">TEST</span><span class="p">:</span> <span class="n">loss</span> <span class="mf">1.29</span> <span class="o">|</span> <span class="n">acc</span> <span class="mf">50.3</span> <span class="o">|</span> <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="mf">0.475</span>
+    <span class="o">/</span><span class="n">output</span><span class="o">/</span><span class="n">result_dir</span><span class="o">/</span><span class="n">pg_11__epoch_1</span><span class="o">.</span><span class="n">pth</span><span class="o">.</span><span class="n">tar</span>
+    <span class="o">...</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rec_list</span><span class="p">)[[</span><span class="s">'pg'</span><span class="p">,</span> <span class="s">'epoch'</span><span class="p">,</span> <span class="s">'test_avg_loss'</span><span class="p">,</span> <span class="s">'test_acc'</span><span class="p">,</span> <span class="s">'f1_score'</span><span class="p">]]</span>
+
+<span class="n">by_accuracy</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'test_acc'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">by_accuracy</span><span class="p">[</span><span class="s">'rank'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_accuracy</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">by_accuracy</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></code></pre></figure>
+
+<p><br /></p>
+
+<h3 id="top-5-models-by-test-accuracy">top 5 models by test accuracy</h3>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pg</th>
+      <th>epoch</th>
+      <th>test_avg_loss</th>
+      <th>test_acc</th>
+      <th>f1_score</th>
+      <th>rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>17</td>
+      <td>12</td>
+      <td>1.189121</td>
+      <td>0.580913</td>
+      <td>0.565772</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>22</td>
+      <td>16</td>
+      <td>1.158638</td>
+      <td>0.579530</td>
+      <td>0.563450</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>12</td>
+      <td>1.171896</td>
+      <td>0.578147</td>
+      <td>0.559408</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>11</td>
+      <td>9</td>
+      <td>1.183090</td>
+      <td>0.568465</td>
+      <td>0.550840</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>19</td>
+      <td>6</td>
+      <td>1.195676</td>
+      <td>0.565698</td>
+      <td>0.545025</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p><br /></p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">by_f1</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'f1_score'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">by_f1</span><span class="p">[</span><span class="s">'rank'</span><span class="p">]</span> <span class="o">=</span> <span class="n">by_f1</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">by_f1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></code></pre></figure>
+
+<p><br /></p>
+
+<h3 id="top-5-models-by-test-f1-score">top 5 models by test f1-score</h3>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pg</th>
+      <th>epoch</th>
+      <th>test_avg_loss</th>
+      <th>test_acc</th>
+      <th>f1_score</th>
+      <th>rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>17</td>
+      <td>12</td>
+      <td>1.189121</td>
+      <td>0.580913</td>
+      <td>0.565772</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>22</td>
+      <td>16</td>
+      <td>1.158638</td>
+      <td>0.579530</td>
+      <td>0.563450</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>12</td>
+      <td>1.171896</td>
+      <td>0.578147</td>
+      <td>0.559408</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>23</td>
+      <td>15</td>
+      <td>1.183138</td>
+      <td>0.565698</td>
+      <td>0.556997</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>22</td>
+      <td>15</td>
+      <td>1.170758</td>
+      <td>0.565698</td>
+      <td>0.554061</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">res_df</span><span class="p">[</span><span class="s">'pg_epoch'</span><span class="p">]</span> <span class="o">=</span> <span class="s">"pg_"</span> <span class="o">+</span> <span class="n">res_df</span><span class="o">.</span><span class="n">pg</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s">"__"</span> <span class="o">+</span> <span class="s">"epoch_"</span> <span class="o">+</span> <span class="n">res_df</span><span class="o">.</span><span class="n">epoch</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">res_df2</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'pg_epoch'</span><span class="p">)[[</span><span class="s">'test_acc'</span><span class="p">,</span> <span class="s">'f1_score'</span><span class="p">]]</span></code></pre></figure>
+
+<p>It seems that the test accuracy and f1-score are in a linear relationship. Taking into consideration that the dataset was imbalance, f1-score should be the proper metric to decide the best model. Thus, pg_17 at epoch 12 is the best performing model among 24 LSTM models I trained. (and in terms of test accuracy)</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">res_df2</span><span class="o">.</span><span class="n">test_acc</span><span class="p">,</span> <span class="n">res_df2</span><span class="o">.</span><span class="n">f1_score</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'test accuracy'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'test f1 score'</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">'checkpoint accuracy ~ f1-score scatterplot'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_65_0.png" alt="png" /></p>
+
+<p>pg_17 has three bidirectional layers with lstm dropout 0.5 and fc dropout 0.5.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">param_grids</span><span class="p">[</span><span class="mi">17</span><span class="p">]</span></code></pre></figure>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'BATCH_SIZE': 16,
+ 'EMBEDDING_DIM': 100,
+ 'HIDDEN_DIM': 100,
+ 'fc_dropout': 0.5,
+ 'lstm_bidirectional': True,
+ 'lstm_dropout': 0.5,
+ 'nb_1stm_layers': 3}
+</code></pre></div></div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">visualise_checkpoint</span><span class="p">(</span><span class="n">pg</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">param_grids</span><span class="p">[</span><span class="n">pg</span><span class="p">])</span>
+    <span class="n">pg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">"/pg_{}__record.csv"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">pg</span><span class="p">))</span>
+    <span class="n">pg_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+    
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">training_loss</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">val_loss</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'loss'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">training_acc</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">val_acc</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">train_f1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">test_f1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'val_f1'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'f1'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"pg_{} metrics over epochs"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">pg</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p>It looks like pg_17 started suffering from overfitting after 14~15 epoch going by the rising validation loss. However, pg_17 managed to deal with overfitting better than others especially when compared to other models like pg_0 that has its dropout options deactivated.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">visualise_checkpoint</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="o">&gt;</span>    <span class="p">{</span><span class="s">'BATCH_SIZE'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'EMBEDDING_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s">'HIDDEN_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> \
+      <span class="s">'fc_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s">'lstm_bidirectional'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'lstm_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s">'nb_1stm_layers'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_70_1.png" alt="png" /></p>
+
+<p>pg_0 is terribly overfitted to the training dataset. It’s training accuracy and f1-score nearly reaches 1 after 18th epoch.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">visualise_checkpoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+<span class="o">&gt;</span>    <span class="p">{</span><span class="s">'BATCH_SIZE'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s">'EMBEDDING_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s">'HIDDEN_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> \
+      <span class="s">'fc_dropout'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'lstm_bidirectional'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">'lstm_dropout'</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">'nb_1stm_layers'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_71_1.png" alt="png" /></p>
+
+<p><br /></p>
+
+<h2 id="inference-test--confusion-matrix">Inference Test &amp; Confusion Matrix</h2>
+<p>Test f1-score is a great measurement, but I need to go deeper to see the strengths and weaknesses of the models I’ve trained. As stated above, this dataset is more or less imbalanced. Spitting out ‘Asia’ at any given city name would result in higher than 1/6 accuracy. Are the models trained properly?</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_model_path</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">best_model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span> <span class="s">'cpu'</span><span class="p">})</span>
+<span class="n">best_model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">inference</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">targetTensor</span><span class="p">)</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'res_idx'</span><span class="p">,</span> <span class="s">'nll'</span><span class="p">])</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'prob'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">nll</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'continent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">res_idx</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'prob'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res_df</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s">'Pyeongchang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-0.014178</td>
+      <td>0.986</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-5.159672</td>
+      <td>0.006</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-5.615287</td>
+      <td>0.004</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-6.272159</td>
+      <td>0.002</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-6.410239</td>
+      <td>0.002</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-6.759290</td>
+      <td>0.001</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s">'Pyongyang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-0.017561</td>
+      <td>0.983</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-4.879560</td>
+      <td>0.008</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-5.401738</td>
+      <td>0.005</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-6.174614</td>
+      <td>0.002</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-6.269334</td>
+      <td>0.002</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-6.627199</td>
+      <td>0.001</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Voila! pg_17 got the answers correct! What about some tricky cities from England that sound like the ones in North America?</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s">'Sheffield'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.321180</td>
+      <td>0.725</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-2.430576</td>
+      <td>0.088</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-2.543775</td>
+      <td>0.079</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-2.955052</td>
+      <td>0.052</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-3.102797</td>
+      <td>0.045</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-4.496040</td>
+      <td>0.011</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s">'Bradford'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.838458</td>
+      <td>0.432</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-1.361331</td>
+      <td>0.256</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-2.097363</td>
+      <td>0.123</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-2.284119</td>
+      <td>0.102</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-3.026701</td>
+      <td>0.048</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-3.265310</td>
+      <td>0.038</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="s">'York'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.825349</td>
+      <td>0.438</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-1.733889</td>
+      <td>0.177</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-1.913949</td>
+      <td>0.147</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-2.118887</td>
+      <td>0.120</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-2.342693</td>
+      <td>0.096</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-3.835471</td>
+      <td>0.022</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>As expected, the model shows suboptimal performance when given confusing city names. Let’s quantify its performance by continent using sklearn’s confusion matrix.</p>
+
+<p>Are Asian cities</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">evaluate_by_continent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>    
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span> <span class="o">=</span> <span class="n">evaluate_by_continent</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Eval'</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cf</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+<span class="n">cf_norm</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'float'</span><span class="p">)</span> <span class="o">/</span> <span class="n">cf</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+<span class="n">col_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">ci</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">col_idx</span><span class="p">]</span>
+
+<span class="n">cf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">cf_norm_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cf_norm</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">'g'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_norm_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Normalised Confusion Matrix"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_87_0.png" alt="png" /></p>
+
+<p>The model’s prediction power is pretty good with Asian cities. It might imply that the Asian city names are named quite differently from the cities in other continents. It could be far-fetched, but I think the world history during the Great Expansion might have a plausible answer to this phenomenon.</p>
+
+<p><br /></p>
+
+<h2 id="would-ensemble-improve-performance">Would Ensemble improve performance?</h2>
+<p>I used simple voting mechanism by which the label that is chosen the most gets to be the output of the ensemble model.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">by_f1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span></code></pre></figure>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>pg</th>
+      <th>epoch</th>
+      <th>test_avg_loss</th>
+      <th>test_acc</th>
+      <th>f1_score</th>
+      <th>rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>17</td>
+      <td>12</td>
+      <td>1.189121</td>
+      <td>0.580913</td>
+      <td>0.565772</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>22</td>
+      <td>16</td>
+      <td>1.158638</td>
+      <td>0.579530</td>
+      <td>0.563450</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>22</td>
+      <td>12</td>
+      <td>1.171896</td>
+      <td>0.578147</td>
+      <td>0.559408</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>23</td>
+      <td>15</td>
+      <td>1.183138</td>
+      <td>0.565698</td>
+      <td>0.556997</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>22</td>
+      <td>15</td>
+      <td>1.170758</td>
+      <td>0.565698</td>
+      <td>0.554061</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_checkpoints</span> <span class="o">=</span> <span class="p">[</span><span class="s">'/output/result_dir/pg_17__epoch_12.pth.tar'</span><span class="p">,</span>
+                    <span class="s">'/output/result_dir/pg_22__epoch_16.pth.tar'</span><span class="p">,</span>
+                    <span class="s">'/output/result_dir/pg_22__epoch_12.pth.tar'</span><span class="p">,</span>
+                    <span class="s">'/output/result_dir/pg_23__epoch_15.pth.tar'</span><span class="p">,</span>
+                    <span class="s">'/output/result_dir/pg_22__epoch_15.pth.tar'</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">truth_res</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">pred_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">best_checkpoints</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">pg_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'/pg_(.*)__epoch'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'__epoch_(.*).pth'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="n">pg_idx</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span> <span class="s">'cpu'</span><span class="p">})</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+    <span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span> <span class="o">=</span> <span class="n">evaluate_by_continent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'best_models'</span><span class="p">)</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="n">truth_res</span>
+    <span class="n">pred_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_res</span><span class="p">)</span></code></pre></figure>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/output/result_dir/pg_17__epoch_12.pth.tar
+/output/result_dir/pg_22__epoch_16.pth.tar
+/output/result_dir/pg_22__epoch_12.pth.tar
+/output/result_dir/pg_23__epoch_15.pth.tar
+/output/result_dir/pg_22__epoch_15.pth.tar
+</code></pre></div></div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pred_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pred_list</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">mode</span>
+<span class="n">ensemble_pred</span> <span class="o">=</span> <span class="n">mode</span><span class="p">(</span><span class="n">pred_arr</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">truth_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth_res</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"True label       : "</span><span class="p">,</span> <span class="n">truth_res</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Ensemble         : "</span><span class="p">,</span> <span class="n">ensemble_pred</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"-------------------------------------------------"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pg_17__epoch_16  : "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_list</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pg_21__epoch_9   : "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_list</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pg_5__epoch_10   : "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_list</span><span class="p">[</span><span class="mi">2</span><span class="p">][:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pg_17__epoch_14  : "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_list</span><span class="p">[</span><span class="mi">3</span><span class="p">][:</span><span class="mi">10</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"pg_16__epoch_16  : "</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred_list</span><span class="p">[</span><span class="mi">4</span><span class="p">][:</span><span class="mi">10</span><span class="p">]))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="bp">True</span> <span class="n">label</span>       <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+      <span class="n">Ensemble</span>         <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+      <span class="o">-------------------------------------------------</span>
+      <span class="n">pg_17__epoch_16</span>  <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+      <span class="n">pg_21__epoch_9</span>   <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+      <span class="n">pg_5__epoch_10</span>   <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">4</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">]</span>
+      <span class="n">pg_17__epoch_14</span>  <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span>
+      <span class="n">pg_16__epoch_16</span>  <span class="p">:</span>  <span class="p">[</span><span class="mi">4</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">2</span><span class="p">]</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">ensemble</span> <span class="o">=</span> <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="s">'ensemble'</span><span class="p">}</span>
+<span class="n">single</span> <span class="o">=</span> <span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="s">'single'</span><span class="p">}</span>
+
+
+<span class="n">ensemble</span><span class="p">[</span><span class="s">'f1'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">ensemble_pred</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ensemble</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">ensemble_pred</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">single</span><span class="p">[</span><span class="s">'f1'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">by_f1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">f1_score</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">single</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">by_accuracy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_acc</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s">'f1-score &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'f1'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'f1'</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'accuracy &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="o">&gt;&gt;</span> <span class="n">ensemble</span><span class="p">:</span> <span class="mf">0.571</span> <span class="n">vs</span><span class="o">.</span> <span class="n">single</span><span class="p">:</span> <span class="mf">0.566</span>
+<span class="o">&gt;&gt;</span>    <span class="n">accuracy</span> <span class="o">&gt;&gt;</span> <span class="n">ensemble</span><span class="p">:</span> <span class="mf">0.589</span> <span class="n">vs</span><span class="o">.</span> <span class="n">single</span><span class="p">:</span> <span class="mf">0.581</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cf</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">ensemble_pred</span><span class="p">)</span>
+<span class="n">cf_norm</span> <span class="o">=</span> <span class="n">cf</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'float'</span><span class="p">)</span> <span class="o">/</span> <span class="n">cf</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+<span class="n">col_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">ci</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ci</span> <span class="ow">in</span> <span class="n">col_idx</span><span class="p">]</span>
+
+<span class="n">cf_df_en</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">cf_norm_df_en</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cf_norm</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_df_en</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">'g'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix(Ensemble)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_norm_df_en</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Normalised Confusion Matrix(Ensemble)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_102_0.png" alt="png" /></p>
+
+<p><br /></p>
+
+<h3 id="single-vs-ensemble">Single vs. Ensemble</h3>
+<p>Let’s compare the heatmaps side by side.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix(Single)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_df_en</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s">'g'</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix(Ensemble)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_104_0.png" alt="png" /></p>
+
+<p><br /></p>
+
+<h3 id="single-vs-ensemble-normalised">Single vs. Ensemble (Normalised)</h3>
+<p>The Ensemble model is better at Asian and North American cities, but not at African, European, and Oceanian cities.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_norm_df</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix(Single)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cf_norm_df_en</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s">'RdBu_r'</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Prediction'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Ground Truth'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Confusion Matrix(Ensemble)"</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+
+<p><img src="/assets/materials/20180219/output_106_0.png" alt="png" /></p>
+
+<p><br /></p>
+
+<h3 id="inference-with-ensemble-model">Inference with Ensemble model</h3>
+<p>I used the simple voting rule for choosing the prediction label.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">best_checkpoints</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">pg_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'/pg_(.*)__epoch'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">epoch</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">'__epoch_(.*).pth'</span><span class="p">,</span> <span class="n">path</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="n">pg_idx</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span> <span class="s">'cpu'</span><span class="p">})</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+    <span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span></code></pre></figure>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/output/result_dir/pg_17__epoch_12.pth.tar
+/output/result_dir/pg_22__epoch_16.pth.tar
+/output/result_dir/pg_22__epoch_12.pth.tar
+/output/result_dir/pg_23__epoch_15.pth.tar
+/output/result_dir/pg_22__epoch_15.pth.tar
+</code></pre></div></div>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="n">pred_idx_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cmodel</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">cmodel</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">cmodel</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">cmodel</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        <span class="n">cmodel</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">cmodel</span><span class="p">(</span><span class="n">targetTensor</span><span class="p">)</span>
+        <span class="n">pred_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">pred_idx_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred_idx</span><span class="p">)</span>
+        
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+                
+    <span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">cnt</span><span class="p">)</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">pred_idx_list</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">res</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span>  </code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Sheffield'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span>
+
+
+<span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Bratford'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span>
+
+
+<span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'York'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+
+<span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span></code></pre></figure>
+
+<p>Sometimes it’s not the number of models but the quality of their performance.
+The ensemble model failed to make a difference given cities in the UK. 
+Perhaps mixing models that are strong in each continent categories would produce better results.</p>
+
+<p><br /></p>
+
+<h2 id="6-game">6. GAME!</h2>
+
+<p>So now that I have a deep learning algorithm that predicts its continent given a name of a city, it would be of great fun to play a game against this AI!! 
+Sounds super nerdy. The function <code class="highlighter-rouge">run_test_single</code> and <code class="highlighter-rouge">run_test_ensemble</code> randomly choose a record from the test dataset and return a machine-predicted label.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">test_set</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'dataset/_test.csv'</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">judge</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">gt</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">m_pred</span> <span class="o">==</span> <span class="n">gt</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">"Correct!"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">"Incorrect!"</span>
+
+<span class="k">def</span> <span class="nf">run_test_single</span><span class="p">():</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">continent</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"-----------------------------------------------"</span><span class="p">)</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'prob'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">m_pred</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">continent</span>
+    <span class="n">m_pred_prob</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">prob</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">"Machine prediction: {}({}) -- {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">m_pred_prob</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
+    
+<span class="n">run_test_single</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">Which</span> <span class="n">Continent</span> <span class="n">does</span> <span class="o">**</span><span class="n">Jining</span><span class="o">**</span> <span class="n">belong</span> <span class="n">to</span><span class="err">?</span>
+      <span class="o">&gt;&gt;&gt;</span> <span class="n">Correct</span> <span class="n">Answer</span><span class="p">:</span> <span class="n">Asia</span>
+      <span class="o">-----------------------------------------------</span>
+      <span class="n">Machine</span> <span class="n">prediction</span><span class="p">:</span> <span class="n">Asia</span><span class="p">(</span><span class="mf">0.948</span><span class="p">)</span> <span class="o">--</span> <span class="n">Correct</span><span class="err">!</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">run_test_ensemble</span><span class="p">():</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">continent</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"-----------------------------------------------"</span><span class="p">)</span>
+    <span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">"{} Machine prediction: {} -- {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
+    
+<span class="n">run_test_ensemble</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;</span>    <span class="n">Which</span> <span class="n">Continent</span> <span class="n">does</span> <span class="o">**</span><span class="n">Demba</span><span class="o">**</span> <span class="n">belong</span> <span class="n">to</span><span class="err">?</span>
+      <span class="o">&gt;&gt;&gt;</span> <span class="n">Correct</span> <span class="n">Answer</span><span class="p">:</span> <span class="n">Africa</span>
+      <span class="o">-----------------------------------------------</span>
+      <span class="mi">5</span> <span class="n">Machine</span> <span class="n">prediction</span><span class="p">:</span> <span class="n">Africa</span> <span class="o">--</span> <span class="n">Correct</span><span class="err">!</span></code></pre></figure>
+
+<p>Making a web game with AWS Lambda or EC2 would be great, but it’s too much for me to build everything on my own. 
+To see how fun it is to play this game, I ran the above function 10 times and see if my parents-in-law, my wife and myself could beat the model!</p>
+
+<p>The results are..</p>
+
+<p>** Human vs. AI **<br />
+Parents 4 vs 6 AI<br />
+Wife    4 vs 6 AI<br />
+Me      2 vs 5 AI</p>
+
+<p>Here’s my score table. I mean.. where the hell is Tom Price? Tom Price is a city in Western Austrailia.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Question</th>
+      <th>Me</th>
+      <th>AI</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Haeju</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Fond Du Lac</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>San Juan De Nicaragua</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Altata</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Porvoo</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Almirante</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Cap-Haitien</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Raleigh</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Atqasuk</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Tom Price</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>Total Score</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+
+<h2 id="reference">Reference</h2>
+<ul>
+  <li>https://github.com/clairett/pytorch-sentiment-classification</li>
+</ul>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Which Continent Does Pyeongchang Belong To?&url=http://localhost:4000/cityFinder/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/cityFinder/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/cityFinder/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#deep learning" class="tag">&#35; deep learning</a>
+          
+            <a href="/tags#nlp" class="tag">&#35; nlp</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>이름점 - Scala Code 수정 - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="이름점 - Scala Code 수정" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/name_chemistry_refactoring/" property="og:url">
+  
+  
+    <meta content="2016-10-30T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20161030.jpeg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="scala" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="이름점 - Scala Code 수정">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/name_chemistry_refactoring/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20161030.jpeg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20161030.jpeg alt="이름점 - Scala Code 수정">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">이름점 - Scala Code 수정</h1>
+        <div class="page-date"><span>2016, Oct 30&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <p>(이미지 출처: <a href="http://mlbpark.donga.com/mlbpark/b.php?p=1&amp;b=bullpen2&amp;id=6331350&amp;select=title&amp;query=&amp;user=&amp;reply=">MLB PARK</a>)</p>
+
+<h2 id="scala로-만들어-본-이름점">Scala로 만들어 본 이름점</h2>
+<p><br /></p>
+
+<p>며칠 전 <a href="http://jsideas.net/scala/2016/10/27/name_chemistry.html">Scala를 사용해서 간단한 이름점</a>을 만들어봤다. 일단 오류 없이 돌아가는 코드를 만들기는 했지만 다음날보니 어색한 문장과 습관이 눈에 들어왔다. 외형은 Scala로 쓰기는 했지만 var/val을 떼어놓고 보면 Python이나 R코드처럼 보인달까. 뭔가 어색한 부분이 많았다. 주변의 도움과 구글링을 통해 수정한 부분을 기록으로 남긴다.</p>
+<hr />
+
+<h2 id="초중종성-사전---함수">초중종성 사전 -&gt; 함수</h2>
+<p>오리지널 버전에서는 변형가능한 Map을 만들고 거기에 문자열과 획수 페어를 하나씩 추가했다. 그리고 뒤에서 만든 초중종성에 해당하는 획수를 추출하는 식으로 만들었었다.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">var</span> <span class="n">stroke_dict</span><span class="k">:</span><span class="kt">Map</span><span class="o">[</span><span class="kt">Char</span>, <span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Map</span><span class="o">()</span>
+<span class="n">stroke_dict</span> <span class="o">+=</span> <span class="o">(</span><span class="sc">'ㄱ'</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">)</span>
+<span class="n">stroke_dict</span> <span class="o">+=</span> <span class="o">(</span><span class="sc">'ㄴ'</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">)</span>
+<span class="n">stroke_dict</span> <span class="o">+=</span> <span class="o">(</span><span class="sc">'ㄷ'</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="o">)</span>
+<span class="n">stroke_dict</span> <span class="o">+=</span> <span class="o">(</span><span class="sc">'ㄹ'</span> <span class="o">-&gt;</span> <span class="mi">5</span><span class="o">)</span>
+<span class="n">stroke_dict</span> <span class="o">+=</span> <span class="o">(</span><span class="sc">'ㅁ'</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="o">)</span>
+
+<span class="c1">// ...
+</span>
+<span class="c1">// 빼낸 초중종성 각각에 대해서 앞서 지정한 획수 사전에서 획수를 찾는다.
+</span><span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">char_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_dict</span><span class="o">.</span><span class="n">getOrElse</span><span class="o">(</span><span class="n">i</span><span class="o">,</span> <span class="mi">0</span><span class="o">)</span> <span class="o">}</span></code></pre></figure>
+
+<p>이렇게 작업한 코드를 하나로 합쳐서 함수화시켜봤다.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="sc">'ㅇ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
+        <span class="k">case</span> <span class="sc">'ㄱ'</span> <span class="o">|</span> <span class="sc">'ㄴ'</span> <span class="o">|</span> <span class="sc">'ㅅ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
+        <span class="k">case</span> <span class="sc">'ㄷ'</span> <span class="o">|</span> <span class="sc">'ㅈ'</span> <span class="o">|</span> <span class="sc">'ㅋ'</span> <span class="o">|</span> <span class="sc">'ㅎ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
+        <span class="k">case</span> <span class="sc">'ㅁ'</span> <span class="o">|</span> <span class="sc">'ㅂ'</span> <span class="o">|</span> <span class="sc">'ㅊ'</span> <span class="o">|</span> <span class="sc">'ㅌ'</span> <span class="o">|</span> <span class="sc">'ㅍ'</span> <span class="o">|</span> <span class="sc">'ㄲ'</span> <span class="o">|</span> <span class="sc">'ㅆ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㄹ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+        <span class="k">case</span> <span class="sc">'ㄸ'</span> <span class="o">|</span> <span class="sc">'ㅉ'</span> <span class="k">=&gt;</span> <span class="mi">6</span>
+        <span class="k">case</span> <span class="sc">'ㅃ'</span> <span class="k">=&gt;</span> <span class="mi">8</span>
+
+        <span class="k">case</span> <span class="sc">'ㅡ'</span> <span class="o">|</span> <span class="sc">'ㅣ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
+        <span class="k">case</span> <span class="sc">'ㅏ'</span> <span class="o">|</span> <span class="sc">'ㅓ'</span> <span class="o">|</span> <span class="sc">'ㅗ'</span> <span class="o">|</span> <span class="sc">'ㅜ'</span> <span class="o">|</span> <span class="sc">'ㅢ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
+        <span class="k">case</span> <span class="sc">'ㅑ'</span> <span class="o">|</span> <span class="sc">'ㅕ'</span> <span class="o">|</span> <span class="sc">'ㅛ'</span> <span class="o">|</span> <span class="sc">'ㅠ'</span> <span class="o">|</span> <span class="sc">'ㅐ'</span> <span class="o">|</span> <span class="sc">'ㅔ'</span> <span class="o">|</span> <span class="sc">'ㅚ'</span> <span class="o">|</span> <span class="sc">'ㅟ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
+        <span class="k">case</span> <span class="sc">'ㅒ'</span> <span class="o">|</span> <span class="sc">'ㅖ'</span> <span class="o">|</span> <span class="sc">'ㅘ'</span> <span class="o">|</span> <span class="sc">'ㅝ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㅙ'</span> <span class="o">|</span> <span class="sc">'ㅞ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+
+        <span class="k">case</span> <span class="sc">'ㄳ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㄵ'</span> <span class="o">|</span> <span class="sc">'ㄶ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+        <span class="k">case</span> <span class="sc">'ㅄ'</span> <span class="k">=&gt;</span> <span class="mi">6</span>
+        <span class="k">case</span> <span class="sc">'ㄺ'</span> <span class="o">|</span> <span class="sc">'ㄽ'</span> <span class="k">=&gt;</span> <span class="mi">7</span>
+        <span class="k">case</span> <span class="sc">'ㅀ'</span> <span class="k">=&gt;</span> <span class="mi">8</span>
+        <span class="k">case</span> <span class="sc">'ㄻ'</span> <span class="o">|</span> <span class="sc">'ㄼ'</span> <span class="o">|</span> <span class="sc">'ㄾ'</span> <span class="o">|</span> <span class="sc">'ㄿ'</span> <span class="k">=&gt;</span> <span class="mi">9</span>
+
+        <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">res</span>
+    <span class="o">}</span>
+
+<span class="c1">// ...
+</span>
+<span class="k">val</span> <span class="n">total_stroke</span> <span class="k">=</span> <span class="n">parsed_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="n">sum</span></code></pre></figure>
+
+<p>stroke_finder라는 함수를 만들고, 한글 문자열 하나를 받아 사전에서 찾은 후 횟수를 반환하도록 처리했다. 위에서는 한줄 한줄 새 문자열-획수 페어를 넣어 코드가 길어졌지만, 아래에서는 match-case를 통해서 길이를 훅 단축시킬 수 있었다. 또 위에서는 뽑은 획수 벡터를 리스트화시켜서 sum을 구했었는데 아래에서는 바로 sum을 구할 수 있어 더 간단해보인다.</p>
+
+<h2 id="리스트-버퍼---zip--flatmap">리스트 버퍼 -&gt; Zip &amp; Flatmap</h2>
+
+<p>전 버전에서는 이름 2개를 엇갈리게 겹치기 위해서 빈 리스트 버퍼를 만든 다음, 하나씩 더하는 식으로 작업했다.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">var</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">ListBuffer</span><span class="o">[</span><span class="kt">Int</span><span class="o">]()</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res1</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+    <span class="n">num_seq</span> <span class="o">+=</span> <span class="n">res2</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+
+    <span class="c1">// 만든 리스트 버퍼를 리스트로 변환합니다.
+</span>    <span class="k">val</span> <span class="n">final_seq</span> <span class="k">=</span> <span class="n">num_seq</span><span class="o">.</span><span class="n">toList</span></code></pre></figure>
+
+<p>개인적인 습관이 묻어나오는 부분이다. 어떤 리스트나 데이터컬럼이 있을때 보통 공 리스트나 벡터를 만들고, 리스트 안에 item을 하나씩 돌면서 연산을 한 후 공 리스트에 더하는 방식을 많이 사용했었다. Scala의 ListBuffer로 그 방식을 비슷하게 구현했는데, 뭔가 Scala스럽지 않은 느낌이다.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="c1">// 이름의 획수를 각각 계산한다.
+</span><span class="k">val</span> <span class="n">a_res</span> <span class="k">=</span> <span class="n">name1</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+<span class="k">val</span> <span class="n">b_res</span> <span class="k">=</span> <span class="n">name2</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+
+<span class="c1">// 리스트를 엇갈리게 겹쳐서 하나의 리스트로 만든다
+</span><span class="k">val</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span></code></pre></figure>
+
+<p>이렇게 하면 변형가능한 변수를 만들 필요도 없이 한줄이면 처리가 끝난다. zip으로 (A1, B1), (A2, B2), (A3, B3) 형태로 만든 후, flatmap으로 풀어버리면 [A1, B1, A2, B2, A3, B3]로 쉽게 변형이 가능하다.</p>
+
+<hr />
+
+<h2 id="수정된-코드">수정된 코드</h2>
+<p>앞에서 수정한 코드를 이어붙이면 다음과 같이 정리할 수 있고, 빌드하면 바로 main안의 코드가 실행되면서 예시 3의 궁합점수를 뱉게 된다. 스칼라에서는 보통 var로 선언되는 mutable variable보다는 immutable variable(val)이 선호된다고 한다. 함수형 언어인 Scala에서는 val로 변형 불가능한 변수를 자주 쓰기 때문에, 변수 값의 변형이 일어나지 않아 안정적인 프로그래밍(동일한 함수라면 항상 같은 값을 리턴하는)이 가능하다고 한다. 아래 코드에서는 var을 한번도 사용하지 않았으니 얼추 맞는 방향으로 수정하지 않았나 자평해본다.</p>
+
+<p>이후에는 이 스칼라 코드를 이름 2개를 받는 오브젝트로 변환한 후에 궁합 점수를 뱉는 Jar 파일로 만들어 어느 스칼라 프로젝트에서든 import가 가능한 형태로 만들 수 있을 것 같다.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="cm">/**
+  * Created by junsik.whang on 2016-10-27.
+  */</span>
+<span class="k">import</span> <span class="nn">com.twitter.penguin.korean.util.Hangul</span>
+
+<span class="k">object</span> <span class="nc">name_chemistry</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="n">main</span><span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="o">{</span>
+
+    <span class="c1">// 획을 받아서 그에 해당하는 획수를 찾아 반환한다.
+</span>    <span class="k">def</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">a_char</span><span class="k">:</span> <span class="kt">Char</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">res</span> <span class="k">=</span> <span class="n">a_char</span> <span class="k">match</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="sc">'ㅇ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
+        <span class="k">case</span> <span class="sc">'ㄱ'</span> <span class="o">|</span> <span class="sc">'ㄴ'</span> <span class="o">|</span> <span class="sc">'ㅅ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
+        <span class="k">case</span> <span class="sc">'ㄷ'</span> <span class="o">|</span> <span class="sc">'ㅈ'</span> <span class="o">|</span> <span class="sc">'ㅋ'</span> <span class="o">|</span> <span class="sc">'ㅎ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
+        <span class="k">case</span> <span class="sc">'ㅁ'</span> <span class="o">|</span> <span class="sc">'ㅂ'</span> <span class="o">|</span> <span class="sc">'ㅊ'</span> <span class="o">|</span> <span class="sc">'ㅌ'</span> <span class="o">|</span> <span class="sc">'ㅍ'</span> <span class="o">|</span> <span class="sc">'ㄲ'</span> <span class="o">|</span> <span class="sc">'ㅆ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㄹ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+        <span class="k">case</span> <span class="sc">'ㄸ'</span> <span class="o">|</span> <span class="sc">'ㅉ'</span> <span class="k">=&gt;</span> <span class="mi">6</span>
+        <span class="k">case</span> <span class="sc">'ㅃ'</span> <span class="k">=&gt;</span> <span class="mi">8</span>
+
+        <span class="k">case</span> <span class="sc">'ㅡ'</span> <span class="o">|</span> <span class="sc">'ㅣ'</span> <span class="k">=&gt;</span> <span class="mi">1</span>
+        <span class="k">case</span> <span class="sc">'ㅏ'</span> <span class="o">|</span> <span class="sc">'ㅓ'</span> <span class="o">|</span> <span class="sc">'ㅗ'</span> <span class="o">|</span> <span class="sc">'ㅜ'</span> <span class="o">|</span> <span class="sc">'ㅢ'</span> <span class="k">=&gt;</span> <span class="mi">2</span>
+        <span class="k">case</span> <span class="sc">'ㅑ'</span> <span class="o">|</span> <span class="sc">'ㅕ'</span> <span class="o">|</span> <span class="sc">'ㅛ'</span> <span class="o">|</span> <span class="sc">'ㅠ'</span> <span class="o">|</span> <span class="sc">'ㅐ'</span> <span class="o">|</span> <span class="sc">'ㅔ'</span> <span class="o">|</span> <span class="sc">'ㅚ'</span> <span class="o">|</span> <span class="sc">'ㅟ'</span> <span class="k">=&gt;</span> <span class="mi">3</span>
+        <span class="k">case</span> <span class="sc">'ㅒ'</span> <span class="o">|</span> <span class="sc">'ㅖ'</span> <span class="o">|</span> <span class="sc">'ㅘ'</span> <span class="o">|</span> <span class="sc">'ㅝ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㅙ'</span> <span class="o">|</span> <span class="sc">'ㅞ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+
+        <span class="k">case</span> <span class="sc">'ㄳ'</span> <span class="k">=&gt;</span> <span class="mi">4</span>
+        <span class="k">case</span> <span class="sc">'ㄵ'</span> <span class="o">|</span> <span class="sc">'ㄶ'</span> <span class="k">=&gt;</span> <span class="mi">5</span>
+        <span class="k">case</span> <span class="sc">'ㅄ'</span> <span class="k">=&gt;</span> <span class="mi">6</span>
+        <span class="k">case</span> <span class="sc">'ㄺ'</span> <span class="o">|</span> <span class="sc">'ㄽ'</span> <span class="k">=&gt;</span> <span class="mi">7</span>
+        <span class="k">case</span> <span class="sc">'ㅀ'</span> <span class="k">=&gt;</span> <span class="mi">8</span>
+        <span class="k">case</span> <span class="sc">'ㄻ'</span> <span class="o">|</span> <span class="sc">'ㄼ'</span> <span class="o">|</span> <span class="sc">'ㄾ'</span> <span class="o">|</span> <span class="sc">'ㄿ'</span> <span class="k">=&gt;</span> <span class="mi">9</span>
+
+        <span class="k">case</span> <span class="k">_</span> <span class="k">=&gt;</span> <span class="mi">0</span>
+      <span class="o">}</span>
+      <span class="k">return</span> <span class="n">res</span>
+    <span class="o">}</span>
+
+    <span class="c1">// '황' 들어오면
+</span>    <span class="c1">// 'ㅎ', 'ㅘ', 'ㅇ' 으로 짤른 다음
+</span>    <span class="c1">// 각각에 대해서 획수 계산해서 더한다음 값을 내보낸다.
+</span>    <span class="k">def</span> <span class="n">stroke_counter</span> <span class="o">(</span><span class="n">a_char</span><span class="k">:</span><span class="kt">Char</span><span class="o">)</span> <span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+      <span class="k">val</span> <span class="n">parsed_hangul</span> <span class="k">=</span> <span class="nc">Hangul</span><span class="o">.</span><span class="n">decomposeHangul</span><span class="o">(</span><span class="n">a_char</span><span class="o">)</span>
+
+      <span class="k">val</span> <span class="n">parsed_list</span> <span class="k">=</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">onset</span> <span class="o">::</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">vowel</span> <span class="o">::</span> <span class="n">parsed_hangul</span><span class="o">.</span><span class="n">coda</span> <span class="o">::</span> <span class="nc">Nil</span>
+
+      <span class="k">val</span> <span class="n">total_stroke</span> <span class="k">=</span> <span class="n">parsed_list</span><span class="o">.</span><span class="n">map</span><span class="o">{</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_finder</span><span class="o">(</span><span class="n">i</span><span class="o">)</span> <span class="o">}.</span><span class="n">sum</span>
+
+      <span class="k">return</span> <span class="n">total_stroke</span>
+    <span class="o">}</span>
+
+    <span class="c1">// 획수를 담은 리스트가 2개 들어오면
+</span>    <span class="c1">// 리스트를 엇갈리게 합친 후에 궁합 점수를 계산해서 궁합 점수를 산출한다
+</span>    <span class="k">def</span> <span class="n">chemistry_calculator</span> <span class="o">(</span><span class="n">name1</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span> <span class="n">name2</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+
+      <span class="k">val</span> <span class="n">a_res</span> <span class="k">=</span> <span class="n">name1</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+      <span class="k">val</span> <span class="n">b_res</span> <span class="k">=</span> <span class="n">name2</span><span class="o">.</span><span class="n">toList</span><span class="o">.</span><span class="n">map</span><span class="o">(</span><span class="n">i</span> <span class="k">=&gt;</span> <span class="n">stroke_counter</span><span class="o">(</span><span class="n">i</span><span class="o">))</span>
+
+
+      <span class="c1">// 리스트를 엇갈리게 겹쳐서 하나의 리스트로 만든다
+</span>      <span class="k">val</span> <span class="n">num_seq</span> <span class="k">=</span> <span class="o">(</span><span class="n">a_res</span> <span class="n">zip</span> <span class="n">b_res</span><span class="o">).</span><span class="n">flatMap</span><span class="o">(</span><span class="n">t</span> <span class="k">=&gt;</span> <span class="nc">List</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="n">_1</span><span class="o">,</span> <span class="n">t</span><span class="o">.</span><span class="n">_2</span><span class="o">))</span>
+
+      <span class="c1">// 맨 앞부터 2개씩 더한 값의 1의 자리를 취하여
+</span>      <span class="c1">// 다음으로 넘기고 남은 숫자가 2개가 될때까지 동일한 연산을 수행한다.
+</span>      <span class="c1">// 연산이 종료되면 정수 2개를 가진 리스트를 반환한다.
+</span>      <span class="k">def</span> <span class="n">chemistry_main_function</span> <span class="o">(</span><span class="n">sequence</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">])</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">Int</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+
+        <span class="k">val</span> <span class="n">result</span> <span class="k">=</span> <span class="n">sequence</span><span class="o">.</span><span class="n">sliding</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">sum</span><span class="o">).</span><span class="n">toList</span>
+        <span class="k">val</span> <span class="n">result2</span> <span class="k">=</span> <span class="n">result</span><span class="o">.</span><span class="n">map</span><span class="o">(</span> <span class="n">i</span> <span class="k">=&gt;</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">result2</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+          <span class="k">return</span> <span class="n">result2</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+          <span class="n">chemistry_main_function</span><span class="o">(</span><span class="n">result2</span><span class="o">)</span>
+        <span class="o">}</span>
+      <span class="o">}</span>
+
+      <span class="c1">// 정수 2개를 조합하여 최종 궁합 점수를 산출하여 반환한다.
+</span>      <span class="k">val</span> <span class="n">final_result_list</span> <span class="k">=</span> <span class="n">chemistry_main_function</span><span class="o">(</span><span class="n">num_seq</span><span class="o">)</span>
+      <span class="k">val</span> <span class="n">final_result</span> <span class="k">=</span> <span class="n">final_result_list</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">final_result_list</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+      <span class="k">return</span> <span class="n">final_result</span>
+    <span class="o">}</span>
+
+    <span class="c1">// test case
+</span>    <span class="k">val</span> <span class="n">a_name</span> <span class="k">=</span> <span class="s">"박근혜"</span>
+    <span class="k">val</span> <span class="n">b_name</span> <span class="k">=</span> <span class="s">"최순실"</span>
+    <span class="k">val</span> <span class="n">chem_result</span> <span class="k">=</span> <span class="n">chemistry_calculator</span><span class="o">(</span><span class="n">a_name</span><span class="o">,</span> <span class="n">b_name</span><span class="o">)</span>
+    <span class="n">println</span><span class="o">(</span><span class="n">s</span><span class="s">"궁합결과($a_name - $b_name): $chem_result"</span><span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=이름점 - Scala Code 수정&url=http://localhost:4000/name_chemistry_refactoring/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/name_chemistry_refactoring/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/name_chemistry_refactoring/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#scala" class="tag">&#35; scala</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

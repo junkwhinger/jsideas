@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Snapshot Ensemble with SGDR - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Snapshot Ensemble with SGDR" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/snapshot_ensemble/" property="og:url">
+  
+  
+    <meta content="2018-03-14T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20180314.png" property="og:image">
+  
+  
+    
+    <meta content="Python" property="article:section">
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="deep learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Snapshot Ensemble with SGDR">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/snapshot_ensemble/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20180314.png">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20180314.png alt="Snapshot Ensemble with SGDR">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Snapshot Ensemble with SGDR</h1>
+        <div class="page-date"><span>2018, Mar 14&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 id="simple-voting-ensemble">Simple Voting Ensemble</h2>
+
+<p>At the end of my previous post on <a href="http://jsideas.net/python/2018/02/19/cityFinder.html"><code class="highlighter-rouge">Which Continent Does PyoungChang Belong To?</code></a> I made a simple-voting-based ensemble function.</p>
+
+<p>Given city name, the ensemble model loads five models and aggregates their inference results, and chooses the most voted continent as its final prediction. This ensemble model’s f1-score was 0.571 which was 0.005 higher than the single model’s 0.566.</p>
+
+<p><img src="/assets/materials/20180314/simple_voting.png" alt="simple-voting-based ensemble model" /></p>
+
+<p>Taking advantage of the collaborative power is simple to build and easy to use, but it forced me to set up and train multiple models. Complicated models with large dataset usually take longer than you’d train MNIST or CIFAR10 classifiers. And you’d surely want to find more efficient options when using paid GPUs like FloydHub.</p>
+
+<p><br /></p>
+
+<h2 id="snapshot-ensemble-with-sgdr">Snapshot Ensemble with SGDR</h2>
+
+<p>Thanks to a lecture I stumbled upon on the latest CNN architectures, I found the following two brilliant papers:<br />
+1) <a href="https://arxiv.org/pdf/1704.00109.pdf">SNAPSHOT ENSEMBLES: TRAIN 1, GET M FOR FREE</a><br />
+2) <a href="https://arxiv.org/pdf/1608.03983.pdf">SGDR: Stochastic Gradient Descent with Warm Restarts</a></p>
+
+<p>From a business bachelors degree holder’s point of view (where academic breakthroughs are hard to come by these days), I found the way the authors interacted with each other awesome. Loshchilov and Hutter first submitted their paper to Arxiv on SGDR in Aug 2016 which was about eight months before Huang et al.’s submission. Huang et al. stated that their work on Snapshot Ensemble was inspired by Lochchilov and Hutter’s work which, in turn, included Huang et al.’s snapshot approach in their revised paper in May 2017. I see this as a typical example of the power of knowledge sharing that frequently happens in deep learning. (love it!)</p>
+
+<p><br /></p>
+
+<p>How and why they work can be surmised as follows.</p>
+
+<p>1) Learning rate decay is a wide-spread practice these days. We start with a big one as high as 1e-1 and end up with 1e-6 or lower. High learning rate speeds up the learning process, and the small learning rate helps the model to converge to the nearest local minima.</p>
+
+<p>2) The more complex the model is, the more local minima we have. Although the local minima might yield similar errors, the models based on them produce different results.</p>
+
+<p>3) If $M$ number of local minima produce $M$ different results, we can surely make an ensemble model based on them. Then, what we’d have to do is to train a single model and deliberately guide it to converge to local minima along its optimization path.</p>
+
+<p><img src="/assets/materials/20180314/local_minima.png" alt="finding local_minima" />
+(image source: SNAPSHOT ENSEMBLES: TRAIN 1, GET M FOR FREE)</p>
+
+<p>4) How to guide it to the local minima? By annealing learning rate. Set it low to converge to a basin, and set it high to escape it. Here we use the cosine annealing technique suggested by ‘SGDR’.</p>
+
+<p><img src="/assets/materials/20180314/sgdr.png" alt="Annealing learning rate with warm restarts" />
+(image source: SGDR: Stochastic Gradient Descent with Warm Restarts)</p>
+
+<p>5) At each SGDR reset, save the model checkpoint. The ensemble model averages individual model’s last softmax output and produces the final label.</p>
+
+<p><img src="/assets/materials/20180314/snapshot_ensemble.png" alt="Snapshot Ensemble" /></p>
+
+<p><br /></p>
+
+<h2 id="stochastic-gradient-descent-with-warm-restarts-sgdr">Stochastic Gradient Descent with Warm Restarts (SGDR)</h2>
+
+<p>Unlike the existing schedule that continuously decreases learning rate, Lochchilov and Hutter’s idea was to reset the learning rate once the epoch reaches reset points. And until then, the scheduler reduces it using cosine annealing technique. Here’s the equation.</p>
+
+<script type="math/tex; mode=display">\eta_t = \eta^{i}_{min} + \frac{1}{2} (\eta^{i}_{max} - \eta^{i}_{min})(1 + \cos(\frac{T_{cur}}{T_i}\pi))</script>
+
+<p>When the global epoch is 0 or if the scheduler has just reset($T_{cur} = 0$), eta_t becomes eta_max. 
+And when the $T_{cur}$ is equal to $T_i$ (reset point), then the right side gets canceled out, leaving eta_min.</p>
+
+<p>To enhance performance, the authors suggest an option to increase $T_i$ by a factor of $T_{mult}$ at every reset.</p>
+
+<p>Pytorch already has SGDR implemented in <a href="http://pytorch.org/docs/master/_modules/torch/optim/lr_scheduler.html"><code class="highlighter-rouge">torch.optim.lr_scheduler</code></a> as <code class="highlighter-rouge">CosineAnnealingLR</code>, but this version does not reset the learning rate, nor does it increase $T_{i}$ by a factor of $T_{mult}$. So I edited the code a little bit to add the restart function and snapshot save function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">'ignore'</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">_LRScheduler</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">torchtext</span> <span class="kn">import</span> <span class="n">data</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">_LRScheduler</span><span class="p">):</span>
+    <span class="s">"""Set the learning rate of each parameter group using a cosine annealing
+    schedule, where :math:`</span><span class="err">\</span><span class="s">eta_{max}` is set to the initial lr and
+    :math:`T_{cur}` is the number of epochs since the last restart in SGDR:
+
+    .. math::
+
+        </span><span class="err">\</span><span class="s">eta_t = </span><span class="err">\</span><span class="s">eta_{min} + </span><span class="se">\f</span><span class="s">rac{1}{2}(</span><span class="err">\</span><span class="s">eta_{max} - </span><span class="err">\</span><span class="s">eta_{min})(1 +
+        </span><span class="err">\</span><span class="s">cos(</span><span class="se">\f</span><span class="s">rac{T_{cur}}{T_{max}}</span><span class="err">\</span><span class="s">pi))
+
+    When last_epoch=-1, sets initial lr as lr.
+
+    It has been proposed in
+    `SGDR: Stochastic Gradient Descent with Warm Restarts`_. The original pytorch
+    implementation only implements the cosine annealing part of SGDR,
+    I added my own implementation of the restarts part.
+    
+    Args:
+        optimizer (Optimizer): Wrapped optimizer.
+        T_max (int): Maximum number of iterations.
+        T_mult (float): Increase T_max by a factor of T_mult
+        eta_min (float): Minimum learning rate. Default: 0.
+        last_epoch (int): The index of last epoch. Default: -1.
+        model (pytorch model): The model to save.
+        out_dir (str): Directory to save snapshots
+        take_snapshot (bool): Whether to save snapshots at every restart
+
+    .. _SGDR</span><span class="err">\</span><span class="s">: Stochastic Gradient Descent with Warm Restarts:
+        https://arxiv.org/abs/1608.03983
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="p">,</span> <span class="n">T_mult</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">out_dir</span><span class="p">,</span> <span class="n">take_snapshot</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">last_epoch</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T_mult</span> <span class="o">=</span> <span class="n">T_mult</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span> <span class="o">=</span> <span class="n">eta_min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="n">last_epoch</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">=</span> <span class="n">out_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">take_snapshot</span> <span class="o">=</span> <span class="n">take_snapshot</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_history</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="nb">super</span><span class="p">(</span><span class="n">CosineAnnealingLR_with_Restart</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">last_epoch</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_lr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">new_lrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span> <span class="o">+</span> <span class="p">(</span><span class="n">base_lr</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta_min</span><span class="p">)</span> <span class="o">*</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+
+                <span class="k">for</span> <span class="n">base_lr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_lrs</span><span class="p">]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">lr_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_lrs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_lrs</span>
+    
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">epoch</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        
+            <span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="k">for</span> <span class="n">param_group</span><span class="p">,</span> <span class="n">lr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_lr</span><span class="p">()):</span>
+            <span class="n">param_group</span><span class="p">[</span><span class="s">'lr'</span><span class="p">]</span> <span class="o">=</span> <span class="n">lr</span>
+        
+        <span class="c1">## restart
+</span>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"restart at epoch {:03d}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">take_snapshot</span><span class="p">:</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">({</span>
+                    <span class="s">'epoch'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span><span class="p">,</span>
+                    <span class="s">'state_dict'</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+                <span class="p">},</span> <span class="bp">self</span><span class="o">.</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">"/"</span> <span class="o">+</span> <span class="s">'snapshot_e_{:03d}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T_max</span><span class="p">))</span>
+            
+            <span class="c1">## reset epochs since the last reset
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">current_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+            
+            <span class="c1">## reset the next goal
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Te</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_mult</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">T_max</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Te</span>
+
+</code></pre></div></div>
+
+<p>To see how the scheduler controls the learning rate, I made the following sample model and visualization function.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">BlankModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">BlankModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">foward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">simulate_lrs</span><span class="p">(</span><span class="n">t_max</span><span class="p">,</span> <span class="n">t_mult</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">BlankModel</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">sgdr</span> <span class="o">=</span> <span class="n">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="n">t_max</span><span class="p">,</span> <span class="n">T_mult</span><span class="o">=</span><span class="n">t_mult</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="s">'blank'</span><span class="p">,</span> \
+                                               <span class="n">take_snapshot</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">sgdr</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">'lr'</span><span class="p">]</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sgdr</span><span class="o">.</span><span class="n">lr_history</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">"log"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="t_max--10-t_mult--1-for-100-epochs">$T_{max} = 10, T_{mult} = 1$ for 100 epochs</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 010
+restart at epoch 020
+restart at epoch 030
+restart at epoch 040
+restart at epoch 050
+restart at epoch 060
+restart at epoch 070
+restart at epoch 080
+restart at epoch 090
+restart at epoch 100
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20180314/Snapshot%2BEnsemble%2Bwith%2BSGDR_7_1.png" alt="png" /></p>
+
+<h3 id="t_max--10-t_mult--2-for-100-epochs">$T_{max} = 10, T_{mult} = 2$ for 100 epochs</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 010
+restart at epoch 030
+restart at epoch 070
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20180314/Snapshot%2BEnsemble%2Bwith%2BSGDR_9_1.png" alt="png" /></p>
+
+<h3 id="t_max--1-t_mult--2-for-100-epochs">$T_{max} = 1, T_{mult} = 2$ for 100 epochs</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">simulate_lrs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>restart at epoch 001
+restart at epoch 003
+restart at epoch 007
+restart at epoch 015
+restart at epoch 031
+restart at epoch 063
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20180314/Snapshot%2BEnsemble%2Bwith%2BSGDR_11_1.png" alt="png" /></p>
+
+<h2 id="performance-test">Performance Test</h2>
+
+<p>As proven by the various experiments in the authors’ papers, SGDR hastens the learning process, and Snapshot Ensemble enhances the predictive power with lower time and effort for training models.</p>
+
+<p>I ran my own petit experiment using the city name dataset to evaluate the usefulness of Snapshot Ensemble with SGDR.</p>
+
+<p>My best model (pg_17) was 3-layered LSTM model with LSTM dropout 0.5 and dense layer dropout 0.5, trained for 12 epochs. And my ensemble model was made up of the top 5 best models including (pg_17). Here are their accuracy and f1-score.</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-yw4l"></th>
+    <th class="tg-yw4l">Test Accuracy</th>
+    <th class="tg-yw4l">Test f1-score</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Best Single Model</td>
+    <td class="tg-yw4l">0.581</td>
+    <td class="tg-yw4l">0.566</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Simple Voting Ensemble</td>
+    <td class="tg-yw4l">0.589</td>
+    <td class="tg-yw4l">0.571</td>
+  </tr>
+</table>
+
+<p>I tried several versions of SGDR with different $T_max$, $T_{mult}$, epochs. I liked the idea of increasing $T_max$ in a factor of $T_{mult}$ because the model would be benefitted from subtle changes of learning rate when looking for a good local minima. But it turned out that simple sgdr that repeatedly anneals learning rate every 12 epochs showed the best result for this dataset.</p>
+
+<p>I ran sgdr for 120 epochs and got 12 snapshots. Here are their test f1-scores.</p>
+
+<p><img src="/assets/materials/20180314/test_f1score.png" alt="test f1-score of snapshots" /></p>
+
+<p>It seems that the model found good local minima since the third snapshots. The training f1-score were similar to the validation and test metric indicating that the model was robust to the problem of overfitting (training and validation  log in the full code below).</p>
+
+<p>To yield an ensembled prediction I simply averaged softmax outputs of the chosen snapshots(<code class="highlighter-rouge">models[2:]</code>) and transformed it to the final label.</p>
+
+<p>As a result…</p>
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+<table class="tg">
+  <tr>
+    <th class="tg-yw4l"></th>
+    <th class="tg-yw4l">Test Accuracy</th>
+    <th class="tg-yw4l">Test f1-score</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Best Single Model</td>
+    <td class="tg-yw4l">0.581</td>
+    <td class="tg-yw4l">0.566</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Simple Voting Ensemble</td>
+    <td class="tg-yw4l">0.589</td>
+    <td class="tg-yw4l">0.571</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">Snapshot Esemble</td>
+    <td class="tg-yw4l">0.596</td>
+    <td class="tg-yw4l">0.585<br /></td>
+  </tr>
+</table>
+
+<p>The Snapshot Ensemble’s test accuracy and f1-score increased by 0.007 and 0.014 respectively compared to the simple ensemble model. It may not be an outstanding improvement, but (to me) it is an unexpected result when the individual snapshots were inferior even to the best single model by the margin of more than 0.02.</p>
+
+<p>Two heads are better than one. And it gets even better when you don’t even need two bodies.</p>
+
+<h2 id="reference">Reference</h2>
+
+<p>1) <a href="https://arxiv.org/pdf/1704.00109.pdf">SNAPSHOT ENSEMBLES: TRAIN 1, GET M FOR FREE</a><br />
+2) <a href="https://arxiv.org/pdf/1608.03983.pdf">SGDR: Stochastic Gradient Descent with Warm Restarts</a></p>
+
+<h2 id="full-training-code">Full Training Code</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">## City name tokenizer
+## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']
+</span><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="p">(</span><span class="s">"Seoul"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['S', 'e', 'o', 'u', 'l']
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CITY</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">pad_first</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">)</span>
+<span class="n">CONTINENT</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="n">sequential</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_vocab</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">TabularDataset</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="s">'dataset'</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="s">'_train.csv'</span><span class="p">,</span>
+    <span class="n">validation</span><span class="o">=</span><span class="s">'_val.csv'</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'_test.csv'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[(</span><span class="s">'city_ascii'</span><span class="p">,</span> <span class="n">CITY</span><span class="p">),</span> <span class="p">(</span><span class="s">'continent'</span><span class="p">,</span> <span class="n">CONTINENT</span><span class="p">)]</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CITY</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">CONTINENT</span><span class="o">.</span><span class="n">build_vocab</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">train_iter</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">test_iter</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">BucketIterator</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span><span class="p">),</span> <span class="n">batch_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">repeat</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">sort_key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">),</span> <span class="n">device</span><span class="o">=-</span><span class="mi">1</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">use_gpu</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">LSTMModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">label_size</span><span class="p">,</span>
+                 <span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_dim</span><span class="p">,</span>
+                 <span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="n">lstm_dropout</span><span class="p">,</span> <span class="n">lstm_bidirectional</span><span class="p">,</span>
+                 <span class="n">fc_dropout</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_size</span> <span class="o">=</span> <span class="n">label_size</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">embedding_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">hidden_dim</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">nb_lstm_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">lstm_dropout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span> <span class="o">=</span> <span class="n">lstm_bidirectional</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span><span class="n">input_size</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="n">hidden_dim</span><span class="p">,</span> 
+                            <span class="n">num_layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> 
+                            <span class="n">dropout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_dropout</span><span class="p">,</span>
+                            <span class="n">bidirectional</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_dim</span><span class="p">,</span> <span class="n">label_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">fc_dropout</span><span class="p">)</span>
+        
+        
+    <span class="k">def</span> <span class="nf">init_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm_bidirectional</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpu</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)),</span>
+                        <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_lstm_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden_dim</span><span class="p">)))</span>
+                
+    
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embeddings</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">lstm_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden2label</span><span class="p">(</span><span class="n">lstm_out</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">log_probs</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">log_probs</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">modelClass</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">modelClass</span><span class="p">(</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'BATCH_SIZE'</span><span class="p">],</span>
+                  <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="p">),</span>
+                  <span class="n">label_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c1">## b.c of &lt;unk&gt;
+</span>                  <span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'EMBEDDING_DIM'</span><span class="p">],</span>
+                  <span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'HIDDEN_DIM'</span><span class="p">],</span>
+                  <span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'nb_1stm_layers'</span><span class="p">],</span>
+                  <span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'lstm_dropout'</span><span class="p">],</span>
+                  <span class="n">lstm_bidirectional</span><span class="o">=</span><span class="n">pg</span><span class="p">[</span><span class="s">'lstm_bidirectional'</span><span class="p">],</span>
+                  <span class="n">fc_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'fc_dropout'</span><span class="p">],</span>
+                  <span class="n">use_gpu</span> <span class="o">=</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pg_17</span> <span class="o">=</span> <span class="p">{</span><span class="s">'BATCH_SIZE'</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+ <span class="s">'EMBEDDING_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+ <span class="s">'HIDDEN_DIM'</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+ <span class="s">'fc_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+ <span class="s">'lstm_bidirectional'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+ <span class="s">'lstm_dropout'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+ <span class="s">'nb_1stm_layers'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pg_17_model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">optim</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">"sgdr_final"</span><span class="p">))</span>
+    
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">tr</span> <span class="o">==</span> <span class="n">pr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">f1_score</span>
+<span class="k">def</span> <span class="nf">get_f1</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+    <span class="n">pr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">f1_score</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">pr</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="s">'weighted'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">_LRScheduler</span>
+<span class="kn">import</span> <span class="nn">math</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">pg_17_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">nesterov</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mySGDR</span> <span class="o">=</span> <span class="n">CosineAnnealingLR_with_Restart</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">T_mult</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> \
+                                        <span class="n">take_snapshot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eta_min</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label_field</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1">## train mode
+</span>    
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">train_iter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)
+</span>        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c1">## .cpu() to get it from gpu env
+</span>        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+        
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_iter</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">'Train: loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>    
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">': loss </span><span class="si">%.2</span><span class="s">f | acc </span><span class="si">%.1</span><span class="s">f | f1-score </span><span class="si">%.3</span><span class="s">f'</span> <span class="o">%</span> <span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="n">f1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">121</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    
+    <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">mySGDR</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    
+    <span class="n">rec_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">train_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">train_f1</span> <span class="o">=</span> <span class="n">train_epoch_progress</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> 
+                                     <span class="n">train_iter</span><span class="p">,</span> 
+                                     <span class="n">loss_function</span><span class="p">,</span> 
+                                     <span class="n">optimizer</span><span class="p">,</span>
+                                     <span class="n">CITY</span><span class="p">,</span> 
+                                     <span class="n">CONTINENT</span><span class="p">,</span> 
+                                     <span class="n">epoch</span><span class="p">)</span>
+
+    <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Val'</span><span class="p">)</span>
+    
+
+<span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">pg_17_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
+     
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch: 1
+Train: loss 1.68 | acc 32.7 | f1-score 0.285
+Val: loss 1.46 | acc 43.1 | f1-score 0.336
+Epoch: 2
+Train: loss 1.60 | acc 38.4 | f1-score 0.353
+Val: loss 1.45 | acc 47.2 | f1-score 0.397
+Epoch: 3
+Train: loss 1.56 | acc 40.5 | f1-score 0.377
+Val: loss 1.40 | acc 48.5 | f1-score 0.482
+Epoch: 4
+Train: loss 1.53 | acc 42.1 | f1-score 0.394
+Val: loss 1.32 | acc 54.5 | f1-score 0.525
+Epoch: 5
+Train: loss 1.49 | acc 44.2 | f1-score 0.416
+Val: loss 1.35 | acc 48.6 | f1-score 0.424
+Epoch: 6
+Train: loss 1.47 | acc 43.9 | f1-score 0.413
+Val: loss 1.31 | acc 52.5 | f1-score 0.508
+Epoch: 7
+Train: loss 1.45 | acc 44.7 | f1-score 0.425
+Val: loss 1.27 | acc 55.5 | f1-score 0.540
+Epoch: 8
+Train: loss 1.41 | acc 47.4 | f1-score 0.451
+Val: loss 1.24 | acc 54.3 | f1-score 0.520
+Epoch: 9
+Train: loss 1.39 | acc 47.0 | f1-score 0.447
+Val: loss 1.22 | acc 55.1 | f1-score 0.529
+Epoch: 10
+Train: loss 1.37 | acc 47.6 | f1-score 0.455
+Val: loss 1.23 | acc 55.7 | f1-score 0.547
+Epoch: 11
+Train: loss 1.36 | acc 48.2 | f1-score 0.462
+Val: loss 1.22 | acc 56.2 | f1-score 0.545
+Epoch: 12
+restart at epoch 012
+Train: loss 1.37 | acc 47.5 | f1-score 0.449
+Val: loss 1.22 | acc 56.2 | f1-score 0.545
+Epoch: 13
+Train: loss 1.49 | acc 43.5 | f1-score 0.411
+Val: loss 1.30 | acc 51.8 | f1-score 0.498
+Epoch: 14
+Train: loss 1.45 | acc 45.1 | f1-score 0.426
+Val: loss 1.28 | acc 53.1 | f1-score 0.508
+Epoch: 15
+Train: loss 1.44 | acc 45.3 | f1-score 0.429
+Val: loss 1.26 | acc 54.2 | f1-score 0.539
+Epoch: 16
+Train: loss 1.41 | acc 47.8 | f1-score 0.457
+Val: loss 1.25 | acc 54.6 | f1-score 0.521
+Epoch: 17
+Train: loss 1.39 | acc 47.2 | f1-score 0.449
+Val: loss 1.23 | acc 54.8 | f1-score 0.531
+Epoch: 18
+Train: loss 1.37 | acc 48.2 | f1-score 0.458
+Val: loss 1.21 | acc 56.6 | f1-score 0.545
+Epoch: 19
+Train: loss 1.34 | acc 49.8 | f1-score 0.479
+Val: loss 1.20 | acc 55.7 | f1-score 0.551
+Epoch: 20
+Train: loss 1.30 | acc 50.7 | f1-score 0.487
+Val: loss 1.21 | acc 56.2 | f1-score 0.554
+Epoch: 21
+Train: loss 1.29 | acc 50.7 | f1-score 0.485
+Val: loss 1.20 | acc 55.5 | f1-score 0.546
+Epoch: 22
+Train: loss 1.28 | acc 51.8 | f1-score 0.500
+Val: loss 1.20 | acc 55.2 | f1-score 0.543
+Epoch: 23
+Train: loss 1.27 | acc 52.4 | f1-score 0.504
+Val: loss 1.20 | acc 56.8 | f1-score 0.557
+Epoch: 24
+restart at epoch 024
+Train: loss 1.25 | acc 52.1 | f1-score 0.499
+Val: loss 1.20 | acc 56.8 | f1-score 0.557
+Epoch: 25
+Train: loss 1.39 | acc 47.9 | f1-score 0.461
+Val: loss 1.24 | acc 54.5 | f1-score 0.531
+Epoch: 26
+Train: loss 1.38 | acc 48.6 | f1-score 0.464
+Val: loss 1.27 | acc 55.1 | f1-score 0.540
+Epoch: 27
+Train: loss 1.38 | acc 48.2 | f1-score 0.463
+Val: loss 1.26 | acc 54.3 | f1-score 0.528
+Epoch: 28
+Train: loss 1.36 | acc 48.8 | f1-score 0.468
+Val: loss 1.24 | acc 55.1 | f1-score 0.537
+Epoch: 29
+Train: loss 1.31 | acc 50.6 | f1-score 0.489
+Val: loss 1.23 | acc 55.1 | f1-score 0.532
+Epoch: 30
+Train: loss 1.30 | acc 51.3 | f1-score 0.495
+Val: loss 1.22 | acc 54.6 | f1-score 0.539
+Epoch: 31
+Train: loss 1.28 | acc 51.0 | f1-score 0.491
+Val: loss 1.20 | acc 57.7 | f1-score 0.560
+Epoch: 32
+Train: loss 1.24 | acc 53.2 | f1-score 0.516
+Val: loss 1.22 | acc 55.7 | f1-score 0.547
+Epoch: 33
+Train: loss 1.23 | acc 53.2 | f1-score 0.515
+Val: loss 1.23 | acc 54.5 | f1-score 0.540
+Epoch: 34
+Train: loss 1.19 | acc 54.0 | f1-score 0.522
+Val: loss 1.22 | acc 55.4 | f1-score 0.545
+Epoch: 35
+Train: loss 1.20 | acc 54.3 | f1-score 0.526
+Val: loss 1.22 | acc 54.8 | f1-score 0.539
+Epoch: 36
+restart at epoch 036
+Train: loss 1.19 | acc 54.8 | f1-score 0.530
+Val: loss 1.22 | acc 54.8 | f1-score 0.539
+Epoch: 37
+Train: loss 1.34 | acc 48.7 | f1-score 0.470
+Val: loss 1.25 | acc 55.1 | f1-score 0.530
+Epoch: 38
+Train: loss 1.34 | acc 49.5 | f1-score 0.477
+Val: loss 1.26 | acc 53.5 | f1-score 0.523
+Epoch: 39
+Train: loss 1.33 | acc 49.5 | f1-score 0.478
+Val: loss 1.24 | acc 52.2 | f1-score 0.516
+Epoch: 40
+Train: loss 1.30 | acc 50.6 | f1-score 0.488
+Val: loss 1.25 | acc 55.2 | f1-score 0.543
+Epoch: 41
+Train: loss 1.29 | acc 51.5 | f1-score 0.499
+Val: loss 1.23 | acc 56.2 | f1-score 0.555
+Epoch: 42
+Train: loss 1.24 | acc 52.7 | f1-score 0.508
+Val: loss 1.24 | acc 53.5 | f1-score 0.530
+Epoch: 43
+Train: loss 1.20 | acc 54.4 | f1-score 0.526
+Val: loss 1.24 | acc 55.2 | f1-score 0.546
+Epoch: 44
+Train: loss 1.19 | acc 54.9 | f1-score 0.532
+Val: loss 1.25 | acc 54.2 | f1-score 0.535
+Epoch: 45
+Train: loss 1.19 | acc 54.3 | f1-score 0.525
+Val: loss 1.26 | acc 54.8 | f1-score 0.542
+Epoch: 46
+Train: loss 1.15 | acc 55.9 | f1-score 0.543
+Val: loss 1.27 | acc 54.6 | f1-score 0.542
+Epoch: 47
+Train: loss 1.16 | acc 55.0 | f1-score 0.533
+Val: loss 1.27 | acc 54.6 | f1-score 0.541
+Epoch: 48
+restart at epoch 048
+Train: loss 1.14 | acc 56.6 | f1-score 0.551
+Val: loss 1.27 | acc 54.6 | f1-score 0.541
+Epoch: 49
+Train: loss 1.28 | acc 51.9 | f1-score 0.502
+Val: loss 1.29 | acc 54.3 | f1-score 0.530
+Epoch: 50
+Train: loss 1.29 | acc 49.9 | f1-score 0.480
+Val: loss 1.25 | acc 56.5 | f1-score 0.537
+Epoch: 51
+Train: loss 1.28 | acc 51.5 | f1-score 0.495
+Val: loss 1.25 | acc 54.3 | f1-score 0.535
+Epoch: 52
+Train: loss 1.27 | acc 52.6 | f1-score 0.508
+Val: loss 1.25 | acc 55.5 | f1-score 0.543
+Epoch: 53
+Train: loss 1.24 | acc 52.7 | f1-score 0.510
+Val: loss 1.28 | acc 53.8 | f1-score 0.533
+Epoch: 54
+Train: loss 1.23 | acc 53.8 | f1-score 0.523
+Val: loss 1.26 | acc 53.8 | f1-score 0.534
+Epoch: 55
+Train: loss 1.18 | acc 55.1 | f1-score 0.535
+Val: loss 1.25 | acc 56.2 | f1-score 0.555
+Epoch: 56
+Train: loss 1.16 | acc 56.3 | f1-score 0.548
+Val: loss 1.27 | acc 55.5 | f1-score 0.546
+Epoch: 57
+Train: loss 1.13 | acc 56.7 | f1-score 0.550
+Val: loss 1.27 | acc 55.4 | f1-score 0.551
+Epoch: 58
+Train: loss 1.12 | acc 56.9 | f1-score 0.554
+Val: loss 1.28 | acc 55.8 | f1-score 0.555
+Epoch: 59
+Train: loss 1.10 | acc 58.4 | f1-score 0.571
+Val: loss 1.28 | acc 55.5 | f1-score 0.550
+Epoch: 60
+restart at epoch 060
+Train: loss 1.11 | acc 57.1 | f1-score 0.555
+Val: loss 1.28 | acc 55.5 | f1-score 0.550
+Epoch: 61
+Train: loss 1.23 | acc 54.0 | f1-score 0.526
+Val: loss 1.28 | acc 52.5 | f1-score 0.521
+Epoch: 62
+Train: loss 1.25 | acc 53.0 | f1-score 0.514
+Val: loss 1.28 | acc 52.6 | f1-score 0.519
+Epoch: 63
+Train: loss 1.25 | acc 52.7 | f1-score 0.510
+Val: loss 1.23 | acc 57.4 | f1-score 0.563
+Epoch: 64
+Train: loss 1.22 | acc 54.8 | f1-score 0.533
+Val: loss 1.24 | acc 55.4 | f1-score 0.554
+Epoch: 65
+Train: loss 1.20 | acc 54.1 | f1-score 0.526
+Val: loss 1.25 | acc 54.3 | f1-score 0.537
+Epoch: 66
+Train: loss 1.16 | acc 56.0 | f1-score 0.544
+Val: loss 1.27 | acc 54.3 | f1-score 0.540
+Epoch: 67
+Train: loss 1.15 | acc 55.9 | f1-score 0.543
+Val: loss 1.29 | acc 56.3 | f1-score 0.556
+Epoch: 68
+Train: loss 1.15 | acc 56.3 | f1-score 0.547
+Val: loss 1.32 | acc 55.1 | f1-score 0.547
+Epoch: 69
+Train: loss 1.10 | acc 57.0 | f1-score 0.555
+Val: loss 1.35 | acc 54.2 | f1-score 0.539
+Epoch: 70
+Train: loss 1.08 | acc 58.5 | f1-score 0.570
+Val: loss 1.35 | acc 54.8 | f1-score 0.546
+Epoch: 71
+Train: loss 1.08 | acc 58.0 | f1-score 0.564
+Val: loss 1.35 | acc 54.8 | f1-score 0.545
+Epoch: 72
+restart at epoch 072
+Train: loss 1.06 | acc 59.8 | f1-score 0.586
+Val: loss 1.35 | acc 54.8 | f1-score 0.545
+Epoch: 73
+Train: loss 1.20 | acc 54.9 | f1-score 0.533
+Val: loss 1.30 | acc 54.3 | f1-score 0.532
+Epoch: 74
+Train: loss 1.23 | acc 52.8 | f1-score 0.510
+Val: loss 1.37 | acc 54.8 | f1-score 0.539
+Epoch: 75
+Train: loss 1.22 | acc 53.7 | f1-score 0.520
+Val: loss 1.36 | acc 53.4 | f1-score 0.523
+Epoch: 76
+Train: loss 1.22 | acc 54.3 | f1-score 0.528
+Val: loss 1.35 | acc 50.2 | f1-score 0.503
+Epoch: 77
+Train: loss 1.20 | acc 53.7 | f1-score 0.523
+Val: loss 1.36 | acc 52.3 | f1-score 0.522
+Epoch: 78
+Train: loss 1.15 | acc 55.6 | f1-score 0.540
+Val: loss 1.36 | acc 54.0 | f1-score 0.535
+Epoch: 79
+Train: loss 1.13 | acc 57.3 | f1-score 0.558
+Val: loss 1.37 | acc 53.1 | f1-score 0.529
+Epoch: 80
+Train: loss 1.09 | acc 59.4 | f1-score 0.580
+Val: loss 1.41 | acc 53.8 | f1-score 0.534
+Epoch: 81
+Train: loss 1.08 | acc 58.4 | f1-score 0.569
+Val: loss 1.41 | acc 52.8 | f1-score 0.528
+Epoch: 82
+Train: loss 1.05 | acc 58.8 | f1-score 0.574
+Val: loss 1.42 | acc 53.8 | f1-score 0.538
+Epoch: 83
+Train: loss 1.04 | acc 59.5 | f1-score 0.581
+Val: loss 1.43 | acc 54.0 | f1-score 0.538
+Epoch: 84
+restart at epoch 084
+Train: loss 1.04 | acc 59.4 | f1-score 0.581
+Val: loss 1.43 | acc 54.0 | f1-score 0.538
+Epoch: 85
+Train: loss 1.16 | acc 56.5 | f1-score 0.550
+Val: loss 1.35 | acc 54.2 | f1-score 0.535
+Epoch: 86
+Train: loss 1.19 | acc 54.5 | f1-score 0.530
+Val: loss 1.42 | acc 52.8 | f1-score 0.525
+Epoch: 87
+Train: loss 1.19 | acc 54.6 | f1-score 0.531
+Val: loss 1.27 | acc 55.1 | f1-score 0.534
+Epoch: 88
+Train: loss 1.16 | acc 56.2 | f1-score 0.546
+Val: loss 1.37 | acc 52.9 | f1-score 0.529
+Epoch: 89
+Train: loss 1.16 | acc 56.6 | f1-score 0.550
+Val: loss 1.34 | acc 54.5 | f1-score 0.541
+Epoch: 90
+Train: loss 1.13 | acc 57.0 | f1-score 0.553
+Val: loss 1.40 | acc 54.0 | f1-score 0.541
+Epoch: 91
+Train: loss 1.10 | acc 57.5 | f1-score 0.559
+Val: loss 1.43 | acc 53.2 | f1-score 0.530
+Epoch: 92
+Train: loss 1.05 | acc 59.2 | f1-score 0.577
+Val: loss 1.47 | acc 53.8 | f1-score 0.539
+Epoch: 93
+Train: loss 1.02 | acc 60.8 | f1-score 0.595
+Val: loss 1.49 | acc 54.5 | f1-score 0.542
+Epoch: 94
+Train: loss 1.01 | acc 60.6 | f1-score 0.593
+Val: loss 1.49 | acc 55.1 | f1-score 0.550
+Epoch: 95
+Train: loss 1.01 | acc 60.6 | f1-score 0.593
+Val: loss 1.49 | acc 54.5 | f1-score 0.544
+Epoch: 96
+restart at epoch 096
+Train: loss 1.00 | acc 60.5 | f1-score 0.592
+Val: loss 1.49 | acc 54.5 | f1-score 0.544
+Epoch: 97
+Train: loss 1.14 | acc 57.1 | f1-score 0.559
+Val: loss 1.35 | acc 54.2 | f1-score 0.540
+Epoch: 98
+Train: loss 1.17 | acc 54.8 | f1-score 0.532
+Val: loss 1.37 | acc 52.2 | f1-score 0.516
+Epoch: 99
+Train: loss 1.18 | acc 55.9 | f1-score 0.543
+Val: loss 1.41 | acc 48.5 | f1-score 0.457
+Epoch: 100
+Train: loss 1.16 | acc 55.6 | f1-score 0.540
+Val: loss 1.41 | acc 50.9 | f1-score 0.506
+Epoch: 101
+Train: loss 1.13 | acc 56.7 | f1-score 0.551
+Val: loss 1.41 | acc 54.5 | f1-score 0.539
+Epoch: 102
+Train: loss 1.11 | acc 58.1 | f1-score 0.568
+Val: loss 1.46 | acc 53.1 | f1-score 0.527
+Epoch: 103
+Train: loss 1.08 | acc 58.5 | f1-score 0.571
+Val: loss 1.44 | acc 51.8 | f1-score 0.521
+Epoch: 104
+Train: loss 1.06 | acc 60.2 | f1-score 0.591
+Val: loss 1.46 | acc 51.8 | f1-score 0.517
+Epoch: 105
+Train: loss 1.01 | acc 60.8 | f1-score 0.596
+Val: loss 1.50 | acc 52.6 | f1-score 0.528
+Epoch: 106
+Train: loss 0.99 | acc 61.8 | f1-score 0.605
+Val: loss 1.53 | acc 51.8 | f1-score 0.519
+Epoch: 107
+Train: loss 0.99 | acc 61.3 | f1-score 0.599
+Val: loss 1.53 | acc 51.7 | f1-score 0.517
+Epoch: 108
+restart at epoch 108
+Train: loss 0.99 | acc 61.4 | f1-score 0.600
+Val: loss 1.53 | acc 51.7 | f1-score 0.517
+Epoch: 109
+Train: loss 1.13 | acc 57.3 | f1-score 0.559
+Val: loss 1.45 | acc 51.2 | f1-score 0.509
+Epoch: 110
+Train: loss 1.17 | acc 55.2 | f1-score 0.535
+Val: loss 1.41 | acc 48.9 | f1-score 0.495
+Epoch: 111
+Train: loss 1.17 | acc 54.8 | f1-score 0.535
+Val: loss 1.40 | acc 54.2 | f1-score 0.536
+Epoch: 112
+Train: loss 1.15 | acc 56.2 | f1-score 0.547
+Val: loss 1.41 | acc 51.1 | f1-score 0.511
+Epoch: 113
+Train: loss 1.12 | acc 56.8 | f1-score 0.553
+Val: loss 1.44 | acc 52.2 | f1-score 0.520
+Epoch: 114
+Train: loss 1.09 | acc 58.4 | f1-score 0.571
+Val: loss 1.41 | acc 50.6 | f1-score 0.509
+Epoch: 115
+Train: loss 1.07 | acc 59.3 | f1-score 0.580
+Val: loss 1.45 | acc 51.2 | f1-score 0.514
+Epoch: 116
+Train: loss 1.05 | acc 59.4 | f1-score 0.579
+Val: loss 1.47 | acc 51.7 | f1-score 0.518
+Epoch: 117
+Train: loss 1.02 | acc 60.9 | f1-score 0.596
+Val: loss 1.49 | acc 52.2 | f1-score 0.519
+Epoch: 118
+Train: loss 1.00 | acc 61.0 | f1-score 0.598
+Val: loss 1.51 | acc 52.3 | f1-score 0.520
+Epoch: 119
+Train: loss 0.99 | acc 60.6 | f1-score 0.592
+Val: loss 1.51 | acc 51.8 | f1-score 0.516
+Epoch: 120
+restart at epoch 120
+Train: loss 0.97 | acc 61.7 | f1-score 0.605
+Val: loss 1.51 | acc 51.8 | f1-score 0.516
+Epoch: 121
+Train: loss 1.10 | acc 57.8 | f1-score 0.564
+Val: loss 1.37 | acc 53.2 | f1-score 0.530
+Final Test: loss 1.45 | acc 52.7 | f1-score 0.522
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">out_dir</span> <span class="o">=</span> <span class="s">'sgdr_final'</span>
+<span class="n">checkpoints</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/*.tar'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">checkpoints</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['sgdr_final/snapshot_e_012.pth.tar',
+ 'sgdr_final/snapshot_e_024.pth.tar',
+ 'sgdr_final/snapshot_e_036.pth.tar',
+ 'sgdr_final/snapshot_e_048.pth.tar',
+ 'sgdr_final/snapshot_e_060.pth.tar',
+ 'sgdr_final/snapshot_e_072.pth.tar',
+ 'sgdr_final/snapshot_e_084.pth.tar',
+ 'sgdr_final/snapshot_e_096.pth.tar',
+ 'sgdr_final/snapshot_e_108.pth.tar',
+ 'sgdr_final/snapshot_e_120.pth.tar']
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+<span class="n">ch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">checkpoints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span><span class="s">'cpu'</span><span class="p">})</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg_17</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span><span class="s">'cpu'</span><span class="p">})</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">ch</span><span class="p">[</span><span class="s">'state_dict'</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_model</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">checkpoints</span><span class="p">]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f1_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
+    <span class="n">f1_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_f1</span><span class="p">)</span>
+    
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">f1_list</span><span class="p">)),</span> <span class="n">f1_list</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Test f1-scores of 12 Snapshots"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Final Test: loss 1.23 | acc 55.3 | f1-score 0.532
+Final Test: loss 1.19 | acc 55.6 | f1-score 0.537
+Final Test: loss 1.21 | acc 57.4 | f1-score 0.562
+Final Test: loss 1.26 | acc 57.3 | f1-score 0.562
+Final Test: loss 1.31 | acc 58.2 | f1-score 0.574
+Final Test: loss 1.38 | acc 56.8 | f1-score 0.562
+Final Test: loss 1.45 | acc 56.2 | f1-score 0.555
+Final Test: loss 1.52 | acc 57.1 | f1-score 0.564
+Final Test: loss 1.59 | acc 56.4 | f1-score 0.559
+Final Test: loss 1.56 | acc 55.9 | f1-score 0.555
+</code></pre></div></div>
+
+<p><img src="/assets/materials/20180314/Snapshot%2BEnsemble%2Bwith%2BSGDR_44_1.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">chosen</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_evaluate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="n">tot</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>
+        <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+            <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+            <span class="n">preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            <span class="n">label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">continent</span><span class="p">)</span>
+        <span class="n">tot</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tot</span><span class="p">,</span> <span class="n">label</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_evaluate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">batch_pred</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+            
+            <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+            
+            <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
+            <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            
+            
+            <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+
+            <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+            <span class="n">batch_pred</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+            
+        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            
+        <span class="n">stacked_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">batch_pred</span><span class="p">])</span>
+        <span class="n">ensemble_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stacked_pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ensemble_label</span> <span class="o">=</span> <span class="n">ensemble_pred</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ensemble_label</span><span class="p">]</span>
+            
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
+        <span class="n">avg_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            
+    <span class="n">avg_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="n">get_accuracy</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="n">get_f1</span><span class="p">(</span><span class="n">truth_res</span><span class="p">,</span> <span class="n">pred_res</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span>
+
+
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span> <span class="o">=</span> <span class="n">ensemble_evaluate</span><span class="p">(</span><span class="n">chosen</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">"final test"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">avg_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">f1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.560901219430177 0.59612724758 0.585357612011
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
+    
+    <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="k">if</span> <span class="n">use_gpu</span><span class="p">:</span>
+            <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">targetTensor</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">stoi</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">CITY</span><span class="o">.</span><span class="n">preprocess</span><span class="p">(</span><span class="n">target</span><span class="p">)])</span><span class="o">.</span><span class="nb">type</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        
+        <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
+        
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">targetTensor</span><span class="p">)</span>
+        <span class="n">pred_res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        
+    <span class="n">stacked_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">t</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">pred_res</span><span class="p">])</span>
+    <span class="n">ensemble_pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">stacked_pred</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([(</span><span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">pred_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ensemble_pred</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">])],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'res_idx'</span><span class="p">,</span> <span class="s">'nll'</span><span class="p">])</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'prob'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">nll</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">res_df</span><span class="p">[</span><span class="s">'continent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">res_idx</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="o">.</span><span class="n">itos</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">res_df</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'prob'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res_df</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Pyeongchang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-0.006906</td>
+      <td>0.993</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-9.892464</td>
+      <td>0.000</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-8.771552</td>
+      <td>0.000</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-10.246568</td>
+      <td>0.000</td>
+      <td>South America</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-9.245982</td>
+      <td>0.000</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-9.318214</td>
+      <td>0.000</td>
+      <td>Oceania</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Pyongyang'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-0.006043</td>
+      <td>0.994</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-10.383581</td>
+      <td>0.000</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-9.277002</td>
+      <td>0.000</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-10.818215</td>
+      <td>0.000</td>
+      <td>South America</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-9.842393</td>
+      <td>0.000</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-9.806544</td>
+      <td>0.000</td>
+      <td>Oceania</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Sheffield'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.251214</td>
+      <td>0.778</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-3.087586</td>
+      <td>0.046</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-3.453455</td>
+      <td>0.032</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-3.497353</td>
+      <td>0.030</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-4.547478</td>
+      <td>0.011</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-5.292456</td>
+      <td>0.005</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Bratford'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.845049</td>
+      <td>0.430</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-1.327268</td>
+      <td>0.265</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-2.198355</td>
+      <td>0.111</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-2.554528</td>
+      <td>0.078</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-3.445377</td>
+      <td>0.032</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-3.488388</td>
+      <td>0.031</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'York'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>res_idx</th>
+      <th>nll</th>
+      <th>prob</th>
+      <th>continent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>-0.890224</td>
+      <td>0.411</td>
+      <td>North America</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>-1.868993</td>
+      <td>0.154</td>
+      <td>Europe</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>-1.892135</td>
+      <td>0.151</td>
+      <td>Asia</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>-2.067101</td>
+      <td>0.127</td>
+      <td>Africa</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>-2.372786</td>
+      <td>0.093</td>
+      <td>Oceania</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>-3.830435</td>
+      <td>0.022</td>
+      <td>South America</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Snapshot Ensemble with SGDR&url=http://localhost:4000/snapshot_ensemble/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/snapshot_ensemble/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/snapshot_ensemble/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#deep learning" class="tag">&#35; deep learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Review: Deep Q Learning - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Review: Deep Q Learning" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/dqn/" property="og:url">
+  
+  
+    <meta content="2018-12-02T09:00:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/20181202.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+    <meta content="Deep Reinforcement Learning" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Review: Deep Q Learning">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/dqn/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/20181202.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    <div class="page-cover-image">
+      <figure>
+        <img class="page-image" src=/assets/img/20181202.jpg alt="Review: Deep Q Learning">
+        
+      </figure>
+    </div> <!-- End Page Cover Image -->
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Review: Deep Q Learning</h1>
+        <div class="page-date"><span>2018, Dec 02&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h1 id="previously-in-rl">Previously in RL</h1>
+
+<p><a href="https://jsideas.net/drlnd_review_1/">이전 포스팅</a>에서 Cliff Walking 문제를 풀어보며 Reinforcement Learning에 대해 알아보았다.</p>
+
+<p>Cliff Walking은 agent가 절벽에 떨어지지 않고 시작점에서 끝점까지 가장 빠르게 이동하는 길을 찾는 문제였다. agent는 처음에는 random policy에 따라 마구잡이로 움직이다가, 수많은 에피소드를 시행해보며 점차 어떤 state에서 어떤 action이 얼마만큼의 가치를 지니는지 이해하게 된다. 이때 state-action의 가치를 갱신하기 위해 48(#states) x 4(#actions) 크기의 Q테이블을 만들었다. 그리고 Q Learning 등의 방식을 사용해 Q테이블의 값을 추정하고 최적의 policy를 얻을 수 있었다.</p>
+
+<p><img src="../assets/materials/20181202/optimal_policy.png" alt="" /></p>
+
+<p><em>Cliff Walking 문제</em></p>
+
+<p><br /></p>
+
+<h1 id="rl--nn">RL + NN</h1>
+
+<p>Cliff Walking은 간단한 RL으로 풀리는 매우 쉬운 문제였다. state와 action의 가짓수가 유한한 discrete 문제인데다 경우의 수도 작은 편이라, 고정된 크기의 Q테이블과 Q Learning을 통해 문제를 풀 수 있었다.</p>
+
+<p>그러나 우리가 실제로 풀고자 하는 현실 세계의 RL 문제들은 이보다 훨씬 복잡하다. 예를 들어 바둑은 Cliff Walking처럼 discrete한 문제이지만, 그 경우의 수가 계산불가능할 만큼 복잡하기 때문에 Q테이블을 만드는 것 자체가 무의미하다.</p>
+
+<p>또 Q테이블을 만드는 방식은 문제 자체가 아예 continous한 경우 state나 action은 무한한 실수값을 가질 수 있으므로 테이블 자체가 만들어지지 않는다. 예컨대 로봇 청소기가 돌아다니는 공간은 다양한 크기와 형태를 가진 사물들로 이루어진 공간이다. 이를 그리드월드처럼 격자로 자르거나, 혹은 다양한 타일로 겹쳐서 문제를 풀 수도 있다. 공간을 대강 자르면 기존 방식으로 학습은 할 수 있으나 그 성능이 떨어질 것이고, 정교하게 격자를 구성하면 그만큼 경우의 수가 대폭 증가해 학습이 어려워지는 문제가 발생한다.</p>
+
+<p><img src="../assets/materials/20181202/go.jpg" alt="" /></p>
+
+<p><em>계산이 거의 불가능할 정도로 복잡한 바둑</em></p>
+
+<p>스타크래프트를 할 때 우리는 모든 유닛의 위치와 이동속도를 고려해 다음 유닛의 좌표를 선택하지 않는다. 대신 나의 자원 수급, 유닛 생산, 유닛 구성 등의 정보와 상대방의 최신 정보를 복합적으로 판단하고, 공격, 견제, 방어 등의 추상적인 의사결정을 내린다. 그리고 그 의사결정을 수행하기 위해 바쁘게 마우스와 키보드를 조작한다.</p>
+
+<p>복잡한 문제에 대처하는 RL도 마찬가지다. 모든 경우의 수를 정확하게 계산하는 것은 불가능하기 때문에 주어진 상황에 현명하게 대처할 수 있는 어떤 추상적인 지식을 학습하는 관점으로 접근한다. 알 수 없는 true q함수를 직접 구하는 대신 function approximation을 사용해 이를 적절히 근사하는 함수를 구한다. 이때 approximator로 사용하는 옵션 중 하나가 Neural Network다.</p>
+
+<p>$q_{\pi}(s, a) \approx \hat{q}(s, a, W)$</p>
+
+<p>$W$는 Neural Network의 파라미터 벡터(weight)다. q함수의 인자인 state $s$와 action $a$를 파라미터 $W$를 가진 네트워크에 통과시켜 action-value를 얻게 된다. 우리가 원하는 true q함수 값에 근접한 값을 얻기 위해, $q_{\pi}(s, a)$와 $\hat{q}(s, a, W)$간의 차이가 최소화되도록 $W$를 최적화하는 것이 RL + NN의 학습방식이다.</p>
+
+<p><br /></p>
+
+<h1 id="deep-q-learning">Deep Q Learning</h1>
+
+<p>NN을 function approximator로 사용해 RL로 복잡한 문제를 풀려는 시도는 2000년대 이전에도 있어왔지만, 2015년 DeepMind에서 Atari 게임을 깨기전까지는 성공에 이르지는 못했다. <a href="https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf">DQN</a> 논문에서는 RL+NN의 학습이 불안정하고 diverge하는 이유를 다음과 같이 기술한다.</p>
+
+<ol>
+  <li>the correlations present in the sequence of observations</li>
+  <li>the fact that small updates to $Q$ may significantly change the policy and therefore change the data distribution</li>
+  <li>the correlations between the action-values($Q$) and the target values $r + \gamma max_{a^\prime} Q(s^\prime, a^\prime)$</li>
+</ol>
+
+<p>개/고양이를 분류하는 Supervised Learning 모델을 떠올려보자. 각 feature-label 페어 (관측치)는 서로 독립이다. 직전 샘플이 고양이라고 해서 다음 샘플도 고양이가 될 가능성은 없다. 하지만 Q Learning에서는 이번에 선택한 action이 다음 state에 영향을 주고, 그 영향이 다음 action으로도 이어질 가능성이 높다. 싱글 스쿼시를 할 때 오른손 포어핸드로 공을 직선으로 치면 게임이 끝날때까지 오른손만 사용하게 된다.</p>
+
+<p>어떤 샘플을 고양이라고 예측했다고 해서 그 이후에 뽑을 샘플에 영향을 주지 않는다. 하지만 Q Learning에서는 이번 시점의 예측이 Q함수에 영향을 주고, Q함수에 의거해 policy가 만들어진다. 그리고 policy에 의거해 action을 수행하므로 이후 {S, A, R, S} 샘플이 과거 예측에 의해 영향을 받는다.</p>
+
+<p>마지막으로 개/고양이 분류 문제에서 우리는 이미 정답을 가지고 시작한다. 하지만 Q Learning에서는 정답을 모른다. Bellman Equation을 사용해 현재 시점의 Q함수 값은 바로 다음의 reward와 그 다음 시점의 Q함수 값의 합으로 구하고 이를 target으로 정의한다.</p>
+
+<p>$Q(s, a) = Q(s, a) + \alpha (r + max_{a^\prime} Q(s^\prime, a^\prime) - Q(s, a))$</p>
+
+<p>prediction과 target간의 차이를 좁히는 것을 목표로 하는데, 둘 다 같은 Q함수를 기반으로 계산한다.</p>
+
+<div>
+    <iframe src="https://www.youtube.com/embed/_x4uzhkiNbE" width="700" height="480" frameborder="0">
+    </iframe>
+</div>
+<p><em>영상 초반부) 포어핸드 -&gt; 오른쪽 벽 -&gt; 포어핸드 -&gt; 오른쪽 벽 -&gt; …</em></p>
+
+<p>이러한 세가지 문제를 <a href="https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf">DeepMind에서 발표한 DQN</a>에서는 Experience Replay와 Fixed Q Targets라는 방식을 사용해 해결한다. 그리고 그 결과는 우리가 익히 아는 Atari Game이다.</p>
+
+<p><img src="../assets/materials/20181202/dqn_playing_breakout.gif" alt="" /></p>
+
+<p><em>DQN playing Atari Breakout (source: Gfycat)</em></p>
+
+<p><br /></p>
+
+<h3 id="experience-replay">Experience Replay</h3>
+
+<p>기존 Q Learning에서는 관측치(${S_t, A_t, R_{t+1}, S_{t+1}}$)를 생성하고 바로 Q함수를 업데이트하는 과정을 반복해 학습했다. 직전 관측치가 다음 관측치에 영향을 주다보니 학습이 잘 안되는 문제가 있었다. 이 방식의 또다른 문제는 데이터 효율성이다. 생성한 관측치는 Q함수 업데이트에 한번 사용되고 버려진다. 학습에 도움이 되는 귀중하고 희귀한 샘플 역시 한번 사용되고 버려지기 때문에 이 방식은 효율적이라 보기 어렵다.</p>
+
+<p>학습할 때 우리는 눈앞의 경험 뿐만 아니라 관련된 과거의 경험을 상기한다. 예를 들어 폭죽에 불을 붙일 때 당장 손에 전해지는 온도도 신경쓰지만, 과거에 불에 데인 경험을 통해 손을 어떻게 보호해야할지 판단한다.</p>
+
+<p>Experience Replay를 사용하는 agent는 관측값을 얻을 때마다 ReplayBuffer에 이를 저장하고, 저장된 history를 샘플링해서 Q함수를 업데이트하는 재료로 사용한다. 이를 통해 앞서 설명한 Q Learning의 두가지 문제점을 해결한다.</p>
+
+<p>생성한 관측값을 바로 쓰는 것이 아니라 uniform random sampling을 통해 관측값을 추출하므로, 관측값간의 시간순서가 사라져 상관성 문제에서 자유로워진다. 또 ReplayBuffer에 관측값을 담아두고 샘플링하기 때문에, 희귀한 샘플이 버려지지 않고 재사용될 수 있다.</p>
+
+<p><br /></p>
+
+<h3 id="fixed-q-targets">Fixed Q Targets</h3>
+
+<p>두번째는 Fixed Q Targets다. 일반적인 Q Learning은 당나귀 뒤에 올라타 낚시대로 당근을 드리우고 당나귀가 곧게 걷기를 바라는 것과 같다.</p>
+
+<div>
+    <iframe src="https://www.youtube.com/embed/-PVFBGN_zoM" width="700" height="480" frameborder="0">
+    </iframe>
+</div>
+<p><em>잘 될것 같지만 실제로 해보면 직진하기 어렵다.</em></p>
+
+<p>당근을 든 손을 곧게만 유지하면 당나귀가 직진할 것이라고 생각하지만, 실제로는 잘 안된다. 당나귀와 사람, 그리고 낚시대와 당근이 모두 연결되어 있기에, 당나귀가 움직이면 올라탄 사람도 흔들리고 그에 따라 당근도 흔들린다. 결국 영상에서처럼 당나귀는 직선으로 이동하는데 실패한다.</p>
+
+<p>당근의 위치를 Q함수의 타겟($r + max_{a^\prime} Q(s^\prime, a^\prime)$)으로, 당나귀의 움직임을 추정치($Q$)로 대입해보면 된다. 타겟과 추정치의 오차를 줄여야하는데, $Q$의 변화에 따라 타겟과 추정치가 모두 함께 변화하면 안정적인 학습(이동)이 어려워진다.</p>
+
+<p>DQN에서는 당나귀와 당근을 분리시키는 Fixed Q Targets 방법을 사용해서 문제를 해결한다. Q함수를 추정하는 네트워크(local network)와 Target을 설정하는데 사용하는 네트워크(target network)로 추정과 평가를 분리한다. 당나귀 등에서 내려서 낚시대를 드리우면, 당근의 위치는 더이상 당나귀의 움직임에 영향을 받지 않는다.</p>
+
+<p>그리고 target network의 업데이트 주기를 local network보다 더 느리게 만듦으로써 목표가 자주 휘청이지 않도록 한다. DQN 구현에서는 local network가 4번 업데이트될 때 한번씩 target network의 파라미터를 local network의 파라미터를 사용해 soft update한다.</p>
+
+<p><br /></p>
+
+<h1 id="double-q-learning">Double Q Learning</h1>
+
+<p>DQN이 성공적으로 Atari 문제를 푸는데 성공했지만, Q Learning 자체가 가진 Overestimation 문제까지 풀지는 못했다. Thrun과 Schwartz는 1993년 발표한 <a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a>에서 approximation 과정에서 생기는 노이즈가 max operator로 인해 action-value를 과대계상(overestimate)하고, 이는 최적의 policy를 학습하는데 방해요소로 작용한다고 주장한다. 이에 대해서는 <a href="https://jsideas.net/drlnd_issues_in_using_function_approximation/">이전 블로그 포스팅</a>을 통해 간단히 알아보았다.</p>
+
+<p>2015년 말 DeepMind에서는 위 논문의 주장을 확장시켜 max operator 외에도 다른 여러 요소들이 estimation error를 일으키고 optimal policy 학습을 저해하는 것을 실험을 통해 보여준다. 그리고 이러한 DQN의 단점을 보완하는 <a href="https://arxiv.org/pdf/1509.06461.pdf">Double DQN</a>을 제안한다.</p>
+
+<h3 id="decouple-the-selection-from-evaluation">Decouple the selection from Evaluation</h3>
+
+<p>Q Learning에서 target $Y_t^Q$는 다음과 같이 정의한다.</p>
+
+<p>$Y_t^Q \doteq R_{t+1} + \gamma max_a Q(S_{t+1}, a; \theta_t)$</p>
+
+<p>DQN의 target은 Fixed Q Targets를 사용하므로 local network($\theta_t$)가 아닌 target network의 파라미터($\theta_t^-$)를 사용한다.</p>
+
+<p>$Y_t^{DQN} \doteq R_{t+1} + \gamma max_a Q(S_{t+1}, a; \theta_t^-) $</p>
+
+<p>이 두 식은 모두 target $Y_t$를 계산할 때 다음 state에서의 greedy action을 뽑는 selection 행위와 그 action의 가치를 평가하는 evaluation을 같은 모델을 사용해서 얻는다. Q Learning에서는 $\theta_t$를, DQN에서는 $\theta_t^-$를 쓴다.</p>
+
+<p>위에서 설명했다시피 강화학습에서는 학습의 목표인 target의 참 값을 알 수 없다. DQN의 $\theta_t^-$ 역시 true $\theta$의 근사값, guess일 뿐이다. 다만 DQN이 증명했듯, 수많은 샘플을 통해 어느정도 만족스런 성능을 내는 수준으로 파라미터를 업데이트하고 Atari 문제를 풀 수 있었다.</p>
+
+<p>DDQN은 노이즈에 조금 더 견고한 DQN이라 할 수 있다. 학습의 후반부에 이르면 노이즈는 많이 줄어들지만, 샘플도 적고 파라미터도 안정되지 않은 초반부에는 작은 오류에도 모델이 크게 흔들릴 수 있다. DDQN은 target을 계산할 때 다음 state의 최댓값을 뽑는 과정을 1) 가장 값이 높은 액션을 뽑는 과정 2) 해당 액션의 값을 추정하는 과정으로 분리하고 이를 각각 다른 네트워크에 맡겨 견고함을 높였다.</p>
+
+<p>다시 $Y_t^{DQN}$을 보자.</p>
+
+<p>$Y_t^{DQN} \doteq R_{t+1} + \gamma max_a Q(S_{t+1}, a; \theta_t^-) $</p>
+
+<p>$max_a Q(S_{t+1}, a; \theta_t^-)$를 <span style="color:red;">selection</span>과 <span style="color:blue">evaluation</span>으로 분리한다.</p>
+
+<p>$Y_t^{DoubleQ} \doteq R_{t+1} + \color{red}\gamma \color{red}{Q(S_{t+1}, }\color{blue}{argmax_a Q(S_{t+1}, a; \theta_t)}\color{red}{; \theta_{t}^-)}$</p>
+
+<p>이때 greedy action을 뽑는 selection은 local network로, 이 값의 가치는 target network를 사용해 추정하도록 구현한다.</p>
+
+<p><br /></p>
+
+<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
+
+<p>DQN의 Experience Replay Buffer의 샘플링을 통해 Replay는 연속된 관측값들이 가지는 상관성의 고리를 끊고, 강화학습의 학습 방식을 supervised learning과 같은 형태로 변환했다. DQN에서는 매 학습주기마다 Replay Buffer에서 학습 샘플을 uniform random sampling의 방식으로 얻었다.</p>
+
+<p>그런데 우리가 게임을 할 때 승패에 지대한 영향을 주는 사건이나 경험은 드문드문 발생한다. 대부분의 경험은 그에 비해 상대적인 중요성이 떨어진다. 우리가 학습시킬 강화학습 agent 역시 uniform random sampling으로 모든 경험을 균등하게 취급할 것이 아니라, 더 중요하고 희소한 경험들에 더 가중치를 주어야 하지 않을까? 이것이 2015년 DeepMind에서 발표된 <a href="https://arxiv.org/abs/1511.05952">Prioritized Experience Replay</a>(이하 PER)의 핵심 아이디어다.</p>
+
+<h3 id="td-error-as-a-reasonable-proxy">TD Error as a reasonable proxy</h3>
+
+<p>agent가 env안에서 쌓는 수많은 experience tuple {$S, A, R^\prime, S^\prime$} 중에 어떤 경험이 더 중요한 경험일까? 중요한 경험을 무엇을 기준으로 정량화할 수 있을까? 어떤 경험으로부터 얻는 교훈의 크기가 클수록 그 경험이 중요하다고 할 수 있겠지만, 이는 강화학습에서 직접적으로 얻을 수 없다.</p>
+
+<p>대신 DeepMind에서는 TD error $\delta$의 크기를 그 대체재로 사용한다. TD Error은 Q Learning시 <span style="color:red">Target Q</span>와 <span style="color:blue">Expected Q값</span>의 차이를 의미한다.</p>
+
+<p>$\delta = \color{red}{R_{t+1} + \gamma max_a \hat{q}(S_{t+1}, a, W)} - \color{blue}{\hat{q}(S_t, A_t, W)}$</p>
+
+<p>PER에서는 각 경험의 가중치를 <code class="highlighter-rouge">priority</code>로 명명하고 다음과 같이 정의한다.</p>
+
+<p>priority $p_t = \mid\delta_t\mid + \epsilon$</p>
+
+<p>TD Error $\delta$의 크기를 구해야 하므로 절대값을 씌운다. 그리고 아주 작은 양의 constant $\epsilon$을 더해주는데, 만약 target과 expected 값이 완전 같아 $\delta$가 0이 되어버리면 해당 경험은 아예 뽑히지 않을 가능성이 생기기 때문이다. 모든 경험이 약간씩은 추출될 가능성을 담보하는 역할을 $\epsilon$이 수행한다.</p>
+
+<h3 id="hyperparameter-alpha">hyperparameter $\alpha$</h3>
+
+<p>priority를 샘플링 확률로 그대로 사용하면 priority가 높은 소수의 샘플만 계속 학습에 사용될 가능성이 있다. 이를 어느정도 조절하기 위해 하이퍼파라미터 $\alpha$를 사용해 sampling probability $P(i)$를 계산한다.</p>
+
+<p>sampling probability $P(i) = \frac{p_i^\alpha}{\Sigma_kp_k^\alpha}$</p>
+
+<p>$\alpha$는 0과 1사이의 값으로, 0이 되면 $P(i) = \frac{1}{k}$가 되어 uniform random sampling과 같아진다. 그리고 1이 되면 $P(i) = p_i$이 되어 priority가 그대로 샘플링 확률에 반영된다.</p>
+
+<p>논문에서는 적절한 $\alpha$를 0.6이나 0.7로 설정했다.</p>
+
+<h3 id="hyperparameter-beta">hyperparameter $\beta$</h3>
+
+<p>이전 포스팅에서 다룬 Monte Carlo Methods로 잠시 돌아가보자. Monte Carlo 방식은 수많은 episode 샘플을 생산한 다음, 각 episode를 순회하면서 state-action에 해당하는 Q테이블의 값을 업데이트하는 방식을 취했다. 이때 MC Control with Incremental Mean은 state-action pair의 관측값의 이동평균을 구하는 방식인데, 계산을 편하게 하기 위해 다음과 같은 식으로 값을 업데이트했다.</p>
+
+<p>$Q \leftarrow Q + {1\over{N}} (G - Q)$</p>
+
+<p>G는 해당 에피소드의 state-action 값, Q는 누적 이동평균의 값, N은 에피소드의 횟수를 의미한다. 에피소드가 계속 쌓일수록 N이 커져 업데이트의 크기가 줄어드는 문제를 해결하기 위해 $1\over{N}$을 상수 $\alpha$로 바꾸는 Constant Alpha 방식을 사용하게 되었다.</p>
+
+<p>$\alpha$를 사용하더라도 각 샘플별로 다른 값이 곱해지는 것은 아니기 때문에 모든 샘플이 똑같이 사용되지만, PER에서는 priority를 사용하기 때문에 가중치가 높은 샘플들이 더 많이 사용될 가능성이 매우 높다. PER이전까지는 uniform distribution을 따르는 샘플링을 썼기 때문에 이러한 균등 가정을 깨뜨릴 이유가 없었다.</p>
+
+<p>non-uniform random sampling에 따른 bias를 보정하기 위해 PER에서는 파라미터 업데이트때 importance-sampling (IS) weight를 곱해주고, 보정을 어마할지 결정하는 하이퍼파라미터 $\beta$를 사용한다.</p>
+
+<p>$w_i = (\frac{1}{N}\frac{1}{P(i)})^\beta$</p>
+
+<p>$\triangle w = \alpha \color{red}{w_i} \delta_i \triangledown_w \hat{q}(S_t, A_t, w)$</p>
+
+<p>$\beta$는 0과 1사이의 값으로 1이 되면 non-uniform probabilities $P(i)$를 완전 보상하고 0이 되면 $w_i$가 1이 되어 사라진다.</p>
+
+<p>보통 강화학습에서 bais를 수정하는 것은 convergence가 일어나는 학습 후반부에 중요해진다. 따라서 논문에서는 시작값 $\beta_0$를 0.4나 0.5로 설정한다음, 학습 종료시 1이 되도록 선형적으로 증가시켰다.</p>
+
+<p><br /></p>
+
+<h1 id="dueling-network">Dueling Network</h1>
+
+<p>Double DQN은 DQN의 target value 산출 방식을 개선했고 Prioritized Experience Replay는 좀 더 중요도가 높은 샘플에 더 집중하도록 샘플링 방식을 개량했다. 이번에 살펴볼 <a href="https://arxiv.org/pdf/1511.06581.pdf">DeepMind의 Dueling Network</a>는 더 나은 네트워크 구조를 제안한다.</p>
+
+<p>우리가 스타크래프트를 할 때 저글링 한부대를 이동시키는 행위는 무수하게 많이 일어난다. 하지만 기지 주변을 탐색하려고 이동시키는 행위와, 멀티가 공격받아 급히 이동시키는 행위는 같은 행위라도 중요성과 의미가 다르다.</p>
+
+<p>마찬가지로 DQN이 푸는 문제들 중 일부는 action이 바뀌어도 state의 value는 거의 차이가 없는 경우가 있다. Dueling Network는 네트워크 구조 내부에서 state의 가치를 추정하는 state stream과 action의 가치를 계산하는 advantage stream을 통해 이 문제를 해결한다. DeepMind의 실험결과 Dueling Network는 기본 DQN에 비해 훨씬 더 나은 성능을 보였다고 한다.</p>
+
+<h3 id="dueling-network-architecture">Dueling Network Architecture</h3>
+
+<p><img src="../assets/materials/20181202/dn_architecture.png" alt="" /></p>
+
+<p>기존의 DQN 네트워크와 동일하게 Dueling Network 역시 state $s$가 취할 수 있는 action들의 value를 리턴한다. 그러나 네트워크 후반부가 조금 다르게 생겼다. 먼저 Atari Games의 raw screen을 convolution layer로 읽어들여서 feature를 추출하는 부분은 같다. 하지만 이후에 2개의 stream으로 나누어진다.</p>
+
+<p>위에 있는 stream은 state-value를 추정하는 부분이다. 네트워크는 state 1개를 인자로 받으므로 해당 레이어의 아웃풋은 [batch_size x 1]크기의 텐서가 된다.</p>
+
+<p>밑에 위치한 stream은 advantage stream으로 각 action의 가치를 추정한다. 이는 DQN과 동일하게 [batch_size x #actions] 크기의 텐서를 출력한다.</p>
+
+<p>이 두개의 값을 얻은 후 합산하여 리턴하는 것이 Dueling Network의 기본 구조다.</p>
+
+<h3 id="그런데-그냥-합산하는-것은-아니다">그런데 그냥 합산하는 것은 아니다.</h3>
+
+<p>feature extraction layer의 파라미터를 $\theta$, state stream 레이어의 파라미터를 $\beta$로, advantage stream 레이어의 파라미터를 $\alpha$로 두면 각 stream의 아웃풋은 다음과 같이 정의할 수 있다.</p>
+
+<p>state stream $V(s; \theta, \beta)$</p>
+
+<p>advantage stream $A(s, a; \theta, \alpha)$</p>
+
+<p>최종적으로 얻고자 하는 추정값은 이 둘의 합으로 간단히 만들어볼 수 있다.</p>
+
+<p>$Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)$</p>
+
+<p>그런데 이렇게 나이브하게 네트워크를 구성해서 돌리면 별로 좋은 성과가 나지 않는다. 그냥 딱 봐도 파라미터 수만 조금 늘어날 뿐 DQN과 크게 달라보이지 않는다.</p>
+
+<p>유념해야 할 것은 $Q(s, a; \theta, \alpha, \beta)$는 true $Q$함수의 근사치에 지나지 않는다는 점이다. 또한 그 내부의 $V(s; \theta, \beta)$와 $A(s, a; \theta, \alpha)$가 믿을 수 있는 state와 action value를 추정할 것이라 믿는 것도 잘못되었다.</p>
+
+<p>네트워크 내부에서 두 stream을 합산해버리면 이들이 가진 각각의 특성을 찾을 수 없게 되어 버린다. $V(s; \theta, \beta)$에 작은 constant를 더하고 $A(s, a; \theta, \alpha)$에서 같은 값을 뺀다음 stream을 합산하면 constant는 결국 상쇄되어 사라지고 만다. 즉 두 stream이 분리되지 않는다.</p>
+
+<p>이 문제를 해결하기 위해 논문에서는 advantage function estimator $A(s, a; \theta, \alpha)$에서 자체의 최대값이나 평균을 빼는 방식을 취한다. 평균을 뺀 advantage stream을 사용한 네트워크는 다음과 같이 구성된다.</p>
+
+<script type="math/tex; mode=display">Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + \Big(A(s, a; \theta, \alpha) - \frac{1}{|A|}\Sigma_{a^\prime} A(s, a^\prime; \theta, \alpha)\Big)</script>
+
+<p>이로서 state의 값과 해당 state에서의 action의 값이 분리되어 네트워크를 통과한다.</p>
+
+<p><br /></p>
+
+<h3 id="saliency-map-result">Saliency Map Result</h3>
+
+<p>Dueling Network는 정말 state와 action을 분리시킬 수 있을까? action이 중요하지 않은 상황과 중요한 상황에서 advantage stream은 다르게 행동할까?</p>
+
+<p>DeepMind 논문에서 Enduro라는 자동차 주행 게임을 대상으로 실험을 했는데 결과가 재밌다. Saliency Map을 사용해 이미지 위에 각 stream이 반응한 영역을 확인해보았는데..</p>
+
+<p><img src="../assets/materials/20181202/enduro.png" alt="" /></p>
+
+<p>장애물이 없는 상황에서는 advantage stream이 반응하지 않았지만, 눈앞에 장애물이 있는 하단의 상황에서는 장애물 부근에 반응하는 것이 나타난다. state의 value를 표현하는 stream이 지평선의 끝부분과 점수 포인트 부근에 집중하는 것도 흥미로운 포인트다.</p>
+
+<h1 id="implementation">Implementation</h1>
+
+<p>이번에 DQN, Double DQN, Proritized Experience Replay 그리고 Dueling Network를 공부해보면서 OpenAI의 LunarLander-v2 환경에서 구현을 해보았다(<a href="https://github.com/junkwhinger/dqn">구현 코드</a>). 스크린샷을 그대로 학습에 사용하는 Atari 실험에 비해 LunarLander-v2의 문제는 훨씬 간단한 편이다. 부스터를 쓰면서 깃발 사이로 우주선을 안착시키는 게임인데, state는 위치, 속도, 각도 등 8가지 숫자로 구성되어 CNN을 쓰지 않아도 된다. 덕분에 빠른 시간내에 DQN의 학습 결과를 볼 수 있는 적절한 환경이라 하겠다.</p>
+
+<p>성능비교를 위해 다음과 같은 4가지 모델을 만들었다.</p>
+
+<ol>
+  <li>DQN</li>
+  <li>Double DQN</li>
+  <li>Double DQN + Prioritized Experience Replay</li>
+  <li>Dueling Network + Prioritized Experience Replay</li>
+</ol>
+
+<h3 id="학습-score-비교">학습 score 비교</h3>
+
+<p><img src="../assets/materials/20181202/score_comparison.png" alt="" /></p>
+
+<p>모델별로 최근 100개의 score 이동평균을 가져와 약간의 스무딩을 거친 후 비교해보았다.</p>
+
+<p><span style="color:red">Vanilla DQN</span>에 비해 다른 모델들의 score가 더 빨리 상승하고 더 높은 지점에 도달하는 것을 알 수 있다. 실험 결과  <span style="color:red">Vanilla DQN</span>의 최고 score는 220 정도에 그쳤으나, 나머지 3개 모델은 모두 2000 iteration 내에 265를 기록했다.</p>
+
+<p>LunarLander-v2가 DeepMind에서 풀었던 Atari 문제에 비해 비교적 간단해서인지 후속 3가지 모델간에 유의미한 성능 차이는 발견하기 어려웠다.</p>
+
+<h3 id="play-lunarlander">Play LunarLander</h3>
+
+<p>앞서 학습한 4가지 모델을 사용해 실제 LunarLander-v2를 플레이해보았다. seed값을 조정해 처음 state값에 변화를 줄 수 있는데, 테스트해본 값 중 42는 쉬운 편, 6은 어려운 편이었다. 이 두가지 seed로 구성된 환경에서 각 모델이 어떻게 플레이하는지 비교해보자.</p>
+
+<h3 id="쉬운-문제-seed42">쉬운 문제 (seed=42)</h3>
+
+<h4 id="dqn">DQN</h4>
+
+<p><img src="../assets/materials/20181202/42_dqn.gif" alt="" /></p>
+
+<h4 id="double-dqn">Double DQN</h4>
+
+<p><img src="../assets/materials/20181202/42_ddqn.gif" alt="" /></p>
+
+<h4 id="double-dqn--prioritized-experience-replay">Double DQN + Prioritized Experience Replay</h4>
+
+<p><img src="../assets/materials/20181202/42_ddqn_per.gif" alt="" /></p>
+
+<h4 id="dueling-network--prioritized-experience-replay">Dueling Network + Prioritized Experience Replay</h4>
+
+<p><img src="../assets/materials/20181202/42_dn_per.gif" alt="" /></p>
+
+<p><br /></p>
+
+<h3 id="어려운-문제-seed6">어려운 문제 (seed=6)</h3>
+
+<h4 id="dqn-1">DQN</h4>
+
+<p><img src="../assets/materials/20181202/6_dqn.gif" alt="" /></p>
+
+<h4 id="double-dqn-1">Double DQN</h4>
+
+<p><img src="../assets/materials/20181202/6_ddqn.gif" alt="" /></p>
+
+<h4 id="double-dqn--prioritized-experience-replay-1">Double DQN + Prioritized Experience Replay</h4>
+
+<p><img src="../assets/materials/20181202/6_ddqn_per.gif" alt="" /></p>
+
+<h4 id="dueling-network--prioritized-experience-replay-1">Dueling Network + Prioritized Experience Replay</h4>
+
+<p><img src="../assets/materials/20181202/6_dn_per.gif" alt="" /></p>
+
+<p>아래쪽 추력만 잘 컨트롤하면 되는 쉬운 문제는 모든 모델이 잘 풀었다. 하지만 처음부터 오른쪽으로 쏠린 상태에서 시작하는 어려운 문제에서 Vanilla DQN은 깃발 안으로 들어오지 못했다. 반면에 다른 모델들은 적절히 자세를 제어하면서 안쪽으로 들어왔다. Dueling Network의 성능이 생각보다 아쉽게 나왔는데 다음에 더 복잡한 환경에서 다시 한번 학습시켜봐야겠다.</p>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Review: Deep Q Learning&url=http://localhost:4000/dqn/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/dqn/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/dqn/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+            <a href="/tags#Deep Reinforcement Learning" class="tag">&#35; Deep Reinforcement Learning</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

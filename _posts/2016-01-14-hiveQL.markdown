@@ -1,0 +1,231 @@
+---
+layout: post
+title:  "HiveQL - Useful Tips"
+date:   2016-01-13 22:34:25
+tags: [sql]
+
+---
+
+파이썬과 더불어 회사 업무를 처리하는데 있어 SQL의 도움을 많이 받는다. 대용량의 데이터가 저장된 시스템에서 원하는 정보를 가져와 가공하는데 정말 좋다. 작년 8월부터 초보적인 Select * From을 쳐가면서 데이터를 뽑기 시작했는데, 모르는 부분을 구글링하다보니 내가 쓰는 SQL은 HiveQL로 MySQL이나 Oracle SQL과는 조금 다른 부분이 있다는 걸 알게 되었다. 언어 자체가 크게 다른 것은 아니고 사투리 정도의 차이가 있는 듯 한데 MySQL에서 지원하는 기능이 HiveQL에서는 돌아가지 않거나, 업무적으로 유용하게 쓰는 함수가 있어 기록을 남겨두고자 한다.
+
+##1. collect_list
+
+컬럼에 있는 값, 특히 string을 하나로 묶는데 유용하게 사용할 수 있다. 예를 들어 다음과 같은 테이블이 있다고 하자.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">item</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">bread</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">milk</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">beer</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">kate</td>
+    <td class="tg-yw4l">book</td>
+  </tr>
+</table>
+
+<br>
+
+마트에서 고객이 물품을 구매한 샘플 데이터셋이다. 날짜와, 고객명, 구매물품으로 되어있다. 장바구니 분석을 하기 위해서 각각의 고객이 구매한 제품의 리스트를 얻고 싶다. 이 상황에서 유용하게 쓸 수 있는 함수가 `collect_list`다. 말그대로 아이템을 가져다가 리스트로 전환해주는데, 비슷한 `collect_set`은 중복을 제외한 셋을 반환한다. 중복 허용 여부에 따라 맞는 함수를 사용하면 된다. 분석요건에 따라서 다음과 같은 쿼리를 구성할 수 있다.
+
+{% highlight sql %}
+
+SELECT date, customer, COLLECT_LIST(item) AS item_list
+FROM sample_dataset
+GROUP BY date, customer
+
+{% endhighlight %}
+
+이를 통해 각 날짜별로 각 고객이 구매한 아이템 목록을 얻을 수 있다.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">item_list</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">bread, beer</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">milk</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14</td>
+    <td class="tg-yw4l">kate</td>
+    <td class="tg-yw4l">book</td>
+  </tr>
+</table>
+
+<hr>
+
+##2. datediff
+날짜간 일수 차이를 되돌려주는 함수가 `datediff`다. MySQL나 HiveQL에서 공통적으로 사용되는 녀석인데 약간의 차이가 또 있다. 예를 들어 다음과 같은 테이블이 있다고 하자. 
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">date</th>
+    <th class="tg-yw4l">customer</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14 12:00:00</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">2016-01-14 14:00:10</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+</table>
+
+<br>
+
+다시 마트에 존이라는 사람이 언제 입장하고 퇴장했는지를 기록한 테이블이다. 첫번째 행은 입장시간을 두번째 행을 퇴장시간이라고 한다. MySQL에서는 `datediff`와 비슷하게 시간차를 계산해주는 `timediff` 함수로 이를 손쉽게 처리할 수 있다. 그러나 HiveQL은 이 기능을 지원하지 않는 듯 하다.. (있으면 알려주세요..)
+
+대신 이를 우회해서 처리할 수 있는 방법이 있다. 바로 스트링으로 된 시간을 `unix_timestamp`로 변환해서 차이를 계산하는 방식이다. 다음과 같이 계산하면 된다.
+
+{% highlight sql %}
+
+SELECT *, UNIX_TIMESTAMP(date)
+FROM sample_dataset
+
+{% endhighlight %}
+
+이렇게 실행하면 144894...같은 긴 숫자가 나온다. 이 숫자는 단위가 `초`이므로 뒤의 시간에서 앞의 시간을 빼주면 된다. 단 HiveQL에서 빼는 연산을 수행하기 위해서는 `lead`나 `lag`를 사용하여 같은 row상에 데이터가 존재하도록 변형을 해줘야 한다. 
+
+<hr>
+
+##3. Lead, Lag
+
+바로 앞에서 date를 unix_timestamp로 전환하는데 성공했다. 그럼 이 두가지 시간의 차를 어떻게 HiveQL에서 구할 수 있을까. `lead`와 `lag`를 써야 한다. `lead`는 간단히 말해서 앞으로 땡겨오는 것이고 `lag`는 뒤로 한칸씩 미는 방식이다. 다음과 같은 조금 더 복잡한 예시를 보자.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">unix_timestamp</th>
+    <th class="tg-yw4l">area</th>
+    <th class="tg-yw4l">customer</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">100</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">101</td>
+    <td class="tg-yw4l">grocery</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">110</td>
+    <td class="tg-yw4l">clothes</td>
+    <td class="tg-yw4l">john</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">201</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">mark</td>
+  </tr>
+</table>
+
+<br>
+
+`unix_timestamp`를 간소화시킨 형태의 컬럼과 고객이 2명이 있다고 하자. 대형 백화점에서 마트안에서 food와 grocery와 clothes 섹션에 입장한 시간이 각 행의 정보라고 하자. 그러면 John이라는 고객이 food라는 공간에 머문 시간은 입장 시간인 100에서 grocery에 입장한 시간이 101의 차이, 즉 1초가 된다. (물론 일반적으론 1초만 머물진 않겠지만 예시이므로.) 이 때 HiveQL에서 연산을 해주려면 같은 행에 시작시간과 끝시간이 존재해야 한다. 그 다음에 있는 레코드에서 정보를 가져와 하나씩 올리는 것이므로, `lead`를 사용하기로 한다. 그런데 단순히 올리는 것이 아니라 고객에 따라 분류를 해줘야 한다. 만약 고객으로 group by를 하지 않고 `lead`를 쓴다면, mark의 시작시간이 john의 clothes 시간의 종료시간이 되어버린다.
+
+{% highlight sql %}
+
+SELECT *, LEAD(unix_timestamp) OVER (PARTITION BY customer ORDER BY unix_timestamp) AS next_unix_timestamp
+FROM sample_dataset
+
+{% endhighlight %}
+
+`PARTITION BY`는 `LEAD`가 적용될 파티션을 정의한다. 그리고 리드를 하기 전에 `unix_timestamp`로 정렬을 해준다. 그리고 이름을 `next_unix_timestamp`로 정해준다.
+그러면 다음과 같은 테이블이 생성된다.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">unix_timestamp</th>
+    <th class="tg-yw4l">area</th>
+    <th class="tg-yw4l">customer</th>
+    <th class="tg-yw4l">next_unix_timestamp</th>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">100</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">101</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">101</td>
+    <td class="tg-yw4l">grocery</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">110</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">110</td>
+    <td class="tg-yw4l">clothes</td>
+    <td class="tg-yw4l">john</td>
+    <td class="tg-yw4l">null</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">201</td>
+    <td class="tg-yw4l">food</td>
+    <td class="tg-yw4l">mark</td>
+    <td class="tg-yw4l">null</td>
+  </tr>
+</table>
+
+<br>
+
+앞서 설명했던 바와 같이 하나씩 올라와서 `next_unix_timestamp`로 저장되었다. 3번째와 4번째 열에는 null값이 주어지는데, 단순히 `lead`로 끌어올 값이 없기 때문이다. 이제 바로 sql에서 쉽게 `next_unix_timestamp`에서 `unix_timestamp`를 빼주면 된다. `lag`는 `lead`의 반대로 적용된다.
+
+
+

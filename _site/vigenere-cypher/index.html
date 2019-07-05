@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Vigenere Cypher - jsideas</title>
+
+
+  <!-- Edit site and author settings in `_config.yml` to make the social details your own -->
+
+    <meta content="jsideas" property="og:site_name">
+  
+    <meta content="Vigenere Cypher" property="og:title">
+  
+  
+    <meta content="article" property="og:type">
+  
+  
+    <meta content="a novice's journey into data science
+" property="og:description">
+  
+  
+    <meta content="http://localhost:4000/vigenere-cypher/" property="og:url">
+  
+  
+    <meta content="2015-05-06T07:30:00+09:00" property="article:published_time">
+    <meta content="http://localhost:4000/about/" property="article:author">
+  
+  
+    <meta content="http://localhost:4000/assets/img/author.jpg" property="og:image">
+  
+  
+    
+  
+  
+    
+    <meta content="python" property="article:tag">
+    
+  
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@">
+    <meta name="twitter:creator" content="@junsik_whang">
+  
+    <meta name="twitter:title" content="Vigenere Cypher">
+  
+  
+    <meta name="twitter:url" content="http://localhost:4000/vigenere-cypher/">
+  
+  
+    <meta name="twitter:description" content="a novice's journey into data science
+">
+  
+  
+    <meta name="twitter:image:src" content="http://localhost:4000/assets/img/author.jpg">
+  
+
+	<meta name="description" content="">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta property="og:image" content="">
+	<!-- <link rel="shortcut icon" href="/assets/img/favicon/favicon.ico" type="image/x-icon"> -->
+	<!-- <link rel="apple-touch-icon" href="/assets/img/favicon/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/img/favicon/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/assets/img/favicon/apple-touch-icon-144x144.png"> -->
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#263959">
+	<!-- Windows Phone -->
+	<meta name="msapplication-navbutton-color" content="#263959">
+	<!-- iOS Safari -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="#263959">
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="/assets/fonts/font-awesome/css/font-awesome.min.css">
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/main.css">
+</head>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<body>
+
+  <div class="wrapper">
+    <aside class="sidebar">
+  <header>
+    <div class="about">
+      <div class="cover-author-image">
+        <a href="/"><img src="/assets/img/author.jpg" alt="Junsik Hwang"></a>
+      </div>
+      <div class="author-name">Junsik Hwang</div>
+      <p>I do data analytics and modelling for a living and for fun</p>
+    </div>
+  </header> <!-- End Header -->
+  <footer>
+    <section class="contact">
+      <h3 class="contact-title">Contact me</h3>
+      <ul>
+        
+          <li><a href="https://twitter.com/junsik_whang" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+        
+        
+          <li><a href="https://facebook.com/" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+        
+        
+          <li class="github"><a href="http://github.com/junkwhinger" target="_blank"><i class="fa fa-github"></i></a></li>
+        
+        
+          <li class="linkedin"><a href="https://in.linkedin.com/in/jswhang" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        
+        
+          <li class="email"><a href="mailto:junsik.whang@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+        
+      </ul>
+    </section> <!-- End Section Contact -->
+    <div class="copyright">
+      <p>2019 &copy; Junsik Hwang</p>
+    </div>
+  </footer> <!-- End Footer -->
+</aside> <!-- End Sidebar -->
+<div class="content-box clearfix">
+  <article class="article-page">
+  <div class="page-content">
+    
+    
+    <div class="wrap-content">
+      <header class="header-page">
+        <h1 class="page-title">Vigenere Cypher</h1>
+        <div class="page-date"><span>2015, May 06&nbsp;&nbsp;&nbsp;&nbsp;</span></div>
+      </header>
+      <h2 class="section-heading">Vigenere Cypher</h2>
+<p>Found a random python tutorial website about encryption. Thought I could make a python program that uses vigenere cypher, so I tried as below. It seemed to me at first that it was nearly impossible to decrypt it, but it is indeed possible!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/P4z3jAOzT9I" frameborder="0" allowfullscreen=""></iframe>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">string</span>
+
+<span class="n">uppercase_string_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">vigenere_cypher</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">keyword</span><span class="p">):</span>
+  
+  <span class="n">result_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+  <span class="c1">#getting the text and keyword length
+</span>  <span class="n">text_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="n">keyword_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+
+  <span class="c1">#setting the new keyword which is as long as the text
+</span>  <span class="n">text_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+  <span class="n">keyword_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+  <span class="n">new_keyword_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">text_length</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">keyword_length</span>
+    <span class="n">char</span> <span class="o">=</span> <span class="n">keyword_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">new_keyword_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+  
+
+  <span class="c1">#row &amp; col
+</span>  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_keyword_list</span><span class="p">)):</span>
+    <span class="c1">#row
+</span>    <span class="n">row_char</span> <span class="o">=</span> <span class="n">new_keyword_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">row_char</span>
+    <span class="n">rowidx</span> <span class="o">=</span> <span class="n">uppercase_string_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">row_char</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">rowidx</span>
+    <span class="n">new_row</span> <span class="o">=</span> <span class="n">uppercase_string_list</span><span class="p">[</span><span class="n">rowidx</span><span class="p">:]</span> <span class="o">+</span> <span class="n">uppercase_string_list</span><span class="p">[:</span><span class="n">rowidx</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">new_row</span>
+
+    <span class="c1">#col
+</span>    <span class="n">col_char</span> <span class="o">=</span> <span class="n">text_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">colidx</span> <span class="o">=</span> <span class="n">uppercase_string_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">col_char</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">colidx</span>
+    <span class="c1">#answer
+</span>    <span class="n">answer</span> <span class="o">=</span> <span class="n">new_row</span><span class="p">[</span><span class="n">colidx</span><span class="p">]</span>
+    <span class="k">print</span> <span class="n">answer</span>
+
+    <span class="n">result_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+  <span class="n">result</span> <span class="o">=</span> <span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result_list</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">result</span>
+
+
+
+<span class="k">print</span> <span class="n">vigenere_cypher</span><span class="p">(</span><span class="s">"YOURSECRETISSAFE"</span><span class="p">,</span> <span class="s">"MYSTERY"</span><span class="p">)</span></code></pre></figure>
+
+      <div class="page-footer">
+        <div class="page-share">
+          <a href="https://twitter.com/intent/tweet?text=Vigenere Cypher&url=http://localhost:4000/vigenere-cypher/" title="Share on Twitter" rel="nofollow" target="_blank">Twitter</a>
+          <a href="https://facebook.com/sharer.php?u=http://localhost:4000/vigenere-cypher/" title="Share on Facebook" rel="nofollow" target="_blank">Facebook</a>
+          <a href="https://plus.google.com/share?url=http://localhost:4000/vigenere-cypher/" title="Share on Google+" rel="nofollow" target="_blank">Google+</a>
+        </div>
+        <div class="page-tag">
+          
+            <a href="/tags#python" class="tag">&#35; python</a>
+          
+        </div>
+      </div>
+      <section class="comment-area">
+  <div class="comment-wrapper">
+    
+    <div id="disqus_thread" class="article-comments"></div>
+    <script>
+      (function() {
+          var d = document, s = d.createElement('script');
+          s.src = '//jsideas.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+  </div>
+</section> <!-- End Comment Area -->
+
+    </div> <!-- End Wrap Content -->
+  </div> <!-- End Page Content -->
+</article> <!-- End Article Page -->
+
+</div>
+
+  </div>
+  
+  <!-- <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36651119-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
+</script>
+
+</body>
+</html>

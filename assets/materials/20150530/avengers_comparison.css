@@ -1,0 +1,87 @@
+iframe 
+{
+  overflow-x:hidden;
+  overflow-Y:hidden;
+}
+
+
+.node {
+  stroke: #fff;
+}
+
+.bumper {
+  margin-bottom: 8em
+}
+
+.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.node_id {
+  stroke: black;
+  stroke-width: 0.8px;
+  font: 10px helvetica;
+}
+
+input[type="radio"]{
+  margin: 0 5px 10px 10px;
+}
+
+.chart {
+  float:left;
+  /*border-radius: 25px;*/
+  border: 1px solid grey;
+  position: relative;
+
+}
+
+.title_container {
+  float:left;
+}
+
+div.tooltip {
+  text-align: left;
+  width: 450px;  
+  height: 60px;
+  padding-top: 6px;
+  padding-left: 15px; 
+  font: 12px sans-serif;
+  border: 0px;          
+  /*border-radius: 25px; */
+  color: white;
+  position: absolute;
+  right: 0em;
+  bottom: 0em;
+  position-anchor: 90% 90%;
+}
+
+#tooltip_1 {
+}
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
+#area3 {
+  font-size: 10px;
+  font-family: sans-serif;
+}
+
+#area4 {
+  font-size: 10px;
+  font-color: black;
+  font-family: sans-serif;
+}
