@@ -359,32 +359,56 @@ function findMaxY(data) {
 <span class="kd">var</span> <span class="nx">color</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">scale</span><span class="p">.</span><span class="nx">category20</span><span class="p">();</span>
 
 <span class="c1">//changing view rate's format to %</span>
+<<<<<<< HEAD
 <span class="kd">var</span> <span class="nx">formatPercent</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="dl">"</span><span class="s2">.0%</span><span class="dl">"</span><span class="p">);</span>
+=======
+<span class="kd">var</span> <span class="nx">formatPercent</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="s2">".0%"</span><span class="p">);</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
 
 <span class="c1">//defining the axes</span>
 <span class="kd">var</span> <span class="nx">xAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+<<<<<<< HEAD
     <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="dl">"</span><span class="s2">bottom</span><span class="dl">"</span><span class="p">);</span>
 
 <span class="kd">var</span> <span class="nx">yAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="dl">"</span><span class="s2">left</span><span class="dl">"</span><span class="p">)</span>
+=======
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"bottom"</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">yAxis</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">y</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"left"</span><span class="p">)</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
     <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="nx">formatPercent</span><span class="p">);</span>
 
 
 <span class="c1">//defining the lines</span>
 <span class="kd">var</span> <span class="nx">line</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">line</span><span class="p">()</span>
+<<<<<<< HEAD
     <span class="p">.</span><span class="nx">interpolate</span><span class="p">(</span><span class="dl">"</span><span class="s2">basis</span><span class="dl">"</span><span class="p">)</span> <span class="c1">// this makes the lines smoother!</span>
+=======
+    <span class="p">.</span><span class="nx">interpolate</span><span class="p">(</span><span class="s2">"basis"</span><span class="p">)</span> <span class="c1">// this makes the lines smoother!</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
     <span class="p">.</span><span class="nx">x</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">x</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">);</span> <span class="p">})</span>
     <span class="p">.</span><span class="nx">y</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">y</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">);</span> <span class="p">})</span>
     <span class="p">.</span><span class="nx">defined</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">view_rate</span><span class="p">;</span> <span class="p">});</span> <span class="c1">// this makes the lines end where they have no data.</span>
 
 <span class="c1">//creating svg</span>
+<<<<<<< HEAD
 <span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">div#chart</span><span class="dl">"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">svg</span><span class="dl">"</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">,</span> <span class="nx">height</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
   <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">g</span><span class="dl">"</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">transform</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">translate(</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">,</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">)</span><span class="dl">"</span><span class="p">);</span>
+=======
+<span class="kd">var</span> <span class="nx">svg</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"div#chart"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">"svg"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"width"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"height"</span><span class="p">,</span> <span class="nx">height</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate("</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">+</span> <span class="s2">","</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">);</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
 
 <span class="c1">//maxY is for resetting the y axis using legends</span>
 <span class="kd">var</span> <span class="nx">maxY</span><span class="p">;</span>
@@ -393,13 +417,22 @@ function findMaxY(data) {
 <span class="kd">function</span> <span class="nx">make_x_axis</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span><span class="p">.</span><span class="nx">axis</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">scale</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+<<<<<<< HEAD
     <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="dl">"</span><span class="s2">bottom</span><span class="dl">"</span><span class="p">)</span>
+=======
+    <span class="p">.</span><span class="nx">orient</span><span class="p">(</span><span class="s2">"bottom"</span><span class="p">)</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
     <span class="p">.</span><span class="nx">ticks</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="c1">//getting the data</span>
+<<<<<<< HEAD
 <span class="nx">d3</span><span class="p">.</span><span class="nx">tsv</span><span class="p">(</span><span class="dl">"</span><span class="s2">/assets/materials/20150107/view_rates.tsv</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">color</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">key</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">episode</span><span class="dl">"</span><span class="p">;</span> <span class="p">}));</span>
+=======
+<span class="nx">d3</span><span class="p">.</span><span class="nx">tsv</span><span class="p">(</span><span class="s2">"/assets/materials/20150107/view_rates.tsv"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">color</span><span class="p">.</span><span class="nx">domain</span><span class="p">(</span><span class="nx">d3</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]).</span><span class="nx">filter</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">key</span> <span class="o">!==</span> <span class="s2">"episode"</span><span class="p">;</span> <span class="p">}));</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
 
 <span class="c1">//changing the format from text to number</span>
   <span class="nx">data</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
@@ -414,7 +447,11 @@ function findMaxY(data) {
         <span class="k">return</span> <span class="p">{</span><span class="na">episode</span><span class="p">:</span> <span class="nx">d</span><span class="p">.</span><span class="nx">episode</span><span class="p">,</span> <span class="na">view_rate</span><span class="p">:</span> <span class="o">+</span><span class="nx">d</span><span class="p">[</span><span class="nx">name</span><span class="p">]};</span>
       <span class="p">}),</span>
       <span class="c1">// making 정도전 and 기황후 visible when the page is loaded</span>
+<<<<<<< HEAD
       <span class="na">visible</span><span class="p">:</span> <span class="p">((</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">정도전</span><span class="dl">"</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">기황후</span><span class="dl">"</span><span class="p">)</span> <span class="p">?</span> <span class="kc">true</span> <span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+=======
+      <span class="na">visible</span><span class="p">:</span> <span class="p">((</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"정도전"</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="nx">name</span> <span class="o">===</span> <span class="s2">"기황후"</span><span class="p">)</span> <span class="p">?</span> <span class="kc">true</span> <span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
     <span class="p">};</span>
   <span class="p">});</span>
 
@@ -427,6 +464,7 @@ function findMaxY(data) {
   <span class="p">]);</span>
 
 <span class="c1">//adding the x Axis</span>
+<<<<<<< HEAD
   <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">g</span><span class="dl">"</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">x axis</span><span class="dl">"</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">transform</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">translate(0,</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">)</span><span class="dl">"</span><span class="p">)</span>
@@ -466,10 +504,52 @@ function findMaxY(data) {
     <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">make_x_axis</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">tickSize</span><span class="p">(</span><span class="o">-</span><span class="nx">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="dl">""</span><span class="p">)</span>
+=======
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"x axis"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate(0,"</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">xAxis</span><span class="p">);</span>
+
+<span class="c1">//adding the y Axis</span>
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"y axis"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"rotate(-90)"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"dy"</span><span class="p">,</span> <span class="s2">".71em"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"text-anchor"</span><span class="p">,</span> <span class="s2">"end"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="s2">"시청률"</span><span class="p">);</span>
+
+<span class="c1">//adding the paths</span>
+  <span class="kd">var</span> <span class="nx">drama</span> <span class="o">=</span> <span class="nx">svg</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s2">".drama"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">dramas</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">enter</span><span class="p">().</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"drama"</span><span class="p">);</span>
+
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"pointer-events"</span><span class="p">,</span> <span class="s2">"none"</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"line-"</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+      <span class="p">})</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">line</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span> <span class="p">})</span>
+      <span class="p">.</span><span class="nx">style</span><span class="p">(</span><span class="s2">"stroke"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="p">});</span>
+
+  <span class="c1">//drawing grid lines</span>
+  <span class="nx">svg</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"g"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"grid"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"transform"</span><span class="p">,</span> <span class="s2">"translate(0,"</span> <span class="o">+</span> <span class="nx">height</span> <span class="o">+</span> <span class="s2">")"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">make_x_axis</span><span class="p">()</span>
+      <span class="p">.</span><span class="nx">tickSize</span><span class="p">(</span><span class="o">-</span><span class="nx">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">tickFormat</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
       <span class="p">)</span>
 
   <span class="c1">//drawing legend</span>
   <span class="kd">var</span> <span class="nx">legendSpace</span> <span class="o">=</span> <span class="mi">450</span> <span class="o">/</span> <span class="nx">dramas</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+<<<<<<< HEAD
   <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">rect</span><span class="dl">"</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">width</span><span class="dl">"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">height</span><span class="dl">"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -484,10 +564,27 @@ function findMaxY(data) {
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">class</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">legend-box</span><span class="dl">"</span><span class="p">)</span>
 
     <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">click</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+=======
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"width"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"height"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"id"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="s2">"legend-"</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">""</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+      <span class="p">})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="o">-</span><span class="mi">15</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">+</span> <span class="nx">i</span><span class="o">*</span><span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">-</span> <span class="mi">8</span><span class="p">;})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"fill"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"#F1F1F2"</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"class"</span><span class="p">,</span> <span class="s2">"legend-box"</span><span class="p">)</span>
+
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
       <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="o">=</span> <span class="o">!</span><span class="nx">d</span><span class="p">.</span><span class="nx">visible</span><span class="p">;</span>
 
       <span class="nx">maxY</span> <span class="o">=</span> <span class="nx">findMaxY</span><span class="p">(</span><span class="nx">dramas</span><span class="p">);</span>
       <span class="nx">y</span><span class="p">.</span><span class="nx">domain</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="nx">maxY</span><span class="p">]);</span>
+<<<<<<< HEAD
       <span class="nx">svg</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">.y.axis</span><span class="dl">"</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">);</span>
@@ -502,13 +599,35 @@ function findMaxY(data) {
         <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">fill</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
           <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">:</span> <span class="dl">"</span><span class="s2">#F1F1F2</span><span class="dl">"</span><span class="p">;</span>
+=======
+      <span class="nx">svg</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">".y.axis"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">yAxis</span><span class="p">);</span>
+
+      <span class="nx">drama</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"path"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">line</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">values</span><span class="p">)</span> <span class="p">:</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="p">})</span>
+
+      <span class="nx">drama</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s2">"rect"</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"fill"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+          <span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">visible</span> <span class="p">?</span> <span class="nx">color</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">:</span> <span class="s2">"#F1F1F2"</span><span class="p">;</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
         <span class="p">})</span>
     <span class="p">})</span>
 
 <span class="c1">//adding legend texts</span>
+<<<<<<< HEAD
   <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">x</span><span class="dl">"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
     <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="dl">"</span><span class="s2">y</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span><span class="nx">i</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">+</span> <span class="nx">i</span><span class="o">*</span><span class="p">(</span><span class="nx">legendSpace</span><span class="p">);})</span>
+=======
+  <span class="nx">drama</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"x"</span><span class="p">,</span> <span class="nx">width</span> <span class="o">+</span> <span class="p">(</span><span class="nx">margin</span><span class="p">.</span><span class="nx">right</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"y"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">,</span><span class="nx">i</span><span class="p">){</span> <span class="k">return</span> <span class="p">(</span><span class="nx">legendSpace</span><span class="p">)</span> <span class="o">+</span> <span class="nx">i</span><span class="o">*</span><span class="p">(</span><span class="nx">legendSpace</span><span class="p">);})</span>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
     <span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">name</span><span class="p">;});</span>
 
 
@@ -568,7 +687,11 @@ function findMaxY(data) {
 
   </div>
   
+<<<<<<< HEAD
   <!-- <script>
+=======
+  <script>
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -578,6 +701,7 @@ function findMaxY(data) {
   ga('send', 'pageview');
 
 </script>
+<<<<<<< HEAD
  -->
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -589,6 +713,8 @@ function findMaxY(data) {
 
   gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
 </script>
+=======
+>>>>>>> 4dafbe76142890b8168a7a62b37d5596444a3f4e
 
 </body>
 </html>
