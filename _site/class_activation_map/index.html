@@ -300,25 +300,25 @@ fully connected로만 연결된 DNN은 28x28 크기의 손글씨 이미지를 78
     predictions : numpy array of classification result
     """</span>
 
-	<span class="c">## read image and preprocess it</span>
-    <span class="n">img</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+	<span class="c1">## read image and preprocess it
+</span>    <span class="n">img</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
     <span class="n">img_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">255.</span>
     <span class="n">img_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     
-    <span class="c">## get prediction result and conv_output values</span>
-    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nb">input</span><span class="p">],</span> <span class="p">[</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
+    <span class="c1">## get prediction result and conv_output values
+</span>    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nb">input</span><span class="p">],</span> <span class="p">[</span><span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
     <span class="p">[</span><span class="n">conv_outputs</span><span class="p">,</span> <span class="n">predictions</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_output</span><span class="p">([</span><span class="n">img_array</span><span class="p">])</span>
     <span class="n">conv_outputs</span> <span class="o">=</span> <span class="n">conv_outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span>
     <span class="n">class_weights</span> <span class="o">=</span> <span class="n">tl_model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
     
-    <span class="c">## calculate cam</span>
-    <span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_outputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## calculate cam
+</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_outputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">class_weights</span><span class="p">[:,</span> <span class="n">class_idx</span><span class="p">]):</span>
         <span class="n">cam</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">conv_outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span>
 
-    <span class="c">## normalise cam and resize to fit the orginal image size</span>
-    <span class="c">## in this case (224, 224)</span>
-    <span class="n">cam</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
+    <span class="c1">## normalise cam and resize to fit the orginal image size
+</span>    <span class="c1">## in this case (224, 224)
+</span>    <span class="n">cam</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">cam</span><span class="p">)</span>
     <span class="n">cam</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cam</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
     
     <span class="k">return</span> <span class="n">img_arr</span><span class="p">,</span> <span class="n">cam</span><span class="p">,</span> <span class="n">predictions</span></code></pre></figure>
@@ -338,8 +338,8 @@ skimage.measure의 regionprops를 사용하면 바운딩 박스 영역을 아주
     <span class="n">props</span> <span class="o">=</span> <span class="n">regionprops</span><span class="p">(</span><span class="n">labeled</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">props</span>
 
-<span class="c">## ...</span>
-
+<span class="c1">## ...
+</span>
 <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">props</span><span class="p">:</span>
     <span class="n">bbox</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">bbox</span>
     <span class="n">xs</span> <span class="o">=</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -438,8 +438,8 @@ tf.keras에서 제공하는 Conv2D는 padding이 <code class="highlighter-rouge"
 </code></pre></div>    </div>
   </li>
   <li>Softmax 레이어를 더한다.
-    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> <span class="c">## nb_classes=5</span>
-</code></pre></div>    </div>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">preds</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">nb_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span> <span class="c1">## nb_classes=5
+</span></code></pre></div>    </div>
   </li>
   <li>이미지넷 데이터로 fine-tuning 한다.
 이미지넷 대신에 대선주자 5인 데이터를 활용해 fine-tuning을 실시했다.</li>
@@ -655,7 +655,7 @@ tf.keras에서 제공하는 Conv2D는 padding이 <code class="highlighter-rouge"
 
   </div>
   
-  <script>
+  <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -664,6 +664,17 @@ tf.keras에서 제공하는 Conv2D는 padding이 <code class="highlighter-rouge"
   ga('create', 'UA-36651119-2', 'auto');
   ga('send', 'pageview');
 
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
 </script>
 
 </body>

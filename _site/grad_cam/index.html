@@ -304,28 +304,28 @@ w^c_k = \sum_i \sum_j  \frac{\delta y^c}{\delta A^{k}_{ij}}  \tag{8}
     <span class="n">y_c</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="n">class_index</span><span class="p">]</span>
     <span class="n">A_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">activation_layer</span><span class="p">)</span><span class="o">.</span><span class="n">output</span>
     
-    <span class="c">## 이미지 텐서를 입력해서</span>
-    <span class="c">## 해당 액티베이션 레이어의 아웃풋(a_k)과</span>
-    <span class="c">## 소프트맥스 함수 인풋의 a_k에 대한 gradient를 구한다.</span>
-    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="p">[</span><span class="n">A_k</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">y_c</span><span class="p">,</span> <span class="n">A_k</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
+    <span class="c1">## 이미지 텐서를 입력해서
+</span>    <span class="c1">## 해당 액티베이션 레이어의 아웃풋(a_k)과
+</span>    <span class="c1">## 소프트맥스 함수 인풋의 a_k에 대한 gradient를 구한다.
+</span>    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="p">[</span><span class="n">A_k</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">gradients</span><span class="p">(</span><span class="n">y_c</span><span class="p">,</span> <span class="n">A_k</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
     <span class="p">[</span><span class="n">conv_output</span><span class="p">,</span> <span class="n">grad_val</span><span class="p">,</span> <span class="n">model_output</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_output</span><span class="p">([</span><span class="n">img_tensor</span><span class="p">])</span>
 
-    <span class="c">## 배치 사이즈가 1이므로 배치 차원을 없앤다.</span>
-    <span class="n">conv_output</span> <span class="o">=</span> <span class="n">conv_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">## 배치 사이즈가 1이므로 배치 차원을 없앤다.
+</span>    <span class="n">conv_output</span> <span class="o">=</span> <span class="n">conv_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">grad_val</span> <span class="o">=</span> <span class="n">grad_val</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     
-    <span class="c">## 구한 gradient를 픽셀 가로세로로 평균내서 a^c_k를 구한다.</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">grad_val</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="c1">## 구한 gradient를 픽셀 가로세로로 평균내서 a^c_k를 구한다.
+</span>    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">grad_val</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     
-    <span class="c">## 추출한 conv_output에 weight를 곱하고 합하여 grad_cam을 얻는다.</span>
-    <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## 추출한 conv_output에 weight를 곱하고 합하여 grad_cam을 얻는다.
+</span>    <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
         <span class="n">grad_cam</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">conv_output</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
     
     <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">grad_cam</span><span class="p">,</span> <span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
 
-    <span class="c">## ReLU를 씌워 음수를 0으로 만든다.</span>
-    <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">grad_cam</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="c1">## ReLU를 씌워 음수를 0으로 만든다.
+</span>    <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">grad_cam</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">grad_cam</span> <span class="o">/</span> <span class="n">grad_cam</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">grad_cam</span></code></pre></figure>
@@ -348,21 +348,21 @@ w^c_k = \sum_i \sum_j  \frac{\delta y^c}{\delta A^{k}_{ij}}  \tag{8}
     <span class="n">A_k</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">activation_layer</span><span class="p">)</span><span class="o">.</span><span class="n">output</span>
     <span class="n">outp</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">output</span>
 
-    <span class="c">## 이미지 텐서를 입력해서</span>
-    <span class="c">## 해당 액티베이션 레이어의 아웃풋(a_k)과</span>
-    <span class="c">## 소프트맥스 함수 인풋의 a_k에 대한 gradient를 구한다.</span>
-    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="p">[</span><span class="n">A_k</span><span class="p">,</span> <span class="n">outp</span><span class="p">])</span>
+    <span class="c1">## 이미지 텐서를 입력해서
+</span>    <span class="c1">## 해당 액티베이션 레이어의 아웃풋(a_k)과
+</span>    <span class="c1">## 소프트맥스 함수 인풋의 a_k에 대한 gradient를 구한다.
+</span>    <span class="n">get_output</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">function</span><span class="p">([</span><span class="n">inp</span><span class="p">],</span> <span class="p">[</span><span class="n">A_k</span><span class="p">,</span> <span class="n">outp</span><span class="p">])</span>
     <span class="p">[</span><span class="n">conv_output</span><span class="p">,</span> <span class="n">predictions</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_output</span><span class="p">([</span><span class="n">img_tensor</span><span class="p">])</span>
     
-    <span class="c">## 배치 사이즈가 1이므로 배치 차원을 없앤다.</span>
-    <span class="n">conv_output</span> <span class="o">=</span> <span class="n">conv_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">## 배치 사이즈가 1이므로 배치 차원을 없앤다.
+</span>    <span class="n">conv_output</span> <span class="o">=</span> <span class="n">conv_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     
-    <span class="c">## 마지막 소프트맥스 레이어의 웨이트 매트릭스에서</span>
-    <span class="c">## 지정한 레이블에 해당하는 횡벡터만 가져온다.</span>
-    <span class="n">weights</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">class_index</span><span class="p">]</span>
+    <span class="c1">## 마지막 소프트맥스 레이어의 웨이트 매트릭스에서
+</span>    <span class="c1">## 지정한 레이블에 해당하는 횡벡터만 가져온다.
+</span>    <span class="n">weights</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_weights</span><span class="p">()[</span><span class="mi">0</span><span class="p">][:,</span> <span class="n">class_index</span><span class="p">]</span>
     
-    <span class="c">## 추출한 conv_output에 weight를 곱하고 합하여 cam을 얻는다.</span>
-    <span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">## 추출한 conv_output에 weight를 곱하고 합하여 cam을 얻는다.
+</span>    <span class="n">cam</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">conv_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
         <span class="n">cam</span> <span class="o">+=</span> <span class="n">w</span> <span class="o">*</span> <span class="n">conv_output</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">k</span><span class="p">]</span>
     
@@ -548,7 +548,7 @@ _________________________________________________________________
 
 <span class="k">def</span> <span class="nf">register_gradient</span><span class="p">():</span>
     <span class="k">if</span> <span class="s">"GuidedBackProp"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ops</span><span class="o">.</span><span class="n">_gradient_registry</span><span class="o">.</span><span class="n">_registry</span><span class="p">:</span>
-        <span class="nd">@ops.RegisterGradient</span><span class="p">(</span><span class="s">"GuidedBackProp"</span><span class="p">)</span>
+        <span class="o">@</span><span class="n">ops</span><span class="o">.</span><span class="n">RegisterGradient</span><span class="p">(</span><span class="s">"GuidedBackProp"</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">_GuidedBackProp</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">grad</span><span class="p">):</span>
             <span class="n">dtype</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
             <span class="k">return</span> <span class="n">grad</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">grad</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">op</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
@@ -580,8 +580,8 @@ _________________________________________________________________
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&lt;</span><span class="n">br</span><span class="o">&gt;</span>
 
-<span class="c">## guided backpropagation (55번 클래스로 지정했으나 별 차이는 없다)</span>
-<span class="n">saliency_fn</span> <span class="o">=</span> <span class="n">compile_saliency_function</span><span class="p">(</span><span class="n">guided_model</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+<span class="c1">## guided backpropagation (55번 클래스로 지정했으나 별 차이는 없다)
+</span><span class="n">saliency_fn</span> <span class="o">=</span> <span class="n">compile_saliency_function</span><span class="p">(</span><span class="n">guided_model</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
 <span class="n">saliency</span> <span class="o">=</span> <span class="n">saliency_fn</span><span class="p">([</span><span class="n">img</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">grad_cam</span> <span class="o">=</span> <span class="n">generate_grad_cam</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="s">'block5_conv3'</span><span class="p">)</span>
@@ -593,20 +593,20 @@ _________________________________________________________________
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">deprocess_image</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     
-    <span class="c">## 평균을 0으로, 표준편차를 0.1로 하도록 normalize한다.</span>
-    <span class="n">x</span> <span class="o">-=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="c1">## 평균을 0으로, 표준편차를 0.1로 하도록 normalize한다.
+</span>    <span class="n">x</span> <span class="o">-=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">x</span> <span class="o">/=</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-5</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">*=</span> <span class="mf">0.1</span>
 
-    <span class="c">## [0, 1]사이로 클리핑한다.</span>
-    <span class="n">x</span> <span class="o">+=</span> <span class="mf">0.5</span>
+    <span class="c1">## [0, 1]사이로 클리핑한다.
+</span>    <span class="n">x</span> <span class="o">+=</span> <span class="mf">0.5</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="c">## 255를 곱해 RGB 값으로 바꾼다.</span>
-    <span class="n">x</span> <span class="o">*=</span> <span class="mi">255</span>
+    <span class="c1">## 255를 곱해 RGB 값으로 바꾼다.
+</span>    <span class="n">x</span> <span class="o">*=</span> <span class="mi">255</span>
     
-    <span class="c">## [0, 255]사이로 클리핑한 후 정수로 바꾼다. </span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'uint8'</span><span class="p">)</span>
+    <span class="c1">## [0, 255]사이로 클리핑한 후 정수로 바꾼다. 
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">'uint8'</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">x</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">deprocess_image</span><span class="p">(</span><span class="n">guided_grad_cam</span><span class="p">))</span></code></pre></figure>
@@ -708,7 +708,7 @@ _________________________________________________________________
 
   </div>
   
-  <script>
+  <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -717,6 +717,17 @@ _________________________________________________________________
   ga('create', 'UA-36651119-2', 'auto');
   ga('send', 'pageview');
 
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
 </script>
 
 </body>

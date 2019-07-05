@@ -327,9 +327,9 @@ Sequence processing is easily done just by passing the tokenizer function I defi
 
 <p>The column <code class="highlighter-rouge">CONTINENT</code> is a categorical data type, yet it is not a numerical datatype yet. So I pass <code class="highlighter-rouge">use_vocab=True</code> for it.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c">## City name tokenizer</span>
-<span class="c">## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']</span>
-<span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1">## City name tokenizer
+## 'Seoul' -&gt; ['S', 'e', 'o', 'u', 'l']
+</span><span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
 <span class="n">tokenizer</span><span class="p">(</span><span class="s">"Seoul"</span><span class="p">)</span>
@@ -344,7 +344,7 @@ Sequence processing is easily done just by passing the tokenizer function I defi
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">train</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">TabularDataset</span><span class="o">.</span><span class="n">splits</span><span class="p">(</span>
     <span class="n">path</span><span class="o">=</span><span class="s">'dataset'</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="s">'_train.csv'</span><span class="p">,</span>
-    <span class="n">validation</span><span class="o">=</span><span class="s">'_val.csv'</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'_test.csv'</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
+    <span class="n">validation</span><span class="o">=</span><span class="s">'_val.csv'</span><span class="p">,</span> <span class="n">test</span><span class="o">=</span><span class="s">'_test.csv'</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s">'csv'</span><span class="p">,</span>
     <span class="n">fields</span><span class="o">=</span><span class="p">[(</span><span class="s">'city_ascii'</span><span class="p">,</span> <span class="n">CITY</span><span class="p">),</span> <span class="p">(</span><span class="s">'continent'</span><span class="p">,</span> <span class="n">CONTINENT</span><span class="p">)]</span>
 <span class="p">)</span></code></pre></figure>
 
@@ -436,7 +436,7 @@ Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in 
 
 <span class="n">param_grids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="n">grid</span><span class="p">))</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s">"Number of LSTM models to generate: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_grids</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of LSTM models to generate: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">param_grids</span><span class="p">)))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="n">Number</span> <span class="n">of</span> <span class="n">LSTM</span> <span class="n">models</span> <span class="n">to</span> <span class="n">generate</span><span class="p">:</span> <span class="mi">24</span></code></pre></figure>
 
@@ -520,8 +520,8 @@ Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">load_params</span><span class="p">(</span><span class="n">modelClass</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">modelClass</span><span class="p">(</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'BATCH_SIZE'</span><span class="p">],</span>
                   <span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CITY</span><span class="o">.</span><span class="n">vocab</span><span class="p">),</span>
-                  <span class="n">label_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c">## b.c of &lt;unk&gt;</span>
-                  <span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'EMBEDDING_DIM'</span><span class="p">],</span>
+                  <span class="n">label_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">CONTINENT</span><span class="o">.</span><span class="n">vocab</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="c1">## b.c of &lt;unk&gt;
+</span>                  <span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'EMBEDDING_DIM'</span><span class="p">],</span>
                   <span class="n">hidden_dim</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'HIDDEN_DIM'</span><span class="p">],</span>
                   <span class="n">nb_lstm_layers</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'nb_1stm_layers'</span><span class="p">],</span>
                   <span class="n">lstm_dropout</span> <span class="o">=</span> <span class="n">pg</span><span class="p">[</span><span class="s">'lstm_dropout'</span><span class="p">],</span>
@@ -545,7 +545,7 @@ Here I experimented with the number of LSTM layers, dropout in LSTM, dropout in 
 
 
 <span class="n">nb_trainable_params</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">param</span><span class="o">.</span><span class="n">nelement</span><span class="p">()</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">a_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()])</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"Number of parameters to train: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nb_trainable_params</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Number of parameters to train: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">nb_trainable_params</span><span class="p">))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="n">Number</span> <span class="n">of</span> <span class="n">parameters</span> <span class="n">to</span> <span class="n">train</span><span class="p">:</span> <span class="mi">168606</span></code></pre></figure>
 
@@ -562,8 +562,8 @@ To hasten the training process I ran the following code in GPU environment on Fl
 <span class="n">out_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">"result_dir"</span><span class="p">))</span>
 
 
-<span class="c">## make checkpoint directory if it doesn't exist    </span>
-<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+<span class="c1">## make checkpoint directory if it doesn't exist    
+</span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
 
 
@@ -597,8 +597,8 @@ To hasten the training process I ran the following code in GPU environment on Fl
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">text_field</span><span class="p">,</span> <span class="n">label_field</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
     
-    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c">## train mode</span>
-    
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span> <span class="c1">## train mode
+</span>    
     <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
@@ -609,15 +609,15 @@ To hasten the training process I ran the following code in GPU environment on Fl
             <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">cuda</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">city</span><span class="p">,</span> <span class="n">continent</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">city_ascii</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">continent</span>
-        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c">## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)</span>
-        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sub_</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">## -1 to make index start from 0 (0 is &lt;unk&gt; in the vocab)
+</span>        <span class="n">truth_res</span> <span class="o">+=</span> <span class="nb">list</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         
         <span class="n">model</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">continent</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
         <span class="n">model</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">init_hidden</span><span class="p">()</span>
         
         <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
-        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c">## .cpu() to get it from gpu env</span>
-        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
+        <span class="n">pred_label</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c1">## .cpu() to get it from gpu env
+</span>        <span class="n">pred_res</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">pred_label</span><span class="p">]</span>
         
         <span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)</span>
@@ -637,8 +637,8 @@ To hasten the training process I ran the following code in GPU environment on Fl
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     
-    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c">## eval mode</span>
-    
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>    
     <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
@@ -679,13 +679,13 @@ To hasten the training process I ran the following code in GPU environment on Fl
     
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">'** Training pg:{} **'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'** Training pg:{} **'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">))</span>
     
     <span class="n">model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">pg</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
-    <span class="c">## fixed Learning Rate as 0.001</span>
-    <span class="c">## tried SGD with lr_scheduler</span>
-    <span class="c">## but it was slower than Adam and showed inferior validation accuracy and f1-score.</span>
-    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+    <span class="c1">## fixed Learning Rate as 0.001
+</span>    <span class="c1">## tried SGD with lr_scheduler
+</span>    <span class="c1">## but it was slower than Adam and showed inferior validation accuracy and f1-score.
+</span>    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
     <span class="n">loss_function</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">NLLLoss</span><span class="p">()</span>
     
     <span class="n">best_val_f1</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -693,7 +693,7 @@ To hasten the training process I ran the following code in GPU environment on Fl
     <span class="n">record</span> <span class="o">=</span> <span class="p">[]</span>
     
     <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Epoch: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         
         <span class="n">rec_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">train_loss</span><span class="p">,</span> <span class="n">acc</span><span class="p">,</span> <span class="n">train_f1</span> <span class="o">=</span> <span class="n">train_epoch_progress</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
@@ -706,11 +706,11 @@ To hasten the training process I ran the following code in GPU environment on Fl
         
         <span class="n">val_loss</span><span class="p">,</span> <span class="n">val_acc</span><span class="p">,</span> <span class="n">val_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">val_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Val'</span><span class="p">)</span>
         
-        <span class="c">## when the current validation f1 exceeds the best validation f1 so far,</span>
-        <span class="c">## replace the best_val_f1 with val_f1</span>
-        <span class="c">## and best_model with the current model</span>
-        <span class="c">## and save the epoch, state_dict, and optimizer for the later use.</span>
-        <span class="k">if</span> <span class="n">val_f1</span> <span class="o">&gt;</span> <span class="n">best_val_f1</span><span class="p">:</span>
+        <span class="c1">## when the current validation f1 exceeds the best validation f1 so far,
+</span>        <span class="c1">## replace the best_val_f1 with val_f1
+</span>        <span class="c1">## and best_model with the current model
+</span>        <span class="c1">## and save the epoch, state_dict, and optimizer for the later use.
+</span>        <span class="k">if</span> <span class="n">val_f1</span> <span class="o">&gt;</span> <span class="n">best_val_f1</span><span class="p">:</span>
         
             <span class="n">best_val_f1</span> <span class="o">=</span> <span class="n">val_f1</span>
             <span class="n">best_model</span> <span class="o">=</span> <span class="n">model</span>
@@ -719,10 +719,10 @@ To hasten the training process I ran the following code in GPU environment on Fl
                 <span class="s">'epoch'</span><span class="p">:</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                 <span class="s">'state_dict'</span><span class="p">:</span> <span class="n">best_model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
                 <span class="s">'optimizer'</span><span class="p">:</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
-            <span class="p">},</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s">'pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="p">},</span> <span class="n">out_dir</span><span class="o">=</span><span class="n">out_dir</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s">'pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
 
-        <span class="c">## logging for visulisation</span>
-        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'epoch'</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="c1">## logging for visulisation
+</span>        <span class="n">rec_dict</span><span class="p">[</span><span class="s">'epoch'</span><span class="p">]</span> <span class="o">=</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="n">rec_dict</span><span class="p">[</span><span class="s">'training_loss'</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_loss</span>
         <span class="n">rec_dict</span><span class="p">[</span><span class="s">'training_acc'</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
         <span class="n">rec_dict</span><span class="p">[</span><span class="s">'train_f1'</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_f1</span>
@@ -735,14 +735,14 @@ To hasten the training process I ran the following code in GPU environment on Fl
     
     <span class="n">rec_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
     
-    <span class="n">rec_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__record.csv'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">rec_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__record.csv'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
-    <span class="c"># eval on test</span>
-    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
+    <span class="c1"># eval on test
+</span>    <span class="n">test_loss</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">,</span> <span class="n">test_f1</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">test_iter</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="s">'Final Test'</span><span class="p">)</span>
     
     <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">seconds_elapsed</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"pg:{} took {} seconds."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">seconds_elapsed</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"pg:{} took {} seconds."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">seconds_elapsed</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
     </code></pre></figure>
 
@@ -1005,7 +1005,7 @@ To hasten the training process I ran the following code in GPU environment on Fl
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">visualise_checkpoint</span><span class="p">(</span><span class="n">pg</span><span class="p">,</span> <span class="n">epoch</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">param_grids</span><span class="p">[</span><span class="n">pg</span><span class="p">])</span>
-    <span class="n">pg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">"/pg_{}__record.csv"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pg</span><span class="p">))</span>
+    <span class="n">pg_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">out_dir</span> <span class="o">+</span> <span class="s">"/pg_{}__record.csv"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">pg</span><span class="p">))</span>
     <span class="n">pg_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
     
@@ -1013,26 +1013,26 @@ To hasten the training process I ran the following code in GPU environment on Fl
 
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">training_loss</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">val_loss</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'loss'</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">training_acc</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">val_acc</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'accuracy'</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
 
     <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">train_f1</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pg_df</span><span class="o">.</span><span class="n">test_f1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'val_f1'</span><span class="p">)</span>
-    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">'epoch={}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">best_epoch</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'f1'</span><span class="p">)</span>
     <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'epoch'</span><span class="p">)</span>
 
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"pg_{} metrics over epochs"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pg</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">"pg_{} metrics over epochs"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">pg</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
 
@@ -1059,7 +1059,7 @@ To hasten the training process I ran the following code in GPU environment on Fl
 <h2 id="inference-test--confusion-matrix">Inference Test &amp; Confusion Matrix</h2>
 <p>Test f1-score is a great measurement, but I need to go deeper to see the strengths and weaknesses of the models I’ve trained. As stated above, this dataset is more or less imbalanced. Spitting out ‘Asia’ at any given city name would result in higher than 1/6 accuracy. Are the models trained properly?</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_model_path</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_model_path</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s">'/pg_{}__epoch_{}.pth.tar'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">best_model</span> <span class="o">=</span> <span class="n">load_params</span><span class="p">(</span><span class="n">LSTMModel</span><span class="p">,</span> <span class="n">param_grids</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">use_gpu</span><span class="p">)</span>
 <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">best_model_path</span><span class="p">,</span> <span class="n">map_location</span><span class="o">=</span><span class="p">{</span><span class="s">'cuda:0'</span><span class="p">:</span> <span class="s">'cpu'</span><span class="p">})</span>
@@ -1453,8 +1453,8 @@ To hasten the training process I ran the following code in GPU environment on Fl
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">evaluate_by_continent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">loss_function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     
-    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c">## eval mode</span>
-    
+    <span class="n">model</span><span class="o">.</span><span class="nb">eval</span><span class="p">()</span> <span class="c1">## eval mode
+</span>    
     <span class="n">avg_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">truth_res</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">pred_res</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1660,8 +1660,8 @@ To hasten the training process I ran the following code in GPU environment on Fl
 <span class="n">single</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">by_accuracy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">test_acc</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
 
-<span class="k">print</span><span class="p">(</span><span class="s">'f1-score &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'f1'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'f1'</span><span class="p">]))</span>
-<span class="k">print</span><span class="p">(</span><span class="s">'accuracy &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'f1-score &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'f1'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'f1'</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'accuracy &gt;&gt; ensemble: {} vs. single: {}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">ensemble</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">],</span> <span class="n">single</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">]))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="n">f1</span><span class="o">-</span><span class="n">score</span> <span class="o">&gt;&gt;</span> <span class="n">ensemble</span><span class="p">:</span> <span class="mf">0.571</span> <span class="n">vs</span><span class="o">.</span> <span class="n">single</span><span class="p">:</span> <span class="mf">0.566</span>
 <span class="o">&gt;&gt;</span>    <span class="n">accuracy</span> <span class="o">&gt;&gt;</span> <span class="n">ensemble</span><span class="p">:</span> <span class="mf">0.589</span> <span class="n">vs</span><span class="o">.</span> <span class="n">single</span><span class="p">:</span> <span class="mf">0.581</span></code></pre></figure>
@@ -1782,19 +1782,19 @@ To hasten the training process I ran the following code in GPU environment on Fl
     <span class="k">return</span> <span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span>  </code></pre></figure>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Sheffield'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span>
 
 
 <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'Bratford'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span>
 
 
 <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="s">'York'</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{} models predicted {} to be in {}."</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span><span class="p">))</span>
 
 <span class="o">&gt;&gt;</span>    <span class="mi">5</span> <span class="n">models</span> <span class="n">predicted</span> <span class="n">Sheffield</span> <span class="n">to</span> <span class="n">be</span> <span class="ow">in</span> <span class="n">North</span> <span class="n">America</span><span class="o">.</span></code></pre></figure>
 
@@ -1821,14 +1821,14 @@ Sounds super nerdy. The function <code class="highlighter-rouge">run_test_single
     <span class="n">sample</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
     <span class="n">city</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">continent</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"-----------------------------------------------"</span><span class="p">)</span>
     <span class="n">res_df</span> <span class="o">=</span> <span class="n">inference</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">'prob'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
     <span class="n">m_pred</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">continent</span>
     <span class="n">m_pred_prob</span> <span class="o">=</span> <span class="n">res_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">prob</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">"Machine prediction: {}({}) -- {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">m_pred_prob</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Machine prediction: {}({}) -- {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">m_pred_prob</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">m_pred</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
     
 <span class="n">run_test_single</span><span class="p">()</span>
 
@@ -1841,12 +1841,12 @@ Sounds super nerdy. The function <code class="highlighter-rouge">run_test_single
     <span class="n">sample</span> <span class="o">=</span> <span class="n">test_set</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
     <span class="n">city</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">city_ascii</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">continent</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">continent</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Which Continent does **{}** belong to?"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"&gt;&gt;&gt; Correct Answer: {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">continent</span><span class="p">))</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"-----------------------------------------------"</span><span class="p">)</span>
     <span class="n">cnt</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">prediction</span> <span class="o">=</span> <span class="n">ensemble_inference</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">use_gpu</span><span class="p">)</span>
     
-    <span class="k">print</span><span class="p">(</span><span class="s">"{} Machine prediction: {} -- {}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"{} Machine prediction: {} -- {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">judge</span><span class="p">(</span><span class="n">prediction</span><span class="p">,</span> <span class="n">continent</span><span class="p">)))</span>
     
 <span class="n">run_test_ensemble</span><span class="p">()</span>
 
@@ -1994,7 +1994,7 @@ Me      2 vs 5 AI</p>
 
   </div>
   
-  <script>
+  <!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -2003,6 +2003,17 @@ Me      2 vs 5 AI</p>
   ga('create', 'UA-36651119-2', 'auto');
   ga('send', 'pageview');
 
+</script>
+ -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-36651119-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-36651119-2', { 'optimize_id': 'GTM-T87V6B5'});
 </script>
 
 </body>
