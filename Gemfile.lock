@@ -43,6 +43,8 @@ GEM
       jekyll (~> 3.3)
     jekyll-watch (2.1.2)
       listen (~> 3.0)
+    jekyll-youtube (1.0.0)
+      jekyll
     jemoji (0.10.2)
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
@@ -80,7 +82,8 @@ PLATFORMS
 DEPENDENCIES
   jekyll-paginate
   jekyll-sitemap
+  jekyll-youtube
   jemoji
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
