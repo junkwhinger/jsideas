@@ -233,8 +233,8 @@ I saved the best models from the above three variants in terms of `validation lo
 
 ![test_comparison](../assets/materials/20190705/test_comparison.png)
 
-- Sample Pairing recorded the same Test Error (3.8%) as the baseline but lower Test Loss. 
-- Random Sample Pairing recorded the best Test Error (2.2%) and Test Loss (0.06466)
+- Sample Pairing recorded the lowest Test Error (1.9%) among the experiments. 
+- Random Sample Pairing's test performance was on par with the baseline unlike the validation result.
 
 <br>
 

@@ -177,7 +177,7 @@
 
 <p>그러면 주변 공과의 거리에 비례해서 페널티를 주면 성능이 더 나아질까? 그렇게 해보지는 않았지만 보상에 대한 정보가 더 많아지니 학습에 도움이 될 수도 있을거다. 그러나 여기에는 생각보다 고려해야 할 점이 많다. 에이전트의 위치과 공의 이동 방향에 따라 공의 위험도도 천차 만별이다. 나를 향해 달려드는 공과 이미 나를 지나쳐가는 공의 위험도는 분명히 다르다. 거리에 따라 차등적으로 주려는 페널티는 어떻게 증가시켜야 할까? 선형적으로 위험도를 줘야할까 아니면 지수적으로 증가하게 해야 할까? 어떤 조합의 Reward가 제일 성능이 좋을까?</p>
 
-<p>수동 피쳐 엔지니어링이 생각나게 하는 이 과정을 Reward Shaping이라고 한다. 논문에서 저자들은 수동으로 Reward를 정의하는 과정이 강화학습 현업이나 연구에 있어 큰 장애물(a significant barrier)이라고 소개한다. Reward function을 정의하기 어려운 문제, 즉 리워드 함수가 주어지지 않은 MDP 문제 <code class="highlighter-rouge">MDP\\R</code>를 풀기 위해 저자들은 관측한 전문가 데이터로부터 Reward function을 이끌어내는 Inverse Reinforcemet Learning(IRL)을 제시한다.</p>
+<p>수동 피쳐 엔지니어링이 생각나게 하는 이 과정을 Reward Shaping이라고 한다. 논문에서 저자들은 수동으로 Reward를 정의하는 과정이 강화학습 현업이나 연구에 있어 큰 장애물(a significant barrier)이라고 소개한다. Reward function을 정의하기 어려운 문제, 즉 리워드 함수가 주어지지 않은 MDP 문제 <code class="highlighter-rouge">MDP\R</code>를 풀기 위해 저자들은 관측한 전문가 데이터로부터 Reward function을 이끌어내는 Inverse Reinforcemet Learning(IRL)을 제시한다.</p>
 
 <p><br /></p>
 
@@ -191,11 +191,11 @@
 
 <p>(잠깐! 꽤 간단해보이는 선형 조합으로 구성해도 괜찮은걸까? 논문 뒷부분에 error 텀이 붙은 상태에 대해서도 소개를 하는데, 설령 오차가 있다 하더라도 그로 인한 성능 저하가 어느 정도를 넘어서지는 않는다고 한다.)</p>
 
-<p>여기서 \phi(s)는 state s에서 뽑아낸 피쳐 벡터다. 여기에 피쳐에 적용할 가중치 w^<em>를 점곱하면 True Reward Function인 R^</em>(s)가 된다.</p>
+<p>여기서 $\phi(s)$는 state $s$에서 뽑아낸 피쳐 벡터다. 여기에 피쳐에 적용할 가중치 $ w^* $를 점곱하면 True Reward Function인 $ R^* (s) $가 된다.</p>
 
 <p>논문에서는 feature expectation이라는 개념을 소개하는데 이것이 유도되는 방식은 다음과 같다.</p>
 
-<p>먼저 어떤 policy \pi의 기대 가치는 그것을 이용해 얻는 reward의 할인된 누적 합과 같다.</p>
+<p>먼저 어떤 policy $\pi$의 기대 가치는 그것을 이용해 얻는 reward의 할인된 누적 합과 같다.</p>
 
 <script type="math/tex; mode=display">E_{s_0 \sim D}[V^\pi(s_0)] = E[\Sigma_{t=0}^ \infty \gamma^tR(s_t) | \pi]</script>
 
@@ -203,15 +203,15 @@
 
 <script type="math/tex; mode=display">E_{s_0 \sim D}[V^\pi(s_0)] = E[\Sigma_{t=0}^ \infty \gamma^t w \cdot \phi(s_t) | \pi]</script>
 
-<p>여기서 w는 t와 상관없으므로 expectation 밖으로 뺀다.</p>
+<p>여기서 $w$는 $t$와 상관없으므로 expectation 밖으로 뺀다.</p>
 
 <script type="math/tex; mode=display">E_{s_0 \sim D}[V^\pi(s_0)] = w \cdot E[\Sigma_{t=0}^ \infty \gamma^t \phi(s_t) | \pi]</script>
 
-<p>위 식에서 w에 곱하는 expectation 부분을 \mu(\pi) 혹은 feature expectation이라고 한다.</p>
+<p>위 식에서 $w$에 곱하는 expectation 부분을 $\mu(\pi)$ 혹은 feature expectation이라고 한다.</p>
 
 <script type="math/tex; mode=display">\mu(\pi) = E[\Sigma_{t=0}^ \infty \gamma^t \phi(s_t) | \pi]</script>
 
-<p>여기서 전문가의 시연(demonstration)에서 그가 사용한 policy를 \pi_E라고 둔다. 전문가는 그가 가진 True Reward Function을 최대화하려고 노력했으므로, \pi_E를 R^*에 대한 optimal policy라고 할 수 있다. 그러나 전문가의 뇌를 까서 policy를 발라내지 않는 한 optimal policy를 구할 방법 따윈 없으므로, 전문가의 feature expectation $\mu(\pi_E)$을 구할 수 없다. 그 대신 전문가가 남긴 시연 데이터(m개의 trajectories)를 통해서 $\hat{\mu}_E$를 추정한다.</p>
+<p>여기서 전문가의 시연(demonstration)에서 그가 사용한 policy를 $\pi_E$라고 둔다. 전문가는 그가 가진 True Reward Function을 최대화하려고 노력했으므로, $\pi_E$를 $R^*$에 대한 optimal policy라고 할 수 있다. 그러나 전문가의 뇌를 까서 policy를 발라내지 않는 한 optimal policy를 구할 방법 따윈 없으므로, 전문가의 feature expectation $\mu(\pi_E)$을 구할 수 없다. 그 대신 전문가가 남긴 시연 데이터($m$개의 trajectories)를 통해서 $\hat{\mu}_E$를 추정한다.</p>
 
 <script type="math/tex; mode=display">\hat{\mu}_E = \frac{1}{m}\Sigma_{i=1}^m\Sigma_{t=0}^\infty \gamma^t \phi(s_t^{(i)})</script>
 
@@ -219,17 +219,17 @@
 
 <h1 id="app-algorithm">APP Algorithm</h1>
 
-<p><code class="highlighter-rouge">MDP\R</code>과 feature mapping \phi, 전문가의 feature expectation \mu_E가 주어진 상황에서 찾고자 하는 것은 Unknown Reward Function을 가진 전문가와 유사한 성능을 보이는 policy를 찾는 것이다. 즉, 전문가만큼이나 플레이를 잘 하는 에이전트를 만드는 것이다. 처음에는 True Reward Function을 구성하는 것이라고 생각했는데, 논문에서도 밝히듯 여기서 제안된 방식으로 참 트루 함수를 알아내는 것은 어려울 수 있다. 대신 그 함수를 통해 뽑아낸 퍼포먼스가 전문가만큼 좋은 에이전트를 학습하는 것은 가능하다.</p>
+<p><code class="highlighter-rouge">MDP\R</code>과 feature mapping $\phi$, 전문가의 feature expectation $\mu_E$가 주어진 상황에서 찾고자 하는 것은 Unknown Reward Function을 가진 전문가와 유사한 성능을 보이는 policy를 찾는 것이다. 즉, 전문가만큼이나 플레이를 잘 하는 에이전트를 만드는 것이다. 처음에는 True Reward Function을 구성하는 것이라고 생각했는데, 논문에서도 밝히듯 여기서 제안된 방식으로 참 트루 함수를 알아내는 것은 어려울 수 있다. 대신 그 함수를 통해 뽑아낸 퍼포먼스가 전문가만큼 좋은 에이전트를 학습하는 것은 가능하다.</p>
 
 <p>논문에서는 APP 알고리즘을 6단계로 소개하는데, 이보다는 RL Korea에서 정리한 4가지 스텝이 더 이해하기 쉽다. 간단히 소개하자면 다음과 같다.</p>
 
 <p><img src="../assets/materials/20200402/app.png" alt="" /></p>
 
 <ol>
-  <li>IRL 단계: 전문가 feature expectation \mu_E와 에이전트의 feature expectation set인 \mu_i와의 차이를 t_{i+1}로 정의한다. t_{i+1}를 최대화하는 weight w_{i+1}를 찾는다. 이때 논문에서는 QP의 일종인 SVM을 사용해서 w를 찾는다.</li>
-  <li>RL 단계: 1에서 찾은 w_{i+1}을 이용해 추정한 Reward Function R_{i+1}을 이용해 RL 에이전트를 학습한다.</li>
+  <li>IRL 단계: 전문가 feature expectation $\mu_E$와 에이전트의 feature expectation set인 $\mu_i$와의 차이를 $t_{i+1}$로 정의한다. $t_{i+1}$를 최대화하는 weight $w_{i+1}$를 찾는다. 이때 논문에서는 QP의 일종인 SVM을 사용해서 $w$를 찾는다.</li>
+  <li>RL 단계: 1에서 찾은 $w_{i+1}$을 이용해 추정한 Reward Function $R_{i+1}$을 이용해 RL 에이전트를 학습한다.</li>
   <li>RL 단계에서 얻은 policy로부터 Monte Carlo 시행을 통해 새로운 feature expectation을 구하고, 이를 feature expectation set에 추가한다.</li>
-  <li>1번 IRL 단계와 2번 RL 단계를 반복하다가 t가 \epsilon 이하로 떨어져서 전문가와 에이전트의 성능 차이가 미미해지면 학습을 종료한다.</li>
+  <li>1번 IRL 단계와 2번 RL 단계를 반복하다가 t가 $\epsilon$ 이하로 떨어져서 전문가와 에이전트의 성능 차이가 미미해지면 학습을 종료한다.</li>
 </ol>
 
 <p>이처럼 정리할 수 있으나, RL Korea에서 만든 Mountain Car 예제를 보면, episode 5000번마다 3번과 1번 단계를 수행하고, 지정된 episode 횟수를 넘기면 학습을 완료한다.</p>
@@ -264,7 +264,7 @@
 
 <p>PPO 에이전트는 PPO 알고리즘을 이용해 학습한다. 이전에 DQN으로 실험했을 때 만족스러운 성능을 얻기가 어려워 알고리즘을 변경했다. 또한 PPO는 학습이 잘 진행될 때 Entropy가 완만하게 감소하는 경향을 보인다. 이를 통해 에이전트의 학습이 정상적으로 진행되는지 파악할 수 있을 것이라 판단했다. 총 50,000 episode 학습하며, 최근 100개 episode의 평균 스코어가 가장 높은 모델을 베스트 모델로 선택한다.</p>
 
-<p>PPO_APP 에이전트는 APP으로 IRL 단계을, PPO로 RL 단계를 진행한다. BC 에이전트와 동일한 전문가 시연 데이터를 사용하며, PPO 에이전트와 동일한 하이퍼 파라미터를 사용한다. 2,000 episode마다 IRL 단계를 실행하여 w를 업데이트한다.</p>
+<p>PPO_APP 에이전트는 APP으로 IRL 단계을, PPO로 RL 단계를 진행한다. BC 에이전트와 동일한 전문가 시연 데이터를 사용하며, PPO 에이전트와 동일한 하이퍼 파라미터를 사용한다. 2,000 episode마다 IRL 단계를 실행하여 $w$를 업데이트한다.</p>
 
 <p><br /></p>
 
@@ -339,7 +339,7 @@
 
 <h2 id="w">w</h2>
 
-<p>APP에서는 feature expectation에 가중치 w를 곱해서 True Reward Function을 추정했다. 처음 PPO_APP 에이전트를 구성할 때 w는 랜덤한 vector로 초기화한다. 그리고 2,000 episode 마다 학습한 PPO 에이전트의 feature expectation과 전문가의 feature expectation의 차이를 최대화하도록 w를 갱신한다. w는 feature와 선형 조합할 수 있어야 하므로, feature 갯수와 동일하게 120개의 숫자로 구성된다. 갱신할 때마다 w가 어떻게 변하는지 살펴보자.</p>
+<p>APP에서는 feature expectation에 가중치 w를 곱해서 True Reward Function을 추정했다. 처음 PPO_APP 에이전트를 구성할 때 $w$는 랜덤한 vector로 초기화한다. 그리고 2,000 episode 마다 학습한 PPO 에이전트의 feature expectation과 전문가의 feature expectation의 차이를 최대화하도록 $w$를 갱신한다. $w$는 feature와 선형 조합할 수 있어야 하므로, feature 갯수와 동일하게 120개의 숫자로 구성된다. 갱신할 때마다 $w$가 어떻게 변하는지 살펴보자.</p>
 
 <p><img src="../assets/materials/20200402/w.gif" alt="" /></p>
 
