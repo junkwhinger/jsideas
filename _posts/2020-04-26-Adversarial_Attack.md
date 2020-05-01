@@ -235,6 +235,29 @@ Confusion Matrix를 보면 흥미로운 결과가 보인다. FGSM 실험에서�
 
 ![](../assets/materials/20200426/model_comparison_fastuap_cf.png)
 
+
+
+## Attack on Teachable Machine
+
+Google에서 만들어 공개한 <a href=https://teachablemachine.withgoogle.com/>Teachable Machine</a> 를 이용하면 적은 수의 이미지 데이터로도 분류 모델을 쉽게 만들 수 있다. 여기서 만든 모델에 Fast-UAP로 생성한 노이즈를 입혔을 때 공격이 성공할까?
+
+![](../assets/materials/20200426/tm_test.png)
+
+훈련 데이터셋으로 학습했을 때 테스트셋 오분류율은 18% 정도다. 직접 학습하는 것보다는 성능이 좋지 않지만 클릭 몇 번만으로도 꽤 괜찮은 성능의 분류 모델을 만들었다.
+
+Teachable Machine에서는 모델 저장도 지원한다. 화면 우상단의 Export Model 버튼을 누르면 Tensorflow.js, Lite 등 다양한 형태를 지원한다. 또 이를 바로 실행해볼 수 있는 Keras 코드 스니펫까지 지원한다. h5 파일로 모델을 저장한다음 Keras로 불러와서 원본 테스트셋과 Fast-UAP 노이즈를 입힌 노이즈 테스트셋에 대한 오분류율을 비교해보자.
+
+- 원본 Test Set: 오분류율 0.188
+- Fast-UAP Test Set: 오분류율 .714
+
+앞선 실험 결과와 마찬가지로 Fast-UAP가 모델의 판단에 장애를 일으키는데 성공했다. 
+
+![](../assets/materials/20200426/tm_test_noise.png)
+
+![](../assets/materials/20200426/tm_test_noise2.png)
+
+Teachable Machine도 노이즈가 더해진 이미지를 제대로 분류하지 못했다. 
+
 <br>
 
 # Outro
